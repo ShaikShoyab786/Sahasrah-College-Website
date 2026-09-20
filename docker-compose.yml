@@ -1,0 +1,49 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: sahasara
+      POSTGRES_USER: sahasara
+      POSTGRES_PASSWORD: sahasara
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sahasara -d sahasara"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: .
+      dockerfile: artifacts/api-server/Dockerfile
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://sahasara:sahasara@db:5432/sahasara
+      SESSION_SECRET: ${SESSION_SECRET:?Set SESSION_SECRET in your environment}
+      INITIAL_ADMIN_EMAIL: ${INITIAL_ADMIN_EMAIL:?Set INITIAL_ADMIN_EMAIL in your environment}
+      INITIAL_ADMIN_PASSWORD: ${INITIAL_ADMIN_PASSWORD:?Set INITIAL_ADMIN_PASSWORD in your environment}
+      UPLOAD_DIR: /app/uploads
+    volumes:
+      - uploads_data:/app/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ["sh", "-c", "cd /app/artifacts/api-server && pnpm run db:push && node --enable-source-maps dist/index.mjs"]
+    ports:
+      - "5000:5000"
+
+  web:
+    build:
+      context: .
+      dockerfile: artifacts/sahasara-college/Dockerfile
+    restart: unless-stopped
+    depends_on:
+      - api
+    ports:
+      - "8080:80"
+
+volumes:
+  postgres_data:
+  uploads_data:

@@ -1,0 +1,59 @@
+import { PrismaClient } from "@prisma/client";
+
+export const prisma = new PrismaClient();
+
+export async function initializeDatabase() {
+  await prisma.$connect();
+
+  await prisma.siteSettings.upsert({
+    where: { id: "singleton" },
+    update: {},
+    create: {
+      id: "singleton",
+      collegeName: "Your College Name",
+      tagline: "Your College Tagline",
+      logoUrl: null,
+      email: "info@yourcollege.com",
+      phone: "+91 XXXXX XXXXX",
+      address: "Your College Address",
+      primaryColor: "#12365D",
+      accentColor: "#D5A63A",
+      footerText: "Building confident futures through focused learning.",
+    },
+  });
+
+  await prisma.homepageHero.upsert({
+    where: { id: "singleton" },
+    update: {},
+    create: {
+      id: "singleton",
+      eyebrowText: "A focused start to a bright future",
+      heading: "Learn with purpose.",
+      highlightedHeadingText: "Grow with confidence.",
+      description:
+        "A welcoming academic environment where students build strong foundations, discover their strengths, and prepare for what comes next.",
+      primaryButtonLabel: "Explore admissions",
+      primaryButtonUrl: "#contact",
+      secondaryButtonLabel: "Discover our approach",
+      secondaryButtonUrl: "#about",
+      heroImageUrl: null,
+      isPublished: true,
+    },
+  });
+
+  const email = process.env.INITIAL_ADMIN_EMAIL?.trim().toLowerCase();
+  const password = process.env.INITIAL_ADMIN_PASSWORD;
+  if (email && password) {
+    const existing = await prisma.admin.findUnique({ where: { email } });
+    if (!existing) {
+      const { hashPassword } = await import("./security");
+      await prisma.admin.create({
+        data: {
+          email,
+          passwordHash: await hashPassword(password),
+          displayName: "College Administrator",
+        },
+      });
+    }
+  }
+}

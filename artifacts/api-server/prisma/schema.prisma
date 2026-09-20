@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id           String          @id @default(cuid())
+  email        String          @unique
+  passwordHash String
+  displayName  String
+  createdAt    DateTime        @default(now())
+  sessions     AdminSession[]
+}
+
+model AdminSession {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  adminId   String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  admin     Admin    @relation(fields: [adminId], references: [id], onDelete: Cascade)
+
+  @@index([expiresAt])
+}
+
+model SiteSettings {
+  id           String  @id @default("singleton")
+  collegeName  String
+  tagline      String
+  logoUrl      String?
+  email        String
+  phone        String
+  address      String
+  primaryColor String
+  accentColor  String
+  footerText   String
+  updatedAt    DateTime @updatedAt
+}
+
+model HomepageHero {
+  id                     String  @id @default("singleton")
+  eyebrowText            String
+  heading                String
+  highlightedHeadingText String
+  description            String
+  primaryButtonLabel     String
+  primaryButtonUrl       String
+  secondaryButtonLabel   String
+  secondaryButtonUrl     String
+  heroImageUrl           String?
+  isPublished             Boolean @default(true)
+  updatedAt              DateTime @updatedAt
+}
