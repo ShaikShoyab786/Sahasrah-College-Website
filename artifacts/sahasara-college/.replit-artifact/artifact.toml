@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Sahasara Junior College"
+description = "A connected public college website and protected admin dashboard for managing the college identity and homepage hero content."
+version = "1.0.0"
+id = "artifacts/sahasara-college"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 19703
+
+[services.development]
+run = "pnpm --filter @workspace/sahasara-college run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/sahasara-college", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/sahasara-college/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19703"
+BASE_PATH = "/"

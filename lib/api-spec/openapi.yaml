@@ -10,6 +10,12 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: auth
+    description: Admin authentication
+  - name: public
+    description: Public website content
+  - name: admin
+    description: Protected admin content management
 paths:
   /healthz:
     get:
@@ -24,7 +30,190 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /auth/login:
+    post:
+      operationId: loginAdmin
+      tags: [auth]
+      summary: Sign in to the admin dashboard
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginInput"
+      responses:
+        "200":
+          description: Authenticated admin session
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthSession"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /auth/logout:
+    post:
+      operationId: logoutAdmin
+      tags: [auth]
+      summary: Sign out of the admin dashboard
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Session ended
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+  /auth/me:
+    get:
+      operationId: getAdminSession
+      tags: [auth]
+      summary: Get the current admin session
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Current authenticated admin
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthSession"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /site-settings:
+    get:
+      operationId: getSiteSettings
+      tags: [public]
+      summary: Read public college identity settings
+      responses:
+        "200":
+          description: Public site settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SiteSettings"
+  /homepage-hero:
+    get:
+      operationId: getHomepageHero
+      tags: [public]
+      summary: Read the published homepage hero
+      responses:
+        "200":
+          description: Homepage hero content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomepageHero"
+  /admin/site-settings:
+    put:
+      operationId: updateSiteSettings
+      tags: [admin]
+      summary: Update public college identity settings
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SiteSettingsInput"
+      responses:
+        "200":
+          description: Updated site settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SiteSettings"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/homepage-hero:
+    put:
+      operationId: updateHomepageHero
+      tags: [admin]
+      summary: Update the homepage hero
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HomepageHeroInput"
+      responses:
+        "200":
+          description: Updated homepage hero
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomepageHero"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/uploads:
+    post:
+      operationId: uploadAdminImage
+      tags: [admin]
+      summary: Upload a logo or hero image
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/ImageUploadInput"
+      responses:
+        "201":
+          description: Uploaded image reference
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ImageUploadResult"
+        "400":
+          description: Invalid image
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sahasara_session
   schemas:
     HealthStatus:
       type: object
@@ -33,4 +222,209 @@ components:
           type: string
       required:
         - status
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+    MessageResponse:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+    LoginInput:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 1
+      required:
+        - email
+        - password
+    AuthSession:
+      type: object
+      properties:
+        authenticated:
+          type: boolean
+        email:
+          type: string
+        displayName:
+          type: string
+      required:
+        - authenticated
+        - email
+        - displayName
+    SiteSettings:
+      type: object
+      properties:
+        id:
+          type: string
+        collegeName:
+          type: string
+        tagline:
+          type: string
+        logoUrl:
+          type: ["string", "null"]
+        email:
+          type: string
+        phone:
+          type: string
+        address:
+          type: string
+        primaryColor:
+          type: string
+        accentColor:
+          type: string
+        footerText:
+          type: string
+      required:
+        - id
+        - collegeName
+        - tagline
+        - logoUrl
+        - email
+        - phone
+        - address
+        - primaryColor
+        - accentColor
+        - footerText
+    SiteSettingsInput:
+      type: object
+      properties:
+        collegeName:
+          type: string
+          minLength: 1
+        tagline:
+          type: string
+        logoUrl:
+          type: ["string", "null"]
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+          minLength: 1
+        address:
+          type: string
+          minLength: 1
+        primaryColor:
+          type: string
+          pattern: "^#[0-9A-Fa-f]{6}$"
+        accentColor:
+          type: string
+          pattern: "^#[0-9A-Fa-f]{6}$"
+        footerText:
+          type: string
+      required:
+        - collegeName
+        - tagline
+        - logoUrl
+        - email
+        - phone
+        - address
+        - primaryColor
+        - accentColor
+        - footerText
+    HomepageHero:
+      type: object
+      properties:
+        id:
+          type: string
+        eyebrowText:
+          type: string
+        heading:
+          type: string
+        highlightedHeadingText:
+          type: string
+        description:
+          type: string
+        primaryButtonLabel:
+          type: string
+        primaryButtonUrl:
+          type: string
+        secondaryButtonLabel:
+          type: string
+        secondaryButtonUrl:
+          type: string
+        heroImageUrl:
+          type: ["string", "null"]
+        isPublished:
+          type: boolean
+      required:
+        - id
+        - eyebrowText
+        - heading
+        - highlightedHeadingText
+        - description
+        - primaryButtonLabel
+        - primaryButtonUrl
+        - secondaryButtonLabel
+        - secondaryButtonUrl
+        - heroImageUrl
+        - isPublished
+    HomepageHeroInput:
+      type: object
+      properties:
+        eyebrowText:
+          type: string
+        heading:
+          type: string
+          minLength: 1
+        highlightedHeadingText:
+          type: string
+        description:
+          type: string
+        primaryButtonLabel:
+          type: string
+        primaryButtonUrl:
+          type: string
+        secondaryButtonLabel:
+          type: string
+        secondaryButtonUrl:
+          type: string
+        heroImageUrl:
+          type: ["string", "null"]
+        isPublished:
+          type: boolean
+      required:
+        - eyebrowText
+        - heading
+        - highlightedHeadingText
+        - description
+        - primaryButtonLabel
+        - primaryButtonUrl
+        - secondaryButtonLabel
+        - secondaryButtonUrl
+        - heroImageUrl
+        - isPublished
+    ImageUploadInput:
+      type: object
+      properties:
+        file:
+          type: string
+          format: binary
+        purpose:
+          type: string
+          enum: [logo, hero]
+      required:
+        - file
+        - purpose
+    ImageUploadResult:
+      type: object
+      properties:
+        url:
+          type: string
+        purpose:
+          type: string
+          enum: [logo, hero]
+      required:
+        - url
+        - purpose
 

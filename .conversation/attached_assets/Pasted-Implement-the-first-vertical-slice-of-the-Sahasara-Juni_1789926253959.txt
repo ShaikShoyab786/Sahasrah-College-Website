@@ -1,0 +1,187 @@
+Implement the first vertical slice of the Sahasara Junior College website.
+
+Do not build the complete website yet. Do not build courses, faculty, results, gallery, testimonials, FAQs, or the full CMS yet.
+
+Use this architecture:
+
+- React + Vite frontend
+- Node.js + Express backend
+- PostgreSQL database
+- Prisma ORM
+- Docker-based deployment
+- GitHub repository compatible with Coolify
+- Deployment target: Hostinger VPS through Coolify
+
+Create a clean project structure that can grow into a full college website.
+
+If frontend and backend are separate applications, include a Dockerfile for each application. Also include a root Dockerfile or production Docker setup suitable for deployment through Coolify. Add a docker-compose configuration for local development if useful.
+
+The first feature must prove that the admin dashboard and public website are connected end to end.
+
+Build only these features:
+
+## 1. Public homepage foundation
+
+Create a responsive public homepage with:
+
+- Header
+- Logo area
+- College name
+- Tagline
+- Hero section
+- Hero image
+- Primary call-to-action button
+- Secondary call-to-action button
+- Footer
+
+Use these initial placeholder values:
+
+- College name: Your College Name
+- Tagline: Your College Tagline
+- Email: info@yourcollege.com
+- Phone: +91 XXXXX XXXXX
+- Address: Your College Address
+
+The public homepage should look professional and suitable for a modern junior college.
+
+Use a clean education-focused design with:
+
+- Navy or deep blue primary color
+- Gold or warm accent color
+- White and light neutral backgrounds
+- Strong typography
+- Rounded cards and buttons
+- Responsive desktop, tablet, and mobile layouts
+- Good spacing and visual hierarchy
+
+Do not copy college-specific information from any other college.
+
+## 2. Database structure
+
+Create Prisma models for the first slice:
+
+### SiteSettings
+
+Store:
+
+- College name
+- Tagline
+- Logo URL
+- Email
+- Phone
+- Address
+- Primary color
+- Accent color
+- Footer text
+
+### HomepageHero
+
+Store:
+
+- Eyebrow text
+- Heading
+- Highlighted heading text
+- Description
+- Primary button label
+- Primary button URL
+- Secondary button label
+- Secondary button URL
+- Hero image URL
+- Published/active status
+
+Use a clear database design that can later support additional homepage sections.
+
+Do not store binary image data directly in PostgreSQL.
+
+## 3. Admin authentication
+
+Create a protected admin area with:
+
+- Admin login page
+- Secure authentication
+- Protected admin routes
+- Logout
+- Environment-variable-based initial admin setup
+
+Never hardcode an admin password or secret in source code.
+
+Use environment variables for:
+
+- Database URL
+- Session or JWT secret
+- Initial admin email
+- Initial admin password
+- Upload directory or storage configuration
+
+Provide an `.env.example` file containing variable names only and no real secrets.
+
+## 4. Admin dashboard first slice
+
+Create an admin dashboard with these pages:
+
+### Site Settings
+
+Allow the admin to edit:
+
+- College name
+- Tagline
+- Logo
+- Email
+- Phone
+- Address
+- Primary color
+- Accent color
+- Footer text
+
+### Homepage Hero
+
+Allow the admin to edit:
+
+- Eyebrow text
+- Heading
+- Highlighted heading text
+- Description
+- Primary button label and URL
+- Secondary button label and URL
+- Hero image
+
+Support image upload and image replacement for the logo and hero image.
+
+Store image references in the database and serve uploaded images through the backend.
+
+## 5. API requirements
+
+Create clear backend API endpoints for:
+
+- Admin login
+- Admin logout
+- Reading site settings publicly
+- Updating site settings as an admin
+- Reading homepage hero publicly
+- Updating homepage hero as an admin
+- Uploading an image as an authenticated admin
+
+Public GET endpoints must not require admin authentication.
+
+Admin write endpoints must require authentication.
+
+Validate request data on the backend.
+
+Return useful error messages.
+
+## 6. Public rendering requirement
+
+The public homepage must read the site settings and hero content from the backend API.
+
+Do not permanently hardcode the college name, tagline, hero heading, hero description, or hero image in the React component.
+
+Use safe fallback placeholders only when the database is empty or unavailable.
+
+When the admin changes the college name or hero content and saves it, the new value must appear on the public homepage after refresh without modifying frontend source code.
+
+## 7. Docker and deployment requirements
+
+Prepare the project for:
+
+```text
+GitHub → Coolify → Hostinger VPS
