@@ -20,6 +20,7 @@ services:
       dockerfile: artifacts/api-server/Dockerfile
     restart: unless-stopped
     environment:
+      PORT: 5000
       DATABASE_URL: postgresql://sahasara:sahasara@db:5432/sahasara
       SESSION_SECRET: ${SESSION_SECRET:?Set SESSION_SECRET in your environment}
       INITIAL_ADMIN_EMAIL: ${INITIAL_ADMIN_EMAIL:?Set INITIAL_ADMIN_EMAIL in your environment}

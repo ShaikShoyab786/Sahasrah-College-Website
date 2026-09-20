@@ -1,0 +1,1 @@
+- [Prisma CLI stability](prisma-cli-stability.md) — keep this project on stable Prisma 6 until the newer CLI restores the standard generate workflow.

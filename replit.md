@@ -1,36 +1,48 @@
-# [Project name]
+# Sahasara Junior College
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+A connected public college website and protected admin dashboard for managing the institution's identity and homepage hero.
 
 ## Run & Operate
 
 - `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
+- `pnpm --filter @workspace/sahasara-college run dev` — run the public website and admin dashboard
+- `pnpm --filter @workspace/api-server run prisma:generate` — generate the Prisma client
+- `pnpm --filter @workspace/api-server run db:push` — apply the Prisma schema in development
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+- Required env: `DATABASE_URL`, `SESSION_SECRET`, `INITIAL_ADMIN_EMAIL`, `INITIAL_ADMIN_PASSWORD`
+- Optional env: `UPLOAD_DIR` (defaults to `./uploads`)
 
 ## Stack
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9
 - API: Express 5
-- DB: PostgreSQL + Drizzle ORM
+- DB: PostgreSQL + Prisma ORM for the Sahasara application
 - Validation: Zod (`zod/v4`), `drizzle-zod`
 - API codegen: Orval (from OpenAPI spec)
 - Build: esbuild (CJS bundle)
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/sahasara-college/` — React/Vite public website and admin dashboard
+- `artifacts/api-server/` — Express API, authentication, uploads, and Prisma schema
+- `lib/api-spec/openapi.yaml` — source of truth for API contracts and generated clients
+- `artifacts/api-server/prisma/schema.prisma` — application data model
 
 ## Architecture decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- Public content uses singleton `SiteSettings` and `HomepageHero` records for the first vertical slice.
+- Admin authentication uses opaque, hashed database sessions in an HTTP-only cookie.
+- Uploaded images are stored under `UPLOAD_DIR`; Docker deployments must mount that directory as a persistent volume.
+- The frontend always reads editable identity and hero content from `/api`, with safe placeholders only when public reads fail.
 
 ## Product
 
-_Describe the high-level user-facing capabilities of this app once they exist._
+- Responsive public homepage with dynamic college identity, calls to action, contact details, and hero content.
+- Secure admin login and protected editors for site identity and homepage hero.
+- Authenticated logo and hero image upload.
+- Separate frontend/backend Dockerfiles plus a local/Coolify-compatible Compose stack.
 
 ## User preferences
 
@@ -38,7 +50,9 @@ _Populate as you build — explicit user instructions worth remembering across s
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
+- Run OpenAPI codegen after changing `lib/api-spec/openapi.yaml`.
+- Run Prisma generate after changing `schema.prisma`, then apply `db:push` in development.
+- Do not remove the persistent upload volume in Docker/Coolify or uploaded branding images will be lost.
 
 ## Pointers
 

@@ -58,15 +58,18 @@ export default function Home() {
           <div className="absolute -right-24 top-20 h-[520px] w-[520px] rounded-full border border-[hsl(var(--accent)/.35)] lg:right-[-60px] lg:top-[-20px]" />
           <div className="absolute -right-6 top-40 h-[380px] w-[380px] rounded-full border border-[hsl(var(--accent)/.3)]" />
           <div className="mx-auto grid max-w-7xl items-center gap-10 px-6 pb-20 pt-36 lg:grid-cols-[1.02fr_.98fr] lg:px-10 lg:pt-44">
-            <div className="relative z-10 max-w-2xl">
+            <div className="relative z-10 min-w-0 max-w-2xl">
               <div className="animate-rise inline-flex items-center gap-2 rounded-full border border-[hsl(var(--accent)/.45)] bg-[hsl(var(--card)/.5)] px-3.5 py-2 text-xs font-bold uppercase tracking-[0.16em] text-[hsl(var(--primary))]" data-testid="text-hero-eyebrow"><Sparkles size={14} className="text-[hsl(var(--accent-foreground))]" /> {hero.eyebrowText}</div>
-              <h1 className="animate-rise-delay mt-7 font-display text-[clamp(3.65rem,7vw,6.7rem)] font-semibold leading-[.93] tracking-[-0.065em] text-[hsl(var(--primary))]" data-testid="text-hero-heading">
-                {hero.heading} <span className="relative whitespace-nowrap text-[hsl(var(--accent-foreground))]">{hero.highlightedHeadingText}<span className="absolute -bottom-2 left-1 right-0 h-1 rounded-full bg-[hsl(var(--accent))]" /></span>
+              <h1 className="animate-rise-delay mt-7 max-w-full break-words font-display text-[clamp(3.15rem,13vw,6.7rem)] font-semibold leading-[.93] tracking-[-0.055em] text-[hsl(var(--primary))] sm:tracking-[-0.065em]" data-testid="text-hero-heading">
+                {hero.heading}{' '}
+                <span className="text-[hsl(var(--accent-foreground))] [box-decoration-break:clone] [-webkit-box-decoration-break:clone] border-b-4 border-[hsl(var(--accent))]">
+                  {hero.highlightedHeadingText}
+                </span>
               </h1>
               <p className="mt-7 max-w-lg text-lg leading-8 text-[hsl(var(--muted-foreground))]" data-testid="text-hero-description">{hero.description}</p>
-              <div className="mt-9 flex flex-wrap items-center gap-3">
-                <a href={hero.primaryButtonUrl || '#contact'} className="inline-flex h-13 items-center rounded-full bg-[hsl(var(--primary))] px-6 py-3.5 text-sm font-bold text-[hsl(var(--primary-foreground))] shadow-lg shadow-[hsl(var(--primary)/.14)] transition hover:-translate-y-1" data-testid="link-hero-primary">{hero.primaryButtonLabel || 'Start a conversation'} <ArrowRight size={17} className="ml-2" /></a>
-                <a href={hero.secondaryButtonUrl || '#why-sahasara'} className="inline-flex h-13 items-center rounded-full px-5 py-3.5 text-sm font-bold text-[hsl(var(--primary))] transition hover:bg-[hsl(var(--card)/.6)]" data-testid="link-hero-secondary">{hero.secondaryButtonLabel || 'Explore Sahasara'}</a>
+              <div className="mt-9 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+                <a href={hero.primaryButtonUrl || '#contact'} className="inline-flex h-13 items-center justify-center rounded-full bg-[hsl(var(--primary))] px-6 py-3.5 text-sm font-bold text-[hsl(var(--primary-foreground))] shadow-lg shadow-[hsl(var(--primary)/.14)] transition hover:-translate-y-1 sm:w-auto" data-testid="link-hero-primary">{hero.primaryButtonLabel || 'Start a conversation'} <ArrowRight size={17} className="ml-2" /></a>
+                <a href={hero.secondaryButtonUrl || '#why-sahasara'} className="inline-flex h-13 items-center justify-center rounded-full px-5 py-3.5 text-sm font-bold text-[hsl(var(--primary))] transition hover:bg-[hsl(var(--card)/.6)] sm:w-auto" data-testid="link-hero-secondary">{hero.secondaryButtonLabel || 'Explore Sahasara'}</a>
               </div>
               <div className="mt-12 flex items-center gap-3 text-xs font-semibold text-[hsl(var(--muted-foreground))]"><span className="grid h-8 w-8 place-items-center rounded-full bg-[hsl(var(--accent))] text-[hsl(var(--primary))]"><Check size={15} /></span> A public college built around possibility</div>
             </div>
