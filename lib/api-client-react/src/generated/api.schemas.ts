@@ -151,6 +151,200 @@ export interface HomepageAboutPreviewInput {
   sortOrder: number;
 }
 
+export interface AboutHeroStat {
+  id: string;
+  value: string;
+  label: string;
+  /** @nullable */
+  icon: string | null;
+  displayOrder: number;
+  isVisible: boolean;
+}
+
+export interface AboutHeroStatInput {
+  /** @minLength 1 */
+  value: string;
+  /** @minLength 1 */
+  label: string;
+  /** @nullable */
+  icon: string | null;
+  /**
+     * @minimum 1
+     * @maximum 4
+     */
+  displayOrder: number;
+  isVisible: boolean;
+}
+
+export interface AboutHero {
+  id: string;
+  eyebrow: string;
+  heading: string;
+  description: string;
+  /** @nullable */
+  mainImageUrl: string | null;
+  mainImageAltText: string;
+  floatingLabel: string;
+  floatingAcademicYear: string;
+  floatingAvailabilityText: string;
+  floatingSupportingText: string;
+  /** @nullable */
+  floatingImageUrl: string | null;
+  floatingImageAltText: string;
+  primaryButtonLabel: string;
+  primaryButtonUrl: string;
+  primaryButtonVisible: boolean;
+  secondaryButtonLabel: string;
+  secondaryButtonUrl: string;
+  secondaryButtonVisible: boolean;
+  isVisible: boolean;
+  sortOrder: number;
+  updatedAt: string;
+  /**
+     * @minItems 4
+     * @maxItems 4
+     */
+  stats: AboutHeroStat[];
+}
+
+export interface AboutHeroInput {
+  /** @minLength 1 */
+  eyebrow: string;
+  /** @minLength 1 */
+  heading: string;
+  description: string;
+  /** @nullable */
+  mainImageUrl: string | null;
+  mainImageAltText: string;
+  floatingLabel: string;
+  floatingAcademicYear: string;
+  floatingAvailabilityText: string;
+  floatingSupportingText: string;
+  /** @nullable */
+  floatingImageUrl: string | null;
+  floatingImageAltText: string;
+  primaryButtonLabel: string;
+  primaryButtonUrl: string;
+  primaryButtonVisible: boolean;
+  secondaryButtonLabel: string;
+  secondaryButtonUrl: string;
+  secondaryButtonVisible: boolean;
+  isVisible: boolean;
+  sortOrder: number;
+  /**
+     * @minItems 4
+     * @maxItems 4
+     */
+  stats: AboutHeroStatInput[];
+}
+
+export interface AboutTimelineItem {
+  id: string;
+  period: string;
+  title: string;
+  description: string;
+  displayOrder: number;
+  isVisible: boolean;
+}
+
+export interface AboutTimelineItemInput {
+  /** @minLength 1 */
+  period: string;
+  /** @minLength 1 */
+  title: string;
+  description: string;
+  /**
+     * @minimum 1
+     * @maximum 12
+     */
+  displayOrder: number;
+  isVisible: boolean;
+}
+
+export interface AboutStory {
+  id: string;
+  eyebrow: string;
+  heading: string;
+  description: string;
+  buttonLabel: string;
+  buttonHref: string;
+  /** @nullable */
+  mainImage: string | null;
+  mainImageAltText: string;
+  /** @nullable */
+  secondaryImage: string | null;
+  secondaryImageAltText: string;
+  /** @nullable */
+  thirdImage: string | null;
+  thirdImageAltText: string;
+  isVisible: boolean;
+  sortOrder: number;
+  updatedAt: string;
+  timelineItems: AboutTimelineItem[];
+}
+
+export interface AboutStoryInput {
+  /** @minLength 1 */
+  eyebrow: string;
+  /** @minLength 1 */
+  heading: string;
+  description: string;
+  buttonLabel: string;
+  buttonHref: string;
+  /** @nullable */
+  mainImage: string | null;
+  mainImageAltText: string;
+  /** @nullable */
+  secondaryImage: string | null;
+  secondaryImageAltText: string;
+  /** @nullable */
+  thirdImage: string | null;
+  thirdImageAltText: string;
+  isVisible: boolean;
+  sortOrder: number;
+  /**
+     * @minItems 1
+     * @maxItems 12
+     */
+  timelineItems: AboutTimelineItemInput[];
+}
+
+export interface AboutChairmanMessage {
+  id: string;
+  eyebrow: string;
+  heading: string;
+  message: string;
+  signatureName: string;
+  role: string;
+  /** @nullable */
+  portraitImage: string | null;
+  portraitAltText: string;
+  buttonLabel: string;
+  buttonHref: string;
+  buttonVisible: boolean;
+  isVisible: boolean;
+  sortOrder: number;
+  updatedAt: string;
+}
+
+export interface AboutChairmanMessageInput {
+  /** @minLength 1 */
+  eyebrow: string;
+  /** @minLength 1 */
+  heading: string;
+  message: string;
+  signatureName: string;
+  role: string;
+  /** @nullable */
+  portraitImage: string | null;
+  portraitAltText: string;
+  buttonLabel: string;
+  buttonHref: string;
+  buttonVisible: boolean;
+  isVisible: boolean;
+  sortOrder: number;
+}
+
 export type ImageUploadInputPurpose = typeof ImageUploadInputPurpose[keyof typeof ImageUploadInputPurpose];
 
 

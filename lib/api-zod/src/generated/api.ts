@@ -116,6 +116,98 @@ export const GetHomepageAboutPreviewResponse = zod.object({
 
 
 /**
+ * @summary Read the visible About page hero
+ */
+export const getAboutHeroResponseStatsMin = 4;
+export const getAboutHeroResponseStatsMax = 4;
+
+
+
+export const GetAboutHeroResponse = zod.object({
+  "id": zod.string(),
+  "eyebrow": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "mainImageUrl": zod.string().nullable(),
+  "mainImageAltText": zod.string(),
+  "floatingLabel": zod.string(),
+  "floatingAcademicYear": zod.string(),
+  "floatingAvailabilityText": zod.string(),
+  "floatingSupportingText": zod.string(),
+  "floatingImageUrl": zod.string().nullable(),
+  "floatingImageAltText": zod.string(),
+  "primaryButtonLabel": zod.string(),
+  "primaryButtonUrl": zod.string(),
+  "primaryButtonVisible": zod.boolean(),
+  "secondaryButtonLabel": zod.string(),
+  "secondaryButtonUrl": zod.string(),
+  "secondaryButtonVisible": zod.boolean(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date(),
+  "stats": zod.array(zod.object({
+  "id": zod.string(),
+  "value": zod.string(),
+  "label": zod.string(),
+  "icon": zod.string().nullable(),
+  "displayOrder": zod.number().int(),
+  "isVisible": zod.boolean()
+})).min(getAboutHeroResponseStatsMin).max(getAboutHeroResponseStatsMax)
+})
+
+
+/**
+ * @summary Read the visible About page story
+ */
+export const GetAboutStoryResponse = zod.object({
+  "id": zod.string(),
+  "eyebrow": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "buttonLabel": zod.string(),
+  "buttonHref": zod.string(),
+  "mainImage": zod.string().nullable(),
+  "mainImageAltText": zod.string(),
+  "secondaryImage": zod.string().nullable(),
+  "secondaryImageAltText": zod.string(),
+  "thirdImage": zod.string().nullable(),
+  "thirdImageAltText": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date(),
+  "timelineItems": zod.array(zod.object({
+  "id": zod.string(),
+  "period": zod.string(),
+  "title": zod.string(),
+  "description": zod.string(),
+  "displayOrder": zod.number().int(),
+  "isVisible": zod.boolean()
+}))
+})
+
+
+/**
+ * @summary Read the visible About page chairman message
+ */
+export const GetAboutChairmanMessageResponse = zod.object({
+  "id": zod.string(),
+  "eyebrow": zod.string(),
+  "heading": zod.string(),
+  "message": zod.string(),
+  "signatureName": zod.string(),
+  "role": zod.string(),
+  "portraitImage": zod.string().nullable(),
+  "portraitAltText": zod.string(),
+  "buttonLabel": zod.string(),
+  "buttonHref": zod.string(),
+  "buttonVisible": zod.boolean(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
  * @summary Update public college identity settings
  */
 
@@ -250,6 +342,282 @@ export const UpdateHomepageAboutPreviewResponse = zod.object({
   "primaryImageAltText": zod.string(),
   "secondaryImage": zod.string().nullable(),
   "secondaryImageAltText": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Read About page hero settings
+ */
+export const getAdminAboutHeroResponseStatsMin = 4;
+export const getAdminAboutHeroResponseStatsMax = 4;
+
+
+
+export const GetAdminAboutHeroResponse = zod.object({
+  "id": zod.string(),
+  "eyebrow": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "mainImageUrl": zod.string().nullable(),
+  "mainImageAltText": zod.string(),
+  "floatingLabel": zod.string(),
+  "floatingAcademicYear": zod.string(),
+  "floatingAvailabilityText": zod.string(),
+  "floatingSupportingText": zod.string(),
+  "floatingImageUrl": zod.string().nullable(),
+  "floatingImageAltText": zod.string(),
+  "primaryButtonLabel": zod.string(),
+  "primaryButtonUrl": zod.string(),
+  "primaryButtonVisible": zod.boolean(),
+  "secondaryButtonLabel": zod.string(),
+  "secondaryButtonUrl": zod.string(),
+  "secondaryButtonVisible": zod.boolean(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date(),
+  "stats": zod.array(zod.object({
+  "id": zod.string(),
+  "value": zod.string(),
+  "label": zod.string(),
+  "icon": zod.string().nullable(),
+  "displayOrder": zod.number().int(),
+  "isVisible": zod.boolean()
+})).min(getAdminAboutHeroResponseStatsMin).max(getAdminAboutHeroResponseStatsMax)
+})
+
+
+/**
+ * @summary Update About page hero settings
+ */
+
+
+
+
+export const updateAboutHeroBodyStatsItemDisplayOrderMax = 4;
+
+export const updateAboutHeroBodyStatsMin = 4;
+export const updateAboutHeroBodyStatsMax = 4;
+
+
+
+export const UpdateAboutHeroBody = zod.object({
+  "eyebrow": zod.string().min(1),
+  "heading": zod.string().min(1),
+  "description": zod.string(),
+  "mainImageUrl": zod.string().nullable(),
+  "mainImageAltText": zod.string(),
+  "floatingLabel": zod.string(),
+  "floatingAcademicYear": zod.string(),
+  "floatingAvailabilityText": zod.string(),
+  "floatingSupportingText": zod.string(),
+  "floatingImageUrl": zod.string().nullable(),
+  "floatingImageAltText": zod.string(),
+  "primaryButtonLabel": zod.string(),
+  "primaryButtonUrl": zod.string(),
+  "primaryButtonVisible": zod.boolean(),
+  "secondaryButtonLabel": zod.string(),
+  "secondaryButtonUrl": zod.string(),
+  "secondaryButtonVisible": zod.boolean(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "stats": zod.array(zod.object({
+  "value": zod.string().min(1),
+  "label": zod.string().min(1),
+  "icon": zod.string().nullable(),
+  "displayOrder": zod.number().int().min(1).max(updateAboutHeroBodyStatsItemDisplayOrderMax),
+  "isVisible": zod.boolean()
+})).min(updateAboutHeroBodyStatsMin).max(updateAboutHeroBodyStatsMax)
+})
+
+export const updateAboutHeroResponseStatsMin = 4;
+export const updateAboutHeroResponseStatsMax = 4;
+
+
+
+export const UpdateAboutHeroResponse = zod.object({
+  "id": zod.string(),
+  "eyebrow": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "mainImageUrl": zod.string().nullable(),
+  "mainImageAltText": zod.string(),
+  "floatingLabel": zod.string(),
+  "floatingAcademicYear": zod.string(),
+  "floatingAvailabilityText": zod.string(),
+  "floatingSupportingText": zod.string(),
+  "floatingImageUrl": zod.string().nullable(),
+  "floatingImageAltText": zod.string(),
+  "primaryButtonLabel": zod.string(),
+  "primaryButtonUrl": zod.string(),
+  "primaryButtonVisible": zod.boolean(),
+  "secondaryButtonLabel": zod.string(),
+  "secondaryButtonUrl": zod.string(),
+  "secondaryButtonVisible": zod.boolean(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date(),
+  "stats": zod.array(zod.object({
+  "id": zod.string(),
+  "value": zod.string(),
+  "label": zod.string(),
+  "icon": zod.string().nullable(),
+  "displayOrder": zod.number().int(),
+  "isVisible": zod.boolean()
+})).min(updateAboutHeroResponseStatsMin).max(updateAboutHeroResponseStatsMax)
+})
+
+
+/**
+ * @summary Read About page story settings
+ */
+export const GetAdminAboutStoryResponse = zod.object({
+  "id": zod.string(),
+  "eyebrow": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "buttonLabel": zod.string(),
+  "buttonHref": zod.string(),
+  "mainImage": zod.string().nullable(),
+  "mainImageAltText": zod.string(),
+  "secondaryImage": zod.string().nullable(),
+  "secondaryImageAltText": zod.string(),
+  "thirdImage": zod.string().nullable(),
+  "thirdImageAltText": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date(),
+  "timelineItems": zod.array(zod.object({
+  "id": zod.string(),
+  "period": zod.string(),
+  "title": zod.string(),
+  "description": zod.string(),
+  "displayOrder": zod.number().int(),
+  "isVisible": zod.boolean()
+}))
+})
+
+
+/**
+ * @summary Update About page story and timeline settings
+ */
+
+
+
+
+export const updateAboutStoryBodyTimelineItemsItemDisplayOrderMax = 12;
+
+export const updateAboutStoryBodyTimelineItemsMax = 12;
+
+
+
+export const UpdateAboutStoryBody = zod.object({
+  "eyebrow": zod.string().min(1),
+  "heading": zod.string().min(1),
+  "description": zod.string(),
+  "buttonLabel": zod.string(),
+  "buttonHref": zod.string(),
+  "mainImage": zod.string().nullable(),
+  "mainImageAltText": zod.string(),
+  "secondaryImage": zod.string().nullable(),
+  "secondaryImageAltText": zod.string(),
+  "thirdImage": zod.string().nullable(),
+  "thirdImageAltText": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "timelineItems": zod.array(zod.object({
+  "period": zod.string().min(1),
+  "title": zod.string().min(1),
+  "description": zod.string(),
+  "displayOrder": zod.number().int().min(1).max(updateAboutStoryBodyTimelineItemsItemDisplayOrderMax),
+  "isVisible": zod.boolean()
+})).min(1).max(updateAboutStoryBodyTimelineItemsMax)
+})
+
+export const UpdateAboutStoryResponse = zod.object({
+  "id": zod.string(),
+  "eyebrow": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "buttonLabel": zod.string(),
+  "buttonHref": zod.string(),
+  "mainImage": zod.string().nullable(),
+  "mainImageAltText": zod.string(),
+  "secondaryImage": zod.string().nullable(),
+  "secondaryImageAltText": zod.string(),
+  "thirdImage": zod.string().nullable(),
+  "thirdImageAltText": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date(),
+  "timelineItems": zod.array(zod.object({
+  "id": zod.string(),
+  "period": zod.string(),
+  "title": zod.string(),
+  "description": zod.string(),
+  "displayOrder": zod.number().int(),
+  "isVisible": zod.boolean()
+}))
+})
+
+
+/**
+ * @summary Read About page chairman message settings
+ */
+export const GetAdminAboutChairmanMessageResponse = zod.object({
+  "id": zod.string(),
+  "eyebrow": zod.string(),
+  "heading": zod.string(),
+  "message": zod.string(),
+  "signatureName": zod.string(),
+  "role": zod.string(),
+  "portraitImage": zod.string().nullable(),
+  "portraitAltText": zod.string(),
+  "buttonLabel": zod.string(),
+  "buttonHref": zod.string(),
+  "buttonVisible": zod.boolean(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Update About page chairman message settings
+ */
+
+
+
+
+export const UpdateAboutChairmanMessageBody = zod.object({
+  "eyebrow": zod.string().min(1),
+  "heading": zod.string().min(1),
+  "message": zod.string(),
+  "signatureName": zod.string(),
+  "role": zod.string(),
+  "portraitImage": zod.string().nullable(),
+  "portraitAltText": zod.string(),
+  "buttonLabel": zod.string(),
+  "buttonHref": zod.string(),
+  "buttonVisible": zod.boolean(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int()
+})
+
+export const UpdateAboutChairmanMessageResponse = zod.object({
+  "id": zod.string(),
+  "eyebrow": zod.string(),
+  "heading": zod.string(),
+  "message": zod.string(),
+  "signatureName": zod.string(),
+  "role": zod.string(),
+  "portraitImage": zod.string().nullable(),
+  "portraitAltText": zod.string(),
+  "buttonLabel": zod.string(),
+  "buttonHref": zod.string(),
+  "buttonVisible": zod.boolean(),
   "isVisible": zod.boolean(),
   "sortOrder": zod.number().int(),
   "updatedAt": zod.coerce.date()

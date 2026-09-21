@@ -99,6 +99,102 @@ export async function initializeDatabase() {
     },
   });
 
+  await prisma.aboutHero.upsert({
+    where: { id: "singleton" },
+    update: {},
+    create: {
+      id: "singleton",
+      eyebrow: "ABOUT SAHASARA",
+      heading: "Growing with Purpose, Learning for Tomorrow.",
+      description:
+        "Sahasara Junior College is committed to helping students build strong academic foundations through focused learning, personal guidance, and a supportive environment.",
+      mainImageUrl:
+        "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1400&q=85",
+      mainImageAltText: "Students learning together in a bright classroom",
+      floatingLabel: "Admissions Open",
+      floatingAcademicYear: "2026–27",
+      floatingAvailabilityText: "Limited Seats Available",
+      floatingSupportingText: "Join a growing community of successful students.",
+      floatingImageUrl: null,
+      floatingImageAltText: "Sahasara students",
+      primaryButtonLabel: "Apply for Admission",
+      primaryButtonUrl: "#contact",
+      primaryButtonVisible: true,
+      secondaryButtonLabel: "Schedule a Campus Visit",
+      secondaryButtonUrl: "#contact",
+      secondaryButtonVisible: true,
+      isVisible: true,
+      sortOrder: 1,
+    },
+  });
+  if ((await prisma.aboutHeroStat.count({ where: { aboutHeroId: "singleton" } })) === 0) {
+    await prisma.aboutHeroStat.createMany({
+      data: [
+        { aboutHeroId: "singleton", value: "30+", label: "Years of Excellence", displayOrder: 1, isVisible: true },
+        { aboutHeroId: "singleton", value: "5000+", label: "Students Guided", displayOrder: 2, isVisible: true },
+        { aboutHeroId: "singleton", value: "100+", label: "Academic Achievements", displayOrder: 3, isVisible: true },
+        { aboutHeroId: "singleton", value: "500+", label: "Successful Admissions", displayOrder: 4, isVisible: true },
+      ],
+    });
+  }
+
+  await prisma.aboutStory.upsert({
+    where: { id: "singleton" },
+    update: {},
+    create: {
+      id: "singleton",
+      eyebrow: "OUR STORY",
+      heading: "A Journey Built on Learning and Purpose",
+      description:
+        "Sahasara Junior College continues to grow through a commitment to academic discipline, student guidance, and a learning environment that prepares students for the next stage of their journey.",
+      buttonLabel: "Explore Our Journey",
+      buttonHref: "#our-story-timeline",
+      mainImage:
+        "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1100&q=85",
+      mainImageAltText: "Students walking together outside a college building",
+      secondaryImage:
+        "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=85",
+      secondaryImageAltText: "Students collaborating in a classroom",
+      thirdImage:
+        "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=800&q=85",
+      thirdImageAltText: "Open books and notes on a study table",
+      isVisible: true,
+      sortOrder: 2,
+    },
+  });
+  if ((await prisma.aboutTimelineItem.count({ where: { aboutStoryId: "singleton" } })) === 0) {
+    await prisma.aboutTimelineItem.createMany({
+      data: [
+        { aboutStoryId: "singleton", period: "20XX", title: "The Beginning", description: "Sahasara Junior College begins its journey with a commitment to focused learning.", displayOrder: 1, isVisible: true },
+        { aboutStoryId: "singleton", period: "20XX", title: "Growing Horizons", description: "The college expands its academic guidance and student support initiatives.", displayOrder: 2, isVisible: true },
+        { aboutStoryId: "singleton", period: "20XX", title: "A Stronger Community", description: "More students and families become part of the Sahasara learning community.", displayOrder: 3, isVisible: true },
+        { aboutStoryId: "singleton", period: "Today", title: "Looking Ahead", description: "Sahasara continues preparing students for higher education and future opportunities.", displayOrder: 4, isVisible: true },
+      ],
+    });
+  }
+
+  await prisma.aboutChairmanMessage.upsert({
+    where: { id: "singleton" },
+    update: {},
+    create: {
+      id: "singleton",
+      eyebrow: "CHAIRMAN'S MESSAGE",
+      heading: "Education is the foundation of every meaningful future.",
+      message:
+        "At Sahasara Junior College, we believe every student deserves the guidance, encouragement, and learning environment needed to grow with confidence. Our responsibility is to support every learner with purpose and care.",
+      signatureName: "Sahasara Leadership",
+      role: "Chairman",
+      portraitImage:
+        "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=900&q=85",
+      portraitAltText: "Portrait placeholder for Sahasara leadership",
+      buttonLabel: "Read the Full Message",
+      buttonHref: "#contact",
+      buttonVisible: false,
+      isVisible: true,
+      sortOrder: 3,
+    },
+  });
+
   const email = process.env.INITIAL_ADMIN_EMAIL?.trim().toLowerCase();
   const password = process.env.INITIAL_ADMIN_PASSWORD;
   if (email && password) {

@@ -74,3 +74,94 @@ model HomepageAboutPreview {
   sortOrder             Int      @default(2)
   updatedAt             DateTime @updatedAt
 }
+
+model AboutHero {
+  id                       String   @id @default("singleton")
+  eyebrow                  String
+  heading                  String
+  description              String
+  mainImageUrl             String?
+  mainImageAltText         String
+  floatingLabel             String
+  floatingAcademicYear     String
+  floatingAvailabilityText String
+  floatingSupportingText   String
+  floatingImageUrl         String?
+  floatingImageAltText     String
+  primaryButtonLabel       String
+  primaryButtonUrl         String
+  primaryButtonVisible     Boolean  @default(true)
+  secondaryButtonLabel     String
+  secondaryButtonUrl       String
+  secondaryButtonVisible   Boolean  @default(true)
+  isVisible                Boolean  @default(true)
+  sortOrder                Int      @default(1)
+  updatedAt                DateTime @updatedAt
+  stats                    AboutHeroStat[]
+}
+
+model AboutHeroStat {
+  id          String    @id @default(cuid())
+  aboutHeroId String    @default("singleton")
+  value       String
+  label       String
+  icon        String?
+  displayOrder Int
+  isVisible   Boolean   @default(true)
+  updatedAt   DateTime  @updatedAt
+  aboutHero   AboutHero @relation(fields: [aboutHeroId], references: [id], onDelete: Cascade)
+
+  @@unique([aboutHeroId, displayOrder])
+  @@index([aboutHeroId])
+}
+
+model AboutStory {
+  id                    String              @id @default("singleton")
+  eyebrow               String
+  heading               String
+  description           String
+  buttonLabel           String
+  buttonHref            String
+  mainImage              String?
+  mainImageAltText       String
+  secondaryImage         String?
+  secondaryImageAltText  String
+  thirdImage             String?
+  thirdImageAltText      String
+  isVisible              Boolean             @default(true)
+  sortOrder              Int                 @default(2)
+  updatedAt              DateTime            @updatedAt
+  timelineItems         AboutTimelineItem[]
+}
+
+model AboutTimelineItem {
+  id          String     @id @default(cuid())
+  aboutStoryId String    @default("singleton")
+  period      String
+  title       String
+  description String
+  displayOrder Int
+  isVisible   Boolean    @default(true)
+  updatedAt   DateTime   @updatedAt
+  aboutStory  AboutStory @relation(fields: [aboutStoryId], references: [id], onDelete: Cascade)
+
+  @@unique([aboutStoryId, displayOrder])
+  @@index([aboutStoryId])
+}
+
+model AboutChairmanMessage {
+  id             String   @id @default("singleton")
+  eyebrow        String
+  heading        String
+  message        String
+  signatureName  String
+  role           String
+  portraitImage  String?
+  portraitAltText String
+  buttonLabel    String
+  buttonHref     String
+  buttonVisible  Boolean  @default(false)
+  isVisible      Boolean  @default(true)
+  sortOrder      Int      @default(3)
+  updatedAt      DateTime @updatedAt
+}

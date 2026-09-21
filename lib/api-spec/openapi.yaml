@@ -130,6 +130,60 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+  /about-hero:
+    get:
+      operationId: getAboutHero
+      tags: [public]
+      summary: Read the visible About page hero
+      responses:
+        "200":
+          description: About hero content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AboutHero"
+        "404":
+          description: About hero is hidden or unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /about-story:
+    get:
+      operationId: getAboutStory
+      tags: [public]
+      summary: Read the visible About page story
+      responses:
+        "200":
+          description: About story and timeline content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AboutStory"
+        "404":
+          description: About story is hidden or unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /about-chairman-message:
+    get:
+      operationId: getAboutChairmanMessage
+      tags: [public]
+      summary: Read the visible About page chairman message
+      responses:
+        "200":
+          description: Chairman message content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AboutChairmanMessage"
+        "404":
+          description: Chairman message is hidden or unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /admin/site-settings:
     put:
       operationId: updateSiteSettings
@@ -214,12 +268,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
-        "404":
-          description: About Preview is unavailable
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
     put:
       operationId: updateHomepageAboutPreview
       tags: [admin]
@@ -239,6 +287,159 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HomepageAboutPreview"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/about-hero:
+    get:
+      operationId: getAdminAboutHero
+      tags: [admin]
+      summary: Read About page hero settings
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: About hero settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AboutHero"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateAboutHero
+      tags: [admin]
+      summary: Update About page hero settings
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AboutHeroInput"
+      responses:
+        "200":
+          description: Updated About hero settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AboutHero"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/about-story:
+    get:
+      operationId: getAdminAboutStory
+      tags: [admin]
+      summary: Read About page story settings
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: About story and timeline settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AboutStory"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateAboutStory
+      tags: [admin]
+      summary: Update About page story and timeline settings
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AboutStoryInput"
+      responses:
+        "200":
+          description: Updated About story and timeline settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AboutStory"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/about-chairman-message:
+    get:
+      operationId: getAdminAboutChairmanMessage
+      tags: [admin]
+      summary: Read About page chairman message settings
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Chairman message settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AboutChairmanMessage"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateAboutChairmanMessage
+      tags: [admin]
+      summary: Update About page chairman message settings
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AboutChairmanMessageInput"
+      responses:
+        "200":
+          description: Updated chairman message settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AboutChairmanMessage"
         "400":
           description: Validation error
           content:
@@ -588,6 +789,437 @@ components:
         - primaryImageAltText
         - secondaryImage
         - secondaryImageAltText
+        - isVisible
+        - sortOrder
+    AboutHeroStat:
+      type: object
+      properties:
+        id:
+          type: string
+        value:
+          type: string
+        label:
+          type: string
+        icon:
+          type: ["string", "null"]
+        displayOrder:
+          type: integer
+        isVisible:
+          type: boolean
+      required:
+        - id
+        - value
+        - label
+        - icon
+        - displayOrder
+        - isVisible
+    AboutHeroStatInput:
+      type: object
+      properties:
+        value:
+          type: string
+          minLength: 1
+        label:
+          type: string
+          minLength: 1
+        icon:
+          type: ["string", "null"]
+        displayOrder:
+          type: integer
+          minimum: 1
+          maximum: 4
+        isVisible:
+          type: boolean
+      required:
+        - value
+        - label
+        - icon
+        - displayOrder
+        - isVisible
+    AboutHero:
+      type: object
+      properties:
+        id:
+          type: string
+        eyebrow:
+          type: string
+        heading:
+          type: string
+        description:
+          type: string
+        mainImageUrl:
+          type: ["string", "null"]
+        mainImageAltText:
+          type: string
+        floatingLabel:
+          type: string
+        floatingAcademicYear:
+          type: string
+        floatingAvailabilityText:
+          type: string
+        floatingSupportingText:
+          type: string
+        floatingImageUrl:
+          type: ["string", "null"]
+        floatingImageAltText:
+          type: string
+        primaryButtonLabel:
+          type: string
+        primaryButtonUrl:
+          type: string
+        primaryButtonVisible:
+          type: boolean
+        secondaryButtonLabel:
+          type: string
+        secondaryButtonUrl:
+          type: string
+        secondaryButtonVisible:
+          type: boolean
+        isVisible:
+          type: boolean
+        sortOrder:
+          type: integer
+        updatedAt:
+          type: string
+          format: date-time
+        stats:
+          type: array
+          minItems: 4
+          maxItems: 4
+          items:
+            $ref: "#/components/schemas/AboutHeroStat"
+      required:
+        - id
+        - eyebrow
+        - heading
+        - description
+        - mainImageUrl
+        - mainImageAltText
+        - floatingLabel
+        - floatingAcademicYear
+        - floatingAvailabilityText
+        - floatingSupportingText
+        - floatingImageUrl
+        - floatingImageAltText
+        - primaryButtonLabel
+        - primaryButtonUrl
+        - primaryButtonVisible
+        - secondaryButtonLabel
+        - secondaryButtonUrl
+        - secondaryButtonVisible
+        - isVisible
+        - sortOrder
+        - updatedAt
+        - stats
+    AboutHeroInput:
+      type: object
+      properties:
+        eyebrow:
+          type: string
+          minLength: 1
+        heading:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        mainImageUrl:
+          type: ["string", "null"]
+        mainImageAltText:
+          type: string
+        floatingLabel:
+          type: string
+        floatingAcademicYear:
+          type: string
+        floatingAvailabilityText:
+          type: string
+        floatingSupportingText:
+          type: string
+        floatingImageUrl:
+          type: ["string", "null"]
+        floatingImageAltText:
+          type: string
+        primaryButtonLabel:
+          type: string
+        primaryButtonUrl:
+          type: string
+        primaryButtonVisible:
+          type: boolean
+        secondaryButtonLabel:
+          type: string
+        secondaryButtonUrl:
+          type: string
+        secondaryButtonVisible:
+          type: boolean
+        isVisible:
+          type: boolean
+        sortOrder:
+          type: integer
+        stats:
+          type: array
+          minItems: 4
+          maxItems: 4
+          items:
+            $ref: "#/components/schemas/AboutHeroStatInput"
+      required:
+        - eyebrow
+        - heading
+        - description
+        - mainImageUrl
+        - mainImageAltText
+        - floatingLabel
+        - floatingAcademicYear
+        - floatingAvailabilityText
+        - floatingSupportingText
+        - floatingImageUrl
+        - floatingImageAltText
+        - primaryButtonLabel
+        - primaryButtonUrl
+        - primaryButtonVisible
+        - secondaryButtonLabel
+        - secondaryButtonUrl
+        - secondaryButtonVisible
+        - isVisible
+        - sortOrder
+        - stats
+    AboutTimelineItem:
+      type: object
+      properties:
+        id:
+          type: string
+        period:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        displayOrder:
+          type: integer
+        isVisible:
+          type: boolean
+      required:
+        - id
+        - period
+        - title
+        - description
+        - displayOrder
+        - isVisible
+    AboutTimelineItemInput:
+      type: object
+      properties:
+        period:
+          type: string
+          minLength: 1
+        title:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        displayOrder:
+          type: integer
+          minimum: 1
+          maximum: 12
+        isVisible:
+          type: boolean
+      required:
+        - period
+        - title
+        - description
+        - displayOrder
+        - isVisible
+    AboutStory:
+      type: object
+      properties:
+        id:
+          type: string
+        eyebrow:
+          type: string
+        heading:
+          type: string
+        description:
+          type: string
+        buttonLabel:
+          type: string
+        buttonHref:
+          type: string
+        mainImage:
+          type: ["string", "null"]
+        mainImageAltText:
+          type: string
+        secondaryImage:
+          type: ["string", "null"]
+        secondaryImageAltText:
+          type: string
+        thirdImage:
+          type: ["string", "null"]
+        thirdImageAltText:
+          type: string
+        isVisible:
+          type: boolean
+        sortOrder:
+          type: integer
+        updatedAt:
+          type: string
+          format: date-time
+        timelineItems:
+          type: array
+          items:
+            $ref: "#/components/schemas/AboutTimelineItem"
+      required:
+        - id
+        - eyebrow
+        - heading
+        - description
+        - buttonLabel
+        - buttonHref
+        - mainImage
+        - mainImageAltText
+        - secondaryImage
+        - secondaryImageAltText
+        - thirdImage
+        - thirdImageAltText
+        - isVisible
+        - sortOrder
+        - updatedAt
+        - timelineItems
+    AboutStoryInput:
+      type: object
+      properties:
+        eyebrow:
+          type: string
+          minLength: 1
+        heading:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        buttonLabel:
+          type: string
+        buttonHref:
+          type: string
+        mainImage:
+          type: ["string", "null"]
+        mainImageAltText:
+          type: string
+        secondaryImage:
+          type: ["string", "null"]
+        secondaryImageAltText:
+          type: string
+        thirdImage:
+          type: ["string", "null"]
+        thirdImageAltText:
+          type: string
+        isVisible:
+          type: boolean
+        sortOrder:
+          type: integer
+        timelineItems:
+          type: array
+          minItems: 1
+          maxItems: 12
+          items:
+            $ref: "#/components/schemas/AboutTimelineItemInput"
+      required:
+        - eyebrow
+        - heading
+        - description
+        - buttonLabel
+        - buttonHref
+        - mainImage
+        - mainImageAltText
+        - secondaryImage
+        - secondaryImageAltText
+        - thirdImage
+        - thirdImageAltText
+        - isVisible
+        - sortOrder
+        - timelineItems
+    AboutChairmanMessage:
+      type: object
+      properties:
+        id:
+          type: string
+        eyebrow:
+          type: string
+        heading:
+          type: string
+        message:
+          type: string
+        signatureName:
+          type: string
+        role:
+          type: string
+        portraitImage:
+          type: ["string", "null"]
+        portraitAltText:
+          type: string
+        buttonLabel:
+          type: string
+        buttonHref:
+          type: string
+        buttonVisible:
+          type: boolean
+        isVisible:
+          type: boolean
+        sortOrder:
+          type: integer
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - eyebrow
+        - heading
+        - message
+        - signatureName
+        - role
+        - portraitImage
+        - portraitAltText
+        - buttonLabel
+        - buttonHref
+        - buttonVisible
+        - isVisible
+        - sortOrder
+        - updatedAt
+    AboutChairmanMessageInput:
+      type: object
+      properties:
+        eyebrow:
+          type: string
+          minLength: 1
+        heading:
+          type: string
+          minLength: 1
+        message:
+          type: string
+        signatureName:
+          type: string
+        role:
+          type: string
+        portraitImage:
+          type: ["string", "null"]
+        portraitAltText:
+          type: string
+        buttonLabel:
+          type: string
+        buttonHref:
+          type: string
+        buttonVisible:
+          type: boolean
+        isVisible:
+          type: boolean
+        sortOrder:
+          type: integer
+      required:
+        - eyebrow
+        - heading
+        - message
+        - signatureName
+        - role
+        - portraitImage
+        - portraitAltText
+        - buttonLabel
+        - buttonHref
+        - buttonVisible
         - isVisible
         - sortOrder
     ImageUploadInput:

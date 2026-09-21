@@ -1,7 +1,19 @@
 import { Router, type IRouter } from "express";
 import {
+  GetAboutChairmanMessageResponse,
+  GetAboutHeroResponse,
+  GetAboutStoryResponse,
+  GetAdminAboutChairmanMessageResponse,
+  GetAdminAboutHeroResponse,
+  GetAdminAboutStoryResponse,
   GetAdminHomepageAboutPreviewResponse,
   GetHomepageAboutPreviewResponse,
+  UpdateAboutChairmanMessageBody,
+  UpdateAboutChairmanMessageResponse,
+  UpdateAboutHeroBody,
+  UpdateAboutHeroResponse,
+  UpdateAboutStoryBody,
+  UpdateAboutStoryResponse,
   UpdateHomepageHeroBody,
   UpdateHomepageAboutPreviewBody,
   UpdateHomepageAboutPreviewResponse,
@@ -11,6 +23,20 @@ import { prisma } from "../lib/prisma";
 import { requireAdmin } from "../middlewares/auth";
 
 const router: IRouter = Router();
+
+async function readAboutHero() {
+  return prisma.aboutHero.findUnique({
+    where: { id: "singleton" },
+    include: { stats: { orderBy: { displayOrder: "asc" } } },
+  });
+}
+
+async function readAboutStory() {
+  return prisma.aboutStory.findUnique({
+    where: { id: "singleton" },
+    include: { timelineItems: { orderBy: { displayOrder: "asc" } } },
+  });
+}
 
 router.get("/site-settings", async (req, res) => {
   try {
@@ -54,6 +80,48 @@ router.get("/homepage-about-preview", async (req, res) => {
   } catch (error) {
     req.log.error({ err: error }, "Unable to read homepage About Preview");
     res.status(500).json({ error: "Unable to load homepage About Preview." });
+  }
+});
+
+router.get("/about-hero", async (req, res) => {
+  try {
+    const aboutHero = await readAboutHero();
+    if (!aboutHero || !aboutHero.isVisible) {
+      res.status(404).json({ error: "About hero is not available." });
+      return;
+    }
+    res.json(GetAboutHeroResponse.parse(aboutHero));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read About hero");
+    res.status(500).json({ error: "Unable to load About hero." });
+  }
+});
+
+router.get("/about-story", async (req, res) => {
+  try {
+    const aboutStory = await readAboutStory();
+    if (!aboutStory || !aboutStory.isVisible) {
+      res.status(404).json({ error: "About story is not available." });
+      return;
+    }
+    res.json(GetAboutStoryResponse.parse(aboutStory));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read About story");
+    res.status(500).json({ error: "Unable to load About story." });
+  }
+});
+
+router.get("/about-chairman-message", async (req, res) => {
+  try {
+    const message = await prisma.aboutChairmanMessage.findUnique({ where: { id: "singleton" } });
+    if (!message || !message.isVisible) {
+      res.status(404).json({ error: "Chairman message is not available." });
+      return;
+    }
+    res.json(GetAboutChairmanMessageResponse.parse(message));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read About chairman message");
+    res.status(500).json({ error: "Unable to load About chairman message." });
   }
 });
 
@@ -138,6 +206,121 @@ router.put("/admin/homepage-about-preview", requireAdmin, async (req, res) => {
   } catch (error) {
     req.log.error({ err: error }, "Unable to update homepage About Preview");
     res.status(500).json({ error: "Unable to save homepage About Preview." });
+  }
+});
+
+router.get("/admin/about-hero", requireAdmin, async (req, res) => {
+  try {
+    const aboutHero = await readAboutHero();
+    if (!aboutHero) {
+      res.status(404).json({ error: "About hero is not available." });
+      return;
+    }
+    res.json(GetAdminAboutHeroResponse.parse(aboutHero));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read admin About hero");
+    res.status(500).json({ error: "Unable to load About hero." });
+  }
+});
+
+router.put("/admin/about-hero", requireAdmin, async (req, res) => {
+  const parsed = UpdateAboutHeroBody.safeParse(req.body);
+  if (!parsed.success || new Set(parsed.data?.stats.map((stat) => stat.displayOrder)).size !== 4) {
+    res.status(400).json({ error: "Check the About hero content and use four unique statistics." });
+    return;
+  }
+  try {
+    const { stats, ...heroData } = parsed.data;
+    await prisma.$transaction(async (tx) => {
+      await tx.aboutHero.upsert({
+        where: { id: "singleton" },
+        update: heroData,
+        create: { id: "singleton", ...heroData },
+      });
+      await tx.aboutHeroStat.deleteMany({ where: { aboutHeroId: "singleton" } });
+      await tx.aboutHeroStat.createMany({
+        data: stats.map((stat) => ({ ...stat, aboutHeroId: "singleton" })),
+      });
+    });
+    const aboutHero = await readAboutHero();
+    res.json(UpdateAboutHeroResponse.parse(aboutHero));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to update About hero");
+    res.status(500).json({ error: "Unable to save About hero." });
+  }
+});
+
+router.get("/admin/about-story", requireAdmin, async (req, res) => {
+  try {
+    const aboutStory = await readAboutStory();
+    if (!aboutStory) {
+      res.status(404).json({ error: "About story is not available." });
+      return;
+    }
+    res.json(GetAdminAboutStoryResponse.parse(aboutStory));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read admin About story");
+    res.status(500).json({ error: "Unable to load About story." });
+  }
+});
+
+router.put("/admin/about-story", requireAdmin, async (req, res) => {
+  const parsed = UpdateAboutStoryBody.safeParse(req.body);
+  if (!parsed.success || new Set(parsed.data?.timelineItems.map((item) => item.displayOrder)).size !== parsed.data?.timelineItems.length) {
+    res.status(400).json({ error: "Check the About story content and use unique timeline orders." });
+    return;
+  }
+  try {
+    const { timelineItems, ...storyData } = parsed.data;
+    await prisma.$transaction(async (tx) => {
+      await tx.aboutStory.upsert({
+        where: { id: "singleton" },
+        update: storyData,
+        create: { id: "singleton", ...storyData },
+      });
+      await tx.aboutTimelineItem.deleteMany({ where: { aboutStoryId: "singleton" } });
+      await tx.aboutTimelineItem.createMany({
+        data: timelineItems.map((item) => ({ ...item, aboutStoryId: "singleton" })),
+      });
+    });
+    const aboutStory = await readAboutStory();
+    res.json(UpdateAboutStoryResponse.parse(aboutStory));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to update About story");
+    res.status(500).json({ error: "Unable to save About story." });
+  }
+});
+
+router.get("/admin/about-chairman-message", requireAdmin, async (req, res) => {
+  try {
+    const message = await prisma.aboutChairmanMessage.findUnique({ where: { id: "singleton" } });
+    if (!message) {
+      res.status(404).json({ error: "Chairman message is not available." });
+      return;
+    }
+    res.json(GetAdminAboutChairmanMessageResponse.parse(message));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read admin About chairman message");
+    res.status(500).json({ error: "Unable to load About chairman message." });
+  }
+});
+
+router.put("/admin/about-chairman-message", requireAdmin, async (req, res) => {
+  const parsed = UpdateAboutChairmanMessageBody.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({ error: "Check the chairman message content and try again." });
+    return;
+  }
+  try {
+    const message = await prisma.aboutChairmanMessage.upsert({
+      where: { id: "singleton" },
+      update: parsed.data,
+      create: { id: "singleton", ...parsed.data },
+    });
+    res.json(UpdateAboutChairmanMessageResponse.parse(message));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to update About chairman message");
+    res.status(500).json({ error: "Unable to save About chairman message." });
   }
 });
 
