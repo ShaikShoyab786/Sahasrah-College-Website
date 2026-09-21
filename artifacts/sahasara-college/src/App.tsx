@@ -10,6 +10,7 @@ import AdminGuard from '@/pages/admin-guard';
 import AdminOverview from '@/pages/admin-overview';
 import AdminSiteSettings from '@/pages/admin-site-settings';
 import AdminHomepageHero from '@/pages/admin-homepage-hero';
+import AdminHomepageAboutPreview from '@/pages/admin-homepage-about-preview';
 import {
   Route,
   Switch,
@@ -27,6 +28,12 @@ function Router() {
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/admin/login" component={AdminLogin} />
+        <Route path="/admin/pages/home/hero">
+          <AdminGuard><AdminHomepageHero /></AdminGuard>
+        </Route>
+        <Route path="/admin/pages/home/about-preview">
+          <AdminGuard><AdminHomepageAboutPreview /></AdminGuard>
+        </Route>
         <Route path="/admin">
           <AdminGuard><AdminOverview /></AdminGuard>
         </Route>

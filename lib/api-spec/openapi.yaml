@@ -188,6 +188,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /admin/homepage-about-preview:
     get:
       operationId: getAdminHomepageAboutPreview
@@ -235,12 +241,6 @@ paths:
                 $ref: "#/components/schemas/HomepageAboutPreview"
         "400":
           description: Validation error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "401":
-          description: Not authenticated
           content:
             application/json:
               schema:

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'wouter';
-import { LayoutDashboard, LogOut, Menu, PanelsTopLeft, Settings2, X } from 'lucide-react';
+import { ChevronDown, FileText, Home, LayoutDashboard, LogOut, Menu, PanelsTopLeft, Settings2, X } from 'lucide-react';
 import { useLogoutAdmin, getGetAdminSessionQueryKey } from '@workspace/api-client-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { SiteMark } from '@/components/site-mark';
@@ -15,8 +15,9 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
   const nav = [
     { href: '/admin', label: 'Overview', icon: LayoutDashboard },
     { href: '/admin/site-settings', label: 'Site identity', icon: Settings2 },
-    { href: '/admin/homepage-hero', label: 'Homepage hero', icon: PanelsTopLeft },
   ];
+  const heroActive = location.startsWith('/admin/pages/home/hero') || location.startsWith('/admin/homepage-hero');
+  const aboutActive = location.startsWith('/admin/pages/home/about-preview');
   const signOut = () => logout.mutate(undefined, { onSuccess: () => { queryClient.invalidateQueries({ queryKey: getGetAdminSessionQueryKey() }); setLocation('/admin/login'); } });
 
   return (
@@ -32,6 +33,17 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
             const active = href === '/admin' ? location === href : location.startsWith(href);
             return <Link key={href} href={href} onClick={() => setOpen(false)} className={`flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold transition ${active ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid={`link-admin-${label.toLowerCase().replaceAll(' ', '-')}`}><Icon size={18} strokeWidth={1.8} /><span>{label}</span></Link>;
           })}
+          <div className="mt-5">
+            <div className="flex items-center justify-between px-3 text-xs font-bold uppercase tracking-[.16em] text-[hsl(var(--sidebar-foreground)/.45)]">
+              <span className="flex items-center gap-2"><FileText size={14} /> Pages</span>
+              <ChevronDown size={15} />
+            </div>
+            <div className="mt-2 rounded-2xl bg-[hsl(var(--sidebar-accent)/.55)] p-2">
+              <div className="flex items-center gap-2 px-2 py-2 text-xs font-bold text-[hsl(var(--sidebar-foreground)/.65)]"><Home size={15} /> Home</div>
+              <Link href="/admin/pages/home/hero" onClick={() => setOpen(false)} className={`flex items-center gap-3 rounded-xl px-3 py-2.5 pl-9 text-sm font-semibold transition ${heroActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-home-hero"><PanelsTopLeft size={16} /><span>Hero</span></Link>
+              <Link href="/admin/pages/home/about-preview" onClick={() => setOpen(false)} className={`mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5 pl-9 text-sm font-semibold transition ${aboutActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-home-about-preview"><PanelsTopLeft size={16} /><span>About Preview</span></Link>
+            </div>
+          </div>
         </nav>
         <div className="mt-auto border-t border-[hsl(var(--sidebar-border))] pt-4">
           <div className="mb-4 rounded-xl bg-[hsl(var(--sidebar-accent))] p-3">

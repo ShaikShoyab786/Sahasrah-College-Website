@@ -1,6 +1,7 @@
 import { ArrowRight, Mail, MapPin, Phone, Quote } from 'lucide-react';
-import { useGetHomepageHero, useGetSiteSettings } from '@workspace/api-client-react';
+import { useGetHomepageAboutPreview, useGetHomepageHero, useGetSiteSettings } from '@workspace/api-client-react';
 import { HeroCarousel } from '@/components/hero-carousel';
+import { AboutPreview } from '@/components/about-preview';
 import { SiteMark } from '@/components/site-mark';
 
 const fallbackSettings = {
@@ -66,6 +67,7 @@ function HomeSkeleton() {
 export default function Home() {
   const settingsQuery = useGetSiteSettings();
   const heroQuery = useGetHomepageHero();
+  const aboutPreviewQuery = useGetHomepageAboutPreview();
   if (settingsQuery.isLoading || heroQuery.isLoading) return <HomeSkeleton />;
   const settings = settingsQuery.data ?? fallbackSettings;
   const slides = heroQuery.data?.length === 3 ? heroQuery.data : fallbackHeroSlides;
@@ -88,6 +90,7 @@ export default function Home() {
 
       <main>
         <HeroCarousel slides={slides} />
+        {aboutPreviewQuery.data?.isVisible && <AboutPreview content={aboutPreviewQuery.data} />}
 
         <section id="why-sahasara" className="mx-auto max-w-7xl px-6 py-24 lg:px-10 lg:py-32">
           <div className="grid gap-12 lg:grid-cols-[.75fr_1.25fr]">
