@@ -1,0 +1,159 @@
+Upgrade the existing Sahasara Junior College homepage hero into a full-screen three-slide image carousel.
+
+Do not modify the working tagline connection.
+
+Do not build navigation management yet.
+
+Do not build other homepage sections yet.
+
+## Hero requirements
+
+The public homepage hero must:
+
+1. Use full-screen, full-bleed background images.
+2. Have exactly three hero slides initially.
+3. Allow each slide to have its own content.
+4. Automatically change slides every few seconds.
+5. Use a smooth and professional transition such as a crossfade.
+6. Keep the text readable over every image using a responsive dark overlay or gradient.
+7. Work correctly on desktop, tablet, and mobile.
+8. Preserve the existing Sahasara visual style and branding.
+9. Keep the college name and saved tagline connected to the existing Site Identity system.
+
+Each slide must support:
+
+- Image
+- Image alt text
+- Eyebrow text
+- Main heading
+- Highlighted heading text
+- Description
+- Primary button label
+- Primary button URL
+- Secondary button label
+- Secondary button URL
+
+## Admin dashboard requirements
+
+Update the existing Homepage Hero admin page so the administrator can manage all three slides.
+
+The admin interface must:
+
+- Display Slide 1, Slide 2, and Slide 3 clearly.
+- Allow editing each slide independently.
+- Allow uploading or replacing the image for each slide.
+- Allow editing all text fields for each slide.
+- Allow editing both button labels and URLs.
+- Show a preview of each uploaded image.
+- Validate required fields.
+- Preserve the existing admin authentication protection.
+- Save all three slides reliably.
+- Load the saved values again after refreshing the admin page.
+
+Do not create an unlimited slide builder yet. Keep this phase limited to three slides.
+
+## Backend and database requirements
+
+Inspect the current homepage hero data model before changing it.
+
+If the current implementation supports only one hero record, update it safely to support three independent hero slides.
+
+Use a clear structure such as:
+
+- slide number or display order
+- image URL
+- alt text
+- eyebrow
+- heading
+- highlighted heading
+- description
+- primary button label
+- primary button URL
+- secondary button label
+- secondary button URL
+
+Do not store binary image data directly in PostgreSQL.
+
+Keep uploaded image references in the database and serve the uploaded files through the existing upload system.
+
+Preserve any existing hero data by migrating it into Slide 1 instead of deleting it.
+
+## Public homepage behavior
+
+The public homepage must:
+
+- Read the three slides from the public API.
+- Display the saved content from the database.
+- Start with Slide 1.
+- Automatically rotate through Slide 1, Slide 2, and Slide 3.
+- Provide accessible previous and next controls.
+- Display slide indicators such as dots.
+- Allow the user to select a slide manually.
+- Pause or avoid aggressive movement when the user interacts with the controls.
+- Respect reduced-motion preferences where possible.
+- Use a safe fallback hero when no valid image is available.
+
+The hero image must fill the entire hero background area using a responsive cover behavior. Do not display the image as a small portrait card or separate side panel.
+
+## Data and fallback rules
+
+Do not hardcode the slide content in the public React component.
+
+Use database-backed slide content.
+
+Use safe placeholder values only when the database does not contain valid data.
+
+Seed exactly three initial slides with professional placeholder content suitable for Sahasara Junior College.
+
+Do not use KVR-specific content.
+
+Do not remove or break the existing Site Identity settings.
+
+## Scope restrictions
+
+Do not implement:
+
+- Navigation management
+- Courses
+- Faculty
+- Results
+- Gallery
+- Testimonials
+- FAQs
+- Other homepage sections
+- Unlimited dynamic sections
+- Draft and publishing workflows
+- Revision history
+
+Navigation will be added gradually later as each public section is implemented.
+
+## Verification requirements
+
+Verify the following:
+
+1. The admin can open all three hero slides.
+2. The admin can edit the text of each slide.
+3. The admin can upload or replace each slide image.
+4. Saved values remain after refreshing the admin page.
+5. The public homepage loads all three slides.
+6. The hero fills the full screen responsively.
+7. The carousel automatically changes slides.
+8. Manual controls work.
+9. Each slide displays its own text.
+10. A public refresh still shows the saved values.
+11. The saved Site Identity tagline still works.
+12. Unauthenticated users cannot update hero slides.
+13. The frontend build passes.
+14. The backend starts successfully.
+
+At the end, report:
+
+- The files changed.
+- The final database structure.
+- The API endpoints used.
+- How the three slides are managed in the admin dashboard.
+- How automatic rotation works.
+- Verification results.
+- Any remaining limitations.
+
+Do not start building the next homepage section after completing this task.
