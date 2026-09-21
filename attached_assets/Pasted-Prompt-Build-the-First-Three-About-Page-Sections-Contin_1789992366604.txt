@@ -1,0 +1,420 @@
+Prompt: Build the First Three About Page Sections
+Continue working on the existing Sahasara Junior College project.
+
+The attached screenshots show the desired visual direction for the first three sections of the About page:
+
+About page hero/introduction
+Our Story with timeline
+Chairman’s Message
+Use the screenshots only as visual inspiration. Do not copy KVR Junior College content, branding, source code, logos, people, or images.
+
+Replace all KVR-specific content with Sahasara Junior College content and editable placeholders.
+
+Goal
+Create the public /about page with these three sections in order:
+
+About Page
+├── About Hero / Introduction
+├── Our Story
+└── Chairman’s Message
+
+Also gradually extend the admin dashboard:
+
+Pages
+├── Home
+│   ├── Hero
+│   ├── About Preview
+│   └── Existing Home sections
+│
+└── About
+    ├── About Hero
+    ├── Our Story
+    └── Chairman’s Message
+
+Do not implement the remaining About page sections yet.
+
+Keep the existing Home grouping and accordion behavior working correctly.
+
+1. Public About page route and navigation
+Create or complete the public route:
+
+/about
+
+The existing homepage About Preview button should continue linking to /about.
+
+The public navigation should show an About link that:
+
+Navigates to /about
+Uses the existing site header
+Shows the active state while viewing the About page
+Uses the current Site Identity colors and branding
+Does not contain any KVR-specific branding
+If old Why Sahasara or Pathways navigation items still exist, do not add them back.
+
+2. Section 1: About Hero / Introduction
+Create the first About page section based on the first attached screenshot.
+
+Use a polished two-column layout.
+
+Desktop layout
+Left side
+Include:
+
+Styled eyebrow badge
+Large headline
+Introductory paragraph
+Four statistics cards
+Primary call-to-action button
+Secondary call-to-action button
+The eyebrow must use the same improved styling approach as the homepage About Preview. It should not appear as plain text.
+
+Suggested editable placeholder content:
+
+Eyebrow:
+ABOUT SAHASARA
+Heading:
+Growing with Purpose,
+Learning for Tomorrow.
+Description:
+Sahasara Junior College is committed to helping students build strong academic foundations through focused learning, personal guidance, and a supportive environment.
+
+Do not treat these as final client content. All values must be editable in the admin dashboard.
+
+Statistics
+Support four editable statistics:
+
+30+
+Years of Excellence
+5000+
+Students Guided
+100+
+Academic Achievements
+500+
+Successful Admissions
+
+These are placeholder values only and must be easy to replace.
+
+Each statistic should support:
+
+Value
+Label
+Optional icon
+Display order
+Visibility
+Buttons
+Support two editable buttons:
+
+Apply for Admission
+Schedule a Campus Visit
+
+Each button should support:
+
+Label
+Link
+Visibility
+Use safe placeholder links if real destinations are not available.
+
+Right side
+Include:
+
+Main classroom or campus image
+Rounded image treatment
+Optional secondary image/card composition if it fits the existing design
+Floating admission information card
+The floating card should support editable fields such as:
+
+Small label
+Academic year
+Availability text
+Supporting text
+Optional small student/avatar images
+Example placeholder content:
+
+Admissions Open
+2026–27
+Limited Seats Available
+Join a growing community of successful students
+
+Do not use KVR images or the person shown in the screenshot.
+
+Reuse the existing image upload or image URL handling system.
+
+The layout must:
+
+Be responsive
+Avoid horizontal overflow
+Stack cleanly on mobile
+Preserve readable text sizes
+Use accessible image alt text
+Keep the floating card usable on small screens
+3. Section 2: Our Story
+Create the second About page section based on the second attached screenshot.
+
+Use a three-part layout:
+
+Left: Text content
+Center: Three-image collage
+Right: Vertical timeline
+
+Left content
+Include:
+
+Styled eyebrow
+Section heading
+Story description
+CTA button
+Suggested placeholder content:
+
+Eyebrow:
+OUR STORY
+Heading:
+A Journey Built on
+Learning and Purpose
+Description:
+Sahasara Junior College continues to grow through a commitment to academic discipline, student guidance, and a learning environment that prepares students for the next stage of their journey.
+Button:
+Explore Our Journey
+
+All content must be editable.
+
+Image collage
+Support three separate editable image slots:
+
+Main story image
+Secondary story image
+Third story image
+Display them as an overlapping collage on desktop while keeping them readable and well-spaced.
+
+On mobile, the images should stack or use a simplified collage layout without clipping important content.
+
+Each image must support:
+
+Image replacement
+Image URL or existing upload mechanism
+Alt text
+Visibility
+Use placeholder education-related images until the client provides real assets.
+
+Timeline
+Create an editable vertical timeline with repeatable entries.
+
+Each timeline item should support:
+
+Year or period
+Title
+Description
+Display order
+Visibility
+Use four neutral placeholder entries, for example:
+
+20XX
+The Beginning
+Sahasara Junior College begins its journey with a commitment to focused learning.
+20XX
+Growing Horizons
+The college expands its academic guidance and student support initiatives.
+20XX
+A Stronger Community
+More students and families become part of the Sahasara learning community.
+Today
+Looking Ahead
+Sahasara continues preparing students for higher education and future opportunities.
+
+These must be clearly treated as editable placeholder content, not historical claims.
+
+The timeline should include:
+
+A visible vertical connector line
+Timeline markers
+Responsive behavior
+No clipped content on mobile
+Accessible structure for screen readers
+4. Section 3: Chairman’s Message
+Create the third About page section based on the third attached screenshot.
+
+Use a split layout:
+
+Left: Chairman portrait
+Right: Message content
+
+Image side
+Include:
+
+Large portrait image
+Rounded corners
+Subtle offset accent background or border
+Responsive image sizing
+Editable image alt text
+Use a neutral placeholder portrait until the client supplies the actual chairman image.
+
+Do not use the chairman image from the reference screenshot.
+
+Content side
+Include:
+
+Decorative quote mark or subtle visual accent
+Styled eyebrow
+Large heading
+Message body
+Signature name
+Role/title
+Optional button
+Suggested placeholder content:
+
+Eyebrow:
+CHAIRMAN’S MESSAGE
+Heading:
+Education is the foundation
+of every meaningful future.
+Message:
+At Sahasara Junior College, we believe every student deserves the guidance, encouragement, and learning environment needed to grow with confidence. Our responsibility is to support every learner with purpose and care.
+Signature:
+Sahasara Leadership
+Role:
+Chairman
+
+All values must be editable.
+
+Optional button:
+
+Read the Full Message
+
+If the full message page does not exist yet, either hide this button or link it safely without creating a fake page.
+
+5. Admin dashboard changes
+Add the About page under the existing grouped sidebar:
+
+Pages
+  Home
+  About
+
+When About is expanded, show:
+
+About
+  About Hero
+  Our Story
+  Chairman’s Message
+
+The current navigation must behave as follows:
+
+Pages is collapsed by default.
+Clicking Pages opens and closes it.
+Clicking About opens and closes its child sections.
+Clicking a leaf item navigates to its editor.
+The active route automatically expands its parent items so it remains visible.
+The selected leaf item is highlighted.
+The arrow state must correctly reflect open or closed state.
+The existing Home accordion behavior must not regress.
+Do not create separate top-level sidebar items such as:
+
+About Hero
+Our Story
+Chairman’s Message
+
+They must remain grouped under:
+
+Pages → About
+
+6. Admin editors
+Create separate admin editors for:
+
+Pages → About → About Hero
+Pages → About → Our Story
+Pages → About → Chairman’s Message
+
+Each editor should provide:
+
+Existing saved values
+Editable fields
+Image replacement using the current project pattern
+Image alt text
+Visibility toggle
+Save button
+Loading state
+Success state
+Validation errors
+API error handling
+Do not combine all three sections into one very large form.
+
+Each section should be independently editable and saved.
+
+7. Backend and database
+Create separate content records or models for the three sections, following the existing project conventions.
+
+Suggested structure:
+
+AboutHero
+AboutStory
+AboutTimelineItem
+AboutChairmanMessage
+
+The Story section may store timeline entries using either:
+
+A separate timeline table, preferably if the existing architecture supports it, or
+A validated JSON array if that matches the current project patterns
+Do not store the entire About page as one unstructured object.
+
+The backend must provide:
+
+Public read access for the About page
+Protected admin read access
+Protected admin update access
+Validation for all editable fields
+Proper error responses
+Visibility handling
+Only authenticated admins may update About content.
+
+The public About page must reflect saved admin content after refresh.
+
+8. Design requirements
+Use the attached screenshots as layout inspiration:
+
+Clean white or soft neutral background
+Existing Sahasara theme colors
+Dark blue or primary brand accents where appropriate
+Refined eyebrow badges
+Strong editorial headings
+Rounded image corners
+Soft shadows
+Clear spacing between sections
+Professional academic tone
+Responsive desktop, tablet, and mobile layouts
+Do not reproduce the KVR branding or exact text.
+
+Use the existing typography and design system where available.
+
+9. Verification
+Verify the complete flow:
+
+/about loads successfully.
+The three sections appear in the correct order.
+The About navigation link works.
+The About active state works.
+About Hero content can be edited and saved.
+Our Story content can be edited and saved.
+Timeline entries can be edited and ordered.
+Chairman’s Message content can be edited and saved.
+Images can be replaced using the existing image mechanism.
+Visibility toggles work for each section.
+Public content updates after admin changes.
+Unauthenticated update requests return 401.
+Pages accordion still opens and closes.
+About accordion opens and closes.
+Home navigation still works.
+Existing hero carousel still works.
+Site Identity and tagline functionality still work.
+No KVR-specific content or assets remain in the new implementation.
+Desktop and mobile layouts do not overflow.
+Type checking passes.
+Production frontend build passes.
+Backend starts successfully.
+At the end, report:
+
+Public About page changes
+Admin navigation changes
+New editor screens
+Database and API changes
+Image handling changes
+Verification results
+Any limitations or placeholder content remaining
+Do not implement the remaining About page sections in this task. Stop after these first three sections are complete.
