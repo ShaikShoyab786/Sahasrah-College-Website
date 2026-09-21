@@ -24,14 +24,15 @@ router.get("/site-settings", async (req, res) => {
 
 router.get("/homepage-hero", async (req, res) => {
   try {
-    const hero = await prisma.homepageHero.findFirst({
-      where: { id: "singleton", isPublished: true },
+    const slides = await prisma.homepageHero.findMany({
+      orderBy: { displayOrder: "asc" },
+      take: 3,
     });
-    if (!hero) {
+    if (slides.length !== 3) {
       res.status(404).json({ error: "Homepage hero is not available." });
       return;
     }
-    res.json(hero);
+    res.json(slides);
   } catch (error) {
     req.log.error({ err: error }, "Unable to read homepage hero");
     res.status(500).json({ error: "Unable to load homepage hero." });
@@ -63,13 +64,26 @@ router.put("/admin/homepage-hero", requireAdmin, async (req, res) => {
     res.status(400).json({ error: "Check the homepage hero content and try again." });
     return;
   }
+  const displayOrders = parsed.data.map((slide) => slide.displayOrder);
+  if (
+    parsed.data.length !== 3 ||
+    new Set(displayOrders).size !== 3 ||
+    ![1, 2, 3].every((order) => displayOrders.includes(order))
+  ) {
+    res.status(400).json({ error: "Exactly three hero slides are required." });
+    return;
+  }
   try {
-    const hero = await prisma.homepageHero.upsert({
-      where: { id: "singleton" },
-      update: parsed.data,
-      create: { id: "singleton", ...parsed.data },
-    });
-    res.json(hero);
+    const slides = await prisma.$transaction(
+      parsed.data.map((slide) =>
+        prisma.homepageHero.upsert({
+          where: { displayOrder: slide.displayOrder },
+          update: slide,
+          create: { ...slide, isPublished: true },
+        }),
+      ),
+    );
+    res.json(slides.sort((a, b) => a.displayOrder - b.displayOrder));
   } catch (error) {
     req.log.error({ err: error }, "Unable to update homepage hero");
     res.status(500).json({ error: "Unable to save homepage hero." });

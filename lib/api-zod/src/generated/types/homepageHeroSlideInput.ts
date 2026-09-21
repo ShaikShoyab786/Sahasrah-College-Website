@@ -6,7 +6,12 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export interface HomepageHeroInput {
+export interface HomepageHeroSlideInput {
+  /**
+     * @minimum 1
+     * @maximum 3
+     */
+  displayOrder: number;
   eyebrowText: string;
   /** @minLength 1 */
   heading: string;
@@ -18,5 +23,6 @@ export interface HomepageHeroInput {
   secondaryButtonUrl: string;
   /** @nullable */
   heroImageUrl: string | null;
-  isPublished: boolean;
+  /** @minLength 1 */
+  heroImageAltText: string;
 }

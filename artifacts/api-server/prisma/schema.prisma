@@ -42,7 +42,8 @@ model SiteSettings {
 }
 
 model HomepageHero {
-  id                     String  @id @default("singleton")
+  id                     String  @id @default(cuid())
+  displayOrder           Int     @unique @default(1)
   eyebrowText            String
   heading                String
   highlightedHeadingText String
@@ -52,6 +53,7 @@ model HomepageHero {
   secondaryButtonLabel   String
   secondaryButtonUrl     String
   heroImageUrl           String?
+  heroImageAltText       String  @default("Sahasara Junior College students learning together")
   isPublished             Boolean @default(true)
   updatedAt              DateTime @updatedAt
 }

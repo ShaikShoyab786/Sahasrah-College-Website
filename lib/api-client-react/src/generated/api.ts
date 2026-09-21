@@ -23,8 +23,8 @@ import type {
   AuthSession,
   ErrorResponse,
   HealthStatus,
-  HomepageHero,
-  HomepageHeroInput,
+  HomepageHeroSlides,
+  HomepageHeroSlidesInput,
   ImageUploadInput,
   ImageUploadResult,
   LoginInput,
@@ -465,9 +465,9 @@ export const getGetHomepageHeroUrl = () => {
 /**
  * @summary Read the published homepage hero
  */
-export const getHomepageHero = async ( options?: Parameters<typeof customFetch>[1]): Promise<HomepageHero> => {
+export const getHomepageHero = async ( options?: Parameters<typeof customFetch>[1]): Promise<HomepageHeroSlides> => {
 
-  return customFetch<HomepageHero>(getGetHomepageHeroUrl(),
+  return customFetch<HomepageHeroSlides>(getGetHomepageHeroUrl(),
   {
     ...options,
     method: 'GET'
@@ -630,7 +630,7 @@ export const getUpdateHomepageHeroUrl = () => {
 /**
  * @summary Update the homepage hero
  */
-export const updateHomepageHero = async (homepageHeroInput: HomepageHeroInput, options?: Parameters<typeof customFetch>[1]): Promise<HomepageHero> => {
+export const updateHomepageHero = async (homepageHeroSlidesInput: HomepageHeroSlidesInput, options?: Parameters<typeof customFetch>[1]): Promise<HomepageHeroSlides> => {
 
     const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
     if (!h) return {};
@@ -646,12 +646,12 @@ export const updateHomepageHero = async (homepageHeroInput: HomepageHeroInput, o
     }
     return headers;
   };
-return customFetch<HomepageHero>(getUpdateHomepageHeroUrl(),
+return customFetch<HomepageHeroSlides>(getUpdateHomepageHeroUrl(),
   {
     ...options,
     method: 'PUT',
     headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
-    body: JSON.stringify(homepageHeroInput)
+    body: JSON.stringify(homepageHeroSlidesInput)
   }
 );}
 
@@ -689,9 +689,9 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type UpdateHomepageHeroMutationResult = NonNullable<Awaited<ReturnType<typeof updateHomepageHero>>>
-    export type UpdateHomepageHeroMutationBody = BodyType<HomepageHeroInput>
+    export type UpdateHomepageHeroMutationBody = BodyType<HomepageHeroSlidesInput>
     export type UpdateHomepageHeroMutationError = ErrorType<ErrorResponse>
-    export type UpdateHomepageHeroMutationVariables = {data: BodyType<HomepageHeroInput>}
+    export type UpdateHomepageHeroMutationVariables = {data: BodyType<HomepageHeroSlidesInput>}
 
     /**
  * @summary Update the homepage hero

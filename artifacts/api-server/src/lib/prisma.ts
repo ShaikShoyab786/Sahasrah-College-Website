@@ -22,11 +22,9 @@ export async function initializeDatabase() {
     },
   });
 
-  await prisma.homepageHero.upsert({
-    where: { id: "singleton" },
-    update: {},
-    create: {
-      id: "singleton",
+  const heroSlides = [
+    {
+      displayOrder: 1,
       eyebrowText: "A focused start to a bright future",
       heading: "Learn with purpose.",
       highlightedHeadingText: "Grow with confidence.",
@@ -35,11 +33,47 @@ export async function initializeDatabase() {
       primaryButtonLabel: "Explore admissions",
       primaryButtonUrl: "#contact",
       secondaryButtonLabel: "Discover our approach",
-      secondaryButtonUrl: "#about",
+      secondaryButtonUrl: "#why-sahasara",
       heroImageUrl: null,
-      isPublished: true,
+      heroImageAltText: "Sahasara students learning together",
     },
-  });
+    {
+      displayOrder: 2,
+      eyebrowText: "Make room for possibility",
+      heading: "Ask better",
+      highlightedHeadingText: "questions.",
+      description:
+        "At Sahasara, curiosity is not a detour from learning. It is where confidence, creativity, and clarity begin.",
+      primaryButtonLabel: "See how we learn",
+      primaryButtonUrl: "#why-sahasara",
+      secondaryButtonLabel: "Meet Sahasara",
+      secondaryButtonUrl: "#contact",
+      heroImageUrl: null,
+      heroImageAltText: "Students collaborating in a Sahasara classroom",
+    },
+    {
+      displayOrder: 3,
+      eyebrowText: "Your next chapter starts here",
+      heading: "Find your",
+      highlightedHeadingText: "direction.",
+      description:
+        "Choose a path that fits your strengths, then give yourself the space to discover what it can become.",
+      primaryButtonLabel: "Start a conversation",
+      primaryButtonUrl: "#contact",
+      secondaryButtonLabel: "Explore pathways",
+      secondaryButtonUrl: "#pathways",
+      heroImageUrl: null,
+      heroImageAltText: "Sahasara students looking toward their future",
+    },
+  ];
+
+  for (const slide of heroSlides) {
+    await prisma.homepageHero.upsert({
+      where: { displayOrder: slide.displayOrder },
+      update: {},
+      create: { ...slide, isPublished: true },
+    });
+  }
 
   const email = process.env.INITIAL_ADMIN_EMAIL?.trim().toLowerCase();
   const password = process.env.INITIAL_ADMIN_PASSWORD;

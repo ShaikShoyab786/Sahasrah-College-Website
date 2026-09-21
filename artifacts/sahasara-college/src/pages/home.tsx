@@ -1,5 +1,6 @@
-import { ArrowRight, Check, Mail, MapPin, Phone, Quote, Sparkles } from 'lucide-react';
+import { ArrowRight, Mail, MapPin, Phone, Quote } from 'lucide-react';
 import { useGetHomepageHero, useGetSiteSettings } from '@workspace/api-client-react';
+import { HeroCarousel } from '@/components/hero-carousel';
 import { SiteMark } from '@/components/site-mark';
 
 const fallbackSettings = {
@@ -13,18 +14,50 @@ const fallbackSettings = {
   accentColor: '#D6AD59',
   footerText: 'A public junior college for curious minds and purposeful lives.',
 };
-const fallbackHero = {
-  eyebrowText: 'Admissions open for 2025–26',
-  heading: 'Find your direction.',
-  highlightedHeadingText: 'Make it meaningful.',
-  description: 'Sahasara is a public junior college where strong foundations, generous questions, and the confidence to try again come together.',
-  primaryButtonLabel: 'Start a conversation',
-  primaryButtonUrl: '#contact',
-  secondaryButtonLabel: 'Explore Sahasara',
-  secondaryButtonUrl: '#why-sahasara',
-  heroImageUrl: null,
-  isPublished: true,
-};
+const fallbackHeroSlides = [
+  {
+    id: 'fallback-1',
+    displayOrder: 1,
+    eyebrowText: 'A focused start to a bright future',
+    heading: 'Learn with purpose.',
+    highlightedHeadingText: 'Grow with confidence.',
+    description: 'A welcoming academic environment where students build strong foundations, discover their strengths, and prepare for what comes next.',
+    primaryButtonLabel: 'Explore admissions',
+    primaryButtonUrl: '#contact',
+    secondaryButtonLabel: 'Discover our approach',
+    secondaryButtonUrl: '#why-sahasara',
+    heroImageUrl: null,
+    heroImageAltText: 'Sahasara students learning together',
+  },
+  {
+    id: 'fallback-2',
+    displayOrder: 2,
+    eyebrowText: 'Make room for possibility',
+    heading: 'Ask better',
+    highlightedHeadingText: 'questions.',
+    description: 'At Sahasara, curiosity is not a detour from learning. It is where confidence, creativity, and clarity begin.',
+    primaryButtonLabel: 'See how we learn',
+    primaryButtonUrl: '#why-sahasara',
+    secondaryButtonLabel: 'Meet Sahasara',
+    secondaryButtonUrl: '#contact',
+    heroImageUrl: null,
+    heroImageAltText: 'Students collaborating in a Sahasara classroom',
+  },
+  {
+    id: 'fallback-3',
+    displayOrder: 3,
+    eyebrowText: 'Your next chapter starts here',
+    heading: 'Find your',
+    highlightedHeadingText: 'direction.',
+    description: 'Choose a path that fits your strengths, then give yourself the space to discover what it can become.',
+    primaryButtonLabel: 'Start a conversation',
+    primaryButtonUrl: '#contact',
+    secondaryButtonLabel: 'Explore pathways',
+    secondaryButtonUrl: '#pathways',
+    heroImageUrl: null,
+    heroImageAltText: 'Sahasara students looking toward their future',
+  },
+];
 
 function HomeSkeleton() {
   return <div className="min-h-[100dvh] bg-[hsl(var(--background))] p-6"><div className="mx-auto max-w-6xl animate-pulse space-y-6"><div className="h-8 w-40 rounded-lg bg-[hsl(var(--muted))]" /><div className="h-[520px] rounded-[2rem] bg-[hsl(var(--muted))]" /></div></div>;
@@ -35,53 +68,26 @@ export default function Home() {
   const heroQuery = useGetHomepageHero();
   if (settingsQuery.isLoading || heroQuery.isLoading) return <HomeSkeleton />;
   const settings = settingsQuery.data ?? fallbackSettings;
-  const hero = heroQuery.data ?? fallbackHero;
+  const slides = heroQuery.data?.length === 3 ? heroQuery.data : fallbackHeroSlides;
   const primaryColor = settings.primaryColor || '#102846';
   const accentColor = settings.accentColor || '#D6AD59';
 
   return (
     <div className="paper-grain overflow-hidden bg-[hsl(var(--background))]" style={{ '--site-primary': primaryColor, '--site-accent': accentColor } as React.CSSProperties}>
-      <header className="absolute inset-x-0 top-0 z-20">
+      <header className="absolute inset-x-0 top-0 z-20 bg-gradient-to-b from-black/45 to-transparent">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-10">
-          <SiteMark name={settings.collegeName} tagline={settings.tagline} logoUrl={settings.logoUrl} />
-          <nav className="hidden items-center gap-8 text-sm font-semibold text-[hsl(var(--primary))] lg:flex">
-            <a href="#why-sahasara" className="transition hover:text-[hsl(var(--accent-foreground))]" data-testid="link-nav-about">Why Sahasara</a>
-            <a href="#pathways" className="transition hover:text-[hsl(var(--accent-foreground))]" data-testid="link-nav-pathways">Pathways</a>
-            <a href="#contact" className="transition hover:text-[hsl(var(--accent-foreground))]" data-testid="link-nav-contact">Contact</a>
+          <SiteMark name={settings.collegeName} tagline={settings.tagline} logoUrl={settings.logoUrl} inverse />
+          <nav className="hidden items-center gap-8 text-sm font-semibold text-white/90 lg:flex">
+            <a href="#why-sahasara" className="transition hover:text-white" data-testid="link-nav-about">Why Sahasara</a>
+            <a href="#pathways" className="transition hover:text-white" data-testid="link-nav-pathways">Pathways</a>
+            <a href="#contact" className="transition hover:text-white" data-testid="link-nav-contact">Contact</a>
           </nav>
-          <a href="#contact" className="inline-flex h-11 items-center rounded-full bg-[hsl(var(--primary))] px-5 text-sm font-bold text-[hsl(var(--primary-foreground))] shadow-sm transition hover:-translate-y-0.5 hover:bg-[hsl(216_48%_19%)]" data-testid="link-header-admissions">Admissions <ArrowRight size={16} className="ml-2" /></a>
+          <a href="#contact" className="inline-flex h-11 items-center rounded-full bg-[hsl(var(--accent))] px-5 text-sm font-bold text-[hsl(var(--primary))] shadow-sm transition hover:-translate-y-0.5" data-testid="link-header-admissions">Admissions <ArrowRight size={16} className="ml-2" /></a>
         </div>
       </header>
 
       <main>
-        <section className="relative min-h-[760px] overflow-hidden bg-[hsl(var(--secondary))]">
-          <div className="absolute -right-24 top-20 h-[520px] w-[520px] rounded-full border border-[hsl(var(--accent)/.35)] lg:right-[-60px] lg:top-[-20px]" />
-          <div className="absolute -right-6 top-40 h-[380px] w-[380px] rounded-full border border-[hsl(var(--accent)/.3)]" />
-          <div className="mx-auto grid max-w-7xl items-center gap-10 px-6 pb-20 pt-36 lg:grid-cols-[1.02fr_.98fr] lg:px-10 lg:pt-44">
-            <div className="relative z-10 min-w-0 max-w-2xl">
-              <div className="animate-rise inline-flex items-center gap-2 rounded-full border border-[hsl(var(--accent)/.45)] bg-[hsl(var(--card)/.5)] px-3.5 py-2 text-xs font-bold uppercase tracking-[0.16em] text-[hsl(var(--primary))]" data-testid="text-hero-eyebrow"><Sparkles size={14} className="text-[hsl(var(--accent-foreground))]" /> {hero.eyebrowText}</div>
-              <h1 className="animate-rise-delay mt-7 max-w-full break-words font-display text-[clamp(3.15rem,13vw,6.7rem)] font-semibold leading-[.93] tracking-[-0.055em] text-[hsl(var(--primary))] sm:tracking-[-0.065em]" data-testid="text-hero-heading">
-                {hero.heading}{' '}
-                <span className="text-[hsl(var(--accent-foreground))] [box-decoration-break:clone] [-webkit-box-decoration-break:clone] border-b-4 border-[hsl(var(--accent))]">
-                  {hero.highlightedHeadingText}
-                </span>
-              </h1>
-              <p className="mt-7 max-w-lg text-lg leading-8 text-[hsl(var(--muted-foreground))]" data-testid="text-hero-description">{hero.description}</p>
-              <div className="mt-9 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-                <a href={hero.primaryButtonUrl || '#contact'} className="inline-flex h-13 items-center justify-center rounded-full bg-[hsl(var(--primary))] px-6 py-3.5 text-sm font-bold text-[hsl(var(--primary-foreground))] shadow-lg shadow-[hsl(var(--primary)/.14)] transition hover:-translate-y-1 sm:w-auto" data-testid="link-hero-primary">{hero.primaryButtonLabel || 'Start a conversation'} <ArrowRight size={17} className="ml-2" /></a>
-                <a href={hero.secondaryButtonUrl || '#why-sahasara'} className="inline-flex h-13 items-center justify-center rounded-full px-5 py-3.5 text-sm font-bold text-[hsl(var(--primary))] transition hover:bg-[hsl(var(--card)/.6)] sm:w-auto" data-testid="link-hero-secondary">{hero.secondaryButtonLabel || 'Explore Sahasara'}</a>
-              </div>
-              <div className="mt-12 flex items-center gap-3 text-xs font-semibold text-[hsl(var(--muted-foreground))]"><span className="grid h-8 w-8 place-items-center rounded-full bg-[hsl(var(--accent))] text-[hsl(var(--primary))]"><Check size={15} /></span> A public college built around possibility</div>
-            </div>
-            <div className="relative mx-auto w-full max-w-[510px] lg:ml-auto">
-              <div className="animate-drift relative aspect-[.86] overflow-hidden rounded-[2rem] bg-[hsl(var(--primary))] shadow-2xl shadow-[hsl(var(--primary)/.2)]">
-                {hero.heroImageUrl ? <img src={hero.heroImageUrl} alt="Sahasara students learning together" className="h-full w-full object-cover opacity-90" data-testid="img-hero" /> : <div className="relative h-full overflow-hidden bg-[hsl(var(--primary))]" data-testid="img-hero-fallback"><div className="absolute inset-5 rounded-[1.5rem] border border-[hsl(var(--accent)/.4)]" /><div className="absolute -right-24 top-20 h-72 w-72 rounded-full bg-[hsl(var(--accent)/.18)] blur-3xl" /><div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-[hsl(var(--primary))] to-transparent" /><div className="absolute bottom-10 left-8 right-8"><p className="font-display text-4xl leading-tight text-[hsl(var(--primary-foreground))]">Good questions<br /><em className="text-[hsl(var(--accent))]">change everything.</em></p><div className="mt-6 flex items-center gap-3"><span className="h-px w-10 bg-[hsl(var(--accent))]" /><span className="text-xs font-semibold uppercase tracking-[.18em] text-[hsl(var(--primary-foreground)/.7)]">Since 1987</span></div></div></div>}
-                <div className="absolute bottom-5 left-5 rounded-2xl border border-[hsl(var(--primary-foreground)/.2)] bg-[hsl(var(--primary)/.72)] px-4 py-3 backdrop-blur-md"><p className="text-xs font-bold uppercase tracking-[.16em] text-[hsl(var(--accent))]">The Sahasara way</p><p className="mt-1 text-sm font-semibold text-[hsl(var(--primary-foreground))]">Curious. Capable. Kind.</p></div>
-              </div>
-              <span className="absolute -bottom-7 -left-8 hidden h-16 w-16 rounded-full bg-[hsl(var(--accent))] lg:block" />
-            </div>
-          </div>
-        </section>
+        <HeroCarousel slides={slides} />
 
         <section id="why-sahasara" className="mx-auto max-w-7xl px-6 py-24 lg:px-10 lg:py-32">
           <div className="grid gap-12 lg:grid-cols-[.75fr_1.25fr]">

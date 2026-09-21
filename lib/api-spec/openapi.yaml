@@ -111,7 +111,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HomepageHero"
+                $ref: "#/components/schemas/HomepageHeroSlides"
   /admin/site-settings:
     put:
       operationId: updateSiteSettings
@@ -156,14 +156,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/HomepageHeroInput"
+              $ref: "#/components/schemas/HomepageHeroSlidesInput"
       responses:
         "200":
           description: Updated homepage hero
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HomepageHero"
+                $ref: "#/components/schemas/HomepageHeroSlides"
         "400":
           description: Validation error
           content:
@@ -332,11 +332,15 @@ components:
         - primaryColor
         - accentColor
         - footerText
-    HomepageHero:
+    HomepageHeroSlide:
       type: object
       properties:
         id:
           type: string
+        displayOrder:
+          type: integer
+          minimum: 1
+          maximum: 3
         eyebrowText:
           type: string
         heading:
@@ -355,10 +359,11 @@ components:
           type: string
         heroImageUrl:
           type: ["string", "null"]
-        isPublished:
-          type: boolean
+        heroImageAltText:
+          type: string
       required:
         - id
+        - displayOrder
         - eyebrowText
         - heading
         - highlightedHeadingText
@@ -368,10 +373,20 @@ components:
         - secondaryButtonLabel
         - secondaryButtonUrl
         - heroImageUrl
-        - isPublished
-    HomepageHeroInput:
+        - heroImageAltText
+    HomepageHeroSlides:
+      type: array
+      minItems: 3
+      maxItems: 3
+      items:
+        $ref: "#/components/schemas/HomepageHeroSlide"
+    HomepageHeroSlideInput:
       type: object
       properties:
+        displayOrder:
+          type: integer
+          minimum: 1
+          maximum: 3
         eyebrowText:
           type: string
         heading:
@@ -391,9 +406,11 @@ components:
           type: string
         heroImageUrl:
           type: ["string", "null"]
-        isPublished:
-          type: boolean
+        heroImageAltText:
+          type: string
+          minLength: 1
       required:
+        - displayOrder
         - eyebrowText
         - heading
         - highlightedHeadingText
@@ -403,7 +420,13 @@ components:
         - secondaryButtonLabel
         - secondaryButtonUrl
         - heroImageUrl
-        - isPublished
+        - heroImageAltText
+    HomepageHeroSlidesInput:
+      type: array
+      minItems: 3
+      maxItems: 3
+      items:
+        $ref: "#/components/schemas/HomepageHeroSlideInput"
     ImageUploadInput:
       type: object
       properties:

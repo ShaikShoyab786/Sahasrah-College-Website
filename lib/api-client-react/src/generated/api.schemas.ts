@@ -61,8 +61,13 @@ export interface SiteSettingsInput {
   footerText: string;
 }
 
-export interface HomepageHero {
+export interface HomepageHeroSlide {
   id: string;
+  /**
+     * @minimum 1
+     * @maximum 3
+     */
+  displayOrder: number;
   eyebrowText: string;
   heading: string;
   highlightedHeadingText: string;
@@ -73,10 +78,21 @@ export interface HomepageHero {
   secondaryButtonUrl: string;
   /** @nullable */
   heroImageUrl: string | null;
-  isPublished: boolean;
+  heroImageAltText: string;
 }
 
-export interface HomepageHeroInput {
+/**
+ * @minItems 3
+ * @maxItems 3
+ */
+export type HomepageHeroSlides = HomepageHeroSlide[];
+
+export interface HomepageHeroSlideInput {
+  /**
+     * @minimum 1
+     * @maximum 3
+     */
+  displayOrder: number;
   eyebrowText: string;
   /** @minLength 1 */
   heading: string;
@@ -88,8 +104,15 @@ export interface HomepageHeroInput {
   secondaryButtonUrl: string;
   /** @nullable */
   heroImageUrl: string | null;
-  isPublished: boolean;
+  /** @minLength 1 */
+  heroImageAltText: string;
 }
+
+/**
+ * @minItems 3
+ * @maxItems 3
+ */
+export type HomepageHeroSlidesInput = HomepageHeroSlideInput[];
 
 export type ImageUploadInputPurpose = typeof ImageUploadInputPurpose[keyof typeof ImageUploadInputPurpose];
 

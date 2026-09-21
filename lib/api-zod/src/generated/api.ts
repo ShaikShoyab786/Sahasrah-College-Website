@@ -73,8 +73,13 @@ export const GetSiteSettingsResponse = zod.object({
 /**
  * @summary Read the published homepage hero
  */
-export const GetHomepageHeroResponse = zod.object({
+export const getHomepageHeroResponseDisplayOrderMax = 3;
+
+
+
+export const GetHomepageHeroResponseItem = zod.object({
   "id": zod.string(),
+  "displayOrder": zod.number().int().min(1).max(getHomepageHeroResponseDisplayOrderMax),
   "eyebrowText": zod.string(),
   "heading": zod.string(),
   "highlightedHeadingText": zod.string(),
@@ -84,8 +89,9 @@ export const GetHomepageHeroResponse = zod.object({
   "secondaryButtonLabel": zod.string(),
   "secondaryButtonUrl": zod.string(),
   "heroImageUrl": zod.string().nullable(),
-  "isPublished": zod.boolean()
+  "heroImageAltText": zod.string()
 })
+export const GetHomepageHeroResponse = zod.array(GetHomepageHeroResponseItem).min(3).max(3)
 
 
 /**
@@ -127,10 +133,14 @@ export const UpdateSiteSettingsResponse = zod.object({
 /**
  * @summary Update the homepage hero
  */
+export const updateHomepageHeroBodyDisplayOrderMax = 3;
 
 
 
-export const UpdateHomepageHeroBody = zod.object({
+
+
+export const UpdateHomepageHeroBodyItem = zod.object({
+  "displayOrder": zod.number().int().min(1).max(updateHomepageHeroBodyDisplayOrderMax),
   "eyebrowText": zod.string(),
   "heading": zod.string().min(1),
   "highlightedHeadingText": zod.string(),
@@ -140,11 +150,17 @@ export const UpdateHomepageHeroBody = zod.object({
   "secondaryButtonLabel": zod.string(),
   "secondaryButtonUrl": zod.string(),
   "heroImageUrl": zod.string().nullable(),
-  "isPublished": zod.boolean()
+  "heroImageAltText": zod.string().min(1)
 })
+export const UpdateHomepageHeroBody = zod.array(UpdateHomepageHeroBodyItem).min(3).max(3)
 
-export const UpdateHomepageHeroResponse = zod.object({
+export const updateHomepageHeroResponseDisplayOrderMax = 3;
+
+
+
+export const UpdateHomepageHeroResponseItem = zod.object({
   "id": zod.string(),
+  "displayOrder": zod.number().int().min(1).max(updateHomepageHeroResponseDisplayOrderMax),
   "eyebrowText": zod.string(),
   "heading": zod.string(),
   "highlightedHeadingText": zod.string(),
@@ -154,8 +170,9 @@ export const UpdateHomepageHeroResponse = zod.object({
   "secondaryButtonLabel": zod.string(),
   "secondaryButtonUrl": zod.string(),
   "heroImageUrl": zod.string().nullable(),
-  "isPublished": zod.boolean()
+  "heroImageAltText": zod.string()
 })
+export const UpdateHomepageHeroResponse = zod.array(UpdateHomepageHeroResponseItem).min(3).max(3)
 
 
 /**
