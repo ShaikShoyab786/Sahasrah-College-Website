@@ -112,6 +112,24 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HomepageHeroSlides"
+  /homepage-about-preview:
+    get:
+      operationId: getHomepageAboutPreview
+      tags: [public]
+      summary: Read the visible homepage About Preview
+      responses:
+        "200":
+          description: Homepage About Preview content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomepageAboutPreview"
+        "404":
+          description: About Preview is hidden or unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /admin/site-settings:
     put:
       operationId: updateSiteSettings
@@ -166,6 +184,63 @@ paths:
                 $ref: "#/components/schemas/HomepageHeroSlides"
         "400":
           description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/homepage-about-preview:
+    get:
+      operationId: getAdminHomepageAboutPreview
+      tags: [admin]
+      summary: Read homepage About Preview settings
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Homepage About Preview settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomepageAboutPreview"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: About Preview is unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateHomepageAboutPreview
+      tags: [admin]
+      summary: Update homepage About Preview settings
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HomepageAboutPreviewInput"
+      responses:
+        "200":
+          description: Updated homepage About Preview settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomepageAboutPreview"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
           content:
             application/json:
               schema:
@@ -427,6 +502,94 @@ components:
       maxItems: 3
       items:
         $ref: "#/components/schemas/HomepageHeroSlideInput"
+    HomepageAboutPreview:
+      type: object
+      properties:
+        id:
+          type: string
+        eyebrow:
+          type: string
+        heading:
+          type: string
+        description:
+          type: string
+        body:
+          type: string
+        buttonLabel:
+          type: string
+        buttonHref:
+          type: string
+        primaryImage:
+          type: ["string", "null"]
+        primaryImageAltText:
+          type: string
+        secondaryImage:
+          type: ["string", "null"]
+        secondaryImageAltText:
+          type: string
+        isVisible:
+          type: boolean
+        sortOrder:
+          type: integer
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - eyebrow
+        - heading
+        - description
+        - body
+        - buttonLabel
+        - buttonHref
+        - primaryImage
+        - primaryImageAltText
+        - secondaryImage
+        - secondaryImageAltText
+        - isVisible
+        - sortOrder
+        - updatedAt
+    HomepageAboutPreviewInput:
+      type: object
+      properties:
+        eyebrow:
+          type: string
+        heading:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        body:
+          type: string
+        buttonLabel:
+          type: string
+        buttonHref:
+          type: string
+        primaryImage:
+          type: ["string", "null"]
+        primaryImageAltText:
+          type: string
+        secondaryImage:
+          type: ["string", "null"]
+        secondaryImageAltText:
+          type: string
+        isVisible:
+          type: boolean
+        sortOrder:
+          type: integer
+      required:
+        - eyebrow
+        - heading
+        - description
+        - body
+        - buttonLabel
+        - buttonHref
+        - primaryImage
+        - primaryImageAltText
+        - secondaryImage
+        - secondaryImageAltText
+        - isVisible
+        - sortOrder
     ImageUploadInput:
       type: object
       properties:

@@ -75,6 +75,30 @@ export async function initializeDatabase() {
     });
   }
 
+  await prisma.homepageAboutPreview.upsert({
+    where: { id: "singleton" },
+    update: {},
+    create: {
+      id: "singleton",
+      eyebrow: "About Sahasara",
+      heading: "Building Strong Foundations for a Brighter Future",
+      description:
+        "Sahasara Junior College is committed to helping students grow through academic guidance, personal attention, and a supportive learning environment.",
+      body:
+        "Our approach combines focused preparation, experienced guidance, and values that help students move confidently toward higher education and future opportunities.",
+      buttonLabel: "Explore Our Philosophy",
+      buttonHref: "/about",
+      primaryImage:
+        "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1400&q=85",
+      primaryImageAltText: "Students collaborating together on a college campus",
+      secondaryImage:
+        "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=900&q=85",
+      secondaryImageAltText: "Students walking together outside a college building",
+      isVisible: true,
+      sortOrder: 2,
+    },
+  });
+
   const email = process.env.INITIAL_ADMIN_EMAIL?.trim().toLowerCase();
   const password = process.env.INITIAL_ADMIN_PASSWORD;
   if (email && password) {

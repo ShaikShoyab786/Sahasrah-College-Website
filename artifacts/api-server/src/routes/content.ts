@@ -1,6 +1,10 @@
 import { Router, type IRouter } from "express";
 import {
+  GetAdminHomepageAboutPreviewResponse,
+  GetHomepageAboutPreviewResponse,
   UpdateHomepageHeroBody,
+  UpdateHomepageAboutPreviewBody,
+  UpdateHomepageAboutPreviewResponse,
   UpdateSiteSettingsBody,
 } from "@workspace/api-zod";
 import { prisma } from "../lib/prisma";
@@ -36,6 +40,20 @@ router.get("/homepage-hero", async (req, res) => {
   } catch (error) {
     req.log.error({ err: error }, "Unable to read homepage hero");
     res.status(500).json({ error: "Unable to load homepage hero." });
+  }
+});
+
+router.get("/homepage-about-preview", async (req, res) => {
+  try {
+    const aboutPreview = await prisma.homepageAboutPreview.findUnique({ where: { id: "singleton" } });
+    if (!aboutPreview || !aboutPreview.isVisible) {
+      res.status(404).json({ error: "Homepage About Preview is not available." });
+      return;
+    }
+    res.json(GetHomepageAboutPreviewResponse.parse(aboutPreview));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read homepage About Preview");
+    res.status(500).json({ error: "Unable to load homepage About Preview." });
   }
 });
 
@@ -87,6 +105,39 @@ router.put("/admin/homepage-hero", requireAdmin, async (req, res) => {
   } catch (error) {
     req.log.error({ err: error }, "Unable to update homepage hero");
     res.status(500).json({ error: "Unable to save homepage hero." });
+  }
+});
+
+router.get("/admin/homepage-about-preview", requireAdmin, async (req, res) => {
+  try {
+    const aboutPreview = await prisma.homepageAboutPreview.findUnique({ where: { id: "singleton" } });
+    if (!aboutPreview) {
+      res.status(404).json({ error: "Homepage About Preview is not available." });
+      return;
+    }
+    res.json(GetAdminHomepageAboutPreviewResponse.parse(aboutPreview));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read admin homepage About Preview");
+    res.status(500).json({ error: "Unable to load homepage About Preview." });
+  }
+});
+
+router.put("/admin/homepage-about-preview", requireAdmin, async (req, res) => {
+  const parsed = UpdateHomepageAboutPreviewBody.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({ error: "Check the homepage About Preview content and try again." });
+    return;
+  }
+  try {
+    const aboutPreview = await prisma.homepageAboutPreview.upsert({
+      where: { id: "singleton" },
+      update: parsed.data,
+      create: { id: "singleton", ...parsed.data },
+    });
+    res.json(UpdateHomepageAboutPreviewResponse.parse(aboutPreview));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to update homepage About Preview");
+    res.status(500).json({ error: "Unable to save homepage About Preview." });
   }
 });
 

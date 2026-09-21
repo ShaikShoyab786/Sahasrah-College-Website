@@ -1,0 +1,207 @@
+Prompt: Build Homepage About Preview and Begin Grouped Admin Dashboard
+Continue working on the existing Sahasara Junior College project.
+
+The current project already has:
+
+React + Vite frontend
+Node/Express backend
+PostgreSQL + Prisma
+Admin authentication
+Site Identity management
+Public settings API
+Three-slide homepage hero carousel
+Admin hero slide editing and image replacement
+Existing admin sidebar items:
+Overview
+Site Identity
+Homepage Hero
+Do not replace or break the existing hero carousel or Site Identity functionality.
+
+Goal
+Build the homepage About Preview section and gradually reorganize the admin dashboard into a grouped page-based structure.
+
+This task is only for the homepage About Preview and the first stage of admin grouping. Do not build the full About page yet.
+
+1. Public homepage About Preview
+Add a new About Preview section below the homepage hero section.
+
+The section should include:
+
+Small eyebrow text, for example: About Sahasara
+Main heading
+Short introductory description
+Longer supporting paragraph
+Primary image
+Optional secondary image or decorative image
+Button label, defaulting to:
+Explore Our Philosophy
+Button link:
+/about
+Use a professional junior college layout with:
+
+Responsive two-column layout on desktop
+Stacked layout on mobile
+Strong visual hierarchy
+Proper spacing and readable typography
+Image treatment consistent with the existing homepage
+Accessible heading structure
+Alt text for images
+No KVR-specific text, logos, images, or copied source code
+Use sensible placeholder content and placeholder images until real client content is provided.
+
+Suggested default content:
+
+Eyebrow:
+About Sahasara
+Heading:
+Building Strong Foundations for a Brighter Future
+Description:
+Sahasara Junior College is committed to helping students grow through academic guidance, personal attention, and a supportive learning environment.
+Supporting paragraph:
+Our approach combines focused preparation, experienced guidance, and values that help students move confidently toward higher education and future opportunities.
+Button:
+Explore Our Philosophy
+
+The content must come from the backend settings/content API rather than being permanently hardcoded in the frontend.
+
+If the section is disabled in the admin dashboard, it should not render publicly.
+
+2. Database and backend
+Add a dedicated Prisma model or content structure for the homepage About Preview.
+
+Keep this section separate from the future full About page content.
+
+The homepage About Preview should support at least:
+
+eyebrow
+heading
+description
+body
+buttonLabel
+buttonHref
+primaryImage
+secondaryImage
+isVisible
+sortOrder if the existing architecture supports section ordering
+Follow the existing project naming, validation, authentication, and API conventions.
+
+Add:
+
+Public read endpoint or include it in the existing public homepage/settings response
+Protected admin read endpoint
+Protected admin update endpoint
+Request validation
+Proper error responses
+Database seed/default values where appropriate
+Only authenticated admins may update the content.
+
+Do not expose admin update functionality through public routes.
+
+Reuse the existing image replacement or image URL handling approach used by the hero carousel. Do not introduce a completely new storage system unless the existing project requires it.
+
+3. Gradually group the admin dashboard
+Start reorganizing the admin dashboard without implementing every future page.
+
+Change the current structure from:
+
+Overview
+Site Identity
+Homepage Hero
+
+toward:
+
+Overview
+Site Identity
+Pages
+  Home
+    Hero
+    About Preview
+
+The exact visual implementation may use:
+
+Nested sidebar navigation, or
+A Pages parent item with a Home page editor containing section cards/tabs
+Choose the approach that best matches the existing admin UI and keeps it readable.
+
+Requirements for the first grouping stage
+Preserve the existing hero editor and all current hero functionality.
+Move or expose the hero editor under Pages → Home → Hero.
+Add Pages → Home → About Preview.
+Do not create a flat top-level sidebar item called Homepage About.
+Do not create the full About page yet.
+Keep direct navigation to existing hero routes working if possible, or redirect them cleanly.
+Make the current active page and nested section clear to the administrator.
+Include section-level save actions and loading/error/success states.
+Do not add WhatsApp settings in this task.
+The structure should be ready for future sections such as:
+
+Pages
+  Home
+    Hero
+    About Preview
+    Statistics
+    Courses Preview
+    Results Preview
+    Testimonials
+    Gallery Preview
+    FAQ
+    Admission CTA
+  About
+    Intro
+    Story
+    Timeline
+    Chairman Message
+    Mission, Vision & Values
+
+Only implement Home → Hero and Home → About Preview now.
+
+4. Public and admin behavior
+Verify the complete flow:
+
+Admin opens Pages → Home → About Preview.
+Admin sees the current saved content.
+Admin edits the heading, description, button, or images.
+Admin saves the changes.
+Backend validates and persists the data.
+Public homepage loads the updated content.
+The button links to /about.
+Toggling visibility hides or shows the section publicly.
+Refreshing the page preserves the saved values.
+Unauthenticated update requests return 401.
+5. Visual expectations
+The About Preview should feel like a polished college website section, not a plain form or basic text block.
+
+Use:
+
+Professional academic styling
+Clear heading hierarchy
+Balanced image and text composition
+Responsive behavior
+Consistent buttons and colors from Site Identity
+Existing design tokens and components where available
+Placeholder images that can later be replaced from the admin dashboard
+Do not copy the KVR website. Use only the general visual direction already established for this project.
+
+6. Verification
+After implementation:
+
+Run type checking.
+Run the production frontend build.
+Verify the backend starts successfully.
+Verify the public homepage displays the About Preview.
+Verify admin updates persist.
+Verify visibility toggle behavior.
+Verify unauthenticated admin writes are rejected.
+Check desktop and mobile layouts.
+Confirm the existing three-slide hero carousel still works.
+Confirm Site Identity and tagline behavior still work.
+Avoid changing unrelated sections.
+At the end, report:
+
+Files changed
+Database/model changes
+New API routes or response changes
+Admin navigation changes
+Verification results
+Any limitations or follow-up work needed
+Do not implement the full About page or additional homepage sections in this task.

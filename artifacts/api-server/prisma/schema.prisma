@@ -57,3 +57,20 @@ model HomepageHero {
   isPublished             Boolean @default(true)
   updatedAt              DateTime @updatedAt
 }
+
+model HomepageAboutPreview {
+  id                    String   @id @default("singleton")
+  eyebrow               String
+  heading               String
+  description           String
+  body                  String
+  buttonLabel           String
+  buttonHref            String
+  primaryImage          String?
+  primaryImageAltText   String
+  secondaryImage        String?
+  secondaryImageAltText String
+  isVisible             Boolean  @default(true)
+  sortOrder             Int      @default(2)
+  updatedAt             DateTime @updatedAt
+}
