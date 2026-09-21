@@ -2,12 +2,13 @@ import { Link } from 'wouter';
 
 type SiteMarkProps = {
   name?: string;
+  tagline?: string | null;
   logoUrl?: string | null;
   inverse?: boolean;
   compact?: boolean;
 };
 
-export function SiteMark({ name = 'Sahasara Junior College', logoUrl, inverse = false, compact = false }: SiteMarkProps) {
+export function SiteMark({ name = 'Sahasara Junior College', tagline = 'Your College Tagline', logoUrl, inverse = false, compact = false }: SiteMarkProps) {
   return (
     <Link href="/" className="group inline-flex items-center gap-3" data-testid="link-site-logo">
       {logoUrl ? (
@@ -17,7 +18,7 @@ export function SiteMark({ name = 'Sahasara Junior College', logoUrl, inverse = 
       )}
       <span className="leading-tight">
         <span className={`block font-display text-lg font-semibold tracking-[-0.02em] ${inverse ? 'text-[hsl(var(--sidebar-foreground))]' : 'text-[hsl(var(--primary))]'}`}>{name}</span>
-        {!compact && <span className={`mt-0.5 block text-[10px] font-semibold uppercase tracking-[0.2em] ${inverse ? 'text-[hsl(var(--accent))]' : 'text-[hsl(var(--muted-foreground))]'}`}>Learn with purpose</span>}
+        {!compact && <span className={`mt-0.5 block text-[10px] font-semibold uppercase tracking-[0.2em] ${inverse ? 'text-[hsl(var(--accent))]' : 'text-[hsl(var(--muted-foreground))]'}`}>{tagline || 'Your College Tagline'}</span>}
       </span>
     </Link>
   );
