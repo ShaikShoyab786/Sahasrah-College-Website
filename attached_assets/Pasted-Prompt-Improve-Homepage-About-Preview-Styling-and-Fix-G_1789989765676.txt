@@ -1,0 +1,264 @@
+Prompt: Improve Homepage About Preview Styling and Fix Grouped Admin Navigation
+Continue working on the existing Sahasara Junior College project.
+
+The project currently has:
+
+React + Vite frontend
+Node/Express backend
+PostgreSQL + Prisma
+Admin authentication
+Site Identity management
+Three-slide homepage hero carousel
+Homepage About Preview section
+Grouped admin navigation under Pages → Home
+Home sections including:
+Hero
+About Preview
+The attached images are visual references:
+
+attached_assets/image_1789988737364.png shows the desired visual direction for the homepage About Preview.
+attached_assets/image_1789988947141.png shows the current admin sidebar and navigation issue.
+Do not copy KVR source code, content, logos, or assets.
+
+1. Improve the About Preview eyebrow styling
+The current About Preview eyebrow looks like simple plain text. Improve its presentation on the public homepage.
+
+The eyebrow should look like a designed section label rather than an ordinary text line.
+
+Use a polished style such as:
+
+Small uppercase typography
+Increased letter spacing
+Accent color from the existing theme
+A small decorative line, dot, or icon
+A subtle pill, badge, or soft background treatment
+Good spacing above the main heading
+Responsive behavior on mobile
+The styling should feel refined and academic, not overly decorative.
+
+Use the attached About Preview image as visual direction:
+
+A refined small label above the heading, such as ABOUT SAHASARA
+Optional supporting badge near the image, such as LEARNING WITH PURPOSE
+Balanced typography and spacing
+Strong visual connection between the image composition and the text content
+Do not hardcode the styling only for one text value. It should work correctly if the admin changes the eyebrow text.
+
+The following should remain editable from the admin dashboard:
+
+Eyebrow text
+Heading
+Description
+Supporting body text
+Button label
+Button link
+Images
+Visibility
+The public section must still receive its content from the backend API.
+
+Do not use the attached screenshot itself as the production image. Use the existing placeholder/image handling system.
+
+2. Remove the unnecessary “Why Sahasara” and “Pathways” sections
+The initial navigation/content structure included sections named:
+
+Why Sahasara
+Pathways
+These sections are not required.
+
+Do the following:
+
+Remove them from the visible public navigation if they currently appear.
+Remove them from the visible admin navigation if they currently appear.
+Do not create editor sections for them.
+Do not add routes or links for them.
+Do not delete unrelated content or database records destructively unless the existing architecture requires it.
+If old routes exist, handle them safely with a redirect or a proper not-found state.
+The future full About page will replace this content with a new structure that will be designed separately.
+
+Do not design or implement the full About page in this task.
+
+3. Fix the Pages sidebar accordion behavior
+The Pages arrow currently does not close correctly and the menu is open by default. Fix this behavior.
+
+The desired interaction is:
+
+Initial state
+On a fresh admin dashboard load:
+
+Pages
+
+should be collapsed by default.
+
+It should not automatically show all nested items unless the current route requires the active path to be visible.
+
+Pages interaction
+When the administrator clicks the Pages row or its arrow:
+
+Pages ▼
+
+it should expand and show:
+
+Home
+
+Clicking Pages or its arrow again should collapse it:
+
+Pages ▶
+
+The arrow must accurately reflect the current state.
+
+Home interaction
+When Pages is open, show:
+
+Pages
+  Home ▶
+
+Clicking Home or its arrow should expand the Home sections:
+
+Pages
+  Home ▼
+    Hero
+    About Preview
+    Courses Preview
+    Results Preview
+    Testimonials
+    Gallery Preview
+    FAQ
+    Admission CTA
+
+For now, only the currently implemented sections need to be active:
+
+Hero
+About Preview
+
+The other items may be shown as future placeholders only if the existing navigation architecture supports that cleanly. Do not create non-functional editors for future sections.
+
+Clicking Home or its arrow again should collapse the Home section list.
+
+Leaf item behavior
+Clicking a leaf section such as:
+
+Hero
+About Preview
+
+should navigate to that editor.
+
+Clicking a leaf item should not unexpectedly collapse its parent menus.
+
+The selected section should remain visually highlighted.
+
+Active route behavior
+If the administrator directly opens a nested route such as:
+
+Pages → Home → About Preview
+
+the parent items may automatically expand so the active page is visible.
+
+However, this should not make the entire Pages tree permanently open on every unrelated dashboard visit.
+
+Implement this with proper controlled accordion state rather than CSS-only behavior.
+
+Use:
+
+Accessible buttons or controls for expandable rows
+aria-expanded
+Visible rotating arrow state
+Keyboard accessibility where practical
+No duplicate click handlers that cause the menu to open and immediately close
+4. Prepare the structure for every future page
+The admin navigation should follow this scalable pattern:
+
+Pages
+  Home
+    Hero
+    About Preview
+    Courses Preview
+    Results Preview
+    Testimonials
+    Gallery Preview
+    FAQ
+    Admission CTA
+  About
+    About Intro
+    Our Story
+    Timeline
+    Chairman Message
+    Mission, Vision & Values
+  Courses
+    Courses Intro
+    Course Listings
+    Admission Information
+  Faculty
+    Faculty Intro
+    Faculty Members
+  Results
+    Results Intro
+    Results Highlights
+  Gallery
+    Gallery Intro
+    Gallery Items
+  Contact
+    Contact Details
+    Contact Form
+
+Only implement the existing Home sections in this task.
+
+Do not create the full About page yet. This task is only to make the grouping and accordion behavior ready for it.
+
+When the About page is added later, it should appear beneath Home using the same structure:
+
+Pages
+  Home
+    Hero
+    About Preview
+  About
+    ...
+
+Every future page should use the same page → section hierarchy instead of adding many unrelated top-level sidebar items.
+
+5. Preserve existing functionality
+Do not break:
+
+Hero carousel editing
+Hero slide image replacement
+Hero slide text editing
+Site Identity editing
+Tagline saving
+Public settings loading
+Admin authentication
+Public homepage rendering
+About Preview content editing
+About Preview visibility toggle
+Do not add WhatsApp functionality in this task.
+
+Do not redesign the full About page yet.
+
+6. Verification
+After making the changes, verify:
+
+The About Preview eyebrow has improved visual styling.
+The eyebrow remains editable from the admin dashboard.
+The About Preview still loads content from the backend.
+The About Preview button still links to /about.
+“Why Sahasara” and “Pathways” no longer appear in navigation.
+Pages is collapsed on initial dashboard load.
+Clicking Pages opens it.
+Clicking Pages again closes it.
+Clicking Home opens its section list.
+Clicking Home again closes its section list.
+Hero and About Preview remain accessible.
+The active route remains highlighted.
+Directly opening a nested route shows the correct parent path.
+Existing hero and Site Identity functionality still work.
+Type checking passes.
+The production frontend build passes.
+The backend starts successfully.
+At the end, report:
+
+Styling changes made to About Preview
+Navigation changes
+Accordion behavior changes
+Any removed or hidden old sections
+Verification results
+Any limitations remaining
+Stop after this update. Do not implement the full About page design yet.
+
