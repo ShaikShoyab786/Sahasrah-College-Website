@@ -131,7 +131,7 @@ export default function AdminHomepageHero() {
                 <div className="space-y-5 rounded-xl bg-[hsl(var(--secondary))] p-5">
                   <p className="text-xs font-bold uppercase tracking-[.16em] text-[hsl(var(--accent-foreground))]">Secondary action</p>
                   <Field id={`slide-${slide.displayOrder}-secondary-label`} label="Button label" value={slide.secondaryButtonLabel} onChange={(event) => setSlide(index, 'secondaryButtonLabel', event.target.value)} required placeholder="Discover our approach" />
-                  <Field id={`slide-${slide.displayOrder}-secondary-url`} label="Button URL" value={slide.secondaryButtonUrl} onChange={(event) => setSlide(index, 'secondaryButtonUrl', event.target.value)} required placeholder="#why-sahasara" />
+                  <Field id={`slide-${slide.displayOrder}-secondary-url`} label="Button URL" value={slide.secondaryButtonUrl} onChange={(event) => setSlide(index, 'secondaryButtonUrl', event.target.value)} required placeholder="#about-preview" />
                 </div>
               </div>
 

@@ -126,7 +126,7 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
                     {slide.primaryButtonLabel}
                     <ArrowRight size={17} className="ml-2" />
                   </a>
-                  <a href={slide.secondaryButtonUrl || '#why-sahasara'} className="inline-flex h-13 items-center justify-center rounded-full border border-white/35 bg-black/10 px-5 py-3.5 text-sm font-bold text-white transition hover:bg-white/15" data-testid={`link-hero-secondary-${slide.displayOrder}`}>
+                  <a href={slide.secondaryButtonUrl || '#about-preview'} className="inline-flex h-13 items-center justify-center rounded-full border border-white/35 bg-black/10 px-5 py-3.5 text-sm font-bold text-white transition hover:bg-white/15" data-testid={`link-hero-secondary-${slide.displayOrder}`}>
                     {slide.secondaryButtonLabel}
                   </a>
                 </div>

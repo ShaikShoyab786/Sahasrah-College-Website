@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'wouter';
 import { ChevronDown, FileText, Home, LayoutDashboard, LogOut, Menu, PanelsTopLeft, Settings2, X } from 'lucide-react';
 import { useLogoutAdmin, getGetAdminSessionQueryKey } from '@workspace/api-client-react';
@@ -18,6 +18,20 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
   ];
   const heroActive = location.startsWith('/admin/pages/home/hero') || location.startsWith('/admin/homepage-hero');
   const aboutActive = location.startsWith('/admin/pages/home/about-preview');
+  const nestedHomeRoute = heroActive || aboutActive;
+  const [pagesOpen, setPagesOpen] = useState(false);
+  const [homeOpen, setHomeOpen] = useState(false);
+
+  useEffect(() => {
+    if (nestedHomeRoute) {
+      setPagesOpen(true);
+      setHomeOpen(true);
+    } else {
+      setPagesOpen(false);
+      setHomeOpen(false);
+    }
+  }, [location, nestedHomeRoute]);
+
   const signOut = () => logout.mutate(undefined, { onSuccess: () => { queryClient.invalidateQueries({ queryKey: getGetAdminSessionQueryKey() }); setLocation('/admin/login'); } });
 
   return (
@@ -34,15 +48,24 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
             return <Link key={href} href={href} onClick={() => setOpen(false)} className={`flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold transition ${active ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid={`link-admin-${label.toLowerCase().replaceAll(' ', '-')}`}><Icon size={18} strokeWidth={1.8} /><span>{label}</span></Link>;
           })}
           <div className="mt-5">
-            <div className="flex items-center justify-between px-3 text-xs font-bold uppercase tracking-[.16em] text-[hsl(var(--sidebar-foreground)/.45)]">
+            <button type="button" onClick={() => setPagesOpen((current) => !current)} aria-expanded={pagesOpen} className={`flex w-full items-center justify-between rounded-xl px-3 py-3 text-xs font-bold uppercase tracking-[.16em] transition ${pagesOpen || nestedHomeRoute ? 'text-[hsl(var(--sidebar-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.45)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="button-admin-pages-toggle">
               <span className="flex items-center gap-2"><FileText size={14} /> Pages</span>
-              <ChevronDown size={15} />
-            </div>
-            <div className="mt-2 rounded-2xl bg-[hsl(var(--sidebar-accent)/.55)] p-2">
-              <div className="flex items-center gap-2 px-2 py-2 text-xs font-bold text-[hsl(var(--sidebar-foreground)/.65)]"><Home size={15} /> Home</div>
-              <Link href="/admin/pages/home/hero" onClick={() => setOpen(false)} className={`flex items-center gap-3 rounded-xl px-3 py-2.5 pl-9 text-sm font-semibold transition ${heroActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-home-hero"><PanelsTopLeft size={16} /><span>Hero</span></Link>
-              <Link href="/admin/pages/home/about-preview" onClick={() => setOpen(false)} className={`mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5 pl-9 text-sm font-semibold transition ${aboutActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-home-about-preview"><PanelsTopLeft size={16} /><span>About Preview</span></Link>
-            </div>
+              <ChevronDown size={15} className={`transition-transform ${pagesOpen ? 'rotate-180' : ''}`} />
+            </button>
+            {pagesOpen && (
+              <div className="mt-2 rounded-2xl bg-[hsl(var(--sidebar-accent)/.55)] p-2">
+                <button type="button" onClick={() => setHomeOpen((current) => !current)} aria-expanded={homeOpen} className={`flex w-full items-center justify-between rounded-xl px-2 py-2 text-xs font-bold transition ${homeOpen || nestedHomeRoute ? 'text-[hsl(var(--sidebar-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.65)] hover:bg-[hsl(var(--sidebar-accent))]'}`} data-testid="button-admin-home-toggle">
+                  <span className="flex items-center gap-2"><Home size={15} /> Home</span>
+                  <ChevronDown size={14} className={`transition-transform ${homeOpen ? 'rotate-180' : ''}`} />
+                </button>
+                {homeOpen && (
+                  <div className="mt-1">
+                    <Link href="/admin/pages/home/hero" onClick={() => setOpen(false)} className={`flex items-center gap-3 rounded-xl px-3 py-2.5 pl-9 text-sm font-semibold transition ${heroActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-home-hero"><PanelsTopLeft size={16} /><span>Hero</span></Link>
+                    <Link href="/admin/pages/home/about-preview" onClick={() => setOpen(false)} className={`mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5 pl-9 text-sm font-semibold transition ${aboutActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-home-about-preview"><PanelsTopLeft size={16} /><span>About Preview</span></Link>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </nav>
         <div className="mt-auto border-t border-[hsl(var(--sidebar-border))] pt-4">

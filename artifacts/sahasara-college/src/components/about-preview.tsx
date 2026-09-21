@@ -31,7 +31,11 @@ export function AboutPreview({ content }: AboutPreviewProps) {
         </div>
 
         <div className="max-w-2xl">
-          <p className="text-xs font-bold uppercase tracking-[.2em] text-[hsl(var(--accent-foreground))]">{content.eyebrow}</p>
+          <div className="flex items-center gap-3 text-xs font-bold uppercase tracking-[.22em] text-[hsl(var(--accent-foreground))]" data-testid="text-about-preview-eyebrow">
+            <span className="h-px w-8 bg-[hsl(var(--accent))]" aria-hidden="true" />
+            <span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--accent))]" aria-hidden="true" />
+            <span>{content.eyebrow}</span>
+          </div>
           <h2 id="about-preview-heading" className="mt-4 max-w-xl font-display text-5xl font-semibold leading-[.96] tracking-[-.05em] text-[hsl(var(--primary))] md:text-6xl" data-testid="text-about-preview-heading">{content.heading}</h2>
           <p className="mt-7 text-lg leading-8 text-[hsl(var(--muted-foreground))]" data-testid="text-about-preview-description">{content.description}</p>
           <p className="mt-5 max-w-xl text-[15px] leading-7 text-[hsl(var(--muted-foreground))]" data-testid="text-about-preview-body">{content.body}</p>
