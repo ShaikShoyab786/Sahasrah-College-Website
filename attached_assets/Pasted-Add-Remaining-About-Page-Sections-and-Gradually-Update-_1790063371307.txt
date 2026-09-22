@@ -1,0 +1,424 @@
+Add Remaining About Page Sections and Gradually Update Admin Dashboard
+Add the remaining sections shown in the attached reference images to the existing About page.
+
+This is a functional feature addition, not just a visual refinement.
+
+Do not modify or remove the completed:
+
+About Hero
+Our Story timeline
+Chairman’s Message
+Guiding Principles
+Existing eyebrow styling
+Existing page layout and routes
+Keep the current KVR Junior College branding: deep navy, gold, white, slate backgrounds, and refined teal/gold accents.
+
+The final result must look professional, polished, responsive, and suitable for a premium educational institution.
+
+Section 1: Our Campus Highlights
+Add a new About page section titled:
+
+Our Campus Highlights
+
+Create a responsive card grid inspired by the attached reference image.
+
+Card layout
+Use a responsive layout:
+
+Desktop: 4 columns
+Tablet: 2 or 3 columns
+Mobile: 1 column
+Each card should support:
+
+Campus image or visual background
+Optional icon
+Highlight title
+Short description
+Dark navy or image-based visual treatment
+Rounded corners
+Soft shadow
+Consistent card height
+Proper text contrast
+Example content can include:
+
+AC classrooms
+Advanced science laboratories
+Digital learning spaces
+Library and study areas
+Safe hostel facilities
+Sports and activity spaces
+Use the existing campus/facility content where available. Do not create duplicate data if the project already has a facilities data source.
+
+Campus card effects
+Add professional effects:
+
+Cards reveal with a subtle stagger when entering the viewport.
+Image/background gently scales on hover.
+Card moves upward slightly on hover.
+Overlay becomes slightly brighter or darker depending on the image.
+Icon has a small scale and color transition.
+Title and description remain readable at all times.
+Add a refined border or glow on hover.
+Do not make the cards jump or cause layout shifts.
+Support keyboard focus with the same visual treatment as hover.
+
+On mobile, keep the cards readable and avoid relying only on hover.
+
+Section 2: Animated Achievement Statistics
+Add a dark navy statistics band below the Campus Highlights section.
+
+Use the existing achievement categories:
+
+Years of Excellence
+Students Mentored
+IIT/NIT Selections
+Medical Admissions
+Parent Satisfaction
+Expert Faculty
+Example values:
+
+30+
+5000+
+100+
+500+
+95%
+25+
+
+Count-up animation
+The numbers must animate from zero to their final values when the statistics section enters the viewport.
+
+Examples:
+
+0 → 30+
+0 → 5000+
+0 → 100+
+0 → 500+
+0 → 95%
+0 → 25+
+
+Requirements:
+
+Start the animation only when the section becomes visible.
+Use IntersectionObserver or the project’s existing viewport animation pattern.
+Animate each number smoothly.
+Use a short stagger between statistics.
+Preserve suffixes such as + and %.
+Do not show 0+ or 0% permanently before the animation starts unless that is intentionally part of the design.
+Once completed, do not restart the animation every time the user scrolls slightly.
+Avoid excessive speed or bouncing.
+Format larger numbers cleanly.
+Ensure the final value remains visible after the animation completes.
+When prefers-reduced-motion: reduce is enabled:
+
+Show the final values immediately.
+Disable count-up movement and stagger animation.
+Statistics styling
+Use:
+
+Deep navy background
+Gold or teal icons
+Large high-contrast numbers
+Small uppercase labels
+Adequate spacing
+Responsive wrapping
+Subtle decorative background texture or gradient
+Professional hover/focus treatment without excessive movement
+The statistics must remain readable on mobile.
+
+Section 3: Frequently Asked Questions
+Add a new FAQ section titled:
+
+Frequently Asked Questions
+
+Use the attached reference image as the layout direction.
+
+FAQ layout
+Desktop:
+
+Left side: FAQ accordion grid
+Right side: admission help/contact card
+Mobile:
+
+Stack the FAQ list above the contact card
+Keep all content readable and easy to use
+Use the existing FAQ content where available. Preserve current FAQ behavior and avoid duplicate questions.
+
+The FAQ list should support:
+
+Question
+Answer
+Open/closed state
+One or multiple open items according to the existing project convention
+Smooth height/opacity transition
+Chevron rotation
+Clear active state
+Keyboard accessibility
+Proper ARIA attributes
+Required keyboard behavior:
+
+Questions must be real buttons.
+They must be reachable with Tab.
+Enter and Space must open or close an item.
+Screen readers must understand the expanded/collapsed state.
+Focus styles must be visible.
+Admission help card
+Add a card beside the FAQ list with:
+
+Still Have Questions?
+Our admission experts are here to help.
+
+Include:
+
+Talk to Admission Counselor button
+Phone contact
+Working hours
+Optional WhatsApp/contact action if the project already supports it
+Small contact icons
+Clear borders and subtle shadow
+All links must use the project’s existing routes or contact configuration.
+
+Do not hardcode a phone number if the project already stores contact details in site settings.
+
+FAQ effects
+Add restrained professional effects:
+
+FAQ items reveal with a small stagger.
+The active question receives a gold/navy accent.
+The answer expands smoothly.
+The contact card fades and lifts into view.
+Button receives a subtle hover lift and shadow.
+Do not create layout jumps outside the accordion’s intended expansion.
+Section 4: Final Admission CTA
+Add a full-width final CTA section after the FAQ section.
+
+Use the attached reference image as the visual direction.
+
+Suggested content:
+
+Begin Your Journey Towards
+Success with KVR Junior College
+
+Supporting text:
+
+Admissions for 2026-27 are now open. Limited seats available for MPC, BiPC, IIT-JEE and NEET integrated programs.
+
+Add these actions:
+
+Apply Now
+Book Campus Visit
+Download Prospectus
+CTA design
+Use:
+
+Deep navy background
+Subtle campus image or texture
+Gradient overlay for readability
+Gold or teal text accent
+Centered heading and description
+Three responsive buttons
+Rounded button styling
+Strong contrast
+Professional spacing
+Effects:
+
+CTA content reveals when entering the viewport.
+Background has a very subtle scale or gradient transition.
+Buttons lift slightly on hover and keyboard focus.
+Arrow icons may move subtly if already used.
+Do not make the background animation distracting.
+Disable movement and animation under reduced-motion preferences.
+Each button must have a working destination:
+
+Apply Now → existing admission/contact route
+Book Campus Visit → existing contact or campus visit route
+Download Prospectus → existing prospectus asset or configured download route
+Do not create fake links. If a destination does not exist, connect it to the project’s current contact/admission flow and clearly preserve that behavior.
+
+Gradually Update the Admin Dashboard
+Make the new About page sections manageable from the existing admin dashboard.
+
+Do not redesign the entire dashboard. Add the functionality gradually and follow existing admin patterns.
+
+Before implementing, inspect the existing settings/content architecture and reuse it wherever possible.
+
+Do not create a second competing content system.
+
+Admin Phase 1: Campus Highlights
+Add an admin management area for Campus Highlights with:
+
+Add highlight
+Edit highlight
+Delete highlight
+Reorder highlights
+Enable/disable highlight
+Title
+Short description
+Image
+Optional icon
+Alt text
+Display order
+The public About page should render the active highlights from admin data.
+
+Include validation for:
+
+Required title
+Reasonable description length
+Valid image or upload path
+Safe ordering value
+Provide sensible default content so the page does not become empty if no custom entries exist.
+
+Admin Phase 2: Achievement Statistics
+Add an admin management area for the statistics band with:
+
+Add statistic
+Edit statistic
+Delete statistic
+Reorder statistic
+Enable/disable statistic
+Label
+Numeric target value
+Display suffix such as + or %
+Optional icon
+Display order
+Important:
+
+Store the numeric target separately from the suffix.
+Example: value 30, suffix +
+Example: value 95, suffix %
+Do not store values in a way that prevents count-up animation.
+Validate that the numeric value is non-negative.
+Keep formatting safe for larger values.
+The public count-up animation must use these admin-configured values.
+
+Admin Phase 3: FAQ Content
+Add admin controls for:
+
+Add FAQ
+Edit FAQ
+Delete FAQ
+Reorder FAQ
+Enable/disable FAQ
+Question
+Answer
+Display order
+The public FAQ section must render active questions from admin data.
+
+Prevent blank questions and blank answers from being published.
+
+Admin Phase 4: Final CTA and Admission Help
+Add editable admin fields for:
+
+CTA heading
+CTA supporting text
+Apply button label and link
+Campus visit button label and link
+Prospectus button label and link
+CTA background image
+Admission contact phone
+Admission working hours
+Counselor button label/link
+Use the existing site settings structure if one already exists.
+
+Do not store secrets in the content fields.
+
+Backend and Data Requirements
+Follow the project’s current backend conventions.
+
+Before adding tables or endpoints:
+
+Inspect the existing database schema.
+Reuse existing site settings or content tables where appropriate.
+Add migrations only if required.
+Add server-side validation.
+Return clear errors for invalid input.
+Keep public API responses limited to active/published content.
+Keep admin endpoints protected using the existing authentication and authorization system.
+Do not expose admin-only fields publicly.
+Preserve existing data and existing admin functionality.
+Do not replace the project’s current database system.
+
+Visual and Interaction Quality
+The overall implementation should feel:
+
+Premium
+Trustworthy
+Professional
+Modern
+Educational
+Calm rather than flashy
+Use consistent:
+
+Border radii
+Shadows
+Spacing
+Navy/gold/teal palette
+Typography
+Hover states
+Focus states
+Reveal timing
+Icon sizing
+Do not overuse animations. Every animation should support hierarchy or feedback.
+
+Avoid:
+
+Excessive bouncing
+Constant looping motion
+Rapid flashing
+Text clipping
+Layout shifts
+Horizontal overflow
+Poor contrast
+Hover-only information
+Hardcoded content that should be editable
+Fake admin controls that do not persist data
+Responsive and Accessibility Requirements
+Verify the complete About page at:
+
+Desktop
+Tablet
+Mobile
+Ensure:
+
+No horizontal scrolling
+Campus cards stack correctly
+Statistics wrap correctly
+FAQ accordion remains usable
+Contact card fits within the viewport
+CTA buttons stack or wrap cleanly
+Images maintain appropriate aspect ratios
+All interactive controls are keyboard accessible
+Focus states are visible
+Buttons and text meet readable contrast requirements
+prefers-reduced-motion: reduce is supported
+For reduced motion:
+
+Show final count-up values immediately.
+Disable reveal movement.
+Disable background movement.
+Disable staggered animation.
+Keep accordion functionality intact.
+Preserve all content visibility.
+Verification Checklist
+Before finishing, verify:
+
+Campus Highlights appears in the correct About page position.
+Campus cards render correctly from admin-managed data.
+Statistics render from admin-managed numeric values.
+Statistics animate from zero to their final values.
+Plus and percentage suffixes remain correct.
+Count-up animation runs once when the section becomes visible.
+Reduced-motion mode shows final values immediately.
+FAQ questions and answers are admin-manageable.
+FAQ accordion works with mouse, keyboard, and screen readers.
+Admission help card uses configured contact data.
+Final CTA buttons use real existing routes or configured links.
+Admin create, edit, delete, reorder, and enable/disable operations persist correctly.
+Public pages only show active content.
+Existing About page sections remain intact.
+The timeline alignment fix remains unchanged.
+Mobile layouts have no overflow.
+Type checking passes.
+Production build passes.
+Backend starts successfully.
+Existing admin login and functionality still work.
+Implement this as a complete feature addition, but keep the admin changes organized into the separate content groups above so they can be expanded later without redesigning the dashboard.
