@@ -582,6 +582,83 @@ body { min-width: 320px; }
   }
 }
 
+.about-campus-section { overflow: hidden; background: hsl(var(--background)); }
+.campus-highlight-card {
+  border: 1px solid hsl(var(--primary-foreground) / .12);
+  transition: transform .45s cubic-bezier(.22,1,.36,1), border-color .35s ease, box-shadow .45s ease;
+}
+.campus-highlight-card:hover,
+.campus-highlight-card:focus-visible {
+  transform: translateY(-7px);
+  border-color: hsl(var(--accent) / .7);
+  box-shadow: 0 24px 44px hsl(var(--primary) / .2), 0 0 0 1px hsl(var(--accent) / .12);
+}
+.campus-highlight-card:focus-visible { outline: 2px solid hsl(var(--accent)); outline-offset: 4px; }
+.campus-highlight-overlay {
+  background: linear-gradient(to top, hsl(var(--primary) / .98), hsl(var(--primary) / .72) 42%, hsl(var(--primary) / .08) 80%, transparent);
+  transition: background .45s ease;
+}
+.campus-highlight-card:hover .campus-highlight-overlay,
+.campus-highlight-card:focus-visible .campus-highlight-overlay {
+  background: linear-gradient(to top, hsl(var(--primary) / .98), hsl(var(--primary) / .82) 54%, hsl(var(--primary) / .16));
+}
+.achievement-band {
+  position: relative;
+  overflow: hidden;
+  background: hsl(var(--primary));
+}
+.achievement-band-texture {
+  position: absolute;
+  inset: 0;
+  opacity: .72;
+  background: radial-gradient(circle at 12% 18%, hsl(var(--accent) / .18), transparent 30%), radial-gradient(circle at 86% 76%, hsl(181 57% 45% / .14), transparent 28%), linear-gradient(135deg, transparent 0 48%, hsl(var(--primary-foreground) / .035) 48% 49%, transparent 49% 100%);
+}
+.achievement-stat {
+  min-width: 0;
+  text-align: center;
+  transition: transform .35s cubic-bezier(.22,1,.36,1);
+}
+.achievement-stat:hover { transform: translateY(-4px); }
+.faq-item { overflow: hidden; transition: border-color .3s ease, box-shadow .3s ease; }
+.faq-contact-card {
+  position: sticky;
+  top: 6.5rem;
+  transition: transform .45s cubic-bezier(.22,1,.36,1), box-shadow .45s ease;
+}
+.about-section-is-visible .faq-contact-card { animation: about-card-reveal .7s .18s cubic-bezier(.22,1,.36,1) both; }
+.admission-cta-section {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background: hsl(var(--primary));
+}
+.admission-cta-image {
+  z-index: -2;
+  background-position: center;
+  background-size: cover;
+  transition: transform 1.2s cubic-bezier(.22,1,.36,1);
+}
+.about-section-is-visible .admission-cta-image { transform: scale(1.025); }
+.admission-cta-overlay {
+  z-index: -1;
+  background: linear-gradient(120deg, hsl(var(--primary) / .96), hsl(var(--primary) / .78) 55%, hsl(var(--primary) / .87));
+}
+@media (max-width: 1023px) {
+  .faq-contact-card { position: static; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .campus-highlight-card,
+  .campus-highlight-overlay,
+  .achievement-stat,
+  .faq-item,
+  .faq-contact-card,
+  .admission-cta-image {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
 @layer base {
   * {
     @apply border-border;

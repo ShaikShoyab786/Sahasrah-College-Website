@@ -238,6 +238,78 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+  /about-campus-highlights:
+    get:
+      operationId: getAboutCampusHighlights
+      tags: [public]
+      summary: Read visible campus highlights
+      responses:
+        "200":
+          description: Campus highlights content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AboutCampusHighlights"
+        "404":
+          description: Campus highlights are hidden or unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /about-achievements:
+    get:
+      operationId: getAboutAchievements
+      tags: [public]
+      summary: Read visible achievement statistics
+      responses:
+        "200":
+          description: Achievement statistics content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AboutAchievements"
+        "404":
+          description: Achievement statistics are hidden or unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /about-faq:
+    get:
+      operationId: getAboutFaq
+      tags: [public]
+      summary: Read visible About page FAQs
+      responses:
+        "200":
+          description: FAQ content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AboutFaq"
+        "404":
+          description: FAQs are hidden or unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /about-admission-cta:
+    get:
+      operationId: getAboutAdmissionCta
+      tags: [public]
+      summary: Read the visible About page admission CTA
+      responses:
+        "200":
+          description: Admission CTA and counselor content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AboutAdmissionCta"
+        "404":
+          description: Admission CTA is hidden or unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /admin/site-settings:
     put:
       operationId: updateSiteSettings
@@ -659,11 +731,215 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+  /admin/about-campus-highlights:
+    get:
+      operationId: getAdminAboutCampusHighlights
+      tags: [admin]
+      summary: Read campus highlights settings
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Campus highlights settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AboutCampusHighlights"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateAboutCampusHighlights
+      tags: [admin]
+      summary: Update campus highlights settings
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AboutCampusHighlightsInput"
+      responses:
+        "200":
+          description: Updated campus highlights settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AboutCampusHighlights"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/about-achievements:
+    get:
+      operationId: getAdminAboutAchievements
+      tags: [admin]
+      summary: Read achievement statistics settings
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Achievement statistics settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AboutAchievements"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateAboutAchievements
+      tags: [admin]
+      summary: Update achievement statistics settings
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AboutAchievementsInput"
+      responses:
+        "200":
+          description: Updated achievement statistics settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AboutAchievements"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/about-faq:
+    get:
+      operationId: getAdminAboutFaq
+      tags: [admin]
+      summary: Read FAQ settings
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: FAQ settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AboutFaq"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateAboutFaq
+      tags: [admin]
+      summary: Update FAQ settings
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AboutFaqInput"
+      responses:
+        "200":
+          description: Updated FAQ settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AboutFaq"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/about-admission-cta:
+    get:
+      operationId: getAdminAboutAdmissionCta
+      tags: [admin]
+      summary: Read admission CTA and counselor settings
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Admission CTA settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AboutAdmissionCta"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateAboutAdmissionCta
+      tags: [admin]
+      summary: Update admission CTA and counselor settings
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AboutAdmissionCtaInput"
+      responses:
+        "200":
+          description: Updated admission CTA settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AboutAdmissionCta"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /admin/uploads:
     post:
       operationId: uploadAdminImage
       tags: [admin]
-      summary: Upload a logo or hero image
+      summary: Upload a logo, hero, campus, or CTA image
       security:
         - cookieAuth: []
       requestBody:
@@ -1785,6 +2061,336 @@ components:
         - isVisible
         - sortOrder
         - members
+    AboutCampusHighlight:
+      type: object
+      properties:
+        id:
+          type: string
+        imageUrl:
+          type: ["string", "null"]
+        imageAltText:
+          type: string
+        icon:
+          type: ["string", "null"]
+        title:
+          type: string
+        description:
+          type: string
+        displayOrder:
+          type: integer
+        isVisible:
+          type: boolean
+      required: [id, imageUrl, imageAltText, icon, title, description, displayOrder, isVisible]
+    AboutCampusHighlightInput:
+      type: object
+      properties:
+        imageUrl:
+          type: ["string", "null"]
+        imageAltText:
+          type: string
+        icon:
+          type: ["string", "null"]
+        title:
+          type: string
+          minLength: 1
+        description:
+          type: string
+          minLength: 1
+          maxLength: 280
+        displayOrder:
+          type: integer
+          minimum: 1
+          maximum: 20
+        isVisible:
+          type: boolean
+      required: [imageUrl, imageAltText, icon, title, description, displayOrder, isVisible]
+    AboutCampusHighlights:
+      type: object
+      properties:
+        id:
+          type: string
+        heading:
+          type: string
+        description:
+          type: string
+        isVisible:
+          type: boolean
+        sortOrder:
+          type: integer
+        updatedAt:
+          type: string
+          format: date-time
+        highlights:
+          type: array
+          items:
+            $ref: "#/components/schemas/AboutCampusHighlight"
+      required: [id, heading, description, isVisible, sortOrder, updatedAt, highlights]
+    AboutCampusHighlightsInput:
+      type: object
+      properties:
+        heading:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        isVisible:
+          type: boolean
+        sortOrder:
+          type: integer
+          minimum: 1
+          maximum: 20
+        highlights:
+          type: array
+          minItems: 1
+          maxItems: 20
+          items:
+            $ref: "#/components/schemas/AboutCampusHighlightInput"
+      required: [heading, description, isVisible, sortOrder, highlights]
+    AboutAchievementStatistic:
+      type: object
+      properties:
+        id:
+          type: string
+        numericTarget:
+          type: integer
+        suffix:
+          type: string
+        icon:
+          type: ["string", "null"]
+        label:
+          type: string
+        displayOrder:
+          type: integer
+        isVisible:
+          type: boolean
+      required: [id, numericTarget, suffix, icon, label, displayOrder, isVisible]
+    AboutAchievementStatisticInput:
+      type: object
+      properties:
+        numericTarget:
+          type: integer
+          minimum: 0
+          maximum: 1000000000
+        suffix:
+          type: string
+          maxLength: 8
+        icon:
+          type: ["string", "null"]
+        label:
+          type: string
+          minLength: 1
+        displayOrder:
+          type: integer
+          minimum: 1
+          maximum: 20
+        isVisible:
+          type: boolean
+      required: [numericTarget, suffix, icon, label, displayOrder, isVisible]
+    AboutAchievements:
+      type: object
+      properties:
+        id:
+          type: string
+        heading:
+          type: string
+        description:
+          type: string
+        isVisible:
+          type: boolean
+        sortOrder:
+          type: integer
+        updatedAt:
+          type: string
+          format: date-time
+        statistics:
+          type: array
+          items:
+            $ref: "#/components/schemas/AboutAchievementStatistic"
+      required: [id, heading, description, isVisible, sortOrder, updatedAt, statistics]
+    AboutAchievementsInput:
+      type: object
+      properties:
+        heading:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        isVisible:
+          type: boolean
+        sortOrder:
+          type: integer
+          minimum: 1
+          maximum: 20
+        statistics:
+          type: array
+          minItems: 1
+          maxItems: 20
+          items:
+            $ref: "#/components/schemas/AboutAchievementStatisticInput"
+      required: [heading, description, isVisible, sortOrder, statistics]
+    AboutFaqItem:
+      type: object
+      properties:
+        id:
+          type: string
+        question:
+          type: string
+        answer:
+          type: string
+        displayOrder:
+          type: integer
+        isVisible:
+          type: boolean
+      required: [id, question, answer, displayOrder, isVisible]
+    AboutFaqItemInput:
+      type: object
+      properties:
+        question:
+          type: string
+          minLength: 1
+        answer:
+          type: string
+          minLength: 1
+        displayOrder:
+          type: integer
+          minimum: 1
+          maximum: 20
+        isVisible:
+          type: boolean
+      required: [question, answer, displayOrder, isVisible]
+    AboutFaq:
+      type: object
+      properties:
+        id:
+          type: string
+        heading:
+          type: string
+        description:
+          type: string
+        isVisible:
+          type: boolean
+        sortOrder:
+          type: integer
+        updatedAt:
+          type: string
+          format: date-time
+        questions:
+          type: array
+          items:
+            $ref: "#/components/schemas/AboutFaqItem"
+      required: [id, heading, description, isVisible, sortOrder, updatedAt, questions]
+    AboutFaqInput:
+      type: object
+      properties:
+        heading:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        isVisible:
+          type: boolean
+        sortOrder:
+          type: integer
+          minimum: 1
+          maximum: 20
+        questions:
+          type: array
+          minItems: 1
+          maxItems: 20
+          items:
+            $ref: "#/components/schemas/AboutFaqItemInput"
+      required: [heading, description, isVisible, sortOrder, questions]
+    AboutAdmissionCta:
+      type: object
+      properties:
+        id:
+          type: string
+        heading:
+          type: string
+        supportingText:
+          type: string
+        applyButtonLabel:
+          type: string
+        applyButtonHref:
+          type: string
+        campusVisitButtonLabel:
+          type: string
+        campusVisitButtonHref:
+          type: string
+        prospectusButtonLabel:
+          type: string
+        prospectusButtonHref:
+          type: string
+        backgroundImage:
+          type: ["string", "null"]
+        backgroundImageAltText:
+          type: string
+        counselorButtonLabel:
+          type: string
+        counselorButtonHref:
+          type: string
+        admissionPhone:
+          type: string
+        workingHours:
+          type: string
+        isVisible:
+          type: boolean
+        sortOrder:
+          type: integer
+        updatedAt:
+          type: string
+          format: date-time
+      required: [id, heading, supportingText, applyButtonLabel, applyButtonHref, campusVisitButtonLabel, campusVisitButtonHref, prospectusButtonLabel, prospectusButtonHref, backgroundImage, backgroundImageAltText, counselorButtonLabel, counselorButtonHref, admissionPhone, workingHours, isVisible, sortOrder, updatedAt]
+    AboutAdmissionCtaInput:
+      type: object
+      properties:
+        heading:
+          type: string
+          minLength: 1
+        supportingText:
+          type: string
+          minLength: 1
+        applyButtonLabel:
+          type: string
+          minLength: 1
+        applyButtonHref:
+          type: string
+          minLength: 1
+        campusVisitButtonLabel:
+          type: string
+          minLength: 1
+        campusVisitButtonHref:
+          type: string
+          minLength: 1
+        prospectusButtonLabel:
+          type: string
+          minLength: 1
+        prospectusButtonHref:
+          type: string
+          minLength: 1
+        backgroundImage:
+          type: ["string", "null"]
+        backgroundImageAltText:
+          type: string
+        counselorButtonLabel:
+          type: string
+          minLength: 1
+        counselorButtonHref:
+          type: string
+          minLength: 1
+        admissionPhone:
+          type: string
+          minLength: 1
+        workingHours:
+          type: string
+          minLength: 1
+        isVisible:
+          type: boolean
+        sortOrder:
+          type: integer
+          minimum: 1
+          maximum: 20
+      required: [heading, supportingText, applyButtonLabel, applyButtonHref, campusVisitButtonLabel, campusVisitButtonHref, prospectusButtonLabel, prospectusButtonHref, backgroundImage, backgroundImageAltText, counselorButtonLabel, counselorButtonHref, admissionPhone, workingHours, isVisible, sortOrder]
     ImageUploadInput:
       type: object
       properties:
@@ -1793,7 +2399,7 @@ components:
           format: binary
         purpose:
           type: string
-          enum: [logo, hero]
+          enum: [logo, hero, campus, cta]
       required:
         - file
         - purpose
@@ -1804,7 +2410,7 @@ components:
           type: string
         purpose:
           type: string
-          enum: [logo, hero]
+          enum: [logo, hero, campus, cta]
       required:
         - url
         - purpose

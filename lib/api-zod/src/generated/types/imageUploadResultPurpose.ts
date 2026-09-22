@@ -12,4 +12,6 @@ export type ImageUploadResultPurpose = typeof ImageUploadResultPurpose[keyof typ
 export const ImageUploadResultPurpose = {
   logo: 'logo',
   hero: 'hero',
+  campus: 'campus',
+  cta: 'cta',
 } as const;

@@ -1,12 +1,20 @@
 import { Router, type IRouter } from "express";
 import {
   GetAboutChairmanMessageResponse,
+  GetAboutAchievementsResponse,
+  GetAboutAdmissionCtaResponse,
+  GetAboutCampusHighlightsResponse,
+  GetAboutFaqResponse,
   GetAboutHeroResponse,
   GetAboutGuidingPrinciplesResponse,
   GetAboutLeadershipResponse,
   GetAboutStoryResponse,
   GetAboutWhyParentsChooseResponse,
   GetAdminAboutChairmanMessageResponse,
+  GetAdminAboutAchievementsResponse,
+  GetAdminAboutAdmissionCtaResponse,
+  GetAdminAboutCampusHighlightsResponse,
+  GetAdminAboutFaqResponse,
   GetAdminAboutHeroResponse,
   GetAdminAboutGuidingPrinciplesResponse,
   GetAdminAboutLeadershipResponse,
@@ -16,6 +24,14 @@ import {
   GetHomepageAboutPreviewResponse,
   UpdateAboutChairmanMessageBody,
   UpdateAboutChairmanMessageResponse,
+  UpdateAboutAchievementsBody,
+  UpdateAboutAchievementsResponse,
+  UpdateAboutAdmissionCtaBody,
+  UpdateAboutAdmissionCtaResponse,
+  UpdateAboutCampusHighlightsBody,
+  UpdateAboutCampusHighlightsResponse,
+  UpdateAboutFaqBody,
+  UpdateAboutFaqResponse,
   UpdateAboutHeroBody,
   UpdateAboutHeroResponse,
   UpdateAboutGuidingPrinciplesBody,
@@ -69,6 +85,39 @@ async function readAboutLeadership() {
     where: { id: "singleton" },
     include: { members: { orderBy: { displayOrder: "asc" } } },
   });
+}
+
+async function readAboutCampusHighlights() {
+  return prisma.aboutCampusHighlights.findUnique({
+    where: { id: "singleton" },
+    include: { highlights: { orderBy: { displayOrder: "asc" } } },
+  });
+}
+
+async function readAboutAchievements() {
+  return prisma.aboutAchievements.findUnique({
+    where: { id: "singleton" },
+    include: { statistics: { orderBy: { displayOrder: "asc" } } },
+  });
+}
+
+async function readAboutFaq() {
+  return prisma.aboutFaq.findUnique({
+    where: { id: "singleton" },
+    include: { questions: { orderBy: { displayOrder: "asc" } } },
+  });
+}
+
+async function readAboutAdmissionCta() {
+  return prisma.aboutAdmissionCta.findUnique({ where: { id: "singleton" } });
+}
+
+function hasUniqueDisplayOrders(items: Array<{ displayOrder: number }>) {
+  return new Set(items.map((item) => item.displayOrder)).size === items.length;
+}
+
+function isValidImageReference(value: string | null) {
+  return value === null || value.startsWith("/api/uploads/") || value.startsWith("https://") || value.startsWith("http://");
 }
 
 router.get("/site-settings", async (req, res) => {
@@ -197,6 +246,62 @@ router.get("/about-leadership", async (req, res) => {
   } catch (error) {
     req.log.error({ err: error }, "Unable to read About leadership");
     res.status(500).json({ error: "Unable to load About leadership." });
+  }
+});
+
+router.get("/about-campus-highlights", async (req, res) => {
+  try {
+    const content = await readAboutCampusHighlights();
+    if (!content || !content.isVisible) {
+      res.status(404).json({ error: "Campus highlights are not available." });
+      return;
+    }
+    res.json(GetAboutCampusHighlightsResponse.parse(content));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read About campus highlights");
+    res.status(500).json({ error: "Unable to load About campus highlights." });
+  }
+});
+
+router.get("/about-achievements", async (req, res) => {
+  try {
+    const content = await readAboutAchievements();
+    if (!content || !content.isVisible) {
+      res.status(404).json({ error: "Achievement statistics are not available." });
+      return;
+    }
+    res.json(GetAboutAchievementsResponse.parse(content));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read About achievement statistics");
+    res.status(500).json({ error: "Unable to load About achievement statistics." });
+  }
+});
+
+router.get("/about-faq", async (req, res) => {
+  try {
+    const content = await readAboutFaq();
+    if (!content || !content.isVisible) {
+      res.status(404).json({ error: "About FAQs are not available." });
+      return;
+    }
+    res.json(GetAboutFaqResponse.parse(content));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read About FAQs");
+    res.status(500).json({ error: "Unable to load About FAQs." });
+  }
+});
+
+router.get("/about-admission-cta", async (req, res) => {
+  try {
+    const content = await readAboutAdmissionCta();
+    if (!content || !content.isVisible) {
+      res.status(404).json({ error: "About admission CTA is not available." });
+      return;
+    }
+    res.json(GetAboutAdmissionCtaResponse.parse(content));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read About admission CTA");
+    res.status(500).json({ error: "Unable to load About admission CTA." });
   }
 });
 
@@ -519,6 +624,166 @@ router.put("/admin/about-leadership", requireAdmin, async (req, res) => {
   } catch (error) {
     req.log.error({ err: error }, "Unable to update About leadership");
     res.status(500).json({ error: "Unable to save About leadership." });
+  }
+});
+
+router.get("/admin/about-campus-highlights", requireAdmin, async (req, res) => {
+  try {
+    const content = await readAboutCampusHighlights();
+    if (!content) {
+      res.status(404).json({ error: "Campus highlights are not available." });
+      return;
+    }
+    res.json(GetAdminAboutCampusHighlightsResponse.parse(content));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read admin About campus highlights");
+    res.status(500).json({ error: "Unable to load About campus highlights." });
+  }
+});
+
+router.put("/admin/about-campus-highlights", requireAdmin, async (req, res) => {
+  const parsed = UpdateAboutCampusHighlightsBody.safeParse(req.body);
+  if (
+    !parsed.success ||
+    !hasUniqueDisplayOrders(parsed.data.highlights) ||
+    parsed.data.highlights.some((highlight) => !isValidImageReference(highlight.imageUrl))
+  ) {
+    res.status(400).json({ error: "Check campus highlight fields, image references, and unique display orders." });
+    return;
+  }
+  try {
+    const { highlights, ...sectionData } = parsed.data;
+    await prisma.$transaction(async (tx) => {
+      await tx.aboutCampusHighlights.upsert({
+        where: { id: "singleton" },
+        update: sectionData,
+        create: { id: "singleton", ...sectionData },
+      });
+      await tx.aboutCampusHighlight.deleteMany({ where: { aboutCampusHighlightsId: "singleton" } });
+      await tx.aboutCampusHighlight.createMany({
+        data: highlights.map((highlight) => ({ ...highlight, aboutCampusHighlightsId: "singleton" })),
+      });
+    });
+    const content = await readAboutCampusHighlights();
+    res.json(UpdateAboutCampusHighlightsResponse.parse(content));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to update About campus highlights");
+    res.status(500).json({ error: "Unable to save About campus highlights." });
+  }
+});
+
+router.get("/admin/about-achievements", requireAdmin, async (req, res) => {
+  try {
+    const content = await readAboutAchievements();
+    if (!content) {
+      res.status(404).json({ error: "Achievement statistics are not available." });
+      return;
+    }
+    res.json(GetAdminAboutAchievementsResponse.parse(content));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read admin About achievement statistics");
+    res.status(500).json({ error: "Unable to load About achievement statistics." });
+  }
+});
+
+router.put("/admin/about-achievements", requireAdmin, async (req, res) => {
+  const parsed = UpdateAboutAchievementsBody.safeParse(req.body);
+  if (!parsed.success || !hasUniqueDisplayOrders(parsed.data.statistics)) {
+    res.status(400).json({ error: "Check achievement statistic fields and use unique display orders." });
+    return;
+  }
+  try {
+    const { statistics, ...sectionData } = parsed.data;
+    await prisma.$transaction(async (tx) => {
+      await tx.aboutAchievements.upsert({
+        where: { id: "singleton" },
+        update: sectionData,
+        create: { id: "singleton", ...sectionData },
+      });
+      await tx.aboutAchievementStatistic.deleteMany({ where: { aboutAchievementsId: "singleton" } });
+      await tx.aboutAchievementStatistic.createMany({
+        data: statistics.map((statistic) => ({ ...statistic, aboutAchievementsId: "singleton" })),
+      });
+    });
+    const content = await readAboutAchievements();
+    res.json(UpdateAboutAchievementsResponse.parse(content));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to update About achievement statistics");
+    res.status(500).json({ error: "Unable to save About achievement statistics." });
+  }
+});
+
+router.get("/admin/about-faq", requireAdmin, async (req, res) => {
+  try {
+    const content = await readAboutFaq();
+    if (!content) {
+      res.status(404).json({ error: "About FAQs are not available." });
+      return;
+    }
+    res.json(GetAdminAboutFaqResponse.parse(content));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read admin About FAQs");
+    res.status(500).json({ error: "Unable to load About FAQs." });
+  }
+});
+
+router.put("/admin/about-faq", requireAdmin, async (req, res) => {
+  const parsed = UpdateAboutFaqBody.safeParse(req.body);
+  if (!parsed.success || !hasUniqueDisplayOrders(parsed.data.questions)) {
+    res.status(400).json({ error: "Check FAQ fields and use unique display orders." });
+    return;
+  }
+  try {
+    const { questions, ...sectionData } = parsed.data;
+    await prisma.$transaction(async (tx) => {
+      await tx.aboutFaq.upsert({
+        where: { id: "singleton" },
+        update: sectionData,
+        create: { id: "singleton", ...sectionData },
+      });
+      await tx.aboutFaqItem.deleteMany({ where: { aboutFaqId: "singleton" } });
+      await tx.aboutFaqItem.createMany({
+        data: questions.map((question) => ({ ...question, aboutFaqId: "singleton" })),
+      });
+    });
+    const content = await readAboutFaq();
+    res.json(UpdateAboutFaqResponse.parse(content));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to update About FAQs");
+    res.status(500).json({ error: "Unable to save About FAQs." });
+  }
+});
+
+router.get("/admin/about-admission-cta", requireAdmin, async (req, res) => {
+  try {
+    const content = await readAboutAdmissionCta();
+    if (!content) {
+      res.status(404).json({ error: "About admission CTA is not available." });
+      return;
+    }
+    res.json(GetAdminAboutAdmissionCtaResponse.parse(content));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read admin About admission CTA");
+    res.status(500).json({ error: "Unable to load About admission CTA." });
+  }
+});
+
+router.put("/admin/about-admission-cta", requireAdmin, async (req, res) => {
+  const parsed = UpdateAboutAdmissionCtaBody.safeParse(req.body);
+  if (!parsed.success || !isValidImageReference(parsed.data.backgroundImage)) {
+    res.status(400).json({ error: "Check admission CTA fields and image reference." });
+    return;
+  }
+  try {
+    const content = await prisma.aboutAdmissionCta.upsert({
+      where: { id: "singleton" },
+      update: parsed.data,
+      create: { id: "singleton", ...parsed.data },
+    });
+    res.json(UpdateAboutAdmissionCtaResponse.parse(content));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to update About admission CTA");
+    res.status(500).json({ error: "Unable to save About admission CTA." });
   }
 });
 

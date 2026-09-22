@@ -281,6 +281,96 @@ export const GetAboutLeadershipResponse = zod.object({
 
 
 /**
+ * @summary Read visible campus highlights
+ */
+export const GetAboutCampusHighlightsResponse = zod.object({
+  "id": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date(),
+  "highlights": zod.array(zod.object({
+  "id": zod.string(),
+  "imageUrl": zod.string().nullable(),
+  "imageAltText": zod.string(),
+  "icon": zod.string().nullable(),
+  "title": zod.string(),
+  "description": zod.string(),
+  "displayOrder": zod.number().int(),
+  "isVisible": zod.boolean()
+}))
+})
+
+
+/**
+ * @summary Read visible achievement statistics
+ */
+export const GetAboutAchievementsResponse = zod.object({
+  "id": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date(),
+  "statistics": zod.array(zod.object({
+  "id": zod.string(),
+  "numericTarget": zod.number().int(),
+  "suffix": zod.string(),
+  "icon": zod.string().nullable(),
+  "label": zod.string(),
+  "displayOrder": zod.number().int(),
+  "isVisible": zod.boolean()
+}))
+})
+
+
+/**
+ * @summary Read visible About page FAQs
+ */
+export const GetAboutFaqResponse = zod.object({
+  "id": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date(),
+  "questions": zod.array(zod.object({
+  "id": zod.string(),
+  "question": zod.string(),
+  "answer": zod.string(),
+  "displayOrder": zod.number().int(),
+  "isVisible": zod.boolean()
+}))
+})
+
+
+/**
+ * @summary Read the visible About page admission CTA
+ */
+export const GetAboutAdmissionCtaResponse = zod.object({
+  "id": zod.string(),
+  "heading": zod.string(),
+  "supportingText": zod.string(),
+  "applyButtonLabel": zod.string(),
+  "applyButtonHref": zod.string(),
+  "campusVisitButtonLabel": zod.string(),
+  "campusVisitButtonHref": zod.string(),
+  "prospectusButtonLabel": zod.string(),
+  "prospectusButtonHref": zod.string(),
+  "backgroundImage": zod.string().nullable(),
+  "backgroundImageAltText": zod.string(),
+  "counselorButtonLabel": zod.string(),
+  "counselorButtonHref": zod.string(),
+  "admissionPhone": zod.string(),
+  "workingHours": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
  * @summary Update public college identity settings
  */
 
@@ -928,16 +1018,313 @@ export const UpdateAboutLeadershipResponse = zod.object({
 
 
 /**
- * @summary Upload a logo or hero image
+ * @summary Read campus highlights settings
+ */
+export const GetAdminAboutCampusHighlightsResponse = zod.object({
+  "id": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date(),
+  "highlights": zod.array(zod.object({
+  "id": zod.string(),
+  "imageUrl": zod.string().nullable(),
+  "imageAltText": zod.string(),
+  "icon": zod.string().nullable(),
+  "title": zod.string(),
+  "description": zod.string(),
+  "displayOrder": zod.number().int(),
+  "isVisible": zod.boolean()
+}))
+})
+
+
+/**
+ * @summary Update campus highlights settings
+ */
+
+export const updateAboutCampusHighlightsBodySortOrderMax = 20;
+
+
+export const updateAboutCampusHighlightsBodyHighlightsItemDescriptionMax = 280;
+
+export const updateAboutCampusHighlightsBodyHighlightsItemDisplayOrderMax = 20;
+
+export const updateAboutCampusHighlightsBodyHighlightsMax = 20;
+
+
+
+export const UpdateAboutCampusHighlightsBody = zod.object({
+  "heading": zod.string().min(1),
+  "description": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int().min(1).max(updateAboutCampusHighlightsBodySortOrderMax),
+  "highlights": zod.array(zod.object({
+  "imageUrl": zod.string().nullable(),
+  "imageAltText": zod.string(),
+  "icon": zod.string().nullable(),
+  "title": zod.string().min(1),
+  "description": zod.string().min(1).max(updateAboutCampusHighlightsBodyHighlightsItemDescriptionMax),
+  "displayOrder": zod.number().int().min(1).max(updateAboutCampusHighlightsBodyHighlightsItemDisplayOrderMax),
+  "isVisible": zod.boolean()
+})).min(1).max(updateAboutCampusHighlightsBodyHighlightsMax)
+})
+
+export const UpdateAboutCampusHighlightsResponse = zod.object({
+  "id": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date(),
+  "highlights": zod.array(zod.object({
+  "id": zod.string(),
+  "imageUrl": zod.string().nullable(),
+  "imageAltText": zod.string(),
+  "icon": zod.string().nullable(),
+  "title": zod.string(),
+  "description": zod.string(),
+  "displayOrder": zod.number().int(),
+  "isVisible": zod.boolean()
+}))
+})
+
+
+/**
+ * @summary Read achievement statistics settings
+ */
+export const GetAdminAboutAchievementsResponse = zod.object({
+  "id": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date(),
+  "statistics": zod.array(zod.object({
+  "id": zod.string(),
+  "numericTarget": zod.number().int(),
+  "suffix": zod.string(),
+  "icon": zod.string().nullable(),
+  "label": zod.string(),
+  "displayOrder": zod.number().int(),
+  "isVisible": zod.boolean()
+}))
+})
+
+
+/**
+ * @summary Update achievement statistics settings
+ */
+
+export const updateAboutAchievementsBodySortOrderMax = 20;
+
+export const updateAboutAchievementsBodyStatisticsItemNumericTargetMin = 0;
+export const updateAboutAchievementsBodyStatisticsItemNumericTargetMax = 1000000000;
+
+export const updateAboutAchievementsBodyStatisticsItemSuffixMax = 8;
+
+
+export const updateAboutAchievementsBodyStatisticsItemDisplayOrderMax = 20;
+
+export const updateAboutAchievementsBodyStatisticsMax = 20;
+
+
+
+export const UpdateAboutAchievementsBody = zod.object({
+  "heading": zod.string().min(1),
+  "description": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int().min(1).max(updateAboutAchievementsBodySortOrderMax),
+  "statistics": zod.array(zod.object({
+  "numericTarget": zod.number().int().min(updateAboutAchievementsBodyStatisticsItemNumericTargetMin).max(updateAboutAchievementsBodyStatisticsItemNumericTargetMax),
+  "suffix": zod.string().max(updateAboutAchievementsBodyStatisticsItemSuffixMax),
+  "icon": zod.string().nullable(),
+  "label": zod.string().min(1),
+  "displayOrder": zod.number().int().min(1).max(updateAboutAchievementsBodyStatisticsItemDisplayOrderMax),
+  "isVisible": zod.boolean()
+})).min(1).max(updateAboutAchievementsBodyStatisticsMax)
+})
+
+export const UpdateAboutAchievementsResponse = zod.object({
+  "id": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date(),
+  "statistics": zod.array(zod.object({
+  "id": zod.string(),
+  "numericTarget": zod.number().int(),
+  "suffix": zod.string(),
+  "icon": zod.string().nullable(),
+  "label": zod.string(),
+  "displayOrder": zod.number().int(),
+  "isVisible": zod.boolean()
+}))
+})
+
+
+/**
+ * @summary Read FAQ settings
+ */
+export const GetAdminAboutFaqResponse = zod.object({
+  "id": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date(),
+  "questions": zod.array(zod.object({
+  "id": zod.string(),
+  "question": zod.string(),
+  "answer": zod.string(),
+  "displayOrder": zod.number().int(),
+  "isVisible": zod.boolean()
+}))
+})
+
+
+/**
+ * @summary Update FAQ settings
+ */
+
+export const updateAboutFaqBodySortOrderMax = 20;
+
+
+
+export const updateAboutFaqBodyQuestionsItemDisplayOrderMax = 20;
+
+export const updateAboutFaqBodyQuestionsMax = 20;
+
+
+
+export const UpdateAboutFaqBody = zod.object({
+  "heading": zod.string().min(1),
+  "description": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int().min(1).max(updateAboutFaqBodySortOrderMax),
+  "questions": zod.array(zod.object({
+  "question": zod.string().min(1),
+  "answer": zod.string().min(1),
+  "displayOrder": zod.number().int().min(1).max(updateAboutFaqBodyQuestionsItemDisplayOrderMax),
+  "isVisible": zod.boolean()
+})).min(1).max(updateAboutFaqBodyQuestionsMax)
+})
+
+export const UpdateAboutFaqResponse = zod.object({
+  "id": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date(),
+  "questions": zod.array(zod.object({
+  "id": zod.string(),
+  "question": zod.string(),
+  "answer": zod.string(),
+  "displayOrder": zod.number().int(),
+  "isVisible": zod.boolean()
+}))
+})
+
+
+/**
+ * @summary Read admission CTA and counselor settings
+ */
+export const GetAdminAboutAdmissionCtaResponse = zod.object({
+  "id": zod.string(),
+  "heading": zod.string(),
+  "supportingText": zod.string(),
+  "applyButtonLabel": zod.string(),
+  "applyButtonHref": zod.string(),
+  "campusVisitButtonLabel": zod.string(),
+  "campusVisitButtonHref": zod.string(),
+  "prospectusButtonLabel": zod.string(),
+  "prospectusButtonHref": zod.string(),
+  "backgroundImage": zod.string().nullable(),
+  "backgroundImageAltText": zod.string(),
+  "counselorButtonLabel": zod.string(),
+  "counselorButtonHref": zod.string(),
+  "admissionPhone": zod.string(),
+  "workingHours": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Update admission CTA and counselor settings
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+export const updateAboutAdmissionCtaBodySortOrderMax = 20;
+
+
+
+export const UpdateAboutAdmissionCtaBody = zod.object({
+  "heading": zod.string().min(1),
+  "supportingText": zod.string().min(1),
+  "applyButtonLabel": zod.string().min(1),
+  "applyButtonHref": zod.string().min(1),
+  "campusVisitButtonLabel": zod.string().min(1),
+  "campusVisitButtonHref": zod.string().min(1),
+  "prospectusButtonLabel": zod.string().min(1),
+  "prospectusButtonHref": zod.string().min(1),
+  "backgroundImage": zod.string().nullable(),
+  "backgroundImageAltText": zod.string(),
+  "counselorButtonLabel": zod.string().min(1),
+  "counselorButtonHref": zod.string().min(1),
+  "admissionPhone": zod.string().min(1),
+  "workingHours": zod.string().min(1),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int().min(1).max(updateAboutAdmissionCtaBodySortOrderMax)
+})
+
+export const UpdateAboutAdmissionCtaResponse = zod.object({
+  "id": zod.string(),
+  "heading": zod.string(),
+  "supportingText": zod.string(),
+  "applyButtonLabel": zod.string(),
+  "applyButtonHref": zod.string(),
+  "campusVisitButtonLabel": zod.string(),
+  "campusVisitButtonHref": zod.string(),
+  "prospectusButtonLabel": zod.string(),
+  "prospectusButtonHref": zod.string(),
+  "backgroundImage": zod.string().nullable(),
+  "backgroundImageAltText": zod.string(),
+  "counselorButtonLabel": zod.string(),
+  "counselorButtonHref": zod.string(),
+  "admissionPhone": zod.string(),
+  "workingHours": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Upload a logo, hero, campus, or CTA image
  */
 export const UploadAdminImageBody = zod.object({
   "file": zod.instanceof(Blob),
-  "purpose": zod.enum(['logo', 'hero'])
+  "purpose": zod.enum(['logo', 'hero', 'campus', 'cta'])
 })
 
 export const UploadAdminImageResponse = zod.object({
   "url": zod.string(),
-  "purpose": zod.enum(['logo', 'hero'])
+  "purpose": zod.enum(['logo', 'hero', 'campus', 'cta'])
 })
 
 

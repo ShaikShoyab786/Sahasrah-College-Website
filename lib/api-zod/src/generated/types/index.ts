@@ -6,8 +6,22 @@
  * OpenAPI spec version: 0.1.0
  */
 
+export * from './aboutAchievements';
+export * from './aboutAchievementsInput';
+export * from './aboutAchievementStatistic';
+export * from './aboutAchievementStatisticInput';
+export * from './aboutAdmissionCta';
+export * from './aboutAdmissionCtaInput';
+export * from './aboutCampusHighlight';
+export * from './aboutCampusHighlightInput';
+export * from './aboutCampusHighlights';
+export * from './aboutCampusHighlightsInput';
 export * from './aboutChairmanMessage';
 export * from './aboutChairmanMessageInput';
+export * from './aboutFaq';
+export * from './aboutFaqInput';
+export * from './aboutFaqItem';
+export * from './aboutFaqItemInput';
 export * from './aboutGuidingPrinciples';
 export * from './aboutGuidingPrinciplesInput';
 export * from './aboutGuidingPrincipleValue';

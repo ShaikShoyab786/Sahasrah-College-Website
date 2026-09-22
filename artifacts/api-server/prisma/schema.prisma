@@ -250,3 +250,101 @@ model AboutLeadership {
   updatedAt   DateTime                @updatedAt
   members     AboutLeadershipMember[]
 }
+
+model AboutCampusHighlights {
+  id          String                  @id @default("singleton")
+  heading     String
+  description String
+  isVisible   Boolean                 @default(true)
+  sortOrder   Int                     @default(7)
+  updatedAt   DateTime                @updatedAt
+  highlights  AboutCampusHighlight[]
+}
+
+model AboutCampusHighlight {
+  id                    String                @id @default(cuid())
+  aboutCampusHighlightsId String              @default("singleton")
+  imageUrl              String?
+  imageAltText          String
+  icon                  String?
+  title                 String
+  description           String
+  displayOrder          Int
+  isVisible             Boolean               @default(true)
+  updatedAt             DateTime              @updatedAt
+  aboutCampusHighlights  AboutCampusHighlights @relation(fields: [aboutCampusHighlightsId], references: [id], onDelete: Cascade)
+
+  @@unique([aboutCampusHighlightsId, displayOrder])
+  @@index([aboutCampusHighlightsId])
+}
+
+model AboutAchievements {
+  id          String                    @id @default("singleton")
+  heading     String
+  description String
+  isVisible   Boolean                   @default(true)
+  sortOrder   Int                       @default(8)
+  updatedAt   DateTime                  @updatedAt
+  statistics  AboutAchievementStatistic[]
+}
+
+model AboutAchievementStatistic {
+  id                  String           @id @default(cuid())
+  aboutAchievementsId String           @default("singleton")
+  numericTarget       Int
+  suffix              String
+  icon                String?
+  label               String
+  displayOrder        Int
+  isVisible           Boolean          @default(true)
+  updatedAt           DateTime         @updatedAt
+  aboutAchievements   AboutAchievements @relation(fields: [aboutAchievementsId], references: [id], onDelete: Cascade)
+
+  @@unique([aboutAchievementsId, displayOrder])
+  @@index([aboutAchievementsId])
+}
+
+model AboutFaq {
+  id          String         @id @default("singleton")
+  heading     String
+  description String
+  isVisible   Boolean        @default(true)
+  sortOrder   Int            @default(9)
+  updatedAt   DateTime       @updatedAt
+  questions   AboutFaqItem[]
+}
+
+model AboutFaqItem {
+  id          String      @id @default(cuid())
+  aboutFaqId  String      @default("singleton")
+  question    String
+  answer      String
+  displayOrder Int
+  isVisible   Boolean     @default(true)
+  updatedAt   DateTime    @updatedAt
+  aboutFaq    AboutFaq    @relation(fields: [aboutFaqId], references: [id], onDelete: Cascade)
+
+  @@unique([aboutFaqId, displayOrder])
+  @@index([aboutFaqId])
+}
+
+model AboutAdmissionCta {
+  id                    String   @id @default("singleton")
+  heading               String
+  supportingText        String
+  applyButtonLabel      String
+  applyButtonHref       String
+  campusVisitButtonLabel String
+  campusVisitButtonHref String
+  prospectusButtonLabel String
+  prospectusButtonHref  String
+  backgroundImage       String?
+  backgroundImageAltText String
+  counselorButtonLabel  String
+  counselorButtonHref   String
+  admissionPhone        String
+  workingHours          String
+  isVisible             Boolean  @default(true)
+  sortOrder             Int      @default(10)
+  updatedAt             DateTime @updatedAt
+}

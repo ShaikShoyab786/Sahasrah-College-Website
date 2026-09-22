@@ -18,6 +18,7 @@ import AdminChairmanMessage from '@/pages/admin-chairman-message';
 import AdminGuidingPrinciples from '@/pages/admin-guiding-principles';
 import AdminWhyParentsChoose from '@/pages/admin-why-parents-choose';
 import AdminLeadership from '@/pages/admin-leadership';
+import { AdminAboutAchievements, AdminAboutAdmissionCta, AdminAboutCampusHighlights, AdminAboutFaq } from '@/pages/admin-about-sections';
 import {
   Route,
   Switch,
@@ -59,6 +60,18 @@ function Router() {
         </Route>
         <Route path="/admin/pages/about/leadership">
           <AdminGuard><AdminLeadership /></AdminGuard>
+        </Route>
+        <Route path="/admin/pages/about/campus-highlights">
+          <AdminGuard><AdminAboutCampusHighlights /></AdminGuard>
+        </Route>
+        <Route path="/admin/pages/about/achievement-statistics">
+          <AdminGuard><AdminAboutAchievements /></AdminGuard>
+        </Route>
+        <Route path="/admin/pages/about/faqs">
+          <AdminGuard><AdminAboutFaq /></AdminGuard>
+        </Route>
+        <Route path="/admin/pages/about/admission-cta">
+          <AdminGuard><AdminAboutAdmissionCta /></AdminGuard>
         </Route>
         <Route path="/admin">
           <AdminGuard><AdminOverview /></AdminGuard>

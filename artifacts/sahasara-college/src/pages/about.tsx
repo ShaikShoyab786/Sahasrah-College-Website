@@ -1,7 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import { ArrowRight, BadgeCheck, BookOpen, CalendarDays, CheckCircle2, Eye, GraduationCap, HeartHandshake, Quote, ShieldCheck, Sparkles, Star, Target, Users, type LucideIcon } from 'lucide-react';
+import { ArrowRight, BadgeCheck, BookOpen, Building2, CalendarDays, CheckCircle2, ChevronDown, Eye, FlaskConical, GraduationCap, HeartHandshake, House, Library, Mail, MapPin, MonitorPlay, Phone, Quote, ShieldCheck, Sparkles, Star, Stethoscope, Target, Trophy, Users, type LucideIcon } from 'lucide-react';
 import {
   useGetAboutChairmanMessage,
+  useGetAboutAchievements,
+  useGetAboutAdmissionCta,
+  useGetAboutCampusHighlights,
+  useGetAboutFaq,
   useGetAboutHero,
   useGetAboutGuidingPrinciples,
   useGetAboutLeadership,
@@ -9,6 +13,10 @@ import {
   useGetAboutWhyParentsChoose,
   useGetSiteSettings,
   type AboutChairmanMessage,
+  type AboutAchievements,
+  type AboutAdmissionCta,
+  type AboutCampusHighlights,
+  type AboutFaq,
   type AboutHero,
   type AboutGuidingPrinciples,
   type AboutLeadership,
@@ -19,7 +27,19 @@ import { SectionEyebrow } from '@/components/section-eyebrow';
 import { PublicFooter } from '@/components/public-footer';
 import { PublicHeader } from '@/components/public-header';
 
-const fallbackSettings = {
+type PublicSettings = {
+  collegeName: string;
+  tagline: string;
+  logoUrl: string | null;
+  email: string;
+  phone: string;
+  address: string;
+  primaryColor: string;
+  accentColor: string;
+  footerText: string;
+};
+
+const fallbackSettings: PublicSettings = {
   collegeName: 'Sahasara Junior College',
   tagline: 'Your College Tagline',
   logoUrl: null,
@@ -39,11 +59,15 @@ export default function About() {
   const principlesQuery = useGetAboutGuidingPrinciples();
   const parentChoiceQuery = useGetAboutWhyParentsChoose();
   const leadershipQuery = useGetAboutLeadership();
+  const campusQuery = useGetAboutCampusHighlights();
+  const achievementsQuery = useGetAboutAchievements();
+  const faqQuery = useGetAboutFaq();
+  const admissionCtaQuery = useGetAboutAdmissionCta();
   const settings = settingsQuery.data ?? fallbackSettings;
   const primaryColor = settings.primaryColor || '#102846';
   const accentColor = settings.accentColor || '#D6AD59';
 
-  if (settingsQuery.isLoading || heroQuery.isLoading || storyQuery.isLoading || chairmanQuery.isLoading || principlesQuery.isLoading || parentChoiceQuery.isLoading || leadershipQuery.isLoading) {
+  if (settingsQuery.isLoading || heroQuery.isLoading || storyQuery.isLoading || chairmanQuery.isLoading || principlesQuery.isLoading || parentChoiceQuery.isLoading || leadershipQuery.isLoading || campusQuery.isLoading || achievementsQuery.isLoading || faqQuery.isLoading || admissionCtaQuery.isLoading) {
     return <AboutSkeleton />;
   }
 
@@ -57,6 +81,10 @@ export default function About() {
         {principlesQuery.data?.isVisible && <GuidingPrinciplesSection content={principlesQuery.data} />}
         {parentChoiceQuery.data?.isVisible && <WhyParentsChooseSection content={parentChoiceQuery.data} />}
         {leadershipQuery.data?.isVisible && <LeadershipSection content={leadershipQuery.data} />}
+        {campusQuery.data?.isVisible && <CampusHighlightsSection content={campusQuery.data} />}
+        {achievementsQuery.data?.isVisible && <AchievementStatisticsSection content={achievementsQuery.data} />}
+        {faqQuery.data?.isVisible && <FaqSection content={faqQuery.data} cta={admissionCtaQuery.data} settings={settings} />}
+        {admissionCtaQuery.data?.isVisible && <AdmissionCtaSection content={admissionCtaQuery.data} />}
       </main>
       <PublicFooter settings={{ ...settings, footerText: settings.footerText || fallbackSettings.footerText }} />
     </div>
@@ -262,6 +290,106 @@ function LeadershipSection({ content }: { content: AboutLeadership }) {
       </div>
     </section>
   );
+}
+
+const campusIcons: Record<string, LucideIcon> = {
+  'building-2': Building2,
+  'flask-conical': FlaskConical,
+  'monitor-play': MonitorPlay,
+  library: Library,
+  house: House,
+  trophy: Trophy,
+};
+
+const achievementIcons: Record<string, LucideIcon> = {
+  'calendar-days': CalendarDays,
+  users: Users,
+  'graduation-cap': GraduationCap,
+  stethoscope: Stethoscope,
+  'heart-handshake': HeartHandshake,
+  'badge-check': BadgeCheck,
+};
+
+function CampusHighlightsSection({ content }: { content: AboutCampusHighlights }) {
+  const { ref, isVisible } = useRevealOnce();
+  const highlights = content.highlights.filter((item) => item.isVisible).sort((a, b) => a.displayOrder - b.displayOrder);
+  return (
+    <section ref={ref} id="campus-highlights" className={`about-campus-section ${isVisible ? 'about-section-is-visible' : ''}`}>
+      <div className="mx-auto max-w-7xl px-6 py-24 lg:px-10 lg:py-32">
+        <div className="max-w-2xl"><SectionEyebrow className="about-eyebrow">CAMPUS LIFE</SectionEyebrow><h2 className="mt-5 font-display text-5xl font-semibold leading-[.96] tracking-[-.05em] text-[hsl(var(--primary))] md:text-6xl" data-testid="text-campus-highlights-heading">{content.heading}</h2><p className="mt-6 max-w-xl text-base leading-7 text-[hsl(var(--muted-foreground))]">{content.description}</p></div>
+        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {highlights.map((item, index) => {
+            const Icon = campusIcons[item.icon || ''] || Sparkles;
+            return <article key={item.id} tabIndex={0} className="campus-highlight-card group relative min-h-[300px] overflow-hidden rounded-[1.5rem] bg-[hsl(var(--primary))] shadow-lg outline-none" style={{ '--about-card-delay': `${index * 85}ms` } as React.CSSProperties}>
+              <div className="absolute inset-0">{item.imageUrl ? <img src={item.imageUrl} alt={item.imageAltText} className="h-full w-full object-cover transition duration-700 group-hover:scale-105 group-focus-visible:scale-105" /> : <MediaOrFallback src={null} alt={item.imageAltText} label={item.title} dark />}</div>
+              <div className="campus-highlight-overlay absolute inset-0" />
+              <div className="absolute inset-x-0 bottom-0 p-6 text-white"><div className="grid h-11 w-11 place-items-center rounded-xl border border-white/20 bg-white/10 text-[hsl(var(--accent))] transition duration-300 group-hover:scale-105 group-hover:bg-[hsl(var(--accent))] group-hover:text-[hsl(var(--primary))] group-focus-visible:scale-105"><Icon size={21} /></div><h3 className="mt-5 font-display text-2xl font-semibold">{item.title}</h3><p className="mt-2 text-sm leading-6 text-white/72">{item.description}</p></div>
+            </article>;
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function useCountUp(target: number, isVisible: boolean, delay: number) {
+  const [value, setValue] = useState(0);
+  const [reducedMotion, setReducedMotion] = useState(false);
+  useEffect(() => {
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const update = () => setReducedMotion(media.matches);
+    update();
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, []);
+  useEffect(() => {
+    if (!isVisible) return;
+    if (reducedMotion || target === 0) {
+      setValue(target);
+      return;
+    }
+    let frame = 0;
+    const startedAt = performance.now() + delay;
+    const duration = 1100;
+    const tick = (now: number) => {
+      if (now < startedAt) {
+        frame = requestAnimationFrame(tick);
+        return;
+      }
+      const progress = Math.min((now - startedAt) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setValue(Math.round(target * eased));
+      if (progress < 1) frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [delay, isVisible, reducedMotion, target]);
+  return reducedMotion ? target : value;
+}
+
+function AchievementStatistic({ target, suffix, label, icon, index, isVisible }: { target: number; suffix: string; label: string; icon: string | null; index: number; isVisible: boolean }) {
+  const value = useCountUp(target, isVisible, index * 100);
+  const Icon = achievementIcons[icon || ''] || Sparkles;
+  return <article className="achievement-stat about-reveal-card" style={{ '--about-card-delay': `${index * 100}ms` } as React.CSSProperties}><Icon size={21} className="text-[hsl(var(--accent))]" aria-hidden="true" /><p className="mt-5 font-display text-4xl font-semibold tracking-[-.04em] text-white md:text-5xl">{value.toLocaleString('en-IN')}{suffix}</p><p className="mt-2 text-xs font-bold uppercase tracking-[.15em] text-white/58">{label}</p></article>;
+}
+
+function AchievementStatisticsSection({ content }: { content: AboutAchievements }) {
+  const { ref, isVisible } = useRevealOnce();
+  const statistics = content.statistics.filter((item) => item.isVisible).sort((a, b) => a.displayOrder - b.displayOrder);
+  return <section ref={ref} id="achievement-statistics" className={`achievement-band ${isVisible ? 'about-section-is-visible' : ''}`}><div className="achievement-band-texture" aria-hidden="true" /><div className="relative mx-auto max-w-7xl px-6 py-20 lg:px-10 lg:py-24"><div className="mx-auto max-w-2xl text-center"><SectionEyebrow className="about-eyebrow !border-white/20 !bg-white/5 !text-[hsl(var(--accent))]">OUR IMPACT</SectionEyebrow><h2 className="mt-5 font-display text-4xl font-semibold leading-none tracking-[-.04em] text-white md:text-5xl">{content.heading}</h2><p className="mx-auto mt-5 max-w-xl text-sm leading-7 text-white/62">{content.description}</p></div><div className="mt-14 grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-3 lg:grid-cols-6">{statistics.map((statistic, index) => <AchievementStatistic key={statistic.id} target={statistic.numericTarget} suffix={statistic.suffix} label={statistic.label} icon={statistic.icon} index={index} isVisible={isVisible} />)}</div></div></section>;
+}
+
+function FaqSection({ content, cta, settings }: { content: AboutFaq; cta?: AboutAdmissionCta; settings: PublicSettings }) {
+  const { ref, isVisible } = useRevealOnce();
+  const questions = content.questions.filter((item) => item.isVisible).sort((a, b) => a.displayOrder - b.displayOrder);
+  const [openId, setOpenId] = useState<string | null>(questions[0]?.id ?? null);
+  const phone = cta?.admissionPhone && !cta.admissionPhone.includes('XXXXX') ? cta.admissionPhone : settings.phone;
+  return <section ref={ref} id="faq" className={`about-faq-section ${isVisible ? 'about-section-is-visible' : ''}`}><div className="mx-auto max-w-7xl px-6 py-24 lg:px-10 lg:py-32"><div className="mx-auto max-w-2xl text-center"><SectionEyebrow className="about-eyebrow about-eyebrow-centered">NEED TO KNOW</SectionEyebrow><h2 className="mt-5 font-display text-5xl font-semibold leading-[.96] tracking-[-.05em] text-[hsl(var(--primary))] md:text-6xl" data-testid="text-faq-heading">{content.heading}</h2><p className="mx-auto mt-6 max-w-xl text-base leading-7 text-[hsl(var(--muted-foreground))]">{content.description}</p></div><div className="mt-14 grid gap-8 lg:grid-cols-[1.25fr_.75fr] lg:items-start"><div className="space-y-3">{questions.map((item, index) => { const open = openId === item.id; return <div key={item.id} className={`faq-item about-reveal-card rounded-2xl border bg-[hsl(var(--card))] ${open ? 'border-[hsl(var(--accent)/.65)] shadow-md' : 'border-[hsl(var(--border))]'}`} style={{ '--about-card-delay': `${index * 75}ms` } as React.CSSProperties}><button type="button" aria-expanded={open} aria-controls={`faq-answer-${item.id}`} onClick={() => setOpenId(open ? null : item.id)} className="flex w-full items-center justify-between gap-5 px-5 py-5 text-left text-base font-bold text-[hsl(var(--primary))] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--accent)/.25)] md:px-6"><span>{item.question}</span><ChevronDown size={19} className={`shrink-0 text-[hsl(var(--accent-foreground))] transition-transform duration-300 ${open ? 'rotate-180' : ''}`} /></button><div id={`faq-answer-${item.id}`} role="region" aria-hidden={!open} className={`faq-answer grid transition-[grid-template-rows,opacity] duration-300 ${open ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}><div className="min-h-0 overflow-hidden"><p className="border-t border-[hsl(var(--border))] px-5 py-5 text-sm leading-7 text-[hsl(var(--muted-foreground))] md:px-6">{item.answer}</p></div></div></div>; })}</div><aside className="faq-contact-card rounded-[1.5rem] bg-[hsl(var(--primary))] p-7 text-white shadow-xl md:p-9"><div className="grid h-12 w-12 place-items-center rounded-xl bg-[hsl(var(--accent))] text-[hsl(var(--primary))]"><Phone size={21} /></div><p className="mt-8 text-xs font-bold uppercase tracking-[.18em] text-[hsl(var(--accent))]">Admissions help</p><h3 className="mt-3 font-display text-3xl font-semibold leading-tight">{cta?.counselorButtonLabel ? 'Still Have Questions?' : 'Talk with our admissions team.'}</h3><p className="mt-4 text-sm leading-7 text-white/68">Our admission experts are here to help you compare programs, plan a campus visit, and take the next step.</p><div className="mt-7 space-y-4 border-t border-white/15 pt-6 text-sm text-white/75"><a href={`tel:${phone.replace(/[^+\d]/g, '')}`} className="flex items-center gap-3 transition hover:text-white"><Phone size={17} className="text-[hsl(var(--accent))]" />{phone}</a><div className="flex items-center gap-3"><MapPin size={17} className="text-[hsl(var(--accent))]" />{cta?.workingHours || 'Monday–Saturday, 9:00–16:30'}</div><a href={`mailto:${settings.email}`} className="flex items-center gap-3 transition hover:text-white"><Mail size={17} className="text-[hsl(var(--accent))]" />{settings.email}</a></div><a href={cta?.counselorButtonHref || `mailto:${settings.email}`} className="mt-8 inline-flex w-full items-center justify-center rounded-full bg-[hsl(var(--accent))] px-5 py-3.5 text-sm font-bold text-[hsl(var(--primary))] transition hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--accent)/.3)]">{cta?.counselorButtonLabel || 'Talk to Admission Counselor'}<ArrowRight size={16} className="ml-2" /></a></aside></div></div></section>;
+}
+
+function AdmissionCtaSection({ content }: { content: AboutAdmissionCta }) {
+  const { ref, isVisible } = useRevealOnce();
+  return <section ref={ref} id="admission-cta" className={`admission-cta-section ${isVisible ? 'about-section-is-visible' : ''}`}><div className="admission-cta-image absolute inset-0" style={content.backgroundImage ? { backgroundImage: `url("${content.backgroundImage}")` } : undefined} aria-label={content.backgroundImageAltText} /><div className="admission-cta-overlay absolute inset-0" /><div className="relative mx-auto max-w-4xl px-6 py-24 text-center lg:px-10 lg:py-32"><SectionEyebrow className="about-eyebrow !border-white/20 !bg-white/5 !text-[hsl(var(--accent))]">ADMISSIONS 2026–27</SectionEyebrow><h2 className="mt-6 font-display text-5xl font-semibold leading-[.96] tracking-[-.05em] text-white md:text-6xl" data-testid="text-admission-cta-heading">{content.heading}</h2><p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-white/70">{content.supportingText}</p><div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row sm:flex-wrap"><a href={content.applyButtonHref} className="inline-flex items-center justify-center rounded-full bg-[hsl(var(--accent))] px-5 py-3.5 text-sm font-bold text-[hsl(var(--primary))] transition hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--accent)/.3)]">{content.applyButtonLabel}<ArrowRight size={16} className="ml-2" /></a><a href={content.campusVisitButtonHref} className="inline-flex items-center justify-center rounded-full border border-white/30 px-5 py-3.5 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/30">{content.campusVisitButtonLabel}</a><a href={content.prospectusButtonHref} className="inline-flex items-center justify-center rounded-full border border-white/30 px-5 py-3.5 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-white/30">{content.prospectusButtonLabel}</a></div></div></section>;
 }
 
 function MediaOrFallback({ src, alt, label, dark = false }: { src: string | null; alt: string; label: string; dark?: boolean }) {

@@ -12,4 +12,6 @@ export type ImageUploadInputPurpose = typeof ImageUploadInputPurpose[keyof typeo
 export const ImageUploadInputPurpose = {
   logo: 'logo',
   hero: 'hero',
+  campus: 'campus',
+  cta: 'cta',
 } as const;

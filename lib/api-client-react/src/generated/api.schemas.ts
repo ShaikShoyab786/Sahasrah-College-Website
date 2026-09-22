@@ -512,12 +512,239 @@ export interface AboutLeadershipInput {
   members: AboutLeadershipMemberInput[];
 }
 
+export interface AboutCampusHighlight {
+  id: string;
+  /** @nullable */
+  imageUrl: string | null;
+  imageAltText: string;
+  /** @nullable */
+  icon: string | null;
+  title: string;
+  description: string;
+  displayOrder: number;
+  isVisible: boolean;
+}
+
+export interface AboutCampusHighlightInput {
+  /** @nullable */
+  imageUrl: string | null;
+  imageAltText: string;
+  /** @nullable */
+  icon: string | null;
+  /** @minLength 1 */
+  title: string;
+  /**
+     * @minLength 1
+     * @maxLength 280
+     */
+  description: string;
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  displayOrder: number;
+  isVisible: boolean;
+}
+
+export interface AboutCampusHighlights {
+  id: string;
+  heading: string;
+  description: string;
+  isVisible: boolean;
+  sortOrder: number;
+  updatedAt: string;
+  highlights: AboutCampusHighlight[];
+}
+
+export interface AboutCampusHighlightsInput {
+  /** @minLength 1 */
+  heading: string;
+  description: string;
+  isVisible: boolean;
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  sortOrder: number;
+  /**
+     * @minItems 1
+     * @maxItems 20
+     */
+  highlights: AboutCampusHighlightInput[];
+}
+
+export interface AboutAchievementStatistic {
+  id: string;
+  numericTarget: number;
+  suffix: string;
+  /** @nullable */
+  icon: string | null;
+  label: string;
+  displayOrder: number;
+  isVisible: boolean;
+}
+
+export interface AboutAchievementStatisticInput {
+  /**
+     * @minimum 0
+     * @maximum 1000000000
+     */
+  numericTarget: number;
+  /** @maxLength 8 */
+  suffix: string;
+  /** @nullable */
+  icon: string | null;
+  /** @minLength 1 */
+  label: string;
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  displayOrder: number;
+  isVisible: boolean;
+}
+
+export interface AboutAchievements {
+  id: string;
+  heading: string;
+  description: string;
+  isVisible: boolean;
+  sortOrder: number;
+  updatedAt: string;
+  statistics: AboutAchievementStatistic[];
+}
+
+export interface AboutAchievementsInput {
+  /** @minLength 1 */
+  heading: string;
+  description: string;
+  isVisible: boolean;
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  sortOrder: number;
+  /**
+     * @minItems 1
+     * @maxItems 20
+     */
+  statistics: AboutAchievementStatisticInput[];
+}
+
+export interface AboutFaqItem {
+  id: string;
+  question: string;
+  answer: string;
+  displayOrder: number;
+  isVisible: boolean;
+}
+
+export interface AboutFaqItemInput {
+  /** @minLength 1 */
+  question: string;
+  /** @minLength 1 */
+  answer: string;
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  displayOrder: number;
+  isVisible: boolean;
+}
+
+export interface AboutFaq {
+  id: string;
+  heading: string;
+  description: string;
+  isVisible: boolean;
+  sortOrder: number;
+  updatedAt: string;
+  questions: AboutFaqItem[];
+}
+
+export interface AboutFaqInput {
+  /** @minLength 1 */
+  heading: string;
+  description: string;
+  isVisible: boolean;
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  sortOrder: number;
+  /**
+     * @minItems 1
+     * @maxItems 20
+     */
+  questions: AboutFaqItemInput[];
+}
+
+export interface AboutAdmissionCta {
+  id: string;
+  heading: string;
+  supportingText: string;
+  applyButtonLabel: string;
+  applyButtonHref: string;
+  campusVisitButtonLabel: string;
+  campusVisitButtonHref: string;
+  prospectusButtonLabel: string;
+  prospectusButtonHref: string;
+  /** @nullable */
+  backgroundImage: string | null;
+  backgroundImageAltText: string;
+  counselorButtonLabel: string;
+  counselorButtonHref: string;
+  admissionPhone: string;
+  workingHours: string;
+  isVisible: boolean;
+  sortOrder: number;
+  updatedAt: string;
+}
+
+export interface AboutAdmissionCtaInput {
+  /** @minLength 1 */
+  heading: string;
+  /** @minLength 1 */
+  supportingText: string;
+  /** @minLength 1 */
+  applyButtonLabel: string;
+  /** @minLength 1 */
+  applyButtonHref: string;
+  /** @minLength 1 */
+  campusVisitButtonLabel: string;
+  /** @minLength 1 */
+  campusVisitButtonHref: string;
+  /** @minLength 1 */
+  prospectusButtonLabel: string;
+  /** @minLength 1 */
+  prospectusButtonHref: string;
+  /** @nullable */
+  backgroundImage: string | null;
+  backgroundImageAltText: string;
+  /** @minLength 1 */
+  counselorButtonLabel: string;
+  /** @minLength 1 */
+  counselorButtonHref: string;
+  /** @minLength 1 */
+  admissionPhone: string;
+  /** @minLength 1 */
+  workingHours: string;
+  isVisible: boolean;
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  sortOrder: number;
+}
+
 export type ImageUploadInputPurpose = typeof ImageUploadInputPurpose[keyof typeof ImageUploadInputPurpose];
 
 
 export const ImageUploadInputPurpose = {
   logo: 'logo',
   hero: 'hero',
+  campus: 'campus',
+  cta: 'cta',
 } as const;
 
 export interface ImageUploadInput {
@@ -531,6 +758,8 @@ export type ImageUploadResultPurpose = typeof ImageUploadResultPurpose[keyof typ
 export const ImageUploadResultPurpose = {
   logo: 'logo',
   hero: 'hero',
+  campus: 'campus',
+  cta: 'cta',
 } as const;
 
 export interface ImageUploadResult {

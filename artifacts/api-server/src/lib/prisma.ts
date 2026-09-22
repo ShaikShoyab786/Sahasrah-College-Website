@@ -271,6 +271,114 @@ export async function initializeDatabase() {
     });
   }
 
+  await prisma.aboutCampusHighlights.upsert({
+    where: { id: "singleton" },
+    update: {},
+    create: {
+      id: "singleton",
+      heading: "Our Campus Highlights",
+      description: "Thoughtfully designed spaces that help students learn, practice, recharge, and grow with confidence.",
+      isVisible: true,
+      sortOrder: 7,
+    },
+  });
+  if ((await prisma.aboutCampusHighlight.count({ where: { aboutCampusHighlightsId: "singleton" } })) === 0) {
+    await prisma.aboutCampusHighlight.createMany({
+      data: [
+        { aboutCampusHighlightsId: "singleton", imageUrl: "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1000&q=85", imageAltText: "Bright college classroom with rows of desks", icon: "building-2", title: "AC Classrooms", description: "Comfortable, focused classrooms that keep attention on learning.", displayOrder: 1, isVisible: true },
+        { aboutCampusHighlightsId: "singleton", imageUrl: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=1000&q=85", imageAltText: "Students working in a science laboratory", icon: "flask-conical", title: "Advanced Science Laboratories", description: "Practical spaces where concepts become experiments and confidence.", displayOrder: 2, isVisible: true },
+        { aboutCampusHighlightsId: "singleton", imageUrl: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1000&q=85", imageAltText: "Collaborative digital learning space", icon: "monitor-play", title: "Digital Learning Spaces", description: "Modern tools and collaborative settings for connected learning.", displayOrder: 3, isVisible: true },
+        { aboutCampusHighlightsId: "singleton", imageUrl: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=1000&q=85", imageAltText: "Quiet library with study tables and shelves", icon: "library", title: "Library and Study Areas", description: "Calm spaces for reading, revision, and independent discovery.", displayOrder: 4, isVisible: true },
+        { aboutCampusHighlightsId: "singleton", imageUrl: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1000&q=85", imageAltText: "Student resting in a welcoming residence", icon: "house", title: "Safe Hostel Facilities", description: "A supportive residential environment with student wellbeing in mind.", displayOrder: 5, isVisible: true },
+        { aboutCampusHighlightsId: "singleton", imageUrl: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=1000&q=85", imageAltText: "Students participating in outdoor sports", icon: "trophy", title: "Sports and Activity Spaces", description: "Room to move, recharge, build teamwork, and enjoy a balanced routine.", displayOrder: 6, isVisible: true },
+      ],
+    });
+  }
+
+  await prisma.aboutAchievements.upsert({
+    where: { id: "singleton" },
+    update: {},
+    create: {
+      id: "singleton",
+      heading: "Progress You Can Measure",
+      description: "A few of the outcomes that reflect our shared commitment to steady, meaningful progress.",
+      isVisible: true,
+      sortOrder: 8,
+    },
+  });
+  if ((await prisma.aboutAchievementStatistic.count({ where: { aboutAchievementsId: "singleton" } })) === 0) {
+    await prisma.aboutAchievementStatistic.createMany({
+      data: [
+        { aboutAchievementsId: "singleton", numericTarget: 30, suffix: "+", icon: "calendar-days", label: "Years of Excellence", displayOrder: 1, isVisible: true },
+        { aboutAchievementsId: "singleton", numericTarget: 5000, suffix: "+", icon: "users", label: "Students Mentored", displayOrder: 2, isVisible: true },
+        { aboutAchievementsId: "singleton", numericTarget: 100, suffix: "+", icon: "graduation-cap", label: "IIT/NIT Selections", displayOrder: 3, isVisible: true },
+        { aboutAchievementsId: "singleton", numericTarget: 500, suffix: "+", icon: "stethoscope", label: "Medical Admissions", displayOrder: 4, isVisible: true },
+        { aboutAchievementsId: "singleton", numericTarget: 95, suffix: "%", icon: "heart-handshake", label: "Parent Satisfaction", displayOrder: 5, isVisible: true },
+        { aboutAchievementsId: "singleton", numericTarget: 25, suffix: "+", icon: "badge-check", label: "Expert Faculty", displayOrder: 6, isVisible: true },
+      ],
+    });
+  }
+
+  await prisma.aboutFaq.upsert({
+    where: { id: "singleton" },
+    update: {},
+    create: {
+      id: "singleton",
+      heading: "Frequently Asked Questions",
+      description: "Helpful answers for families planning the next step in their student’s journey.",
+      isVisible: true,
+      sortOrder: 9,
+    },
+  });
+  if ((await prisma.aboutFaqItem.count({ where: { aboutFaqId: "singleton" } })) === 0) {
+    await prisma.aboutFaqItem.createMany({
+      data: [
+        { aboutFaqId: "singleton", question: "Which programs are available for the 2026–27 academic year?", answer: "Admissions are open for MPC, BiPC, IIT-JEE, and NEET integrated programs. Our counselors can help you compare the right path for your student.", displayOrder: 1, isVisible: true },
+        { aboutFaqId: "singleton", question: "Can we visit the campus before applying?", answer: "Yes. Contact our admissions team to arrange a campus visit and learn more about classrooms, laboratories, student support, and daily routines.", displayOrder: 2, isVisible: true },
+        { aboutFaqId: "singleton", question: "How does Sahasara support students who need extra guidance?", answer: "Students receive regular practice, feedback, subject guidance, and personal mentorship so they can identify gaps early and keep moving forward.", displayOrder: 3, isVisible: true },
+        { aboutFaqId: "singleton", question: "What should we bring for the admission discussion?", answer: "Start with your questions and the student’s latest academic details. Our counselor will explain eligibility, the application steps, and the documents needed for enrollment.", displayOrder: 4, isVisible: true },
+        { aboutFaqId: "singleton", question: "Are hostel facilities available?", answer: "Safe hostel facilities are available for students who need residential support. Please contact admissions for current availability, routines, and visit arrangements.", displayOrder: 5, isVisible: true },
+        { aboutFaqId: "singleton", question: "How can we request a prospectus?", answer: "Use the prospectus action below or contact admissions. The team will share the latest program details and guide you through the next step.", displayOrder: 6, isVisible: true },
+      ],
+    });
+  }
+
+  await prisma.aboutAdmissionCta.upsert({
+    where: { id: "singleton" },
+    update: {},
+    create: {
+      id: "singleton",
+      heading: "Begin Your Journey Towards Success with Sahasara Junior College",
+      supportingText: "Admissions for 2026–27 are now open. Limited seats are available for MPC, BiPC, IIT-JEE, and NEET integrated programs.",
+      applyButtonLabel: "Apply Now",
+      applyButtonHref: "/#contact",
+      campusVisitButtonLabel: "Book Campus Visit",
+      campusVisitButtonHref: "/#contact",
+      prospectusButtonLabel: "Download Prospectus",
+      prospectusButtonHref: "/#contact",
+      backgroundImage: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1800&q=85",
+      backgroundImageAltText: "Students walking across a college campus",
+      counselorButtonLabel: "Talk to Admission Counselor",
+      counselorButtonHref: "/#contact",
+      admissionPhone: "+91 XXXXX XXXXX",
+      workingHours: "Monday–Saturday, 9:00–16:30",
+      isVisible: true,
+      sortOrder: 10,
+    },
+  });
+  const admissionCta = await prisma.aboutAdmissionCta.findUnique({ where: { id: "singleton" } });
+  if (admissionCta && [admissionCta.applyButtonHref, admissionCta.campusVisitButtonHref, admissionCta.prospectusButtonHref, admissionCta.counselorButtonHref].some((href) => href === "#contact" || href === "mailto:info@yourcollege.com")) {
+    await prisma.aboutAdmissionCta.update({
+      where: { id: "singleton" },
+      data: {
+        applyButtonHref: admissionCta.applyButtonHref === "#contact" ? "/#contact" : admissionCta.applyButtonHref,
+        campusVisitButtonHref: admissionCta.campusVisitButtonHref === "#contact" ? "/#contact" : admissionCta.campusVisitButtonHref,
+        prospectusButtonHref: admissionCta.prospectusButtonHref === "#contact" ? "/#contact" : admissionCta.prospectusButtonHref,
+        counselorButtonHref: admissionCta.counselorButtonHref === "#contact" || admissionCta.counselorButtonHref === "mailto:info@yourcollege.com" ? "/#contact" : admissionCta.counselorButtonHref,
+      },
+    });
+  }
+
   const email = process.env.INITIAL_ADMIN_EMAIL?.trim().toLowerCase();
   const password = process.env.INITIAL_ADMIN_PASSWORD;
   if (email && password) {

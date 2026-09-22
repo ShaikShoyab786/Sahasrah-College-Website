@@ -24,8 +24,8 @@ router.post(
   upload.single("file"),
   async (req, res) => {
     const purpose = req.body?.purpose;
-    if (purpose !== "logo" && purpose !== "hero") {
-      res.status(400).json({ error: "Choose whether the image is for the logo or hero." });
+    if (purpose !== "logo" && purpose !== "hero" && purpose !== "campus" && purpose !== "cta") {
+      res.status(400).json({ error: "Choose a valid image purpose." });
       return;
     }
     if (!req.file) {
