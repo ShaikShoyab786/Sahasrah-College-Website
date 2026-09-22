@@ -1,0 +1,100 @@
+Fix Our Story Timeline Alignment
+The new Our Story timeline animation looks good, but the vertical timeline rail is misaligned. It currently overlaps the 20xx year labels and milestone text, as shown in the attached screenshot.
+
+Fix the timeline layout without changing the content or overall design.
+
+Required layout correction
+The timeline must have two clearly separated areas:
+
+[timeline node/rail]    [year, title, description]
+
+The vertical line must remain entirely inside the dedicated node/rail column. It must never pass behind or through:
+
+Year labels
+Timeline titles
+Descriptions
+Any other timeline text
+Implementation guidance
+Inspect the current timeline structure and remove any incorrect positioning such as a hardcoded desktop offset that places the line inside the content area.
+
+Use a stable two-column layout for every timeline item:
+
+A fixed-width rail column for the node
+A flexible content column for the text
+Consistent gap between the node and text
+For example, the structure can follow this pattern:
+
+timeline wrapper: position relative
+timeline rail:
+  position absolute
+  centered under the timeline nodes
+  limited to the node column
+  top and bottom aligned with the first and last node
+timeline item:
+  display grid or flex
+  rail column: fixed width matching node diameter
+  content column: remaining width
+
+The line and each node must share the exact same horizontal center.
+
+If the node is 48px wide, the line should be centered at 24px within the rail column. Do not position the line relative to the full timeline content width.
+
+Do not use a desktop-only offset like left-[87px] unless it is mathematically tied to the node column and works at every breakpoint.
+
+Preserve the timeline animation
+Keep the existing enhanced animation, including:
+
+The line drawing or filling downward
+Sequential progress from the first milestone to the last
+Node pulse/glow effects
+Active milestone emphasis
+Viewport-triggered animation
+However, constrain the animated progress layer to the same rail column as the static line. The animated layer must not extend into the text column.
+
+Recommended structure:
+
+timeline container
+├── static vertical rail
+├── animated progress rail
+└── timeline items
+    ├── node
+    └── text content
+
+The static and animated lines should be behind the nodes but clipped to the timeline rail area.
+
+Responsive behavior
+Verify the alignment at:
+
+Desktop
+Tablet
+Mobile
+On all screen sizes:
+
+The rail remains centered beneath the nodes.
+The year labels remain fully visible.
+The title and description never overlap the rail.
+The timeline does not create horizontal scrolling.
+The content column has enough left spacing from the nodes.
+On mobile, keep the same two-column structure but reduce the rail width and gap if necessary.
+
+Accessibility
+Preserve:
+
+Keyboard accessibility
+Visible focus states
+prefers-reduced-motion: reduce
+When reduced motion is enabled, the timeline should remain correctly aligned and fully visible, with the animated progress disabled.
+
+Verification checklist
+Before finishing, confirm:
+
+The vertical line no longer crosses the 20xx year labels.
+The line never overlaps title or description text.
+Every node is centered directly on the line.
+The animated progress uses the same path as the static line.
+The first and last nodes are properly connected.
+Desktop, tablet, and mobile layouts are aligned.
+No horizontal overflow is introduced.
+Existing timeline content and animation behavior remain intact.
+The project build still passes.
+Do not modify the other About page sections unless required to fix the timeline layout.

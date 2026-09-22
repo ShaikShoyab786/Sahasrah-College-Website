@@ -131,9 +131,16 @@ function OurStorySection({ content }: { content: AboutStory }) {
         </div>
         <StoryCollage content={content} hasEntered={hasEntered} />
         <div id="our-story-timeline" className="relative" aria-label="Sahasara story timeline">
-          <div className="story-timeline-line absolute bottom-3 left-[9px] top-3 w-px bg-[hsl(var(--border))]" aria-hidden="true"><div className="story-timeline-progress" /></div>
-          <div className="space-y-8">
-            {timeline.map((item, index) => <article key={item.id} className="story-timeline-item relative pl-9" style={{ '--story-delay': `${index * 820}ms` } as React.CSSProperties}><span className="story-timeline-marker absolute left-0 top-1.5 h-[21px] w-[21px] rounded-full border-[5px] border-[hsl(var(--background))] bg-[hsl(var(--accent))] shadow-[0_0_0_1px_hsl(var(--accent)/.35)]" aria-hidden="true" /><p className="text-xs font-bold uppercase tracking-[.18em] text-[hsl(var(--accent-foreground))]">{item.period}</p><h3 className="story-timeline-title mt-2 font-display text-2xl font-semibold text-[hsl(var(--primary))]">{item.title}</h3><p className="mt-2 text-sm leading-6 text-[hsl(var(--muted-foreground))]">{item.description}</p></article>)}
+          <div className="story-timeline-list">
+            {timeline.map((item, index) => <article key={item.id} className="story-timeline-item relative" style={{ '--story-delay': `${index * 820}ms` } as React.CSSProperties}>
+              <span className="story-timeline-marker h-[21px] w-[21px] rounded-full border-[5px] border-[hsl(var(--background))] bg-[hsl(var(--accent))] shadow-[0_0_0_1px_hsl(var(--accent)/.35)]" aria-hidden="true" />
+              {index < timeline.length - 1 && <span className="story-timeline-connector" aria-hidden="true"><span className="story-timeline-progress" /></span>}
+              <div className="min-w-0">
+                <p className="text-xs font-bold uppercase tracking-[.18em] text-[hsl(var(--accent-foreground))]">{item.period}</p>
+                <h3 className="story-timeline-title mt-2 font-display text-2xl font-semibold text-[hsl(var(--primary))]">{item.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-[hsl(var(--muted-foreground))]">{item.description}</p>
+              </div>
+            </article>)}
           </div>
         </div>
       </div>
