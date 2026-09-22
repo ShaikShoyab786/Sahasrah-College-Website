@@ -1,0 +1,352 @@
+Add Home Page Preview Sections and Professional Effects
+Continue building the existing Home page.
+
+Do not start the full Courses page or Knowledge Hub page yet. This task is only for Home page preview sections and the related admin dashboard content.
+
+Do not modify the completed About page sections except for reusing shared styling utilities where appropriate.
+
+Required Home Page Order
+Place the new sections directly beneath the existing About preview section in this order:
+
+About Preview
+↓
+Live Updates Preview
+↓
+Statistics Card
+↓
+Explore Our Programs eyebrow
+↓
+Favorite Topics To Learn preview
+
+Keep the existing Contact preview and Footer in their current positions.
+
+1. Live Updates Preview
+Add a Home page section titled:
+
+Live Updates
+
+Use the attached reference image as the visual direction.
+
+Layout
+Desktop:
+
+Show 3 update cards in a row.
+Add a View All link aligned with the section heading.
+Tablet:
+
+Show 2 cards per row or use a responsive horizontal layout.
+Mobile:
+
+Show one card at a time or a clean single-column stack.
+Each card should support:
+
+Featured image
+Category badge
+Optional action badge such as Apply Now, Schedule, Latest, or Important
+Publish date
+Title
+Short excerpt
+Read Article link
+Subtle arrow movement on hover
+Use active/latest updates from the admin dashboard rather than hardcoded content.
+
+The Home page should display only a limited number of updates, ideally the latest three or the items marked as featured.
+
+The View All action should use the existing future Knowledge Hub or Updates route if available. Do not create a fake link.
+
+Card effects
+Add professional effects:
+
+Cards reveal with a subtle stagger when entering the viewport.
+Image gently scales on hover.
+Image overlay becomes slightly stronger on hover.
+Category badge receives a subtle accent transition.
+Card lifts slightly with a refined shadow.
+Read Article arrow moves a few pixels on hover.
+Keep all card heights consistent.
+Do not create layout shifts.
+2. Statistics Card
+Place a prominent statistics card directly below Live Updates.
+
+Use a dark navy background with a polished premium treatment similar to the attached reference image.
+
+Example home statistics:
+
+100% — Pass Percentage
+40+ — Years of Physics Mentorship
+25+ — IIT / NIT Selections
+4 — Science Labs
+
+Do not hardcode these values in the component if the project already has a content/settings system. Make them editable from the admin dashboard.
+
+Count-up animation
+The numbers must animate professionally from zero to their final value when the statistics card enters the viewport.
+
+Examples:
+
+0 → 100%
+0 → 40+
+0 → 25+
+0 → 4
+
+Requirements:
+
+Start only when the card becomes visible.
+Use IntersectionObserver or the project’s established viewport animation pattern.
+Use a smooth, moderate duration.
+Do not count too quickly.
+Use a subtle stagger between the four statistics.
+Preserve suffixes such as + and %.
+Keep the final value visible after the animation completes.
+Do not repeatedly restart the animation on every small scroll movement.
+Do not show incorrect values such as 0+ after the animation has completed.
+The count-up should feel calm, smooth, and premium rather than flashy.
+
+When prefers-reduced-motion: reduce is enabled:
+
+Show the final values immediately.
+Disable count-up animation.
+Disable staggered motion.
+Statistics styling
+Use:
+
+Deep navy card background
+Soft rounded corners
+Gold, teal, or white icons
+Large high-contrast numbers
+Small uppercase labels
+Subtle gradient or texture
+Professional spacing
+Responsive wrapping on smaller screens
+Add a restrained hover effect to each statistic item, such as a slight icon glow or color transition. Do not make the entire statistics card jump.
+
+3. Explore Our Programs Eyebrow and Favorite Topics Section
+Below the statistics card, add a styled eyebrow:
+
+Explore Our Programs
+
+Then add the section heading:
+
+Favorite Topics To Learn
+
+Add a supporting description:
+
+Intermediate MPC & BiPC integrated with IIT-JEE and NEET.
+
+Use the same professional eyebrow badge style already established on the About page:
+
+Soft background
+Rounded pill shape
+Accent border
+Small decorative dot or icon
+Uppercase letter spacing
+Balanced padding
+Subtle shadow
+Responsive text sizing
+Do not use plain text for this eyebrow.
+
+4. Favorite Topics To Learn Card Carousel
+Create a preview carousel with 6–7 cards.
+
+Use the attached reference image as the visual direction.
+
+Suggested cards:
+
+MPC + IIT-JEE
+MPC + EAMCET
+MPC
+BiPC
+BiPC + NEET
+NEET Foundation
+Competitive Exam Preparation
+Use existing course/program data where available. Do not create a full Courses page in this task.
+
+Each card should support:
+
+Image
+Program/category label
+Title
+Short description
+Three short feature points
+Accent icon
+Explore Curriculum action
+Display order
+Active/inactive state
+If a detailed course route does not exist yet, connect the action to the existing Courses route or use the project’s current valid route. Do not create broken links.
+
+Carousel behavior
+The cards should auto-scroll smoothly and professionally.
+
+Requirements:
+
+Support 6–7 total cards.
+Desktop should show several cards at once.
+The active/center card can be slightly more prominent.
+Side cards may have a subtle fade or scale difference.
+Cards should loop continuously without a visible jump.
+Avoid abrupt resets or flickering.
+Autoplay should be slow and readable.
+Pause autoplay when the user hovers over the carousel.
+Pause autoplay when a card or control receives keyboard focus.
+Pause or reduce autoplay during touch interaction.
+Support swipe/drag behavior on mobile.
+Add previous/next controls if the existing project supports carousel controls.
+Make sure controls are keyboard accessible.
+Do not allow horizontal page overflow outside the carousel.
+For mobile:
+
+Show one card or a controlled partial-card preview.
+Support touch swiping.
+Keep the text readable.
+Do not make the carousel move too quickly.
+For reduced motion:
+
+Disable autoplay and continuous animation.
+Show a static card layout or user-controlled carousel.
+Preserve access to every card.
+5. Image Hover Effects Across the Home Page
+Improve image interactions across the Home page, especially:
+
+About preview images
+Live Updates images
+Favorite Topics images
+Any existing Home page image cards
+Use consistent effects:
+
+Subtle image zoom
+Soft overlay transition
+Slight shadow enhancement
+Small card lift where appropriate
+Smooth duration
+No image distortion
+Preserve existing aspect ratios
+Keep rounded corners and clipping intact
+Use overflow-hidden on image wrappers so images do not escape their containers.
+
+Do not make images move so much that text becomes difficult to read.
+
+Support the same visual state on keyboard focus where the image belongs to an interactive card or link.
+
+6. Additional Home Page Animations
+Where visually appropriate, add:
+
+Section reveal on viewport entry
+Small stagger for cards
+Button hover lift
+Arrow/icon movement
+Subtle background gradient transitions
+Accent border transitions
+Light image overlays
+Keep the animation language consistent with the completed About page.
+
+Avoid:
+
+Excessive bouncing
+Constant flashing
+Large parallax effects
+Overly fast count-up animations
+Repeated animation loops that distract from content
+Layout shifting
+Horizontal overflow
+7. Admin Dashboard Updates
+Gradually update the existing admin dashboard so these Home page sections can be managed.
+
+Do not redesign the whole dashboard. Reuse the current admin patterns and existing content architecture.
+
+Live Updates management
+Add fields for:
+
+Title
+Short excerpt
+Category
+Action badge
+Publish date
+Image
+Alt text
+Article/detail link
+Featured state
+Active/inactive state
+Display order
+The Home page should show the latest or featured active updates.
+
+Home Statistics management
+Add a separate Home Statistics group if the About statistics use different values.
+
+Fields:
+
+Label
+Numeric value
+Suffix such as + or %
+Icon
+Display order
+Active/inactive state
+Store the numeric value separately from the suffix so the count-up animation works correctly.
+
+Examples:
+
+value: 100
+suffix: %
+value: 40
+suffix: +
+value: 25
+suffix: +
+value: 4
+suffix:
+
+Favorite Topics management
+Add fields for:
+
+Program title
+Category label
+Short description
+Three feature points
+Image
+Icon or accent color
+Curriculum link
+Display order
+Active/inactive state
+The Home page should render only active topics in the selected order.
+
+Provide sensible default content so the Home page does not become empty if no custom entries exist.
+
+8. Accessibility and Responsive Requirements
+Verify:
+
+All buttons and links are keyboard accessible.
+Carousel controls have clear labels.
+Images have meaningful alt text.
+The update cards use readable contrast.
+Statistics remain readable at all screen sizes.
+The carousel works with keyboard, mouse, and touch.
+Autoplay pauses on hover and focus.
+prefers-reduced-motion: reduce is respected.
+No horizontal scrolling is introduced.
+Cards do not overlap.
+Text does not become clipped.
+Focus indicators remain visible.
+9. Verification Checklist
+Before finishing, confirm:
+
+Live Updates appears directly below the About preview.
+Live Updates displays active admin-managed content.
+Statistics appear directly below Live Updates.
+Statistics count smoothly from zero to the final values.
+Count-up animation is not too fast.
+Plus and percentage suffixes remain correct.
+Explore Our Programs uses the styled About-page eyebrow treatment.
+Favorite Topics To Learn appears below the statistics card.
+The carousel contains 6–7 cards.
+The carousel auto-scrolls smoothly without flickering.
+Autoplay pauses on hover, focus, and touch interaction.
+Mobile swipe behavior works.
+Reduced-motion mode disables autoplay and count-up movement.
+About preview images have polished hover effects.
+Live Updates and program images have polished hover effects.
+Existing Home page sections remain intact.
+About page remains unchanged.
+Admin controls persist correctly.
+No broken links are introduced.
+Desktop, tablet, and mobile layouts work.
+Production build passes.
+Backend starts successfully.
+Do not start the full Courses page or Knowledge Hub page yet. Stop after completing these Home page preview sections and their admin controls.

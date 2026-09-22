@@ -99,6 +99,104 @@ export async function initializeDatabase() {
     },
   });
 
+  const liveUpdateDefaults = [
+    {
+      title: "Admissions for 2026–27 are now open",
+      excerpt: "Meet our admissions team, compare pathways, and find the right academic start for your student.",
+      category: "Admissions",
+      actionBadge: "Apply Now",
+      publishDate: new Date("2026-06-15T00:00:00.000Z"),
+      imageUrl: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1000&q=85",
+      imageAltText: "Students collaborating around a table",
+      detailUrl: "/#contact",
+      isFeatured: true,
+      isActive: true,
+      displayOrder: 1,
+    },
+    {
+      title: "Campus visit days are open for booking",
+      excerpt: "Walk through our classrooms, laboratories, and student spaces with a member of the Sahasara team.",
+      category: "Campus",
+      actionBadge: "Schedule",
+      publishDate: new Date("2026-05-28T00:00:00.000Z"),
+      imageUrl: "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1000&q=85",
+      imageAltText: "Bright college classroom",
+      detailUrl: "/#contact",
+      isFeatured: false,
+      isActive: true,
+      displayOrder: 2,
+    },
+    {
+      title: "A new term of focused learning begins",
+      excerpt: "Explore the routines, support, and subject guidance that help students build steady momentum.",
+      category: "Community",
+      actionBadge: "Latest",
+      publishDate: new Date("2026-05-09T00:00:00.000Z"),
+      imageUrl: "https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=1000&q=85",
+      imageAltText: "Students working together in a science laboratory",
+      detailUrl: "/about",
+      isFeatured: false,
+      isActive: true,
+      displayOrder: 3,
+    },
+  ];
+  for (const update of liveUpdateDefaults) {
+    await prisma.homepageLiveUpdate.upsert({
+      where: { displayOrder: update.displayOrder },
+      update: {},
+      create: update,
+    });
+  }
+
+  await prisma.homepageStatistics.upsert({
+    where: { id: "singleton" },
+    update: {},
+    create: {
+      id: "singleton",
+      eyebrow: "THE SAHASARA DIFFERENCE",
+      heading: "Progress you can feel.",
+      description: "A focused learning environment turns daily effort into outcomes students can carry forward.",
+      isVisible: true,
+      sortOrder: 4,
+    },
+  });
+  if ((await prisma.homepageStatistic.count({ where: { homepageStatisticsId: "singleton" } })) === 0) {
+    await prisma.homepageStatistic.createMany({
+      data: [
+        { homepageStatisticsId: "singleton", numericTarget: 100, suffix: "%", icon: "badge-check", label: "Pass Percentage", displayOrder: 1, isActive: true },
+        { homepageStatisticsId: "singleton", numericTarget: 40, suffix: "+", icon: "calendar-days", label: "Years of Physics Mentorship", displayOrder: 2, isActive: true },
+        { homepageStatisticsId: "singleton", numericTarget: 25, suffix: "+", icon: "graduation-cap", label: "IIT / NIT Selections", displayOrder: 3, isActive: true },
+        { homepageStatisticsId: "singleton", numericTarget: 4, suffix: "", icon: "flask-conical", label: "Science Labs", displayOrder: 4, isActive: true },
+      ],
+    });
+  }
+
+  await prisma.homepageFavoriteTopics.upsert({
+    where: { id: "singleton" },
+    update: {},
+    create: {
+      id: "singleton",
+      eyebrow: "Explore Our Programs",
+      heading: "Favorite Topics To Learn",
+      description: "Intermediate MPC & BiPC integrated with IIT-JEE and NEET.",
+      isVisible: true,
+      sortOrder: 5,
+    },
+  });
+  if ((await prisma.homepageFavoriteTopic.count({ where: { homepageFavoriteTopicsId: "singleton" } })) === 0) {
+    await prisma.homepageFavoriteTopic.createMany({
+      data: [
+        { homepageFavoriteTopicsId: "singleton", categoryLabel: "MPC · Integrated", title: "MPC + IIT-JEE", description: "Build strong concepts and exam confidence through a focused engineering pathway.", featureOne: "Physics, Chemistry & Maths", featureTwo: "IIT-JEE integrated preparation", featureThree: "Regular tests and feedback", imageUrl: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=1000&q=85", imageAltText: "Mathematics notes and geometry tools", icon: "atom", curriculumUrl: "/#contact", displayOrder: 1, isActive: true },
+        { homepageFavoriteTopicsId: "singleton", categoryLabel: "MPC · Integrated", title: "MPC + EAMCET", description: "A steady, practical routine for students preparing for state-level engineering admissions.", featureOne: "Concept-first classroom teaching", featureTwo: "EAMCET practice support", featureThree: "Personal progress guidance", imageUrl: "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=1000&q=85", imageAltText: "Geometry drawing on a classroom board", icon: "line-chart", curriculumUrl: "/#contact", displayOrder: 2, isActive: true },
+        { homepageFavoriteTopicsId: "singleton", categoryLabel: "MPC · Foundation", title: "MPC", description: "Strengthen the fundamentals that make higher study clearer and more confident.", featureOne: "Clear subject foundations", featureTwo: "Guided daily practice", featureThree: "Supportive doubt resolution", imageUrl: "https://images.unsplash.com/photo-1532619675605-1ede6c2ed2b0?auto=format&fit=crop&w=1000&q=85", imageAltText: "Student studying in a quiet library", icon: "book-open", curriculumUrl: "/#contact", displayOrder: 3, isActive: true },
+        { homepageFavoriteTopicsId: "singleton", categoryLabel: "BiPC · Foundation", title: "BiPC", description: "Learn biology and the sciences with structure, curiosity, and personal attention.", featureOne: "Biology, Physics & Chemistry", featureTwo: "Visual and practical learning", featureThree: "Consistent revision plans", imageUrl: "https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&w=1000&q=85", imageAltText: "Microscope and biology laboratory equipment", icon: "dna", curriculumUrl: "/#contact", displayOrder: 4, isActive: true },
+        { homepageFavoriteTopicsId: "singleton", categoryLabel: "BiPC · Integrated", title: "BiPC + NEET", description: "Prepare for medical pathways with a strong core and a calm, consistent rhythm.", featureOne: "NEET-aligned subject guidance", featureTwo: "Test analysis and revision", featureThree: "Mentorship for steady progress", imageUrl: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=85", imageAltText: "Medical science laboratory glassware", icon: "heart-pulse", curriculumUrl: "/#contact", displayOrder: 5, isActive: true },
+        { homepageFavoriteTopicsId: "singleton", categoryLabel: "NEET · Foundation", title: "NEET Foundation", description: "Start early with habits, concepts, and guidance that make later preparation stronger.", featureOne: "Early science foundations", featureTwo: "Focused study habits", featureThree: "Regular mentor check-ins", imageUrl: "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=1000&q=85", imageAltText: "Medical anatomy model and study notes", icon: "stethoscope", curriculumUrl: "/#contact", displayOrder: 6, isActive: true },
+        { homepageFavoriteTopicsId: "singleton", categoryLabel: "Competitive · Preparation", title: "Competitive Exam Preparation", description: "Develop the accuracy, speed, and resilience needed for ambitious academic goals.", featureOne: "Timed practice and analysis", featureTwo: "Exam strategy workshops", featureThree: "Confidence through repetition", imageUrl: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1000&q=85", imageAltText: "Student writing in a preparation notebook", icon: "trophy", curriculumUrl: "/#contact", displayOrder: 7, isActive: true },
+      ],
+    });
+  }
+
   await prisma.aboutHero.upsert({
     where: { id: "singleton" },
     update: {},
