@@ -231,6 +231,13 @@
 
 html { scroll-behavior: smooth; }
 body { min-width: 320px; }
+.admin-sidebar {
+  scrollbar-gutter: stable;
+  scrollbar-width: auto;
+}
+.admin-main-content :is(input, textarea, select, button, a) {
+  scroll-margin-top: 96px;
+}
 ::selection { background: hsl(var(--accent) / .35); color: hsl(var(--primary)); }
 .font-display { font-family: var(--app-font-serif); }
 .paper-grain { position: relative; }

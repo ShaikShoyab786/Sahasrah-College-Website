@@ -1,0 +1,141 @@
+Fix Admin Dashboard Sidebar and Page Scrolling
+There is a scrolling bug in the admin dashboard after adding the new About page content management sections.
+
+The left side of the dashboard is blocked and does not scroll properly, so I cannot reach or edit the remaining About page sections.
+
+Fix the scrolling behavior without changing the dashboard’s visual design, content structure, authentication, or admin functionality.
+
+Investigate the actual cause first
+Inspect the admin dashboard layout and identify whether the issue is caused by:
+
+overflow-hidden on html, body, the app shell, or a dashboard wrapper
+A sidebar using h-screen without overflow-y-auto
+A fixed or sticky element covering the sidebar
+An invisible overlay intercepting pointer or wheel events
+Incorrect z-index stacking
+A modal or drawer scroll lock that is not being cleaned up
+preventDefault() being applied to wheel or touch events
+Nested containers competing for scroll ownership
+A viewport-height container that clips longer About settings content
+Do not simply add random overflow: auto rules. Preserve the existing dashboard layout and fix the actual scroll container.
+
+Required desktop behavior
+The admin dashboard must support:
+
+Scrolling through the full left navigation/sidebar
+Scrolling through the complete main content area
+Access to every About page management section
+Normal mouse wheel scrolling
+Trackpad scrolling
+Keyboard scrolling
+Page Up/Page Down behavior
+Tab navigation through all controls
+If the sidebar is longer than the viewport:
+
+The sidebar itself must scroll vertically.
+All navigation items must remain reachable.
+The sidebar scrollbar must not be hidden in a way that prevents scrolling.
+The sidebar must not be covered by the main content or an invisible overlay.
+If the main content is longer than the viewport:
+
+The main content must scroll to the bottom.
+The final About page settings and save buttons must remain reachable.
+Sticky headers must not cover the first or last form fields.
+Use the existing dashboard architecture wherever possible. Depending on the current structure, use a stable pattern such as:
+
+dashboard shell
+├── fixed/sticky sidebar with its own vertical scrolling
+└── main content area with independent or document scrolling
+
+Make sure the chosen pattern does not create two competing scrollbars unnecessarily.
+
+Required mobile behavior
+On mobile and narrow screens:
+
+The sidebar should behave as a proper drawer or collapsible navigation.
+The drawer must be scrollable if its content is taller than the viewport.
+The backdrop should only exist while the drawer is open.
+The backdrop must not remain over the page after the drawer closes.
+The backdrop must not block the sidebar while it is open.
+Pressing Escape should close the drawer if that behavior already exists.
+Clicking the backdrop should close the drawer if that behavior already exists.
+Body scroll locking should only be active while the drawer is open.
+Body scroll locking must be cleaned up when the drawer closes or the component unmounts.
+Main page scrolling must resume after the drawer closes.
+Overlay and layering requirements
+Audit all dashboard overlays, menus, drawers, popovers, and sticky elements.
+
+Ensure that:
+
+No invisible fixed element covers the left sidebar.
+The sidebar has the correct z-index.
+An open drawer appears above the backdrop.
+The backdrop appears above the page but below the drawer.
+Closed overlays are removed or use pointer-events: none.
+Any overlay transition does not leave a blocking element behind.
+Clicks, touch events, wheel events, and keyboard events reach the intended element.
+About admin content requirements
+After the fix, confirm that the admin can scroll to and edit all About page content groups, including:
+
+Campus Highlights
+Achievement Statistics
+Frequently Asked Questions
+Admission Help details
+Final CTA content
+Any earlier About page content sections
+Save, update, reorder, enable, and disable controls
+Do not remove any existing form fields or shorten the page to hide the problem.
+
+Preserve existing functionality
+Do not change:
+
+Admin authentication
+Authorization rules
+Dashboard navigation labels
+Existing About page data
+Database schema unless the scrolling fix genuinely requires it
+Public About page layout
+Completed timeline alignment
+Count-up animation
+Campus cards
+FAQ behavior
+CTA behavior
+This is a dashboard layout and scrolling fix only.
+
+Accessibility requirements
+Verify:
+
+Sidebar navigation is keyboard accessible.
+Focused navigation items automatically scroll into view when necessary.
+The focused form field is not hidden behind a sticky header.
+Drawer focus behavior remains usable on mobile.
+Escape behavior works where applicable.
+Visible focus styles remain intact.
+Screen readers do not encounter hidden but focusable overlay content.
+Verification checklist
+Test the admin dashboard at:
+
+Desktop width
+Tablet width
+Mobile width
+Short viewport height
+Long About settings page
+Long sidebar navigation
+Confirm:
+
+The left sidebar scrolls normally.
+The main content scrolls to the bottom.
+All About sections can be reached.
+All About fields can be edited.
+Save and update buttons are reachable.
+No transparent overlay blocks the sidebar.
+The mouse wheel works over both sidebar and main content.
+Trackpad and touch scrolling work.
+Keyboard scrolling works.
+Mobile drawer scrolling works.
+Closing the mobile drawer restores page scrolling.
+No unnecessary double-scrollbar issue is introduced.
+No horizontal overflow appears.
+Public About page behavior remains unchanged.
+Production build passes.
+Stop after fixing the dashboard scrolling issue. Do not add new About sections or redesign the dashboard.
