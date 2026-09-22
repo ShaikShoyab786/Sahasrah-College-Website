@@ -1,0 +1,420 @@
+Prompt: Build the Next Three About Page Sections
+Continue working on the existing Sahasara Junior College project.
+
+The attached screenshots show the visual direction for the next three sections of the About page:
+
+Our Guiding Principles
+Why Parents Choose Sahasara
+Our Leadership
+Use the screenshots only as design inspiration. Do not copy KVR Junior College branding, content, people, logos, source code, or images.
+
+Replace all KVR-specific content with Sahasara Junior College content and editable placeholders.
+
+The previously completed About page sections must remain unchanged:
+
+About Hero / Introduction
+Our Story
+Chairman’s Message
+Add these three new sections below the existing Chairman’s Message section.
+
+1. Our Guiding Principles
+Create a section with three cards:
+
+Our Vision
+Our Mission
+Our Values
+
+Use a layout similar to the reference:
+
+Centered section heading
+Three equal cards on desktop
+Responsive stacked cards on mobile
+Soft neutral background
+Rounded white cards
+Circular icon areas
+Clean academic typography
+Subtle card shadows
+Vision card
+Editable fields:
+
+Icon
+Title
+Description
+Suggested placeholder:
+
+Title:
+Our Vision
+Description:
+To create a learning environment that helps students build knowledge, confidence, discipline, and a clear direction for the future.
+
+Mission card
+Editable fields:
+
+Icon
+Title
+Description
+Suggested placeholder:
+
+Title:
+Our Mission
+Description:
+To provide focused academic guidance, concept-based learning, and personalized mentorship that helps every student progress with confidence.
+
+Values card
+Editable fields:
+
+Icon
+Title
+Repeatable values list
+Suggested placeholder values:
+
+Integrity in all we do
+Excellence in education
+Care for every student
+Commitment to progress
+
+Do not hardcode the values list. The admin must be able to add, edit, remove, and reorder values.
+
+Guiding Principles hover effect
+Add a refined hover interaction:
+
+Card lifts slightly
+Shadow becomes more visible
+Border or accent color appears
+Icon circle receives a subtle background/accent transition
+Icon may move or scale very slightly
+Heading changes to the theme accent color
+Transition should be smooth and not distracting
+On mobile, the cards should remain fully readable without requiring hover.
+
+2. Why Parents Choose Sahasara
+Create a section based on the second attached screenshot.
+
+Use the heading:
+
+Why Parents Choose Sahasara
+
+This heading must be editable from the admin dashboard.
+
+Display six benefit items in a responsive row/grid:
+
+Experienced Faculty
+Strong Academic Preparation
+Concept-Based Learning
+Regular Tests and Practice
+Personalized Mentorship
+A Commitment to Student Progress
+
+Use neutral placeholder content and make every item editable.
+
+Each benefit item should support:
+
+Icon
+Title
+Optional short description
+Display order
+Visibility
+Use an icon style consistent with the rest of the website.
+
+Layout
+Desktop:
+
+Six evenly spaced items in one row where space allows
+Circular icon area above each label
+Clean whitespace
+Centered alignment
+Tablet:
+
+Two or three columns depending on available width
+Mobile:
+
+Two-column or one-column layout
+No horizontal scrolling
+Readable labels and touch-friendly spacing
+Hover effect
+Each benefit item should have a subtle hover interaction:
+
+Icon circle changes accent color
+Icon receives a small scale or rotation effect
+Text changes to the theme accent color
+Item lifts slightly
+Optional description fades in below the title if a description exists
+Do not create large layout jumps
+The hover effect should also work with keyboard focus.
+
+Do not create a separate navigation item or route called Why Sahasara. This is only a content section inside:
+
+Pages → About
+
+Do not add the old unwanted Why Sahasara or Pathways navigation items.
+
+3. Our Leadership
+Create the leadership section based on the third attached screenshot.
+
+Use:
+
+Our Leadership
+
+as the editable section heading.
+
+Display leadership members as image cards in a responsive grid.
+
+Each leadership member should support:
+
+Portrait image
+Image alt text
+Name
+Designation
+Qualification, such as M.Sc
+Short biography or responsibility description
+Optional social/contact links if supported by the existing architecture
+Display order
+Visibility
+Use four editable placeholder members initially.
+
+Do not use the people or names shown in the KVR reference screenshot.
+
+Use neutral placeholders such as:
+
+Chairperson
+Academic Director
+Director
+Dean
+
+The names, qualifications, descriptions, and images must be editable from the admin dashboard.
+
+Default card state
+Before hover, each card should primarily show:
+
+Portrait image
+Name
+Designation
+Use a readable lower gradient overlay so the name and designation remain visible over the image.
+
+Hover interaction
+When the cursor moves over a leadership card:
+
+A dark or brand-colored gradient overlay expands smoothly
+Name and designation remain visible
+Qualification appears, for example:
+M.Sc
+
+Responsibility description fades or slides into view
+Optional action/social icons may appear if implemented
+The image should subtly scale or darken
+The card should lift slightly
+The transition should feel smooth and professional
+Example hover content:
+
+M.Sc
+Serving as Chairperson, providing strategic oversight, academic direction, and long-term guidance for the institution.
+
+Do not reproduce the exact KVR text from the screenshot.
+
+Mobile behavior
+Since hover is not available on mobile:
+
+Support tap/focus to reveal the additional content, or
+Display the qualification and description below the image in a clean expanded card layout
+Do not hide important leadership information behind an interaction that cannot work on touch devices.
+
+Keyboard focus should trigger the same expanded state as hover.
+
+4. Admin dashboard changes
+Add these three sections under the existing grouped navigation:
+
+Pages
+  About
+    About Hero
+    Our Story
+    Chairman’s Message
+    Guiding Principles
+    Why Parents Choose
+    Leadership
+
+Use clear labels:
+
+Guiding Principles
+Why Parents Choose
+Leadership
+
+Do not create separate top-level sidebar items for these sections.
+
+The existing accordion behavior must remain correct:
+
+Pages is collapsed by default.
+Clicking Pages opens and closes it.
+Clicking About opens and closes its children.
+The active route automatically expands its parents.
+Leaf sections navigate to their individual editors.
+Selected items remain highlighted.
+Clicking a leaf item does not unexpectedly collapse the parent menu.
+Only add these three new About sections in this task. Do not add future About sections yet.
+
+5. Admin editors
+Create separate editors for:
+
+Pages → About → Guiding Principles
+Pages → About → Why Parents Choose
+Pages → About → Leadership
+
+Each editor must include:
+
+Saved content values
+Editable fields
+Repeatable items where required
+Image replacement where required
+Image alt text
+Visibility toggle
+Display ordering
+Save button
+Loading state
+Success state
+Validation errors
+API error handling
+Do not combine these three sections into one large form.
+
+Guiding Principles editor
+Allow the admin to edit:
+
+Section heading
+Section description if supported
+Vision card
+Mission card
+Values card
+Icons
+Values list
+Visibility
+Why Parents Choose editor
+Allow the admin to:
+
+Edit section heading
+Add benefit items
+Edit icons
+Edit titles
+Edit descriptions
+Reorder items
+Hide or show individual items
+Hide or show the complete section
+Leadership editor
+Allow the admin to:
+
+Add leadership members
+Upload or replace portraits
+Edit image alt text
+Edit names
+Edit designations
+Edit qualifications
+Edit biographies
+Reorder members
+Hide or show individual members
+Hide or show the complete section
+Use the existing image upload and authentication patterns.
+
+6. Backend and database
+Create separate content structures for these sections, following the current project conventions.
+
+Suggested structures:
+
+AboutGuidingPrinciples
+AboutWhyParentsChoose
+AboutLeadershipMember
+
+Use separate records or validated repeatable data structures for:
+
+Vision
+Mission
+Values
+Parent-choice benefits
+Leadership members
+Do not store the entire About page as one unstructured object.
+
+Provide:
+
+Public read access
+Protected admin read access
+Protected admin update/create/delete access where needed
+Validation
+Visibility handling
+Display ordering
+Proper error responses
+Only authenticated admins may modify the content.
+
+The public About page must load the saved values from the backend.
+
+7. Visual and motion requirements
+Use the current Sahasara theme and existing design system.
+
+Add subtle transitions:
+
+Scroll reveal for each section
+Card fade-up animation when entering the viewport
+Staggered card entrance
+Smooth hover lift
+Icon color transitions
+Leadership image scale/darken transition
+Timeline and section transitions should remain consistent with the previously refined About page
+Respect:
+
+prefers-reduced-motion: reduce
+
+When reduced motion is enabled:
+
+Show content immediately
+Disable large movement
+Disable pulsing and hover-heavy animation
+Keep all content fully accessible
+Do not add the WhatsApp floating button shown in the reference screenshot.
+
+8. Responsive requirements
+Verify the new sections on:
+
+Desktop
+Tablet
+Mobile
+Ensure:
+
+No horizontal overflow
+Cards remain readable
+Leadership content works without hover on touch devices
+Icons and labels remain aligned
+Grid layouts collapse cleanly
+Section spacing remains consistent
+Images do not stretch or crop awkwardly
+Text does not overlap images or cards
+9. Verification
+Verify the complete flow:
+
+The three sections appear below Chairman’s Message.
+Guiding Principles displays Vision, Mission, and Values.
+Values can be edited and reordered.
+Why Parents Choose displays six editable benefit items.
+Leadership displays editable leadership cards.
+Leadership details appear on desktop hover.
+Leadership details are accessible on mobile and keyboard focus.
+Guiding Principles cards have hover transitions.
+Parent-choice items have hover transitions.
+Images can be replaced through the admin dashboard.
+Visibility toggles work.
+Ordering works.
+Public content updates after admin changes.
+Unauthenticated admin writes return 401.
+Existing About sections still work.
+Existing Home navigation and accordion behavior still work.
+No KVR-specific content, images, logos, or names are used.
+No Why Sahasara or Pathways top-level navigation items are reintroduced.
+No WhatsApp button is added.
+Type checking passes.
+Production frontend build passes.
+Backend starts successfully.
+At the end, report:
+
+Public sections added
+Hover effects implemented
+Mobile and keyboard behavior
+Admin navigation changes
+New editor screens
+Database/API changes
+Verification results
+Any remaining placeholder content
+Do not implement the remaining About page sections in this task. Stop after these three sections are complete.
