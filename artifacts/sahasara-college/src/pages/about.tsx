@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ArrowRight, BookOpen, CalendarDays, CheckCircle2, Quote } from 'lucide-react';
 import {
   useGetAboutChairmanMessage,
@@ -89,20 +89,39 @@ function AboutHeroSection({ content }: { content: AboutHero }) {
 
 function OurStorySection({ content }: { content: AboutStory }) {
   const timeline = content.timelineItems.filter((item) => item.isVisible).sort((a, b) => a.displayOrder - b.displayOrder);
+  const sectionRef = useRef<HTMLElement>(null);
+  const [hasEntered, setHasEntered] = useState(false);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section || hasEntered) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setHasEntered(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.2 },
+    );
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, [hasEntered]);
+
   return (
-    <section id="our-story" className="px-6 py-24 lg:px-10 lg:py-32">
+    <section ref={sectionRef} id="our-story" className={`story-section px-6 py-24 lg:px-10 lg:py-32 ${hasEntered ? 'story-is-visible' : ''}`} style={{ '--story-duration': `${Math.max(timeline.length, 1) * 780}ms` } as React.CSSProperties}>
       <div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-[.78fr_1fr_.9fr] lg:items-center lg:gap-12">
-        <div>
-          <SectionEyebrow>{content.eyebrow}</SectionEyebrow>
-          <h2 className="mt-5 max-w-md font-display text-5xl font-semibold leading-[.96] tracking-[-.05em] text-[hsl(var(--primary))] md:text-6xl" data-testid="text-about-story-heading">{content.heading}</h2>
-          <p className="mt-7 max-w-md text-[15px] leading-7 text-[hsl(var(--muted-foreground))]" data-testid="text-about-story-description">{content.description}</p>
-          {content.buttonLabel && <a href={content.buttonHref || '#our-story'} className="mt-8 inline-flex items-center rounded-full bg-[hsl(var(--primary))] px-5 py-3.5 text-sm font-bold text-[hsl(var(--primary-foreground))] transition hover:-translate-y-0.5" data-testid="link-about-story">{content.buttonLabel}<ArrowRight size={17} className="ml-2" /></a>}
+        <div className="story-copy">
+          <div className="story-reveal story-reveal-eyebrow"><SectionEyebrow>{content.eyebrow}</SectionEyebrow></div>
+          <h2 className="story-reveal story-reveal-heading mt-5 max-w-md font-display text-5xl font-semibold leading-[.96] tracking-[-.05em] text-[hsl(var(--primary))] md:text-6xl" data-testid="text-about-story-heading">{content.heading}</h2>
+          <p className="story-reveal story-reveal-description mt-7 max-w-md text-[15px] leading-7 text-[hsl(var(--muted-foreground))]" data-testid="text-about-story-description">{content.description}</p>
+          {content.buttonLabel && <a href={content.buttonHref || '#our-story'} className="story-reveal story-reveal-button group mt-8 inline-flex items-center rounded-full bg-[hsl(var(--primary))] px-5 py-3.5 text-sm font-bold text-[hsl(var(--primary-foreground))] shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg" data-testid="link-about-story">{content.buttonLabel}<ArrowRight size={17} className="ml-2 transition-transform duration-300 group-hover:translate-x-1" /></a>}
         </div>
-        <StoryCollage content={content} />
+        <StoryCollage content={content} hasEntered={hasEntered} />
         <div id="our-story-timeline" className="relative" aria-label="Sahasara story timeline">
-          <div className="absolute bottom-3 left-[9px] top-3 w-px bg-[hsl(var(--border))]" aria-hidden="true" />
+          <div className="story-timeline-line absolute bottom-3 left-[9px] top-3 w-px bg-[hsl(var(--border))]" aria-hidden="true"><div className="story-timeline-progress" /></div>
           <div className="space-y-8">
-            {timeline.map((item) => <article key={item.id} className="relative pl-9"><span className="absolute left-0 top-1.5 h-[19px] w-[19px] rounded-full border-[5px] border-[hsl(var(--background))] bg-[hsl(var(--accent))] shadow-[0_0_0_1px_hsl(var(--accent)/.35)]" aria-hidden="true" /><p className="text-xs font-bold uppercase tracking-[.18em] text-[hsl(var(--accent-foreground))]">{item.period}</p><h3 className="mt-2 font-display text-2xl font-semibold text-[hsl(var(--primary))]">{item.title}</h3><p className="mt-2 text-sm leading-6 text-[hsl(var(--muted-foreground))]">{item.description}</p></article>)}
+            {timeline.map((item, index) => <article key={item.id} className="story-timeline-item relative pl-9" style={{ '--story-delay': `${index * 780}ms` } as React.CSSProperties}><span className="story-timeline-marker absolute left-0 top-1.5 h-[19px] w-[19px] rounded-full border-[5px] border-[hsl(var(--background))] bg-[hsl(var(--accent))] shadow-[0_0_0_1px_hsl(var(--accent)/.35)]" aria-hidden="true" /><p className="text-xs font-bold uppercase tracking-[.18em] text-[hsl(var(--accent-foreground))]">{item.period}</p><h3 className="story-timeline-title mt-2 font-display text-2xl font-semibold text-[hsl(var(--primary))]">{item.title}</h3><p className="mt-2 text-sm leading-6 text-[hsl(var(--muted-foreground))]">{item.description}</p></article>)}
           </div>
         </div>
       </div>
@@ -110,12 +129,12 @@ function OurStorySection({ content }: { content: AboutStory }) {
   );
 }
 
-function StoryCollage({ content }: { content: AboutStory }) {
+function StoryCollage({ content, hasEntered }: { content: AboutStory; hasEntered: boolean }) {
   return (
-    <div className="relative mx-auto min-h-[440px] w-full max-w-md">
-      <div className="absolute left-0 top-0 h-[76%] w-[72%] overflow-hidden rounded-[1.75rem] bg-[hsl(var(--secondary))] shadow-xl"><MediaOrFallback src={content.mainImage} alt={content.mainImageAltText} label="A shared beginning" /></div>
-      <div className="absolute bottom-0 right-0 h-[55%] w-[58%] overflow-hidden rounded-[1.5rem] border-8 border-[hsl(var(--background))] bg-[hsl(var(--card))] shadow-xl"><MediaOrFallback src={content.secondaryImage} alt={content.secondaryImageAltText} label="Learning together" /></div>
-      <div className="absolute bottom-16 left-[34%] h-[29%] w-[35%] overflow-hidden rounded-xl border-4 border-[hsl(var(--background))] bg-[hsl(var(--primary))] shadow-lg"><MediaOrFallback src={content.thirdImage} alt={content.thirdImageAltText} label="Looking ahead" dark /></div>
+    <div className={`story-collage relative mx-auto w-full max-w-md ${hasEntered ? 'story-collage-is-visible' : ''}`}>
+      <div className="story-collage-card story-collage-main overflow-hidden rounded-[1.75rem] bg-[hsl(var(--secondary))] shadow-xl"><MediaOrFallback src={content.mainImage} alt={content.mainImageAltText} label="A shared beginning" /></div>
+      <div className="story-collage-card story-collage-secondary overflow-hidden rounded-[1.5rem] border-8 border-[hsl(var(--background))] bg-[hsl(var(--card))] shadow-xl"><MediaOrFallback src={content.secondaryImage} alt={content.secondaryImageAltText} label="Learning together" /></div>
+      <div className="story-collage-card story-collage-third overflow-hidden rounded-xl border-4 border-[hsl(var(--background))] bg-[hsl(var(--primary))] shadow-lg"><MediaOrFallback src={content.thirdImage} alt={content.thirdImageAltText} label="Looking ahead" dark /></div>
     </div>
   );
 }

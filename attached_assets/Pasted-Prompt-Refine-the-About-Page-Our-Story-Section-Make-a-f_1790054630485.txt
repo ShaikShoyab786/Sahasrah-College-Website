@@ -1,0 +1,193 @@
+Prompt: Refine the About Page Our Story Section
+Make a focused refinement to the existing About page Our Story section.
+
+Do not build the next About page sections yet. Do not change the existing About Hero, Chairman’s Message, homepage, admin dashboard, or backend content structure unless required for this visual refinement.
+
+Use the attached screenshot as the visual reference for the desired result.
+
+1. Fix the image collage spacing
+The current third image overlaps the secondary image too much.
+
+Adjust the collage so that:
+
+The third image is clearly visible.
+It does not sit directly on top of the secondary image.
+The three images still feel like a connected collage.
+Each image has enough visible area to understand its content.
+The third image should have a cleaner offset and more breathing room.
+The collage should retain a layered editorial look without looking crowded.
+Shadows, rounded corners, and borders should remain consistent.
+The images should not cover important content from one another.
+Use a structure similar to:
+
+Main image
+        Secondary image
+              Third image
+
+But increase the horizontal and vertical spacing between the secondary and third images.
+
+The third image should remain fully visible, especially on desktop.
+
+On mobile:
+
+Do not preserve the excessive overlapping effect.
+Stack the images cleanly or use a much smaller controlled offset.
+Prevent horizontal overflow.
+Ensure every image remains readable.
+Do not replace the existing images or change the admin image-editing functionality.
+
+2. Animate the timeline journey line
+Add a subtle sequential animation to the Our Story timeline.
+
+The timeline should visually progress from the first item to the last:
+
+The Beginning
+      ↓
+Growing Horizons
+      ↓
+A Stronger Community
+      ↓
+Looking Ahead
+
+The effect should feel like the journey line is reaching from one milestone to the next.
+
+Desired behavior
+When the Our Story section enters the viewport:
+
+The vertical timeline line gradually draws or highlights downward.
+The first timeline marker briefly pulses.
+The pulse moves to the second marker.
+Then to the third marker.
+Then to the final marker.
+Each marker should briefly glow or blink when reached.
+The currently reached timeline item may receive a subtle accent color or emphasis.
+Use a polished and calm animation, not a distracting flashing effect.
+
+Recommended behavior:
+
+Duration per timeline item: approximately 600ms–900ms
+Use a soft pulse or glow
+Keep the animation smooth
+Run once when the section first becomes visible
+Avoid continuous rapid blinking
+The vertical line can use a moving accent highlight or a progressive draw effect
+Do not make the entire text flash
+The animation should work with the existing four timeline entries, regardless of the actual text or year values stored by the admin.
+
+3. Add tasteful supporting transitions
+Add only subtle enhancements that improve the section without making it feel overly animated.
+
+Recommended effects:
+
+Story content reveal
+When the section enters the viewport:
+
+Eyebrow fades in
+Heading slides upward slightly
+Description follows with a small delay
+Button appears last
+Image collage reveal
+Use a staggered entrance:
+
+Main image fades and scales into place
+Secondary image follows
+Third image follows last
+Keep the movement small and polished.
+
+Image hover effect
+On desktop hover:
+
+Slight image lift
+Very small scale increase
+Smooth shadow enhancement
+Do not make the image zoom excessively.
+
+Timeline behavior
+When the timeline is reached:
+
+Timeline markers can pulse once
+Titles can transition subtly to the accent color
+Descriptions should remain stable and readable
+Do not move the layout while the user is reading
+Button interaction
+The Explore Our Journey button may include:
+
+A subtle arrow movement on hover
+Small elevation or shadow change
+Smooth transition
+Do not change the button’s content or destination.
+
+4. Accessibility and motion preferences
+Respect reduced-motion preferences.
+
+When the user has enabled:
+
+prefers-reduced-motion: reduce
+
+the page should:
+
+Show the content immediately
+Disable pulsing and blinking effects
+Disable large movement transitions
+Keep the timeline visible without animation
+Preserve all content and functionality
+Do not use animations that create rapid flashing or accessibility issues.
+
+5. Responsive behavior
+Verify the refined section on:
+
+Desktop
+Tablet
+Mobile
+On mobile:
+
+The text should appear before the timeline or follow the existing mobile order.
+The image collage should become clean and readable.
+The timeline line should remain visible.
+Timeline markers should remain aligned.
+No image or content should be clipped.
+No horizontal scrolling should occur.
+6. Preserve all existing functionality
+Do not break:
+
+About page routing
+Our Story admin editor
+Timeline item editing
+Timeline item ordering
+Image replacement
+Image alt text
+Visibility controls
+About Hero
+Chairman’s Message
+Homepage About Preview
+Admin sidebar grouping
+Pages/Home/About accordion behavior
+This is a visual and interaction refinement only. No new About page sections should be implemented yet.
+
+7. Verification
+After making the refinement, verify:
+
+The third story image is clearly visible.
+The third image no longer overlaps the secondary image excessively.
+The collage remains visually balanced.
+Mobile image layout is clean.
+The timeline line progresses from the first item to the last.
+Timeline markers pulse sequentially.
+The animation starts when the section enters the viewport.
+The animation is subtle and does not flash rapidly.
+Reduced-motion preferences disable the animations.
+Existing admin timeline editing still works.
+Existing image editing still works.
+No horizontal overflow exists.
+Desktop and mobile layouts work correctly.
+Type checking passes.
+Production frontend build passes.
+The backend still starts correctly.
+At the end, report:
+
+Image spacing changes
+Timeline animation behavior
+Additional transition effects added
+Accessibility and reduced-motion handling
+Verification results
+Stop after refining the Our Story section. Do not start the next three About page sections until this result is reviewed.
