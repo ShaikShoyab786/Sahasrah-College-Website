@@ -70,19 +70,19 @@ function AboutHeroSection({ content }: { content: AboutHero }) {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,hsl(var(--accent)/.18),transparent_35%)]" aria-hidden="true" />
       <div className="relative mx-auto grid max-w-7xl items-center gap-14 lg:grid-cols-[.95fr_1.05fr] lg:gap-20">
         <div>
-          <SectionEyebrow className="!text-[hsl(var(--accent))]">{content.eyebrow}</SectionEyebrow>
+          <SectionEyebrow className="about-eyebrow !text-[hsl(var(--accent))]">{content.eyebrow}</SectionEyebrow>
           <h1 className="mt-6 max-w-2xl font-display text-6xl font-semibold leading-[.91] tracking-[-.06em] md:text-7xl lg:text-[clamp(4.7rem,7vw,7.2rem)]" data-testid="text-about-hero-heading">{content.heading}</h1>
           <p className="mt-8 max-w-xl text-base leading-8 text-white/70 md:text-lg" data-testid="text-about-hero-description">{content.description}</p>
           <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            {content.primaryButtonVisible && <a href={content.primaryButtonUrl || '#contact'} className="inline-flex items-center justify-center rounded-full bg-[hsl(var(--accent))] px-5 py-3.5 text-sm font-bold text-[hsl(var(--primary))] transition hover:-translate-y-0.5" data-testid="link-about-hero-primary">{content.primaryButtonLabel}<ArrowRight size={17} className="ml-2" /></a>}
-            {content.secondaryButtonVisible && <a href={content.secondaryButtonUrl || '#contact'} className="inline-flex items-center justify-center rounded-full border border-white/30 px-5 py-3.5 text-sm font-bold text-white transition hover:bg-white/10" data-testid="link-about-hero-secondary">{content.secondaryButtonLabel}</a>}
+            {content.primaryButtonVisible && <a href={content.primaryButtonUrl || '#contact'} className="group inline-flex items-center justify-center rounded-full bg-[hsl(var(--accent))] px-5 py-3.5 text-sm font-bold text-[hsl(var(--primary))] shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg" data-testid="link-about-hero-primary">{content.primaryButtonLabel}<ArrowRight size={17} className="ml-2 transition-transform duration-300 group-hover:translate-x-1" /></a>}
+            {content.secondaryButtonVisible && <a href={content.secondaryButtonUrl || '#contact'} className="group inline-flex items-center justify-center rounded-full border border-white/30 px-5 py-3.5 text-sm font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-white/10 hover:shadow-lg" data-testid="link-about-hero-secondary">{content.secondaryButtonLabel}<ArrowRight size={17} className="ml-2 transition-transform duration-300 group-hover:translate-x-1" /></a>}
           </div>
           <div className="mt-12 grid max-w-xl grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/15 bg-white/15 sm:grid-cols-4">
-            {visibleStats.map((stat) => <div key={stat.id} className="min-h-28 bg-[hsl(var(--primary))] p-4 sm:p-5"><p className="font-display text-3xl font-semibold text-[hsl(var(--accent))]" data-testid={`text-about-stat-value-${stat.displayOrder}`}>{stat.value}</p><p className="mt-2 text-xs leading-5 text-white/60">{stat.label}</p></div>)}
+            {visibleStats.map((stat) => <div key={stat.id} className="about-stat-card min-h-28 bg-[hsl(var(--primary))] p-4 sm:p-5"><p className="font-display text-3xl font-semibold text-[hsl(var(--accent))]" data-testid={`text-about-stat-value-${stat.displayOrder}`}>{stat.value}</p><p className="mt-2 text-xs leading-5 text-white/60">{stat.label}</p></div>)}
           </div>
         </div>
         <div className="relative mx-auto w-full max-w-xl pb-8 lg:pb-0">
-          <div className="aspect-[.86] overflow-hidden rounded-[2rem] border border-white/15 bg-white/10 shadow-2xl shadow-black/30">
+            <div className="about-hero-image aspect-[.86] overflow-hidden rounded-[2rem] border border-white/15 bg-white/10 shadow-2xl shadow-black/30">
             <MediaOrFallback src={content.mainImageUrl} alt={content.mainImageAltText} label="Sahasara learning together" dark />
           </div>
           <div className="absolute -bottom-1 left-4 right-4 rounded-2xl border border-[hsl(var(--primary)/.2)] bg-[hsl(var(--background))] p-5 text-[hsl(var(--primary))] shadow-2xl sm:left-10 sm:right-10 sm:p-6">
@@ -121,10 +121,10 @@ function OurStorySection({ content }: { content: AboutStory }) {
   }, [hasEntered]);
 
   return (
-    <section ref={sectionRef} id="our-story" className={`story-section px-6 py-24 lg:px-10 lg:py-32 ${hasEntered ? 'story-is-visible' : ''}`} style={{ '--story-duration': `${Math.max(timeline.length, 1) * 780}ms` } as React.CSSProperties}>
+      <section ref={sectionRef} id="our-story" className={`story-section px-6 py-24 lg:px-10 lg:py-32 ${hasEntered ? 'story-is-visible' : ''}`} style={{ '--story-duration': `${Math.max(timeline.length, 1) * 820}ms` } as React.CSSProperties}>
       <div className="mx-auto grid max-w-7xl gap-14 lg:grid-cols-[.78fr_1fr_.9fr] lg:items-center lg:gap-12">
         <div className="story-copy">
-          <div className="story-reveal story-reveal-eyebrow"><SectionEyebrow>{content.eyebrow}</SectionEyebrow></div>
+          <div className="story-reveal story-reveal-eyebrow"><SectionEyebrow className="about-eyebrow">{content.eyebrow}</SectionEyebrow></div>
           <h2 className="story-reveal story-reveal-heading mt-5 max-w-md font-display text-5xl font-semibold leading-[.96] tracking-[-.05em] text-[hsl(var(--primary))] md:text-6xl" data-testid="text-about-story-heading">{content.heading}</h2>
           <p className="story-reveal story-reveal-description mt-7 max-w-md text-[15px] leading-7 text-[hsl(var(--muted-foreground))]" data-testid="text-about-story-description">{content.description}</p>
           {content.buttonLabel && <a href={content.buttonHref || '#our-story'} className="story-reveal story-reveal-button group mt-8 inline-flex items-center rounded-full bg-[hsl(var(--primary))] px-5 py-3.5 text-sm font-bold text-[hsl(var(--primary-foreground))] shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg" data-testid="link-about-story">{content.buttonLabel}<ArrowRight size={17} className="ml-2 transition-transform duration-300 group-hover:translate-x-1" /></a>}
@@ -133,7 +133,7 @@ function OurStorySection({ content }: { content: AboutStory }) {
         <div id="our-story-timeline" className="relative" aria-label="Sahasara story timeline">
           <div className="story-timeline-line absolute bottom-3 left-[9px] top-3 w-px bg-[hsl(var(--border))]" aria-hidden="true"><div className="story-timeline-progress" /></div>
           <div className="space-y-8">
-            {timeline.map((item, index) => <article key={item.id} className="story-timeline-item relative pl-9" style={{ '--story-delay': `${index * 780}ms` } as React.CSSProperties}><span className="story-timeline-marker absolute left-0 top-1.5 h-[19px] w-[19px] rounded-full border-[5px] border-[hsl(var(--background))] bg-[hsl(var(--accent))] shadow-[0_0_0_1px_hsl(var(--accent)/.35)]" aria-hidden="true" /><p className="text-xs font-bold uppercase tracking-[.18em] text-[hsl(var(--accent-foreground))]">{item.period}</p><h3 className="story-timeline-title mt-2 font-display text-2xl font-semibold text-[hsl(var(--primary))]">{item.title}</h3><p className="mt-2 text-sm leading-6 text-[hsl(var(--muted-foreground))]">{item.description}</p></article>)}
+            {timeline.map((item, index) => <article key={item.id} className="story-timeline-item relative pl-9" style={{ '--story-delay': `${index * 820}ms` } as React.CSSProperties}><span className="story-timeline-marker absolute left-0 top-1.5 h-[21px] w-[21px] rounded-full border-[5px] border-[hsl(var(--background))] bg-[hsl(var(--accent))] shadow-[0_0_0_1px_hsl(var(--accent)/.35)]" aria-hidden="true" /><p className="text-xs font-bold uppercase tracking-[.18em] text-[hsl(var(--accent-foreground))]">{item.period}</p><h3 className="story-timeline-title mt-2 font-display text-2xl font-semibold text-[hsl(var(--primary))]">{item.title}</h3><p className="mt-2 text-sm leading-6 text-[hsl(var(--muted-foreground))]">{item.description}</p></article>)}
           </div>
         </div>
       </div>
@@ -143,10 +143,10 @@ function OurStorySection({ content }: { content: AboutStory }) {
 
 function StoryCollage({ content, hasEntered }: { content: AboutStory; hasEntered: boolean }) {
   return (
-    <div className={`story-collage relative mx-auto w-full max-w-md ${hasEntered ? 'story-collage-is-visible' : ''}`}>
-      <div className="story-collage-card story-collage-main overflow-hidden rounded-[1.75rem] bg-[hsl(var(--secondary))] shadow-xl"><MediaOrFallback src={content.mainImage} alt={content.mainImageAltText} label="A shared beginning" /></div>
-      <div className="story-collage-card story-collage-secondary overflow-hidden rounded-[1.5rem] border-8 border-[hsl(var(--background))] bg-[hsl(var(--card))] shadow-xl"><MediaOrFallback src={content.secondaryImage} alt={content.secondaryImageAltText} label="Learning together" /></div>
-      <div className="story-collage-card story-collage-third overflow-hidden rounded-xl border-4 border-[hsl(var(--background))] bg-[hsl(var(--primary))] shadow-lg"><MediaOrFallback src={content.thirdImage} alt={content.thirdImageAltText} label="Looking ahead" dark /></div>
+      <div className={`story-collage relative mx-auto w-full max-w-md ${hasEntered ? 'story-collage-is-visible' : ''}`}>
+      <div tabIndex={0} className="story-collage-card story-collage-main overflow-hidden rounded-[1.75rem] bg-[hsl(var(--secondary))] shadow-xl outline-none"><MediaOrFallback src={content.mainImage} alt={content.mainImageAltText} label="A shared beginning" /></div>
+      <div tabIndex={0} className="story-collage-card story-collage-secondary overflow-hidden rounded-[1.5rem] border-8 border-[hsl(var(--background))] bg-[hsl(var(--card))] shadow-xl outline-none"><MediaOrFallback src={content.secondaryImage} alt={content.secondaryImageAltText} label="Learning together" /></div>
+      <div tabIndex={0} className="story-collage-card story-collage-third overflow-hidden rounded-xl border-4 border-[hsl(var(--background))] bg-[hsl(var(--primary))] shadow-lg outline-none"><MediaOrFallback src={content.thirdImage} alt={content.thirdImageAltText} label="Looking ahead" dark /></div>
     </div>
   );
 }
@@ -163,11 +163,11 @@ function ChairmanMessageSection({ content }: { content: AboutChairmanMessage }) 
         </div>
         <div className="max-w-2xl">
           <Quote size={52} className="text-[hsl(var(--accent))]" aria-hidden="true" />
-          <SectionEyebrow className="mt-7">{content.eyebrow}</SectionEyebrow>
+          <SectionEyebrow className="about-eyebrow mt-7">{content.eyebrow}</SectionEyebrow>
           <h2 className="mt-5 max-w-2xl font-display text-5xl font-semibold leading-[.96] tracking-[-.05em] text-[hsl(var(--primary))] md:text-6xl" data-testid="text-chairman-heading">{content.heading}</h2>
           <p className="mt-7 text-lg leading-8 text-[hsl(var(--muted-foreground))]" data-testid="text-chairman-message">{content.message}</p>
           <div className="mt-8 border-t border-[hsl(var(--border))] pt-5"><p className="font-display text-2xl font-semibold text-[hsl(var(--primary))]">{content.signatureName}</p><p className="mt-1 text-sm text-[hsl(var(--muted-foreground))]">{content.role}</p></div>
-          {content.buttonVisible && content.buttonLabel && <a href={content.buttonHref || '#contact'} className="mt-8 inline-flex items-center rounded-full bg-[hsl(var(--primary))] px-5 py-3.5 text-sm font-bold text-[hsl(var(--primary-foreground))] transition hover:-translate-y-0.5">{content.buttonLabel}<ArrowRight size={17} className="ml-2" /></a>}
+          {content.buttonVisible && content.buttonLabel && <a href={content.buttonHref || '#contact'} className="group mt-8 inline-flex items-center rounded-full bg-[hsl(var(--primary))] px-5 py-3.5 text-sm font-bold text-[hsl(var(--primary-foreground))] shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg">{content.buttonLabel}<ArrowRight size={17} className="ml-2 transition-transform duration-300 group-hover:translate-x-1" /></a>}
         </div>
       </div>
     </section>
@@ -212,7 +212,7 @@ function GuidingPrinciplesSection({ content }: { content: AboutGuidingPrinciples
   return (
     <section ref={ref} id="guiding-principles" className={`about-next-section about-principles-section ${isVisible ? 'about-section-is-visible' : ''}`}>
       <div className="mx-auto max-w-7xl px-6 py-24 lg:px-10 lg:py-32">
-        <div className="mx-auto max-w-2xl text-center"><SectionEyebrow>GUIDING PRINCIPLES</SectionEyebrow><h2 className="mt-5 font-display text-5xl font-semibold leading-[.96] tracking-[-.05em] text-[hsl(var(--primary))] md:text-6xl">{content.heading}</h2><p className="mx-auto mt-6 max-w-xl text-base leading-7 text-[hsl(var(--muted-foreground))]">{content.description}</p></div>
+        <div className="mx-auto max-w-2xl text-center"><SectionEyebrow className="about-eyebrow about-eyebrow-centered">GUIDING PRINCIPLES</SectionEyebrow><h2 className="mt-5 font-display text-5xl font-semibold leading-[.96] tracking-[-.05em] text-[hsl(var(--primary))] md:text-6xl">{content.heading}</h2><p className="mx-auto mt-6 max-w-xl text-base leading-7 text-[hsl(var(--muted-foreground))]">{content.description}</p></div>
         <div className="mt-14 grid gap-5 md:grid-cols-3">
           {cards.map((card, index) => {
             const Icon = principleIcons[card.icon] || Sparkles;
@@ -230,7 +230,7 @@ function WhyParentsChooseSection({ content }: { content: AboutWhyParentsChoose }
   return (
     <section ref={ref} id="why-parents-choose" className={`about-next-section about-benefits-section ${isVisible ? 'about-section-is-visible' : ''}`}>
       <div className="mx-auto max-w-7xl px-6 py-24 lg:px-10 lg:py-32">
-        <div className="mx-auto max-w-2xl text-center"><SectionEyebrow>WHY SAHASARA</SectionEyebrow><h2 className="mt-5 font-display text-5xl font-semibold leading-[.96] tracking-[-.05em] text-[hsl(var(--primary))] md:text-6xl">{content.heading}</h2><p className="mx-auto mt-6 max-w-xl text-base leading-7 text-[hsl(var(--muted-foreground))]">{content.description}</p></div>
+        <div className="mx-auto max-w-2xl text-center"><SectionEyebrow className="about-eyebrow about-eyebrow-centered">WHY SAHASARA</SectionEyebrow><h2 className="mt-5 font-display text-5xl font-semibold leading-[.96] tracking-[-.05em] text-[hsl(var(--primary))] md:text-6xl">{content.heading}</h2><p className="mx-auto mt-6 max-w-xl text-base leading-7 text-[hsl(var(--muted-foreground))]">{content.description}</p></div>
         <div className="mt-14 grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-3 lg:grid-cols-6">
           {benefits.map((benefit, index) => {
             const Icon = benefitIcons[benefit.icon] || Sparkles;
@@ -248,7 +248,7 @@ function LeadershipSection({ content }: { content: AboutLeadership }) {
   return (
     <section ref={ref} id="leadership" className={`about-next-section about-leadership-section ${isVisible ? 'about-section-is-visible' : ''}`}>
       <div className="mx-auto max-w-7xl px-6 py-24 lg:px-10 lg:py-32">
-        <div className="mx-auto max-w-2xl text-center"><SectionEyebrow>OUR LEADERSHIP</SectionEyebrow><h2 className="mt-5 font-display text-5xl font-semibold leading-[.96] tracking-[-.05em] text-[hsl(var(--primary))] md:text-6xl">{content.heading}</h2><p className="mx-auto mt-6 max-w-xl text-base leading-7 text-[hsl(var(--muted-foreground))]">{content.description}</p></div>
+        <div className="mx-auto max-w-2xl text-center"><SectionEyebrow className="about-eyebrow about-eyebrow-centered">OUR LEADERSHIP</SectionEyebrow><h2 className="mt-5 font-display text-5xl font-semibold leading-[.96] tracking-[-.05em] text-[hsl(var(--primary))] md:text-6xl">{content.heading}</h2><p className="mx-auto mt-6 max-w-xl text-base leading-7 text-[hsl(var(--muted-foreground))]">{content.description}</p></div>
         <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {members.map((member, index) => <article key={member.id} tabIndex={0} className="leadership-card about-reveal-card group relative min-h-[390px] overflow-hidden rounded-[1.5rem] bg-[hsl(var(--primary))] shadow-lg outline-none" style={{ '--about-card-delay': `${index * 110}ms` } as React.CSSProperties}><div className="absolute inset-0">{member.portraitImage ? <img src={member.portraitImage} alt={member.portraitAltText} className="h-full w-full object-cover transition duration-700 group-hover:scale-105 group-focus-visible:scale-105" /> : <MediaOrFallback src={null} alt={member.portraitAltText} label={member.designation} dark />}</div><div className="leadership-overlay absolute inset-0" /><div className="absolute inset-x-0 bottom-0 p-6 text-white"><h3 className="font-display text-2xl font-semibold">{member.name}</h3><p className="mt-1 text-sm font-semibold text-white/75">{member.designation}</p><div className="leadership-details mt-5"><p className="text-sm font-bold text-[hsl(var(--accent))]">{member.qualification}</p><p className="mt-2 text-sm leading-6 text-white/75">{member.biography}</p>{member.socialUrl && <a href={member.socialUrl} target="_blank" rel="noreferrer" className="mt-4 inline-flex text-xs font-bold uppercase tracking-[.16em] text-[hsl(var(--accent))]">Connect <ArrowRight size={14} className="ml-2" /></a>}</div></div></article>)}
         </div>

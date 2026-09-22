@@ -1,0 +1,225 @@
+Prompt: Strengthen About Page Hover Effects, Timeline Animation, and Eyebrow Styling
+Make a visual styling refinement to the existing About page.
+
+Do not change the database, admin content structure, routes, section content, or image-management functionality. Do not implement any new About page sections.
+
+The current About page already contains:
+
+About Hero
+Our Story
+Chairman’s Message
+Guiding Principles
+Why Parents Choose
+Our Leadership
+
+1. Improve Guiding Principles card movement
+The current hover effect on the Guiding Principles cards is too subtle.
+
+Make the card movement clearly visible when the cursor moves over a card.
+
+On desktop hover or keyboard focus:
+
+Move the complete card upward noticeably.
+Add a subtle scale increase.
+Increase the shadow depth.
+Add a refined accent border.
+Add a soft background gradient or light highlight.
+Give the icon circle a stronger scale/color transition.
+Add a subtle shine sweep or highlight across the card.
+The card should feel like it is lifting from the page.
+
+Recommended range:
+
+translateY: approximately -14px to -18px
+scale: approximately 1.02 to 1.04
+
+Keep the effect smooth and professional. Do not make the card jump or create layout instability.
+
+The card must return smoothly to its original position when the cursor leaves.
+
+On mobile, reduce the movement slightly and make sure the card remains fully readable without hover.
+
+2. Strengthen the Our Story timeline animation
+The current timeline animation is too light. Make the journey progression more visible.
+
+The animation should clearly move from one milestone to the next:
+
+The Beginning
+      ↓
+Growing Horizons
+      ↓
+A Stronger Community
+      ↓
+Looking Ahead
+
+When the Our Story section enters the viewport:
+
+The vertical line should visibly draw or fill downward.
+The first timeline marker should pulse with a visible glow.
+The emphasis should travel to the second marker.
+Then to the third marker.
+Then to the final marker.
+Each milestone should briefly receive an accent ring or glow when reached.
+The related year/title may receive a subtle accent emphasis.
+Use a clearly visible but polished effect:
+
+A gold or brand-colored travelling highlight on the line
+Larger node pulse
+Visible glow ring
+Sequential timing between milestones
+One controlled animation sequence when the section enters the viewport
+Avoid rapid flashing. The effect should feel like a guided journey rather than a blinking advertisement.
+
+The animation should still work if the timeline text is changed from the admin dashboard.
+
+3. Improve eyebrow styling across the entire About page
+Every About page eyebrow currently looks too simple.
+
+Update all About page eyebrow labels so they use a consistent designed treatment.
+
+Apply the style wherever an eyebrow is displayed, including:
+
+About Hero
+Our Story
+Chairman’s Message
+Guiding Principles
+Why Parents Choose
+Our Leadership
+Any other About page section that contains an eyebrow
+Each eyebrow should include:
+
+A soft background color or gradient
+Rounded pill shape
+Refined border
+Small decorative dot, line, or icon
+Uppercase typography
+Letter spacing
+Proper horizontal and vertical padding
+Subtle shadow
+Accent color consistent with the site theme
+The eyebrow should look like a designed section badge, not plain text.
+
+Add a subtle hover/focus treatment:
+
+Slight upward movement
+Border accent
+Small shadow increase
+Optional soft shine sweep
+Do not make the effect distracting.
+
+The styling must support different text lengths without clipping.
+
+For centered section eyebrows, keep them correctly centered on desktop and mobile.
+
+4. Add tasteful effects across the About page
+Improve the visual interaction quality across the existing About page wherever appropriate.
+
+Section entrance effects
+Add subtle viewport-based reveal effects:
+
+Section content fades in and moves upward slightly.
+Cards reveal with a small stagger.
+Images appear with a gentle fade and scale.
+Avoid making the whole page feel slow.
+Images
+For existing About page images:
+
+Add a subtle hover scale.
+Add a small lift or shadow enhancement.
+Preserve image cropping and rounded corners.
+Do not allow images to overlap important content.
+Do not create horizontal scrolling.
+Buttons
+For About page buttons:
+
+Add a subtle upward movement on hover.
+Improve shadow depth.
+Add a small arrow movement where an arrow already exists.
+Keep button dimensions stable.
+Do not change the button labels or links.
+Other cards
+Where appropriate, improve hover effects for:
+
+Why Parents Choose items
+Leadership cards
+Campus cards
+Testimonial cards
+Contact/admission card
+About page statistics
+Use consistent movement, shadows, accent borders, and icon transitions.
+
+Do not over-animate every individual element. Keep the page professional and suitable for an educational institution.
+
+5. Accessibility and responsive behavior
+Support keyboard focus states wherever hover effects are added.
+
+Respect:
+
+prefers-reduced-motion: reduce
+
+When reduced motion is enabled:
+
+Show all content immediately.
+Disable large movement effects.
+Disable pulsing and travelling animations.
+Keep the timeline fully visible.
+Preserve all content and functionality.
+On mobile:
+
+Do not rely only on hover.
+Keep important content visible.
+Reduce card movement to avoid clipping.
+Prevent horizontal overflow.
+Make sure all images and timeline content remain readable.
+6. Preserve existing functionality
+Do not change:
+
+Admin dashboard
+Admin navigation
+About page content
+Existing section order
+Database models
+API routes
+Image upload/replacement behavior
+Hero section
+Our Story content
+Timeline content
+Chairman’s Message
+Leadership content
+Homepage
+Site Identity
+WhatsApp behavior
+Do not add new About page sections.
+
+Do not replace the existing visual design with a different design system.
+
+7. Verification
+After implementation, verify:
+
+Guiding Principles cards visibly move on hover.
+Guiding Principles cards return smoothly after hover.
+Our Story timeline visibly progresses from the first item to the last.
+Timeline nodes pulse sequentially.
+Timeline animation starts when the section enters the viewport.
+Eyebrows have visible backgrounds and designed badge styling.
+All About page eyebrows use the same visual system.
+Images have subtle hover effects.
+Buttons have polished hover effects.
+Existing cards have consistent interactions.
+Mobile layout has no horizontal overflow.
+Keyboard focus states work.
+Reduced-motion mode disables animation safely.
+Existing admin functionality still works.
+Existing About page content remains unchanged.
+Type checking passes.
+Production build passes.
+Backend starts successfully.
+At the end, report:
+
+Guiding Principles hover changes
+Timeline animation changes
+Eyebrow styling changes
+Other About page effects added
+Accessibility and responsive behavior
+Verification results
+Stop after this visual refinement. Do not begin the next About page sections yet.
