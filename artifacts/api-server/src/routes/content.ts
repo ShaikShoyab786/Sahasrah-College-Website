@@ -2,18 +2,30 @@ import { Router, type IRouter } from "express";
 import {
   GetAboutChairmanMessageResponse,
   GetAboutHeroResponse,
+  GetAboutGuidingPrinciplesResponse,
+  GetAboutLeadershipResponse,
   GetAboutStoryResponse,
+  GetAboutWhyParentsChooseResponse,
   GetAdminAboutChairmanMessageResponse,
   GetAdminAboutHeroResponse,
+  GetAdminAboutGuidingPrinciplesResponse,
+  GetAdminAboutLeadershipResponse,
   GetAdminAboutStoryResponse,
+  GetAdminAboutWhyParentsChooseResponse,
   GetAdminHomepageAboutPreviewResponse,
   GetHomepageAboutPreviewResponse,
   UpdateAboutChairmanMessageBody,
   UpdateAboutChairmanMessageResponse,
   UpdateAboutHeroBody,
   UpdateAboutHeroResponse,
+  UpdateAboutGuidingPrinciplesBody,
+  UpdateAboutGuidingPrinciplesResponse,
+  UpdateAboutLeadershipBody,
+  UpdateAboutLeadershipResponse,
   UpdateAboutStoryBody,
   UpdateAboutStoryResponse,
+  UpdateAboutWhyParentsChooseBody,
+  UpdateAboutWhyParentsChooseResponse,
   UpdateHomepageHeroBody,
   UpdateHomepageAboutPreviewBody,
   UpdateHomepageAboutPreviewResponse,
@@ -35,6 +47,27 @@ async function readAboutStory() {
   return prisma.aboutStory.findUnique({
     where: { id: "singleton" },
     include: { timelineItems: { orderBy: { displayOrder: "asc" } } },
+  });
+}
+
+async function readAboutGuidingPrinciples() {
+  return prisma.aboutGuidingPrinciples.findUnique({
+    where: { id: "singleton" },
+    include: { values: { orderBy: { displayOrder: "asc" } } },
+  });
+}
+
+async function readAboutWhyParentsChoose() {
+  return prisma.aboutWhyParentsChoose.findUnique({
+    where: { id: "singleton" },
+    include: { benefits: { orderBy: { displayOrder: "asc" } } },
+  });
+}
+
+async function readAboutLeadership() {
+  return prisma.aboutLeadership.findUnique({
+    where: { id: "singleton" },
+    include: { members: { orderBy: { displayOrder: "asc" } } },
   });
 }
 
@@ -122,6 +155,48 @@ router.get("/about-chairman-message", async (req, res) => {
   } catch (error) {
     req.log.error({ err: error }, "Unable to read About chairman message");
     res.status(500).json({ error: "Unable to load About chairman message." });
+  }
+});
+
+router.get("/about-guiding-principles", async (req, res) => {
+  try {
+    const content = await readAboutGuidingPrinciples();
+    if (!content || !content.isVisible) {
+      res.status(404).json({ error: "Guiding principles are not available." });
+      return;
+    }
+    res.json(GetAboutGuidingPrinciplesResponse.parse(content));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read About guiding principles");
+    res.status(500).json({ error: "Unable to load About guiding principles." });
+  }
+});
+
+router.get("/about-why-parents-choose", async (req, res) => {
+  try {
+    const content = await readAboutWhyParentsChoose();
+    if (!content || !content.isVisible) {
+      res.status(404).json({ error: "Parent-choice benefits are not available." });
+      return;
+    }
+    res.json(GetAboutWhyParentsChooseResponse.parse(content));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read About parent-choice benefits");
+    res.status(500).json({ error: "Unable to load About parent-choice benefits." });
+  }
+});
+
+router.get("/about-leadership", async (req, res) => {
+  try {
+    const content = await readAboutLeadership();
+    if (!content || !content.isVisible) {
+      res.status(404).json({ error: "About leadership is not available." });
+      return;
+    }
+    res.json(GetAboutLeadershipResponse.parse(content));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read About leadership");
+    res.status(500).json({ error: "Unable to load About leadership." });
   }
 });
 
@@ -321,6 +396,129 @@ router.put("/admin/about-chairman-message", requireAdmin, async (req, res) => {
   } catch (error) {
     req.log.error({ err: error }, "Unable to update About chairman message");
     res.status(500).json({ error: "Unable to save About chairman message." });
+  }
+});
+
+router.get("/admin/about-guiding-principles", requireAdmin, async (req, res) => {
+  try {
+    const content = await readAboutGuidingPrinciples();
+    if (!content) {
+      res.status(404).json({ error: "Guiding principles are not available." });
+      return;
+    }
+    res.json(GetAdminAboutGuidingPrinciplesResponse.parse(content));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read admin About guiding principles");
+    res.status(500).json({ error: "Unable to load About guiding principles." });
+  }
+});
+
+router.put("/admin/about-guiding-principles", requireAdmin, async (req, res) => {
+  const parsed = UpdateAboutGuidingPrinciplesBody.safeParse(req.body);
+  if (!parsed.success || new Set(parsed.data?.values.map((value) => value.displayOrder)).size !== parsed.data?.values.length) {
+    res.status(400).json({ error: "Check the guiding principles content and use unique value orders." });
+    return;
+  }
+  try {
+    const { values, ...sectionData } = parsed.data;
+    await prisma.$transaction(async (tx) => {
+      await tx.aboutGuidingPrinciples.upsert({
+        where: { id: "singleton" },
+        update: sectionData,
+        create: { id: "singleton", ...sectionData },
+      });
+      await tx.aboutGuidingPrincipleValue.deleteMany({ where: { aboutGuidingPrinciplesId: "singleton" } });
+      await tx.aboutGuidingPrincipleValue.createMany({
+        data: values.map((value) => ({ ...value, aboutGuidingPrinciplesId: "singleton" })),
+      });
+    });
+    const content = await readAboutGuidingPrinciples();
+    res.json(UpdateAboutGuidingPrinciplesResponse.parse(content));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to update About guiding principles");
+    res.status(500).json({ error: "Unable to save About guiding principles." });
+  }
+});
+
+router.get("/admin/about-why-parents-choose", requireAdmin, async (req, res) => {
+  try {
+    const content = await readAboutWhyParentsChoose();
+    if (!content) {
+      res.status(404).json({ error: "Parent-choice benefits are not available." });
+      return;
+    }
+    res.json(GetAdminAboutWhyParentsChooseResponse.parse(content));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read admin About parent-choice benefits");
+    res.status(500).json({ error: "Unable to load About parent-choice benefits." });
+  }
+});
+
+router.put("/admin/about-why-parents-choose", requireAdmin, async (req, res) => {
+  const parsed = UpdateAboutWhyParentsChooseBody.safeParse(req.body);
+  if (!parsed.success || new Set(parsed.data?.benefits.map((benefit) => benefit.displayOrder)).size !== parsed.data?.benefits.length) {
+    res.status(400).json({ error: "Check the parent-choice content and use unique benefit orders." });
+    return;
+  }
+  try {
+    const { benefits, ...sectionData } = parsed.data;
+    await prisma.$transaction(async (tx) => {
+      await tx.aboutWhyParentsChoose.upsert({
+        where: { id: "singleton" },
+        update: sectionData,
+        create: { id: "singleton", ...sectionData },
+      });
+      await tx.aboutParentChoiceBenefit.deleteMany({ where: { aboutWhyParentsChooseId: "singleton" } });
+      await tx.aboutParentChoiceBenefit.createMany({
+        data: benefits.map((benefit) => ({ ...benefit, aboutWhyParentsChooseId: "singleton" })),
+      });
+    });
+    const content = await readAboutWhyParentsChoose();
+    res.json(UpdateAboutWhyParentsChooseResponse.parse(content));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to update About parent-choice benefits");
+    res.status(500).json({ error: "Unable to save About parent-choice benefits." });
+  }
+});
+
+router.get("/admin/about-leadership", requireAdmin, async (req, res) => {
+  try {
+    const content = await readAboutLeadership();
+    if (!content) {
+      res.status(404).json({ error: "About leadership is not available." });
+      return;
+    }
+    res.json(GetAdminAboutLeadershipResponse.parse(content));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read admin About leadership");
+    res.status(500).json({ error: "Unable to load About leadership." });
+  }
+});
+
+router.put("/admin/about-leadership", requireAdmin, async (req, res) => {
+  const parsed = UpdateAboutLeadershipBody.safeParse(req.body);
+  if (!parsed.success || new Set(parsed.data?.members.map((member) => member.displayOrder)).size !== parsed.data?.members.length) {
+    res.status(400).json({ error: "Check the leadership content and use unique member orders." });
+    return;
+  }
+  try {
+    const { members, ...sectionData } = parsed.data;
+    await prisma.$transaction(async (tx) => {
+      await tx.aboutLeadership.upsert({
+        where: { id: "singleton" },
+        update: sectionData,
+        create: { id: "singleton", ...sectionData },
+      });
+      await tx.aboutLeadershipMember.deleteMany({ where: { aboutLeadershipId: "singleton" } });
+      await tx.aboutLeadershipMember.createMany({
+        data: members.map((member) => ({ ...member, aboutLeadershipId: "singleton" })),
+      });
+    });
+    const content = await readAboutLeadership();
+    res.json(UpdateAboutLeadershipResponse.parse(content));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to update About leadership");
+    res.status(500).json({ error: "Unable to save About leadership." });
   }
 });
 

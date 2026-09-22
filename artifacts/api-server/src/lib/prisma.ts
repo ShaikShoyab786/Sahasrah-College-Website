@@ -195,6 +195,82 @@ export async function initializeDatabase() {
     },
   });
 
+  await prisma.aboutGuidingPrinciples.upsert({
+    where: { id: "singleton" },
+    update: {},
+    create: {
+      id: "singleton",
+      heading: "Our Guiding Principles",
+      description: "The principles that shape how Sahasara teaches, supports, and prepares every student.",
+      visionIcon: "eye",
+      visionTitle: "Our Vision",
+      visionDescription: "To create a learning environment that helps students build knowledge, confidence, discipline, and a clear direction for the future.",
+      missionIcon: "target",
+      missionTitle: "Our Mission",
+      missionDescription: "To provide focused academic guidance, concept-based learning, and personalized mentorship that helps every student progress with confidence.",
+      valuesIcon: "star",
+      valuesTitle: "Our Values",
+      isVisible: true,
+      sortOrder: 4,
+    },
+  });
+  if ((await prisma.aboutGuidingPrincipleValue.count({ where: { aboutGuidingPrinciplesId: "singleton" } })) === 0) {
+    await prisma.aboutGuidingPrincipleValue.createMany({
+      data: [
+        { aboutGuidingPrinciplesId: "singleton", value: "Integrity in all we do", displayOrder: 1, isVisible: true },
+        { aboutGuidingPrinciplesId: "singleton", value: "Excellence in education", displayOrder: 2, isVisible: true },
+        { aboutGuidingPrinciplesId: "singleton", value: "Care for every student", displayOrder: 3, isVisible: true },
+        { aboutGuidingPrinciplesId: "singleton", value: "Commitment to progress", displayOrder: 4, isVisible: true },
+      ],
+    });
+  }
+
+  await prisma.aboutWhyParentsChoose.upsert({
+    where: { id: "singleton" },
+    update: {},
+    create: {
+      id: "singleton",
+      heading: "Why Parents Choose Sahasara",
+      description: "A focused, supportive approach that helps students build strong foundations and steady momentum.",
+      isVisible: true,
+      sortOrder: 5,
+    },
+  });
+  if ((await prisma.aboutParentChoiceBenefit.count({ where: { aboutWhyParentsChooseId: "singleton" } })) === 0) {
+    await prisma.aboutParentChoiceBenefit.createMany({
+      data: [
+        { aboutWhyParentsChooseId: "singleton", icon: "users", title: "Experienced Faculty", description: "Guidance from educators who know how to make complex ideas clear.", displayOrder: 1, isVisible: true },
+        { aboutWhyParentsChooseId: "singleton", icon: "graduation-cap", title: "Strong Academic Preparation", description: "Structured support for the next stage of every learner’s journey.", displayOrder: 2, isVisible: true },
+        { aboutWhyParentsChooseId: "singleton", icon: "book-open", title: "Concept-Based Learning", description: "Learning that builds understanding instead of relying on memorization alone.", displayOrder: 3, isVisible: true },
+        { aboutWhyParentsChooseId: "singleton", icon: "check-circle", title: "Regular Tests and Practice", description: "Consistent feedback helps students notice progress and close gaps.", displayOrder: 4, isVisible: true },
+        { aboutWhyParentsChooseId: "singleton", icon: "heart-handshake", title: "Personalized Mentorship", description: "A caring environment where students can ask questions and grow in confidence.", displayOrder: 5, isVisible: true },
+        { aboutWhyParentsChooseId: "singleton", icon: "badge-check", title: "A Commitment to Student Progress", description: "Shared attention to habits, outcomes, and long-term direction.", displayOrder: 6, isVisible: true },
+      ],
+    });
+  }
+
+  await prisma.aboutLeadership.upsert({
+    where: { id: "singleton" },
+    update: {},
+    create: {
+      id: "singleton",
+      heading: "Our Leadership",
+      description: "Meet the people who help Sahasara stay focused on thoughtful teaching, student care, and meaningful progress.",
+      isVisible: true,
+      sortOrder: 6,
+    },
+  });
+  if ((await prisma.aboutLeadershipMember.count({ where: { aboutLeadershipId: "singleton" } })) === 0) {
+    await prisma.aboutLeadershipMember.createMany({
+      data: [
+        { aboutLeadershipId: "singleton", portraitImage: null, portraitAltText: "Portrait placeholder for the Sahasara chairperson", name: "Chairperson Placeholder", designation: "Chairperson", qualification: "Qualification placeholder", biography: "Provides strategic oversight and long-term guidance for the institution.", displayOrder: 1, isVisible: true },
+        { aboutLeadershipId: "singleton", portraitImage: null, portraitAltText: "Portrait placeholder for the Sahasara academic director", name: "Academic Director Placeholder", designation: "Academic Director", qualification: "Qualification placeholder", biography: "Supports academic direction, curriculum planning, and a strong learning culture.", displayOrder: 2, isVisible: true },
+        { aboutLeadershipId: "singleton", portraitImage: null, portraitAltText: "Portrait placeholder for the Sahasara director", name: "Director Placeholder", designation: "Director", qualification: "Qualification placeholder", biography: "Helps connect institutional priorities with a welcoming student experience.", displayOrder: 3, isVisible: true },
+        { aboutLeadershipId: "singleton", portraitImage: null, portraitAltText: "Portrait placeholder for the Sahasara dean", name: "Dean Placeholder", designation: "Dean", qualification: "Qualification placeholder", biography: "Coordinates student support and keeps care, discipline, and progress at the center.", displayOrder: 4, isVisible: true },
+      ],
+    });
+  }
+
   const email = process.env.INITIAL_ADMIN_EMAIL?.trim().toLowerCase();
   const password = process.env.INITIAL_ADMIN_PASSWORD;
   if (email && password) {

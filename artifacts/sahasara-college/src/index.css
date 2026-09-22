@@ -337,6 +337,104 @@ body { min-width: 320px; }
   .story-timeline-progress { height: 100%; }
 }
 
+@keyframes about-card-reveal {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.about-next-section { overflow: hidden; }
+.about-principles-section { background: hsl(var(--secondary)); }
+.about-benefits-section { background: hsl(var(--background)); }
+.about-leadership-section { background: hsl(var(--secondary)); }
+.about-reveal-card { opacity: 0; }
+.about-section-is-visible .about-reveal-card { animation: about-card-reveal .65s var(--about-card-delay) cubic-bezier(.22,1,.36,1) both; }
+.principle-card {
+  transition: transform .35s cubic-bezier(.22,1,.36,1), border-color .35s ease, box-shadow .35s ease;
+}
+.principle-card:hover,
+.principle-card:focus-within {
+  transform: translateY(-6px);
+  border-color: hsl(var(--accent) / .55);
+  box-shadow: 0 20px 38px hsl(var(--primary) / .1);
+}
+.principle-icon { transition: background-color .35s ease, color .35s ease, transform .35s ease; }
+.principle-card:hover .principle-icon,
+.principle-card:focus-within .principle-icon {
+  background: hsl(var(--accent) / .2);
+  color: hsl(var(--accent-foreground));
+  transform: scale(1.04);
+}
+.principle-card:hover .principle-title,
+.principle-card:focus-within .principle-title { color: hsl(var(--accent-foreground)); }
+.benefit-item {
+  border-radius: 1rem;
+  padding: .35rem .25rem;
+  transition: transform .3s cubic-bezier(.22,1,.36,1);
+}
+.benefit-item:hover,
+.benefit-item:focus-visible { transform: translateY(-5px); }
+.benefit-item:focus-visible { outline: 2px solid hsl(var(--accent)); outline-offset: 5px; }
+.benefit-item:hover .benefit-icon,
+.benefit-item:focus-visible .benefit-icon { transform: scale(1.06) rotate(2deg); }
+.benefit-description { opacity: .78; transition: opacity .3s ease; }
+.benefit-item:hover .benefit-description,
+.benefit-item:focus-visible .benefit-description { opacity: 1; }
+.leadership-card {
+  transition: transform .4s cubic-bezier(.22,1,.36,1), box-shadow .4s ease;
+}
+.leadership-card:hover,
+.leadership-card:focus-visible { transform: translateY(-6px); box-shadow: 0 24px 44px hsl(var(--primary) / .2); }
+.leadership-card:focus-visible { outline: 2px solid hsl(var(--accent)); outline-offset: 4px; }
+.leadership-overlay {
+  background: linear-gradient(to top, hsl(var(--primary) / .95) 0%, hsl(var(--primary) / .72) 35%, hsl(var(--primary) / .08) 76%, transparent 100%);
+  transition: background .5s ease;
+}
+.leadership-card:hover .leadership-overlay,
+.leadership-card:focus-visible .leadership-overlay {
+  background: linear-gradient(to top, hsl(var(--primary) / .98) 0%, hsl(var(--primary) / .9) 52%, hsl(var(--primary) / .32) 100%);
+}
+.leadership-details {
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: max-height .45s ease, opacity .35s ease, transform .45s cubic-bezier(.22,1,.36,1);
+}
+.leadership-card:hover .leadership-details,
+.leadership-card:focus-visible .leadership-details {
+  max-height: 240px;
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (max-width: 767px) {
+  .leadership-card { min-height: 0; }
+  .leadership-details {
+    max-height: 240px;
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .about-reveal-card {
+    opacity: 1;
+    transform: none;
+  }
+  .about-section-is-visible .about-reveal-card,
+  .principle-card,
+  .benefit-item,
+  .benefit-icon,
+  .leadership-card,
+  .leadership-overlay,
+  .leadership-details,
+  .benefit-description {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+  .leadership-details {
+    max-height: 240px;
+    opacity: 1;
+  }
+}
+
 @layer base {
   * {
     @apply border-border;

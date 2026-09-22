@@ -21,8 +21,11 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
   const aboutHeroActive = location.startsWith('/admin/pages/about/hero');
   const aboutStoryActive = location.startsWith('/admin/pages/about/our-story');
   const chairmanActive = location.startsWith('/admin/pages/about/chairman-message');
+  const principlesActive = location.startsWith('/admin/pages/about/guiding-principles');
+  const parentChoiceActive = location.startsWith('/admin/pages/about/why-parents-choose');
+  const leadershipActive = location.startsWith('/admin/pages/about/leadership');
   const nestedHomeRoute = heroActive || aboutActive;
-  const nestedAboutRoute = aboutHeroActive || aboutStoryActive || chairmanActive;
+  const nestedAboutRoute = aboutHeroActive || aboutStoryActive || chairmanActive || principlesActive || parentChoiceActive || leadershipActive;
   const [pagesOpen, setPagesOpen] = useState(false);
   const [homeOpen, setHomeOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
@@ -86,6 +89,9 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
                     <Link href="/admin/pages/about/hero" onClick={() => setOpen(false)} className={`flex items-center gap-3 rounded-xl px-3 py-2.5 pl-9 text-sm font-semibold transition ${aboutHeroActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-about-hero"><PanelsTopLeft size={16} /><span>About Hero</span></Link>
                     <Link href="/admin/pages/about/our-story" onClick={() => setOpen(false)} className={`mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5 pl-9 text-sm font-semibold transition ${aboutStoryActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-about-story"><PanelsTopLeft size={16} /><span>Our Story</span></Link>
                     <Link href="/admin/pages/about/chairman-message" onClick={() => setOpen(false)} className={`mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5 pl-9 text-sm font-semibold transition ${chairmanActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-about-chairman-message"><PanelsTopLeft size={16} /><span>Chairman’s Message</span></Link>
+                     <Link href="/admin/pages/about/guiding-principles" onClick={() => setOpen(false)} className={`mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5 pl-9 text-sm font-semibold transition ${principlesActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-about-guiding-principles"><PanelsTopLeft size={16} /><span>Guiding Principles</span></Link>
+                     <Link href="/admin/pages/about/why-parents-choose" onClick={() => setOpen(false)} className={`mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5 pl-9 text-sm font-semibold transition ${parentChoiceActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-about-why-parents-choose"><PanelsTopLeft size={16} /><span>Why Parents Choose</span></Link>
+                     <Link href="/admin/pages/about/leadership" onClick={() => setOpen(false)} className={`mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5 pl-9 text-sm font-semibold transition ${leadershipActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-about-leadership"><PanelsTopLeft size={16} /><span>Leadership</span></Link>
                   </div>
                 )}
               </div>

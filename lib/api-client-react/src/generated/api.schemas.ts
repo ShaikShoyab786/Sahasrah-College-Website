@@ -345,6 +345,173 @@ export interface AboutChairmanMessageInput {
   sortOrder: number;
 }
 
+export interface AboutGuidingPrincipleValue {
+  id: string;
+  value: string;
+  displayOrder: number;
+  isVisible: boolean;
+}
+
+export interface AboutGuidingPrincipleValueInput {
+  /** @minLength 1 */
+  value: string;
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  displayOrder: number;
+  isVisible: boolean;
+}
+
+export interface AboutGuidingPrinciples {
+  id: string;
+  heading: string;
+  description: string;
+  visionIcon: string;
+  visionTitle: string;
+  visionDescription: string;
+  missionIcon: string;
+  missionTitle: string;
+  missionDescription: string;
+  valuesIcon: string;
+  valuesTitle: string;
+  isVisible: boolean;
+  sortOrder: number;
+  updatedAt: string;
+  values: AboutGuidingPrincipleValue[];
+}
+
+export interface AboutGuidingPrinciplesInput {
+  /** @minLength 1 */
+  heading: string;
+  description: string;
+  /** @minLength 1 */
+  visionIcon: string;
+  /** @minLength 1 */
+  visionTitle: string;
+  visionDescription: string;
+  /** @minLength 1 */
+  missionIcon: string;
+  /** @minLength 1 */
+  missionTitle: string;
+  missionDescription: string;
+  /** @minLength 1 */
+  valuesIcon: string;
+  /** @minLength 1 */
+  valuesTitle: string;
+  isVisible: boolean;
+  sortOrder: number;
+  /**
+     * @minItems 1
+     * @maxItems 20
+     */
+  values: AboutGuidingPrincipleValueInput[];
+}
+
+export interface AboutParentChoiceBenefit {
+  id: string;
+  icon: string;
+  title: string;
+  description: string;
+  displayOrder: number;
+  isVisible: boolean;
+}
+
+export interface AboutParentChoiceBenefitInput {
+  /** @minLength 1 */
+  icon: string;
+  /** @minLength 1 */
+  title: string;
+  description: string;
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  displayOrder: number;
+  isVisible: boolean;
+}
+
+export interface AboutWhyParentsChoose {
+  id: string;
+  heading: string;
+  description: string;
+  isVisible: boolean;
+  sortOrder: number;
+  updatedAt: string;
+  benefits: AboutParentChoiceBenefit[];
+}
+
+export interface AboutWhyParentsChooseInput {
+  /** @minLength 1 */
+  heading: string;
+  description: string;
+  isVisible: boolean;
+  sortOrder: number;
+  /**
+     * @minItems 1
+     * @maxItems 20
+     */
+  benefits: AboutParentChoiceBenefitInput[];
+}
+
+export interface AboutLeadershipMember {
+  id: string;
+  /** @nullable */
+  portraitImage: string | null;
+  portraitAltText: string;
+  name: string;
+  designation: string;
+  qualification: string;
+  biography: string;
+  /** @nullable */
+  socialUrl: string | null;
+  displayOrder: number;
+  isVisible: boolean;
+}
+
+export interface AboutLeadershipMemberInput {
+  /** @nullable */
+  portraitImage: string | null;
+  portraitAltText: string;
+  /** @minLength 1 */
+  name: string;
+  /** @minLength 1 */
+  designation: string;
+  qualification: string;
+  biography: string;
+  /** @nullable */
+  socialUrl: string | null;
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  displayOrder: number;
+  isVisible: boolean;
+}
+
+export interface AboutLeadership {
+  id: string;
+  heading: string;
+  description: string;
+  isVisible: boolean;
+  sortOrder: number;
+  updatedAt: string;
+  members: AboutLeadershipMember[];
+}
+
+export interface AboutLeadershipInput {
+  /** @minLength 1 */
+  heading: string;
+  description: string;
+  isVisible: boolean;
+  sortOrder: number;
+  /**
+     * @minItems 1
+     * @maxItems 20
+     */
+  members: AboutLeadershipMemberInput[];
+}
+
 export type ImageUploadInputPurpose = typeof ImageUploadInputPurpose[keyof typeof ImageUploadInputPurpose];
 
 

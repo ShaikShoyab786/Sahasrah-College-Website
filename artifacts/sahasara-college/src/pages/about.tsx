@@ -1,13 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
-import { ArrowRight, BookOpen, CalendarDays, CheckCircle2, Quote } from 'lucide-react';
+import { ArrowRight, BadgeCheck, BookOpen, CalendarDays, CheckCircle2, Eye, GraduationCap, HeartHandshake, Quote, ShieldCheck, Sparkles, Star, Target, Users, type LucideIcon } from 'lucide-react';
 import {
   useGetAboutChairmanMessage,
   useGetAboutHero,
+  useGetAboutGuidingPrinciples,
+  useGetAboutLeadership,
   useGetAboutStory,
+  useGetAboutWhyParentsChoose,
   useGetSiteSettings,
   type AboutChairmanMessage,
   type AboutHero,
+  type AboutGuidingPrinciples,
+  type AboutLeadership,
   type AboutStory,
+  type AboutWhyParentsChoose,
 } from '@workspace/api-client-react';
 import { SectionEyebrow } from '@/components/section-eyebrow';
 import { PublicFooter } from '@/components/public-footer';
@@ -30,11 +36,14 @@ export default function About() {
   const heroQuery = useGetAboutHero();
   const storyQuery = useGetAboutStory();
   const chairmanQuery = useGetAboutChairmanMessage();
+  const principlesQuery = useGetAboutGuidingPrinciples();
+  const parentChoiceQuery = useGetAboutWhyParentsChoose();
+  const leadershipQuery = useGetAboutLeadership();
   const settings = settingsQuery.data ?? fallbackSettings;
   const primaryColor = settings.primaryColor || '#102846';
   const accentColor = settings.accentColor || '#D6AD59';
 
-  if (settingsQuery.isLoading || heroQuery.isLoading || storyQuery.isLoading || chairmanQuery.isLoading) {
+  if (settingsQuery.isLoading || heroQuery.isLoading || storyQuery.isLoading || chairmanQuery.isLoading || principlesQuery.isLoading || parentChoiceQuery.isLoading || leadershipQuery.isLoading) {
     return <AboutSkeleton />;
   }
 
@@ -45,6 +54,9 @@ export default function About() {
         {heroQuery.data?.isVisible && <AboutHeroSection content={heroQuery.data} />}
         {storyQuery.data?.isVisible && <OurStorySection content={storyQuery.data} />}
         {chairmanQuery.data?.isVisible && <ChairmanMessageSection content={chairmanQuery.data} />}
+        {principlesQuery.data?.isVisible && <GuidingPrinciplesSection content={principlesQuery.data} />}
+        {parentChoiceQuery.data?.isVisible && <WhyParentsChooseSection content={parentChoiceQuery.data} />}
+        {leadershipQuery.data?.isVisible && <LeadershipSection content={leadershipQuery.data} />}
       </main>
       <PublicFooter settings={{ ...settings, footerText: settings.footerText || fallbackSettings.footerText }} />
     </div>
@@ -156,6 +168,89 @@ function ChairmanMessageSection({ content }: { content: AboutChairmanMessage }) 
           <p className="mt-7 text-lg leading-8 text-[hsl(var(--muted-foreground))]" data-testid="text-chairman-message">{content.message}</p>
           <div className="mt-8 border-t border-[hsl(var(--border))] pt-5"><p className="font-display text-2xl font-semibold text-[hsl(var(--primary))]">{content.signatureName}</p><p className="mt-1 text-sm text-[hsl(var(--muted-foreground))]">{content.role}</p></div>
           {content.buttonVisible && content.buttonLabel && <a href={content.buttonHref || '#contact'} className="mt-8 inline-flex items-center rounded-full bg-[hsl(var(--primary))] px-5 py-3.5 text-sm font-bold text-[hsl(var(--primary-foreground))] transition hover:-translate-y-0.5">{content.buttonLabel}<ArrowRight size={17} className="ml-2" /></a>}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+const principleIcons: Record<string, LucideIcon> = { eye: Eye, target: Target, star: Star, sparkles: Sparkles, shield: ShieldCheck };
+const benefitIcons: Record<string, LucideIcon> = {
+  users: Users,
+  'graduation-cap': GraduationCap,
+  'book-open': BookOpen,
+  'check-circle': CheckCircle2,
+  'heart-handshake': HeartHandshake,
+  'badge-check': BadgeCheck,
+};
+
+function useRevealOnce() {
+  const ref = useRef<HTMLElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+  useEffect(() => {
+    const element = ref.current;
+    if (!element || isVisible) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setIsVisible(true);
+        observer.disconnect();
+      }
+    }, { threshold: 0.12 });
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [isVisible]);
+  return { ref, isVisible };
+}
+
+function GuidingPrinciplesSection({ content }: { content: AboutGuidingPrinciples }) {
+  const { ref, isVisible } = useRevealOnce();
+  const cards = [
+    { icon: content.visionIcon, title: content.visionTitle, description: content.visionDescription, values: [] as string[] },
+    { icon: content.missionIcon, title: content.missionTitle, description: content.missionDescription, values: [] as string[] },
+    { icon: content.valuesIcon, title: content.valuesTitle, description: '', values: content.values.filter((value) => value.isVisible).sort((a, b) => a.displayOrder - b.displayOrder).map((value) => value.value) },
+  ];
+  return (
+    <section ref={ref} id="guiding-principles" className={`about-next-section about-principles-section ${isVisible ? 'about-section-is-visible' : ''}`}>
+      <div className="mx-auto max-w-7xl px-6 py-24 lg:px-10 lg:py-32">
+        <div className="mx-auto max-w-2xl text-center"><SectionEyebrow>GUIDING PRINCIPLES</SectionEyebrow><h2 className="mt-5 font-display text-5xl font-semibold leading-[.96] tracking-[-.05em] text-[hsl(var(--primary))] md:text-6xl">{content.heading}</h2><p className="mx-auto mt-6 max-w-xl text-base leading-7 text-[hsl(var(--muted-foreground))]">{content.description}</p></div>
+        <div className="mt-14 grid gap-5 md:grid-cols-3">
+          {cards.map((card, index) => {
+            const Icon = principleIcons[card.icon] || Sparkles;
+            return <article key={card.title} className="principle-card about-reveal-card rounded-[1.5rem] border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-7 text-center shadow-sm" style={{ '--about-card-delay': `${index * 110}ms` } as React.CSSProperties}><div className="principle-icon mx-auto grid h-16 w-16 place-items-center rounded-full border border-[hsl(var(--accent)/.25)] bg-[hsl(var(--secondary))] text-[hsl(var(--accent-foreground))]"><Icon size={27} strokeWidth={1.7} /></div><h3 className="principle-title mt-7 font-display text-2xl font-semibold text-[hsl(var(--primary))]">{card.title}</h3>{card.values.length ? <ul className="mt-5 space-y-3 text-left text-sm leading-6 text-[hsl(var(--muted-foreground))]">{card.values.map((value) => <li key={value} className="flex gap-2"><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[hsl(var(--accent))]" />{value}</li>)}</ul> : <p className="mt-5 text-sm leading-6 text-[hsl(var(--muted-foreground))]">{card.description}</p>}</article>;
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function WhyParentsChooseSection({ content }: { content: AboutWhyParentsChoose }) {
+  const { ref, isVisible } = useRevealOnce();
+  const benefits = content.benefits.filter((benefit) => benefit.isVisible).sort((a, b) => a.displayOrder - b.displayOrder);
+  return (
+    <section ref={ref} id="why-parents-choose" className={`about-next-section about-benefits-section ${isVisible ? 'about-section-is-visible' : ''}`}>
+      <div className="mx-auto max-w-7xl px-6 py-24 lg:px-10 lg:py-32">
+        <div className="mx-auto max-w-2xl text-center"><SectionEyebrow>WHY SAHASARA</SectionEyebrow><h2 className="mt-5 font-display text-5xl font-semibold leading-[.96] tracking-[-.05em] text-[hsl(var(--primary))] md:text-6xl">{content.heading}</h2><p className="mx-auto mt-6 max-w-xl text-base leading-7 text-[hsl(var(--muted-foreground))]">{content.description}</p></div>
+        <div className="mt-14 grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-3 lg:grid-cols-6">
+          {benefits.map((benefit, index) => {
+            const Icon = benefitIcons[benefit.icon] || Sparkles;
+            return <article key={benefit.id} tabIndex={0} className="benefit-item about-reveal-card group text-center outline-none" style={{ '--about-card-delay': `${index * 80}ms` } as React.CSSProperties}><div className="benefit-icon mx-auto grid h-16 w-16 place-items-center rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--background))] text-[hsl(var(--primary))] transition duration-300 group-hover:border-[hsl(var(--accent))] group-hover:bg-[hsl(var(--accent))] group-hover:text-[hsl(var(--primary))] group-focus-visible:border-[hsl(var(--accent))] group-focus-visible:bg-[hsl(var(--accent))]"><Icon size={25} strokeWidth={1.7} /></div><h3 className="benefit-title mt-5 text-sm font-bold leading-5 text-[hsl(var(--primary))] transition-colors duration-300 group-hover:text-[hsl(var(--accent-foreground))] group-focus-visible:text-[hsl(var(--accent-foreground))]">{benefit.title}</h3>{benefit.description && <p className="benefit-description mt-2 text-xs leading-5 text-[hsl(var(--muted-foreground))]">{benefit.description}</p>}</article>;
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function LeadershipSection({ content }: { content: AboutLeadership }) {
+  const { ref, isVisible } = useRevealOnce();
+  const members = content.members.filter((member) => member.isVisible).sort((a, b) => a.displayOrder - b.displayOrder);
+  return (
+    <section ref={ref} id="leadership" className={`about-next-section about-leadership-section ${isVisible ? 'about-section-is-visible' : ''}`}>
+      <div className="mx-auto max-w-7xl px-6 py-24 lg:px-10 lg:py-32">
+        <div className="mx-auto max-w-2xl text-center"><SectionEyebrow>OUR LEADERSHIP</SectionEyebrow><h2 className="mt-5 font-display text-5xl font-semibold leading-[.96] tracking-[-.05em] text-[hsl(var(--primary))] md:text-6xl">{content.heading}</h2><p className="mx-auto mt-6 max-w-xl text-base leading-7 text-[hsl(var(--muted-foreground))]">{content.description}</p></div>
+        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {members.map((member, index) => <article key={member.id} tabIndex={0} className="leadership-card about-reveal-card group relative min-h-[390px] overflow-hidden rounded-[1.5rem] bg-[hsl(var(--primary))] shadow-lg outline-none" style={{ '--about-card-delay': `${index * 110}ms` } as React.CSSProperties}><div className="absolute inset-0">{member.portraitImage ? <img src={member.portraitImage} alt={member.portraitAltText} className="h-full w-full object-cover transition duration-700 group-hover:scale-105 group-focus-visible:scale-105" /> : <MediaOrFallback src={null} alt={member.portraitAltText} label={member.designation} dark />}</div><div className="leadership-overlay absolute inset-0" /><div className="absolute inset-x-0 bottom-0 p-6 text-white"><h3 className="font-display text-2xl font-semibold">{member.name}</h3><p className="mt-1 text-sm font-semibold text-white/75">{member.designation}</p><div className="leadership-details mt-5"><p className="text-sm font-bold text-[hsl(var(--accent))]">{member.qualification}</p><p className="mt-2 text-sm leading-6 text-white/75">{member.biography}</p>{member.socialUrl && <a href={member.socialUrl} target="_blank" rel="noreferrer" className="mt-4 inline-flex text-xs font-bold uppercase tracking-[.16em] text-[hsl(var(--accent))]">Connect <ArrowRight size={14} className="ml-2" /></a>}</div></div></article>)}
         </div>
       </div>
     </section>

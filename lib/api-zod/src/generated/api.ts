@@ -208,6 +208,79 @@ export const GetAboutChairmanMessageResponse = zod.object({
 
 
 /**
+ * @summary Read the visible About page guiding principles
+ */
+export const GetAboutGuidingPrinciplesResponse = zod.object({
+  "id": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "visionIcon": zod.string(),
+  "visionTitle": zod.string(),
+  "visionDescription": zod.string(),
+  "missionIcon": zod.string(),
+  "missionTitle": zod.string(),
+  "missionDescription": zod.string(),
+  "valuesIcon": zod.string(),
+  "valuesTitle": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date(),
+  "values": zod.array(zod.object({
+  "id": zod.string(),
+  "value": zod.string(),
+  "displayOrder": zod.number().int(),
+  "isVisible": zod.boolean()
+}))
+})
+
+
+/**
+ * @summary Read the visible About page parent-choice benefits
+ */
+export const GetAboutWhyParentsChooseResponse = zod.object({
+  "id": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date(),
+  "benefits": zod.array(zod.object({
+  "id": zod.string(),
+  "icon": zod.string(),
+  "title": zod.string(),
+  "description": zod.string(),
+  "displayOrder": zod.number().int(),
+  "isVisible": zod.boolean()
+}))
+})
+
+
+/**
+ * @summary Read the visible About page leadership
+ */
+export const GetAboutLeadershipResponse = zod.object({
+  "id": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date(),
+  "members": zod.array(zod.object({
+  "id": zod.string(),
+  "portraitImage": zod.string().nullable(),
+  "portraitAltText": zod.string(),
+  "name": zod.string(),
+  "designation": zod.string(),
+  "qualification": zod.string(),
+  "biography": zod.string(),
+  "socialUrl": zod.string().nullable(),
+  "displayOrder": zod.number().int(),
+  "isVisible": zod.boolean()
+}))
+})
+
+
+/**
  * @summary Update public college identity settings
  */
 
@@ -621,6 +694,236 @@ export const UpdateAboutChairmanMessageResponse = zod.object({
   "isVisible": zod.boolean(),
   "sortOrder": zod.number().int(),
   "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Read About page guiding principles settings
+ */
+export const GetAdminAboutGuidingPrinciplesResponse = zod.object({
+  "id": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "visionIcon": zod.string(),
+  "visionTitle": zod.string(),
+  "visionDescription": zod.string(),
+  "missionIcon": zod.string(),
+  "missionTitle": zod.string(),
+  "missionDescription": zod.string(),
+  "valuesIcon": zod.string(),
+  "valuesTitle": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date(),
+  "values": zod.array(zod.object({
+  "id": zod.string(),
+  "value": zod.string(),
+  "displayOrder": zod.number().int(),
+  "isVisible": zod.boolean()
+}))
+})
+
+
+/**
+ * @summary Update About page guiding principles settings
+ */
+
+
+
+
+
+
+
+
+export const updateAboutGuidingPrinciplesBodyValuesItemDisplayOrderMax = 20;
+
+export const updateAboutGuidingPrinciplesBodyValuesMax = 20;
+
+
+
+export const UpdateAboutGuidingPrinciplesBody = zod.object({
+  "heading": zod.string().min(1),
+  "description": zod.string(),
+  "visionIcon": zod.string().min(1),
+  "visionTitle": zod.string().min(1),
+  "visionDescription": zod.string(),
+  "missionIcon": zod.string().min(1),
+  "missionTitle": zod.string().min(1),
+  "missionDescription": zod.string(),
+  "valuesIcon": zod.string().min(1),
+  "valuesTitle": zod.string().min(1),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "values": zod.array(zod.object({
+  "value": zod.string().min(1),
+  "displayOrder": zod.number().int().min(1).max(updateAboutGuidingPrinciplesBodyValuesItemDisplayOrderMax),
+  "isVisible": zod.boolean()
+})).min(1).max(updateAboutGuidingPrinciplesBodyValuesMax)
+})
+
+export const UpdateAboutGuidingPrinciplesResponse = zod.object({
+  "id": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "visionIcon": zod.string(),
+  "visionTitle": zod.string(),
+  "visionDescription": zod.string(),
+  "missionIcon": zod.string(),
+  "missionTitle": zod.string(),
+  "missionDescription": zod.string(),
+  "valuesIcon": zod.string(),
+  "valuesTitle": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date(),
+  "values": zod.array(zod.object({
+  "id": zod.string(),
+  "value": zod.string(),
+  "displayOrder": zod.number().int(),
+  "isVisible": zod.boolean()
+}))
+})
+
+
+/**
+ * @summary Read About page parent-choice settings
+ */
+export const GetAdminAboutWhyParentsChooseResponse = zod.object({
+  "id": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date(),
+  "benefits": zod.array(zod.object({
+  "id": zod.string(),
+  "icon": zod.string(),
+  "title": zod.string(),
+  "description": zod.string(),
+  "displayOrder": zod.number().int(),
+  "isVisible": zod.boolean()
+}))
+})
+
+
+/**
+ * @summary Update About page parent-choice settings
+ */
+
+
+
+export const updateAboutWhyParentsChooseBodyBenefitsItemDisplayOrderMax = 20;
+
+export const updateAboutWhyParentsChooseBodyBenefitsMax = 20;
+
+
+
+export const UpdateAboutWhyParentsChooseBody = zod.object({
+  "heading": zod.string().min(1),
+  "description": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "benefits": zod.array(zod.object({
+  "icon": zod.string().min(1),
+  "title": zod.string().min(1),
+  "description": zod.string(),
+  "displayOrder": zod.number().int().min(1).max(updateAboutWhyParentsChooseBodyBenefitsItemDisplayOrderMax),
+  "isVisible": zod.boolean()
+})).min(1).max(updateAboutWhyParentsChooseBodyBenefitsMax)
+})
+
+export const UpdateAboutWhyParentsChooseResponse = zod.object({
+  "id": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date(),
+  "benefits": zod.array(zod.object({
+  "id": zod.string(),
+  "icon": zod.string(),
+  "title": zod.string(),
+  "description": zod.string(),
+  "displayOrder": zod.number().int(),
+  "isVisible": zod.boolean()
+}))
+})
+
+
+/**
+ * @summary Read About page leadership settings
+ */
+export const GetAdminAboutLeadershipResponse = zod.object({
+  "id": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date(),
+  "members": zod.array(zod.object({
+  "id": zod.string(),
+  "portraitImage": zod.string().nullable(),
+  "portraitAltText": zod.string(),
+  "name": zod.string(),
+  "designation": zod.string(),
+  "qualification": zod.string(),
+  "biography": zod.string(),
+  "socialUrl": zod.string().nullable(),
+  "displayOrder": zod.number().int(),
+  "isVisible": zod.boolean()
+}))
+})
+
+
+/**
+ * @summary Update About page leadership settings
+ */
+
+
+
+export const updateAboutLeadershipBodyMembersItemDisplayOrderMax = 20;
+
+export const updateAboutLeadershipBodyMembersMax = 20;
+
+
+
+export const UpdateAboutLeadershipBody = zod.object({
+  "heading": zod.string().min(1),
+  "description": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "members": zod.array(zod.object({
+  "portraitImage": zod.string().nullable(),
+  "portraitAltText": zod.string(),
+  "name": zod.string().min(1),
+  "designation": zod.string().min(1),
+  "qualification": zod.string(),
+  "biography": zod.string(),
+  "socialUrl": zod.string().nullable(),
+  "displayOrder": zod.number().int().min(1).max(updateAboutLeadershipBodyMembersItemDisplayOrderMax),
+  "isVisible": zod.boolean()
+})).min(1).max(updateAboutLeadershipBodyMembersMax)
+})
+
+export const UpdateAboutLeadershipResponse = zod.object({
+  "id": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date(),
+  "members": zod.array(zod.object({
+  "id": zod.string(),
+  "portraitImage": zod.string().nullable(),
+  "portraitAltText": zod.string(),
+  "name": zod.string(),
+  "designation": zod.string(),
+  "qualification": zod.string(),
+  "biography": zod.string(),
+  "socialUrl": zod.string().nullable(),
+  "displayOrder": zod.number().int(),
+  "isVisible": zod.boolean()
+}))
 })
 
 

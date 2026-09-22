@@ -15,6 +15,9 @@ import AdminHomepageAboutPreview from '@/pages/admin-homepage-about-preview';
 import AdminAboutHero from '@/pages/admin-about-hero';
 import AdminAboutStory from '@/pages/admin-about-story';
 import AdminChairmanMessage from '@/pages/admin-chairman-message';
+import AdminGuidingPrinciples from '@/pages/admin-guiding-principles';
+import AdminWhyParentsChoose from '@/pages/admin-why-parents-choose';
+import AdminLeadership from '@/pages/admin-leadership';
 import {
   Route,
   Switch,
@@ -47,6 +50,15 @@ function Router() {
         </Route>
         <Route path="/admin/pages/about/chairman-message">
           <AdminGuard><AdminChairmanMessage /></AdminGuard>
+        </Route>
+        <Route path="/admin/pages/about/guiding-principles">
+          <AdminGuard><AdminGuidingPrinciples /></AdminGuard>
+        </Route>
+        <Route path="/admin/pages/about/why-parents-choose">
+          <AdminGuard><AdminWhyParentsChoose /></AdminGuard>
+        </Route>
+        <Route path="/admin/pages/about/leadership">
+          <AdminGuard><AdminLeadership /></AdminGuard>
         </Route>
         <Route path="/admin">
           <AdminGuard><AdminOverview /></AdminGuard>

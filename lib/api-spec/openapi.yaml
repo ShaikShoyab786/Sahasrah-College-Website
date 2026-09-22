@@ -184,6 +184,60 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+  /about-guiding-principles:
+    get:
+      operationId: getAboutGuidingPrinciples
+      tags: [public]
+      summary: Read the visible About page guiding principles
+      responses:
+        "200":
+          description: Guiding principles content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AboutGuidingPrinciples"
+        "404":
+          description: Guiding principles are hidden or unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /about-why-parents-choose:
+    get:
+      operationId: getAboutWhyParentsChoose
+      tags: [public]
+      summary: Read the visible About page parent-choice benefits
+      responses:
+        "200":
+          description: Parent-choice benefits content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AboutWhyParentsChoose"
+        "404":
+          description: Parent-choice benefits are hidden or unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /about-leadership:
+    get:
+      operationId: getAboutLeadership
+      tags: [public]
+      summary: Read the visible About page leadership
+      responses:
+        "200":
+          description: Leadership content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AboutLeadership"
+        "404":
+          description: Leadership is hidden or unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /admin/site-settings:
     put:
       operationId: updateSiteSettings
@@ -440,6 +494,159 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/AboutChairmanMessage"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/about-guiding-principles:
+    get:
+      operationId: getAdminAboutGuidingPrinciples
+      tags: [admin]
+      summary: Read About page guiding principles settings
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Guiding principles settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AboutGuidingPrinciples"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateAboutGuidingPrinciples
+      tags: [admin]
+      summary: Update About page guiding principles settings
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AboutGuidingPrinciplesInput"
+      responses:
+        "200":
+          description: Updated guiding principles settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AboutGuidingPrinciples"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/about-why-parents-choose:
+    get:
+      operationId: getAdminAboutWhyParentsChoose
+      tags: [admin]
+      summary: Read About page parent-choice settings
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Parent-choice settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AboutWhyParentsChoose"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateAboutWhyParentsChoose
+      tags: [admin]
+      summary: Update About page parent-choice settings
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AboutWhyParentsChooseInput"
+      responses:
+        "200":
+          description: Updated parent-choice settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AboutWhyParentsChoose"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/about-leadership:
+    get:
+      operationId: getAdminAboutLeadership
+      tags: [admin]
+      summary: Read About page leadership settings
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Leadership settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AboutLeadership"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateAboutLeadership
+      tags: [admin]
+      summary: Update About page leadership settings
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AboutLeadershipInput"
+      responses:
+        "200":
+          description: Updated leadership settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AboutLeadership"
         "400":
           description: Validation error
           content:
@@ -1222,6 +1429,362 @@ components:
         - buttonVisible
         - isVisible
         - sortOrder
+    AboutGuidingPrincipleValue:
+      type: object
+      properties:
+        id:
+          type: string
+        value:
+          type: string
+        displayOrder:
+          type: integer
+        isVisible:
+          type: boolean
+      required:
+        - id
+        - value
+        - displayOrder
+        - isVisible
+    AboutGuidingPrincipleValueInput:
+      type: object
+      properties:
+        value:
+          type: string
+          minLength: 1
+        displayOrder:
+          type: integer
+          minimum: 1
+          maximum: 20
+        isVisible:
+          type: boolean
+      required:
+        - value
+        - displayOrder
+        - isVisible
+    AboutGuidingPrinciples:
+      type: object
+      properties:
+        id:
+          type: string
+        heading:
+          type: string
+        description:
+          type: string
+        visionIcon:
+          type: string
+        visionTitle:
+          type: string
+        visionDescription:
+          type: string
+        missionIcon:
+          type: string
+        missionTitle:
+          type: string
+        missionDescription:
+          type: string
+        valuesIcon:
+          type: string
+        valuesTitle:
+          type: string
+        isVisible:
+          type: boolean
+        sortOrder:
+          type: integer
+        updatedAt:
+          type: string
+          format: date-time
+        values:
+          type: array
+          items:
+            $ref: "#/components/schemas/AboutGuidingPrincipleValue"
+      required:
+        - id
+        - heading
+        - description
+        - visionIcon
+        - visionTitle
+        - visionDescription
+        - missionIcon
+        - missionTitle
+        - missionDescription
+        - valuesIcon
+        - valuesTitle
+        - isVisible
+        - sortOrder
+        - updatedAt
+        - values
+    AboutGuidingPrinciplesInput:
+      type: object
+      properties:
+        heading:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        visionIcon:
+          type: string
+          minLength: 1
+        visionTitle:
+          type: string
+          minLength: 1
+        visionDescription:
+          type: string
+        missionIcon:
+          type: string
+          minLength: 1
+        missionTitle:
+          type: string
+          minLength: 1
+        missionDescription:
+          type: string
+        valuesIcon:
+          type: string
+          minLength: 1
+        valuesTitle:
+          type: string
+          minLength: 1
+        isVisible:
+          type: boolean
+        sortOrder:
+          type: integer
+        values:
+          type: array
+          minItems: 1
+          maxItems: 20
+          items:
+            $ref: "#/components/schemas/AboutGuidingPrincipleValueInput"
+      required:
+        - heading
+        - description
+        - visionIcon
+        - visionTitle
+        - visionDescription
+        - missionIcon
+        - missionTitle
+        - missionDescription
+        - valuesIcon
+        - valuesTitle
+        - isVisible
+        - sortOrder
+        - values
+    AboutParentChoiceBenefit:
+      type: object
+      properties:
+        id:
+          type: string
+        icon:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        displayOrder:
+          type: integer
+        isVisible:
+          type: boolean
+      required:
+        - id
+        - icon
+        - title
+        - description
+        - displayOrder
+        - isVisible
+    AboutParentChoiceBenefitInput:
+      type: object
+      properties:
+        icon:
+          type: string
+          minLength: 1
+        title:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        displayOrder:
+          type: integer
+          minimum: 1
+          maximum: 20
+        isVisible:
+          type: boolean
+      required:
+        - icon
+        - title
+        - description
+        - displayOrder
+        - isVisible
+    AboutWhyParentsChoose:
+      type: object
+      properties:
+        id:
+          type: string
+        heading:
+          type: string
+        description:
+          type: string
+        isVisible:
+          type: boolean
+        sortOrder:
+          type: integer
+        updatedAt:
+          type: string
+          format: date-time
+        benefits:
+          type: array
+          items:
+            $ref: "#/components/schemas/AboutParentChoiceBenefit"
+      required:
+        - id
+        - heading
+        - description
+        - isVisible
+        - sortOrder
+        - updatedAt
+        - benefits
+    AboutWhyParentsChooseInput:
+      type: object
+      properties:
+        heading:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        isVisible:
+          type: boolean
+        sortOrder:
+          type: integer
+        benefits:
+          type: array
+          minItems: 1
+          maxItems: 20
+          items:
+            $ref: "#/components/schemas/AboutParentChoiceBenefitInput"
+      required:
+        - heading
+        - description
+        - isVisible
+        - sortOrder
+        - benefits
+    AboutLeadershipMember:
+      type: object
+      properties:
+        id:
+          type: string
+        portraitImage:
+          type: ["string", "null"]
+        portraitAltText:
+          type: string
+        name:
+          type: string
+        designation:
+          type: string
+        qualification:
+          type: string
+        biography:
+          type: string
+        socialUrl:
+          type: ["string", "null"]
+        displayOrder:
+          type: integer
+        isVisible:
+          type: boolean
+      required:
+        - id
+        - portraitImage
+        - portraitAltText
+        - name
+        - designation
+        - qualification
+        - biography
+        - socialUrl
+        - displayOrder
+        - isVisible
+    AboutLeadershipMemberInput:
+      type: object
+      properties:
+        portraitImage:
+          type: ["string", "null"]
+        portraitAltText:
+          type: string
+        name:
+          type: string
+          minLength: 1
+        designation:
+          type: string
+          minLength: 1
+        qualification:
+          type: string
+        biography:
+          type: string
+        socialUrl:
+          type: ["string", "null"]
+        displayOrder:
+          type: integer
+          minimum: 1
+          maximum: 20
+        isVisible:
+          type: boolean
+      required:
+        - portraitImage
+        - portraitAltText
+        - name
+        - designation
+        - qualification
+        - biography
+        - socialUrl
+        - displayOrder
+        - isVisible
+    AboutLeadership:
+      type: object
+      properties:
+        id:
+          type: string
+        heading:
+          type: string
+        description:
+          type: string
+        isVisible:
+          type: boolean
+        sortOrder:
+          type: integer
+        updatedAt:
+          type: string
+          format: date-time
+        members:
+          type: array
+          items:
+            $ref: "#/components/schemas/AboutLeadershipMember"
+      required:
+        - id
+        - heading
+        - description
+        - isVisible
+        - sortOrder
+        - updatedAt
+        - members
+    AboutLeadershipInput:
+      type: object
+      properties:
+        heading:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        isVisible:
+          type: boolean
+        sortOrder:
+          type: integer
+        members:
+          type: array
+          minItems: 1
+          maxItems: 20
+          items:
+            $ref: "#/components/schemas/AboutLeadershipMemberInput"
+      required:
+        - heading
+        - description
+        - isVisible
+        - sortOrder
+        - members
     ImageUploadInput:
       type: object
       properties:

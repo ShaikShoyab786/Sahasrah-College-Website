@@ -22,10 +22,16 @@ import type {
 import type {
   AboutChairmanMessage,
   AboutChairmanMessageInput,
+  AboutGuidingPrinciples,
+  AboutGuidingPrinciplesInput,
   AboutHero,
   AboutHeroInput,
+  AboutLeadership,
+  AboutLeadershipInput,
   AboutStory,
   AboutStoryInput,
+  AboutWhyParentsChoose,
+  AboutWhyParentsChooseInput,
   AuthSession,
   ErrorResponse,
   HealthStatus,
@@ -835,6 +841,237 @@ export function useGetAboutChairmanMessage<TData = Awaited<ReturnType<typeof get
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
   const queryOptions = getGetAboutChairmanMessageQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetAboutGuidingPrinciplesUrl = () => {
+
+
+
+
+  return `/api/about-guiding-principles`
+}
+
+/**
+ * @summary Read the visible About page guiding principles
+ */
+export const getAboutGuidingPrinciples = async ( options?: Parameters<typeof customFetch>[1]): Promise<AboutGuidingPrinciples> => {
+
+  return customFetch<AboutGuidingPrinciples>(getGetAboutGuidingPrinciplesUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAboutGuidingPrinciplesQueryKey = () => {
+    return [
+    `/api/about-guiding-principles`
+    ] as const;
+    }
+
+
+export const getGetAboutGuidingPrinciplesQueryOptions = <TData = Awaited<ReturnType<typeof getAboutGuidingPrinciples>>, TError = ErrorType<ErrorResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAboutGuidingPrinciples>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAboutGuidingPrinciplesQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAboutGuidingPrinciples>>> = ({ signal }) => getAboutGuidingPrinciples({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAboutGuidingPrinciples>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetAboutGuidingPrinciplesQueryResult = NonNullable<Awaited<ReturnType<typeof getAboutGuidingPrinciples>>>
+export type GetAboutGuidingPrinciplesQueryError = ErrorType<ErrorResponse>
+
+
+/**
+ * @summary Read the visible About page guiding principles
+ */
+
+export function useGetAboutGuidingPrinciples<TData = Awaited<ReturnType<typeof getAboutGuidingPrinciples>>, TError = ErrorType<ErrorResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAboutGuidingPrinciples>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetAboutGuidingPrinciplesQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetAboutWhyParentsChooseUrl = () => {
+
+
+
+
+  return `/api/about-why-parents-choose`
+}
+
+/**
+ * @summary Read the visible About page parent-choice benefits
+ */
+export const getAboutWhyParentsChoose = async ( options?: Parameters<typeof customFetch>[1]): Promise<AboutWhyParentsChoose> => {
+
+  return customFetch<AboutWhyParentsChoose>(getGetAboutWhyParentsChooseUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAboutWhyParentsChooseQueryKey = () => {
+    return [
+    `/api/about-why-parents-choose`
+    ] as const;
+    }
+
+
+export const getGetAboutWhyParentsChooseQueryOptions = <TData = Awaited<ReturnType<typeof getAboutWhyParentsChoose>>, TError = ErrorType<ErrorResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAboutWhyParentsChoose>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAboutWhyParentsChooseQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAboutWhyParentsChoose>>> = ({ signal }) => getAboutWhyParentsChoose({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAboutWhyParentsChoose>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetAboutWhyParentsChooseQueryResult = NonNullable<Awaited<ReturnType<typeof getAboutWhyParentsChoose>>>
+export type GetAboutWhyParentsChooseQueryError = ErrorType<ErrorResponse>
+
+
+/**
+ * @summary Read the visible About page parent-choice benefits
+ */
+
+export function useGetAboutWhyParentsChoose<TData = Awaited<ReturnType<typeof getAboutWhyParentsChoose>>, TError = ErrorType<ErrorResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAboutWhyParentsChoose>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetAboutWhyParentsChooseQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetAboutLeadershipUrl = () => {
+
+
+
+
+  return `/api/about-leadership`
+}
+
+/**
+ * @summary Read the visible About page leadership
+ */
+export const getAboutLeadership = async ( options?: Parameters<typeof customFetch>[1]): Promise<AboutLeadership> => {
+
+  return customFetch<AboutLeadership>(getGetAboutLeadershipUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAboutLeadershipQueryKey = () => {
+    return [
+    `/api/about-leadership`
+    ] as const;
+    }
+
+
+export const getGetAboutLeadershipQueryOptions = <TData = Awaited<ReturnType<typeof getAboutLeadership>>, TError = ErrorType<ErrorResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAboutLeadership>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAboutLeadershipQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAboutLeadership>>> = ({ signal }) => getAboutLeadership({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAboutLeadership>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetAboutLeadershipQueryResult = NonNullable<Awaited<ReturnType<typeof getAboutLeadership>>>
+export type GetAboutLeadershipQueryError = ErrorType<ErrorResponse>
+
+
+/**
+ * @summary Read the visible About page leadership
+ */
+
+export function useGetAboutLeadership<TData = Awaited<ReturnType<typeof getAboutLeadership>>, TError = ErrorType<ErrorResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAboutLeadership>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetAboutLeadershipQueryOptions(options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
@@ -1681,6 +1918,501 @@ export const useUpdateAboutChairmanMessage = <TError = ErrorType<ErrorResponse>,
         TContext
       > => {
       return useMutation(getUpdateAboutChairmanMessageMutationOptions(options));
+    }
+
+export const getGetAdminAboutGuidingPrinciplesUrl = () => {
+
+
+
+
+  return `/api/admin/about-guiding-principles`
+}
+
+/**
+ * @summary Read About page guiding principles settings
+ */
+export const getAdminAboutGuidingPrinciples = async ( options?: Parameters<typeof customFetch>[1]): Promise<AboutGuidingPrinciples> => {
+
+  return customFetch<AboutGuidingPrinciples>(getGetAdminAboutGuidingPrinciplesUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAdminAboutGuidingPrinciplesQueryKey = () => {
+    return [
+    `/api/admin/about-guiding-principles`
+    ] as const;
+    }
+
+
+export const getGetAdminAboutGuidingPrinciplesQueryOptions = <TData = Awaited<ReturnType<typeof getAdminAboutGuidingPrinciples>>, TError = ErrorType<ErrorResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminAboutGuidingPrinciples>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAdminAboutGuidingPrinciplesQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdminAboutGuidingPrinciples>>> = ({ signal }) => getAdminAboutGuidingPrinciples({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAdminAboutGuidingPrinciples>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetAdminAboutGuidingPrinciplesQueryResult = NonNullable<Awaited<ReturnType<typeof getAdminAboutGuidingPrinciples>>>
+export type GetAdminAboutGuidingPrinciplesQueryError = ErrorType<ErrorResponse>
+
+
+/**
+ * @summary Read About page guiding principles settings
+ */
+
+export function useGetAdminAboutGuidingPrinciples<TData = Awaited<ReturnType<typeof getAdminAboutGuidingPrinciples>>, TError = ErrorType<ErrorResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminAboutGuidingPrinciples>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetAdminAboutGuidingPrinciplesQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getUpdateAboutGuidingPrinciplesUrl = () => {
+
+
+
+
+  return `/api/admin/about-guiding-principles`
+}
+
+/**
+ * @summary Update About page guiding principles settings
+ */
+export const updateAboutGuidingPrinciples = async (aboutGuidingPrinciplesInput: AboutGuidingPrinciplesInput, options?: Parameters<typeof customFetch>[1]): Promise<AboutGuidingPrinciples> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<AboutGuidingPrinciples>(getUpdateAboutGuidingPrinciplesUrl(),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(aboutGuidingPrinciplesInput)
+  }
+);}
+
+
+
+
+
+export const getUpdateAboutGuidingPrinciplesMutationKey = () => ['updateAboutGuidingPrinciples'] as const;
+
+export const getUpdateAboutGuidingPrinciplesMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAboutGuidingPrinciples>>, TError,UpdateAboutGuidingPrinciplesMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateAboutGuidingPrinciples>>, TError,UpdateAboutGuidingPrinciplesMutationVariables, TContext> => {
+
+const mutationKey = getUpdateAboutGuidingPrinciplesMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateAboutGuidingPrinciples>>, UpdateAboutGuidingPrinciplesMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  updateAboutGuidingPrinciples(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateAboutGuidingPrinciplesMutationResult = NonNullable<Awaited<ReturnType<typeof updateAboutGuidingPrinciples>>>
+    export type UpdateAboutGuidingPrinciplesMutationBody = BodyType<AboutGuidingPrinciplesInput>
+    export type UpdateAboutGuidingPrinciplesMutationError = ErrorType<ErrorResponse>
+    export type UpdateAboutGuidingPrinciplesMutationVariables = {data: BodyType<AboutGuidingPrinciplesInput>}
+
+    /**
+ * @summary Update About page guiding principles settings
+ */
+export const useUpdateAboutGuidingPrinciples = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAboutGuidingPrinciples>>, TError,UpdateAboutGuidingPrinciplesMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateAboutGuidingPrinciples>>,
+        TError,
+        UpdateAboutGuidingPrinciplesMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateAboutGuidingPrinciplesMutationOptions(options));
+    }
+
+export const getGetAdminAboutWhyParentsChooseUrl = () => {
+
+
+
+
+  return `/api/admin/about-why-parents-choose`
+}
+
+/**
+ * @summary Read About page parent-choice settings
+ */
+export const getAdminAboutWhyParentsChoose = async ( options?: Parameters<typeof customFetch>[1]): Promise<AboutWhyParentsChoose> => {
+
+  return customFetch<AboutWhyParentsChoose>(getGetAdminAboutWhyParentsChooseUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAdminAboutWhyParentsChooseQueryKey = () => {
+    return [
+    `/api/admin/about-why-parents-choose`
+    ] as const;
+    }
+
+
+export const getGetAdminAboutWhyParentsChooseQueryOptions = <TData = Awaited<ReturnType<typeof getAdminAboutWhyParentsChoose>>, TError = ErrorType<ErrorResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminAboutWhyParentsChoose>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAdminAboutWhyParentsChooseQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdminAboutWhyParentsChoose>>> = ({ signal }) => getAdminAboutWhyParentsChoose({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAdminAboutWhyParentsChoose>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetAdminAboutWhyParentsChooseQueryResult = NonNullable<Awaited<ReturnType<typeof getAdminAboutWhyParentsChoose>>>
+export type GetAdminAboutWhyParentsChooseQueryError = ErrorType<ErrorResponse>
+
+
+/**
+ * @summary Read About page parent-choice settings
+ */
+
+export function useGetAdminAboutWhyParentsChoose<TData = Awaited<ReturnType<typeof getAdminAboutWhyParentsChoose>>, TError = ErrorType<ErrorResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminAboutWhyParentsChoose>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetAdminAboutWhyParentsChooseQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getUpdateAboutWhyParentsChooseUrl = () => {
+
+
+
+
+  return `/api/admin/about-why-parents-choose`
+}
+
+/**
+ * @summary Update About page parent-choice settings
+ */
+export const updateAboutWhyParentsChoose = async (aboutWhyParentsChooseInput: AboutWhyParentsChooseInput, options?: Parameters<typeof customFetch>[1]): Promise<AboutWhyParentsChoose> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<AboutWhyParentsChoose>(getUpdateAboutWhyParentsChooseUrl(),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(aboutWhyParentsChooseInput)
+  }
+);}
+
+
+
+
+
+export const getUpdateAboutWhyParentsChooseMutationKey = () => ['updateAboutWhyParentsChoose'] as const;
+
+export const getUpdateAboutWhyParentsChooseMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAboutWhyParentsChoose>>, TError,UpdateAboutWhyParentsChooseMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateAboutWhyParentsChoose>>, TError,UpdateAboutWhyParentsChooseMutationVariables, TContext> => {
+
+const mutationKey = getUpdateAboutWhyParentsChooseMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateAboutWhyParentsChoose>>, UpdateAboutWhyParentsChooseMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  updateAboutWhyParentsChoose(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateAboutWhyParentsChooseMutationResult = NonNullable<Awaited<ReturnType<typeof updateAboutWhyParentsChoose>>>
+    export type UpdateAboutWhyParentsChooseMutationBody = BodyType<AboutWhyParentsChooseInput>
+    export type UpdateAboutWhyParentsChooseMutationError = ErrorType<ErrorResponse>
+    export type UpdateAboutWhyParentsChooseMutationVariables = {data: BodyType<AboutWhyParentsChooseInput>}
+
+    /**
+ * @summary Update About page parent-choice settings
+ */
+export const useUpdateAboutWhyParentsChoose = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAboutWhyParentsChoose>>, TError,UpdateAboutWhyParentsChooseMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateAboutWhyParentsChoose>>,
+        TError,
+        UpdateAboutWhyParentsChooseMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateAboutWhyParentsChooseMutationOptions(options));
+    }
+
+export const getGetAdminAboutLeadershipUrl = () => {
+
+
+
+
+  return `/api/admin/about-leadership`
+}
+
+/**
+ * @summary Read About page leadership settings
+ */
+export const getAdminAboutLeadership = async ( options?: Parameters<typeof customFetch>[1]): Promise<AboutLeadership> => {
+
+  return customFetch<AboutLeadership>(getGetAdminAboutLeadershipUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAdminAboutLeadershipQueryKey = () => {
+    return [
+    `/api/admin/about-leadership`
+    ] as const;
+    }
+
+
+export const getGetAdminAboutLeadershipQueryOptions = <TData = Awaited<ReturnType<typeof getAdminAboutLeadership>>, TError = ErrorType<ErrorResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminAboutLeadership>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAdminAboutLeadershipQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdminAboutLeadership>>> = ({ signal }) => getAdminAboutLeadership({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAdminAboutLeadership>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetAdminAboutLeadershipQueryResult = NonNullable<Awaited<ReturnType<typeof getAdminAboutLeadership>>>
+export type GetAdminAboutLeadershipQueryError = ErrorType<ErrorResponse>
+
+
+/**
+ * @summary Read About page leadership settings
+ */
+
+export function useGetAdminAboutLeadership<TData = Awaited<ReturnType<typeof getAdminAboutLeadership>>, TError = ErrorType<ErrorResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminAboutLeadership>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetAdminAboutLeadershipQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getUpdateAboutLeadershipUrl = () => {
+
+
+
+
+  return `/api/admin/about-leadership`
+}
+
+/**
+ * @summary Update About page leadership settings
+ */
+export const updateAboutLeadership = async (aboutLeadershipInput: AboutLeadershipInput, options?: Parameters<typeof customFetch>[1]): Promise<AboutLeadership> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<AboutLeadership>(getUpdateAboutLeadershipUrl(),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(aboutLeadershipInput)
+  }
+);}
+
+
+
+
+
+export const getUpdateAboutLeadershipMutationKey = () => ['updateAboutLeadership'] as const;
+
+export const getUpdateAboutLeadershipMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAboutLeadership>>, TError,UpdateAboutLeadershipMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateAboutLeadership>>, TError,UpdateAboutLeadershipMutationVariables, TContext> => {
+
+const mutationKey = getUpdateAboutLeadershipMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateAboutLeadership>>, UpdateAboutLeadershipMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  updateAboutLeadership(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateAboutLeadershipMutationResult = NonNullable<Awaited<ReturnType<typeof updateAboutLeadership>>>
+    export type UpdateAboutLeadershipMutationBody = BodyType<AboutLeadershipInput>
+    export type UpdateAboutLeadershipMutationError = ErrorType<ErrorResponse>
+    export type UpdateAboutLeadershipMutationVariables = {data: BodyType<AboutLeadershipInput>}
+
+    /**
+ * @summary Update About page leadership settings
+ */
+export const useUpdateAboutLeadership = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAboutLeadership>>, TError,UpdateAboutLeadershipMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateAboutLeadership>>,
+        TError,
+        UpdateAboutLeadershipMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateAboutLeadershipMutationOptions(options));
     }
 
 export const getUploadAdminImageUrl = () => {
