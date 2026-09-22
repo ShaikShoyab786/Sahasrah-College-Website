@@ -75,7 +75,7 @@ function AboutHeroSection({ content }: { content: AboutHero }) {
           <p className="mt-8 max-w-xl text-base leading-8 text-white/70 md:text-lg" data-testid="text-about-hero-description">{content.description}</p>
           <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
             {content.primaryButtonVisible && <a href={content.primaryButtonUrl || '#contact'} className="group inline-flex items-center justify-center rounded-full bg-[hsl(var(--accent))] px-5 py-3.5 text-sm font-bold text-[hsl(var(--primary))] shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg" data-testid="link-about-hero-primary">{content.primaryButtonLabel}<ArrowRight size={17} className="ml-2 transition-transform duration-300 group-hover:translate-x-1" /></a>}
-            {content.secondaryButtonVisible && <a href={content.secondaryButtonUrl || '#contact'} className="group inline-flex items-center justify-center rounded-full border border-white/30 px-5 py-3.5 text-sm font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-white/10 hover:shadow-lg" data-testid="link-about-hero-secondary">{content.secondaryButtonLabel}<ArrowRight size={17} className="ml-2 transition-transform duration-300 group-hover:translate-x-1" /></a>}
+            {content.secondaryButtonVisible && <a href={content.secondaryButtonUrl || '#contact'} className="inline-flex items-center justify-center rounded-full border border-white/30 px-5 py-3.5 text-sm font-bold text-white shadow-sm transition hover:-translate-y-0.5 hover:bg-white/10 hover:shadow-lg" data-testid="link-about-hero-secondary">{content.secondaryButtonLabel}</a>}
           </div>
           <div className="mt-12 grid max-w-xl grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/15 bg-white/15 sm:grid-cols-4">
             {visibleStats.map((stat) => <div key={stat.id} className="about-stat-card min-h-28 bg-[hsl(var(--primary))] p-4 sm:p-5"><p className="font-display text-3xl font-semibold text-[hsl(var(--accent))]" data-testid={`text-about-stat-value-${stat.displayOrder}`}>{stat.value}</p><p className="mt-2 text-xs leading-5 text-white/60">{stat.label}</p></div>)}
@@ -157,7 +157,7 @@ function ChairmanMessageSection({ content }: { content: AboutChairmanMessage }) 
       <div className="mx-auto grid max-w-7xl items-center gap-14 lg:grid-cols-[.82fr_1.18fr] lg:gap-24">
         <div className="relative mx-auto w-full max-w-md pl-5 pt-5">
           <div className="absolute inset-0 rounded-[2rem] bg-[hsl(var(--accent)/.55)]" aria-hidden="true" />
-          <div className="relative aspect-[.82] overflow-hidden rounded-[2rem] bg-[hsl(var(--primary))] shadow-xl">
+          <div className="about-chairman-image relative aspect-[.82] overflow-hidden rounded-[2rem] bg-[hsl(var(--primary))] shadow-xl">
             <MediaOrFallback src={content.portraitImage} alt={content.portraitAltText} label="Sahasara leadership" dark />
           </div>
         </div>

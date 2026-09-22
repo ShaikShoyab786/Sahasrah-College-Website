@@ -1,2 +1,3 @@
 - [Prisma CLI stability](prisma-cli-stability.md) — keep this project on stable Prisma 6 until the newer CLI restores the standard generate workflow.
 - [Artifact build environment](artifact-build-environment.md) — standalone artifact builds need PORT and BASE_PATH; managed workflows provide them automatically.
+- [About visual refinement boundary](about-visual-refinement.md) — keep About styling work presentation-only; preserve backend content and admin editing behavior.
