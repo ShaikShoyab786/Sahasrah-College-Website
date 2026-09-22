@@ -345,6 +345,8 @@ body { min-width: 320px; }
   .story-timeline-list {
     --story-timeline-gap: 1.5rem;
     --story-rail-thickness: 2px;
+  }
+  .story-timeline-item {
     column-gap: .625rem;
   }
   .story-collage {
