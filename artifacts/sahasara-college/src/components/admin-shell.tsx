@@ -18,6 +18,9 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
   ];
   const heroActive = location.startsWith('/admin/pages/home/hero') || location.startsWith('/admin/homepage-hero');
   const aboutActive = location.startsWith('/admin/pages/home/about-preview');
+  const liveUpdatesActive = location.startsWith('/admin/pages/home/live-updates');
+  const statisticsActive = location.startsWith('/admin/pages/home/statistics');
+  const favoriteTopicsActive = location.startsWith('/admin/pages/home/favorite-topics');
   const aboutHeroActive = location.startsWith('/admin/pages/about/hero');
   const aboutStoryActive = location.startsWith('/admin/pages/about/our-story');
   const chairmanActive = location.startsWith('/admin/pages/about/chairman-message');
@@ -28,7 +31,7 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
   const achievementsActive = location.startsWith('/admin/pages/about/achievement-statistics');
   const faqActive = location.startsWith('/admin/pages/about/faqs');
   const admissionCtaActive = location.startsWith('/admin/pages/about/admission-cta');
-  const nestedHomeRoute = heroActive || aboutActive;
+  const nestedHomeRoute = heroActive || aboutActive || liveUpdatesActive || statisticsActive || favoriteTopicsActive;
   const nestedAboutRoute = aboutHeroActive || aboutStoryActive || chairmanActive || principlesActive || parentChoiceActive || leadershipActive || campusHighlightsActive || achievementsActive || faqActive || admissionCtaActive;
   const [pagesOpen, setPagesOpen] = useState(false);
   const [homeOpen, setHomeOpen] = useState(false);
@@ -98,6 +101,9 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
                   <div className="mt-1">
                     <Link href="/admin/pages/home/hero" onClick={() => setOpen(false)} className={`flex items-center gap-3 rounded-xl px-3 py-2.5 pl-9 text-sm font-semibold transition ${heroActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-home-hero"><PanelsTopLeft size={16} /><span>Hero</span></Link>
                     <Link href="/admin/pages/home/about-preview" onClick={() => setOpen(false)} className={`mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5 pl-9 text-sm font-semibold transition ${aboutActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-home-about-preview"><PanelsTopLeft size={16} /><span>About Preview</span></Link>
+                    <Link href="/admin/pages/home/live-updates" onClick={() => setOpen(false)} className={`mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5 pl-9 text-sm font-semibold transition ${liveUpdatesActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-home-live-updates"><PanelsTopLeft size={16} /><span>Live Updates</span></Link>
+                    <Link href="/admin/pages/home/statistics" onClick={() => setOpen(false)} className={`mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5 pl-9 text-sm font-semibold transition ${statisticsActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-home-statistics"><PanelsTopLeft size={16} /><span>Statistics</span></Link>
+                    <Link href="/admin/pages/home/favorite-topics" onClick={() => setOpen(false)} className={`mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5 pl-9 text-sm font-semibold transition ${favoriteTopicsActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-home-favorite-topics"><PanelsTopLeft size={16} /><span>Favorite Topics</span></Link>
                   </div>
                 )}
               </div>

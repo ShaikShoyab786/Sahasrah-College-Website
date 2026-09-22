@@ -14,4 +14,6 @@ export const ImageUploadResultPurpose = {
   hero: 'hero',
   campus: 'campus',
   cta: 'cta',
+  update: 'update',
+  topic: 'topic',
 } as const;

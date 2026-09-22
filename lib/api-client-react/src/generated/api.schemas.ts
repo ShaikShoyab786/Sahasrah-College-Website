@@ -151,6 +151,184 @@ export interface HomepageAboutPreviewInput {
   sortOrder: number;
 }
 
+export interface HomepageLiveUpdate {
+  id: string;
+  title: string;
+  excerpt: string;
+  category: string;
+  /** @nullable */
+  actionBadge: string | null;
+  publishDate: string;
+  /** @nullable */
+  imageUrl: string | null;
+  imageAltText: string;
+  detailUrl: string;
+  isFeatured: boolean;
+  isActive: boolean;
+  displayOrder: number;
+}
+
+export interface HomepageLiveUpdateInput {
+  /** @minLength 1 */
+  title: string;
+  /** @minLength 1 */
+  excerpt: string;
+  /** @minLength 1 */
+  category: string;
+  /** @nullable */
+  actionBadge: string | null;
+  publishDate: string;
+  /** @nullable */
+  imageUrl: string | null;
+  /** @minLength 1 */
+  imageAltText: string;
+  /** @minLength 1 */
+  detailUrl: string;
+  isFeatured: boolean;
+  isActive: boolean;
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  displayOrder: number;
+}
+
+export interface HomepageStatistic {
+  id: string;
+  numericTarget: number;
+  suffix: string;
+  /** @nullable */
+  icon: string | null;
+  label: string;
+  displayOrder: number;
+  isActive: boolean;
+}
+
+export interface HomepageStatisticInput {
+  /**
+     * @minimum 0
+     * @maximum 1000000000
+     */
+  numericTarget: number;
+  /** @maxLength 8 */
+  suffix: string;
+  /** @nullable */
+  icon: string | null;
+  /** @minLength 1 */
+  label: string;
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  displayOrder: number;
+  isActive: boolean;
+}
+
+export interface HomepageStatistics {
+  id: string;
+  eyebrow: string;
+  heading: string;
+  description: string;
+  isVisible: boolean;
+  sortOrder: number;
+  updatedAt: string;
+  statistics: HomepageStatistic[];
+}
+
+export interface HomepageStatisticsInput {
+  eyebrow: string;
+  /** @minLength 1 */
+  heading: string;
+  description: string;
+  isVisible: boolean;
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  sortOrder: number;
+  /**
+     * @minItems 1
+     * @maxItems 20
+     */
+  statistics: HomepageStatisticInput[];
+}
+
+export interface HomepageFavoriteTopic {
+  id: string;
+  categoryLabel: string;
+  title: string;
+  description: string;
+  featureOne: string;
+  featureTwo: string;
+  featureThree: string;
+  /** @nullable */
+  imageUrl: string | null;
+  imageAltText: string;
+  /** @nullable */
+  icon: string | null;
+  curriculumUrl: string;
+  displayOrder: number;
+  isActive: boolean;
+}
+
+export interface HomepageFavoriteTopicInput {
+  /** @minLength 1 */
+  categoryLabel: string;
+  /** @minLength 1 */
+  title: string;
+  /** @minLength 1 */
+  description: string;
+  /** @minLength 1 */
+  featureOne: string;
+  /** @minLength 1 */
+  featureTwo: string;
+  /** @minLength 1 */
+  featureThree: string;
+  /** @nullable */
+  imageUrl: string | null;
+  /** @minLength 1 */
+  imageAltText: string;
+  /** @nullable */
+  icon: string | null;
+  /** @minLength 1 */
+  curriculumUrl: string;
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  displayOrder: number;
+  isActive: boolean;
+}
+
+export interface HomepageFavoriteTopics {
+  id: string;
+  eyebrow: string;
+  heading: string;
+  description: string;
+  isVisible: boolean;
+  sortOrder: number;
+  updatedAt: string;
+  topics: HomepageFavoriteTopic[];
+}
+
+export interface HomepageFavoriteTopicsInput {
+  eyebrow: string;
+  /** @minLength 1 */
+  heading: string;
+  description: string;
+  isVisible: boolean;
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  sortOrder: number;
+  /**
+     * @minItems 1
+     * @maxItems 20
+     */
+  topics: HomepageFavoriteTopicInput[];
+}
+
 export interface AboutHeroStat {
   id: string;
   value: string;
@@ -745,6 +923,8 @@ export const ImageUploadInputPurpose = {
   hero: 'hero',
   campus: 'campus',
   cta: 'cta',
+  update: 'update',
+  topic: 'topic',
 } as const;
 
 export interface ImageUploadInput {
@@ -760,6 +940,8 @@ export const ImageUploadResultPurpose = {
   hero: 'hero',
   campus: 'campus',
   cta: 'cta',
+  update: 'update',
+  topic: 'topic',
 } as const;
 
 export interface ImageUploadResult {

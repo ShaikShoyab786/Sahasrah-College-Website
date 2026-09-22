@@ -130,6 +130,57 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+  /homepage-live-updates:
+    get:
+      operationId: getHomepageLiveUpdates
+      tags: [public]
+      summary: Read the latest active homepage updates
+      responses:
+        "200":
+          description: Homepage live updates
+          content:
+            application/json:
+              schema:
+                type: array
+                maxItems: 3
+                items:
+                  $ref: "#/components/schemas/HomepageLiveUpdate"
+  /homepage-statistics:
+    get:
+      operationId: getHomepageStatistics
+      tags: [public]
+      summary: Read visible homepage statistics
+      responses:
+        "200":
+          description: Homepage statistics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomepageStatistics"
+        "404":
+          description: Homepage statistics are hidden or unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /homepage-favorite-topics:
+    get:
+      operationId: getHomepageFavoriteTopics
+      tags: [public]
+      summary: Read visible homepage favorite topics
+      responses:
+        "200":
+          description: Homepage favorite topics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomepageFavoriteTopics"
+        "404":
+          description: Homepage favorite topics are hidden or unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /about-hero:
     get:
       operationId: getAboutHero
@@ -413,6 +464,167 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HomepageAboutPreview"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/homepage-live-updates:
+    get:
+      operationId: getAdminHomepageLiveUpdates
+      tags: [admin]
+      summary: Read homepage live updates for editing
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Homepage live updates
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/HomepageLiveUpdate"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateHomepageLiveUpdates
+      tags: [admin]
+      summary: Update homepage live updates
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              minItems: 1
+              maxItems: 20
+              items:
+                $ref: "#/components/schemas/HomepageLiveUpdateInput"
+      responses:
+        "200":
+          description: Updated homepage live updates
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/HomepageLiveUpdate"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/homepage-statistics:
+    get:
+      operationId: getAdminHomepageStatistics
+      tags: [admin]
+      summary: Read homepage statistics for editing
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Homepage statistics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomepageStatistics"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateHomepageStatistics
+      tags: [admin]
+      summary: Update homepage statistics
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HomepageStatisticsInput"
+      responses:
+        "200":
+          description: Updated homepage statistics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomepageStatistics"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/homepage-favorite-topics:
+    get:
+      operationId: getAdminHomepageFavoriteTopics
+      tags: [admin]
+      summary: Read homepage favorite topics for editing
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Homepage favorite topics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomepageFavoriteTopics"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateHomepageFavoriteTopics
+      tags: [admin]
+      summary: Update homepage favorite topics
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HomepageFavoriteTopicsInput"
+      responses:
+        "200":
+          description: Updated homepage favorite topics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomepageFavoriteTopics"
         "400":
           description: Validation error
           content:
@@ -1274,6 +1486,269 @@ components:
         - secondaryImageAltText
         - isVisible
         - sortOrder
+    HomepageLiveUpdate:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        excerpt:
+          type: string
+        category:
+          type: string
+        actionBadge:
+          type: ["string", "null"]
+        publishDate:
+          type: string
+          format: date-time
+        imageUrl:
+          type: ["string", "null"]
+        imageAltText:
+          type: string
+        detailUrl:
+          type: string
+        isFeatured:
+          type: boolean
+        isActive:
+          type: boolean
+        displayOrder:
+          type: integer
+      required: [id, title, excerpt, category, actionBadge, publishDate, imageUrl, imageAltText, detailUrl, isFeatured, isActive, displayOrder]
+    HomepageLiveUpdateInput:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+        excerpt:
+          type: string
+          minLength: 1
+        category:
+          type: string
+          minLength: 1
+        actionBadge:
+          type: ["string", "null"]
+        publishDate:
+          type: string
+          format: date-time
+        imageUrl:
+          type: ["string", "null"]
+        imageAltText:
+          type: string
+          minLength: 1
+        detailUrl:
+          type: string
+          minLength: 1
+        isFeatured:
+          type: boolean
+        isActive:
+          type: boolean
+        displayOrder:
+          type: integer
+          minimum: 1
+          maximum: 20
+      required: [title, excerpt, category, actionBadge, publishDate, imageUrl, imageAltText, detailUrl, isFeatured, isActive, displayOrder]
+    HomepageStatistic:
+      type: object
+      properties:
+        id:
+          type: string
+        numericTarget:
+          type: integer
+        suffix:
+          type: string
+        icon:
+          type: ["string", "null"]
+        label:
+          type: string
+        displayOrder:
+          type: integer
+        isActive:
+          type: boolean
+      required: [id, numericTarget, suffix, icon, label, displayOrder, isActive]
+    HomepageStatisticInput:
+      type: object
+      properties:
+        numericTarget:
+          type: integer
+          minimum: 0
+          maximum: 1000000000
+        suffix:
+          type: string
+          maxLength: 8
+        icon:
+          type: ["string", "null"]
+        label:
+          type: string
+          minLength: 1
+        displayOrder:
+          type: integer
+          minimum: 1
+          maximum: 20
+        isActive:
+          type: boolean
+      required: [numericTarget, suffix, icon, label, displayOrder, isActive]
+    HomepageStatistics:
+      type: object
+      properties:
+        id:
+          type: string
+        eyebrow:
+          type: string
+        heading:
+          type: string
+        description:
+          type: string
+        isVisible:
+          type: boolean
+        sortOrder:
+          type: integer
+        updatedAt:
+          type: string
+          format: date-time
+        statistics:
+          type: array
+          items:
+            $ref: "#/components/schemas/HomepageStatistic"
+      required: [id, eyebrow, heading, description, isVisible, sortOrder, updatedAt, statistics]
+    HomepageStatisticsInput:
+      type: object
+      properties:
+        eyebrow:
+          type: string
+        heading:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        isVisible:
+          type: boolean
+        sortOrder:
+          type: integer
+          minimum: 1
+          maximum: 20
+        statistics:
+          type: array
+          minItems: 1
+          maxItems: 20
+          items:
+            $ref: "#/components/schemas/HomepageStatisticInput"
+      required: [eyebrow, heading, description, isVisible, sortOrder, statistics]
+    HomepageFavoriteTopic:
+      type: object
+      properties:
+        id:
+          type: string
+        categoryLabel:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        featureOne:
+          type: string
+        featureTwo:
+          type: string
+        featureThree:
+          type: string
+        imageUrl:
+          type: ["string", "null"]
+        imageAltText:
+          type: string
+        icon:
+          type: ["string", "null"]
+        curriculumUrl:
+          type: string
+        displayOrder:
+          type: integer
+        isActive:
+          type: boolean
+      required: [id, categoryLabel, title, description, featureOne, featureTwo, featureThree, imageUrl, imageAltText, icon, curriculumUrl, displayOrder, isActive]
+    HomepageFavoriteTopicInput:
+      type: object
+      properties:
+        categoryLabel:
+          type: string
+          minLength: 1
+        title:
+          type: string
+          minLength: 1
+        description:
+          type: string
+          minLength: 1
+        featureOne:
+          type: string
+          minLength: 1
+        featureTwo:
+          type: string
+          minLength: 1
+        featureThree:
+          type: string
+          minLength: 1
+        imageUrl:
+          type: ["string", "null"]
+        imageAltText:
+          type: string
+          minLength: 1
+        icon:
+          type: ["string", "null"]
+        curriculumUrl:
+          type: string
+          minLength: 1
+        displayOrder:
+          type: integer
+          minimum: 1
+          maximum: 20
+        isActive:
+          type: boolean
+      required: [categoryLabel, title, description, featureOne, featureTwo, featureThree, imageUrl, imageAltText, icon, curriculumUrl, displayOrder, isActive]
+    HomepageFavoriteTopics:
+      type: object
+      properties:
+        id:
+          type: string
+        eyebrow:
+          type: string
+        heading:
+          type: string
+        description:
+          type: string
+        isVisible:
+          type: boolean
+        sortOrder:
+          type: integer
+        updatedAt:
+          type: string
+          format: date-time
+        topics:
+          type: array
+          items:
+            $ref: "#/components/schemas/HomepageFavoriteTopic"
+      required: [id, eyebrow, heading, description, isVisible, sortOrder, updatedAt, topics]
+    HomepageFavoriteTopicsInput:
+      type: object
+      properties:
+        eyebrow:
+          type: string
+        heading:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        isVisible:
+          type: boolean
+        sortOrder:
+          type: integer
+          minimum: 1
+          maximum: 20
+        topics:
+          type: array
+          minItems: 1
+          maxItems: 20
+          items:
+            $ref: "#/components/schemas/HomepageFavoriteTopicInput"
+      required: [eyebrow, heading, description, isVisible, sortOrder, topics]
     AboutHeroStat:
       type: object
       properties:
@@ -2399,7 +2874,7 @@ components:
           format: binary
         purpose:
           type: string
-          enum: [logo, hero, campus, cta]
+          enum: [logo, hero, campus, cta, update, topic]
       required:
         - file
         - purpose
@@ -2410,7 +2885,7 @@ components:
           type: string
         purpose:
           type: string
-          enum: [logo, hero, campus, cta]
+          enum: [logo, hero, campus, cta, update, topic]
       required:
         - url
         - purpose

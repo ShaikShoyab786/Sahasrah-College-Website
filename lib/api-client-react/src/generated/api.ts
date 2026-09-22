@@ -45,8 +45,14 @@ import type {
   HealthStatus,
   HomepageAboutPreview,
   HomepageAboutPreviewInput,
+  HomepageFavoriteTopics,
+  HomepageFavoriteTopicsInput,
   HomepageHeroSlides,
   HomepageHeroSlidesInput,
+  HomepageLiveUpdate,
+  HomepageLiveUpdateInput,
+  HomepageStatistics,
+  HomepageStatisticsInput,
   ImageUploadInput,
   ImageUploadResult,
   LoginInput,
@@ -618,6 +624,237 @@ export function useGetHomepageAboutPreview<TData = Awaited<ReturnType<typeof get
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
   const queryOptions = getGetHomepageAboutPreviewQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetHomepageLiveUpdatesUrl = () => {
+
+
+
+
+  return `/api/homepage-live-updates`
+}
+
+/**
+ * @summary Read the latest active homepage updates
+ */
+export const getHomepageLiveUpdates = async ( options?: Parameters<typeof customFetch>[1]): Promise<HomepageLiveUpdate[]> => {
+
+  return customFetch<HomepageLiveUpdate[]>(getGetHomepageLiveUpdatesUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetHomepageLiveUpdatesQueryKey = () => {
+    return [
+    `/api/homepage-live-updates`
+    ] as const;
+    }
+
+
+export const getGetHomepageLiveUpdatesQueryOptions = <TData = Awaited<ReturnType<typeof getHomepageLiveUpdates>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getHomepageLiveUpdates>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetHomepageLiveUpdatesQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getHomepageLiveUpdates>>> = ({ signal }) => getHomepageLiveUpdates({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getHomepageLiveUpdates>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetHomepageLiveUpdatesQueryResult = NonNullable<Awaited<ReturnType<typeof getHomepageLiveUpdates>>>
+export type GetHomepageLiveUpdatesQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Read the latest active homepage updates
+ */
+
+export function useGetHomepageLiveUpdates<TData = Awaited<ReturnType<typeof getHomepageLiveUpdates>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getHomepageLiveUpdates>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetHomepageLiveUpdatesQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetHomepageStatisticsUrl = () => {
+
+
+
+
+  return `/api/homepage-statistics`
+}
+
+/**
+ * @summary Read visible homepage statistics
+ */
+export const getHomepageStatistics = async ( options?: Parameters<typeof customFetch>[1]): Promise<HomepageStatistics> => {
+
+  return customFetch<HomepageStatistics>(getGetHomepageStatisticsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetHomepageStatisticsQueryKey = () => {
+    return [
+    `/api/homepage-statistics`
+    ] as const;
+    }
+
+
+export const getGetHomepageStatisticsQueryOptions = <TData = Awaited<ReturnType<typeof getHomepageStatistics>>, TError = ErrorType<ErrorResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getHomepageStatistics>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetHomepageStatisticsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getHomepageStatistics>>> = ({ signal }) => getHomepageStatistics({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getHomepageStatistics>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetHomepageStatisticsQueryResult = NonNullable<Awaited<ReturnType<typeof getHomepageStatistics>>>
+export type GetHomepageStatisticsQueryError = ErrorType<ErrorResponse>
+
+
+/**
+ * @summary Read visible homepage statistics
+ */
+
+export function useGetHomepageStatistics<TData = Awaited<ReturnType<typeof getHomepageStatistics>>, TError = ErrorType<ErrorResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getHomepageStatistics>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetHomepageStatisticsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetHomepageFavoriteTopicsUrl = () => {
+
+
+
+
+  return `/api/homepage-favorite-topics`
+}
+
+/**
+ * @summary Read visible homepage favorite topics
+ */
+export const getHomepageFavoriteTopics = async ( options?: Parameters<typeof customFetch>[1]): Promise<HomepageFavoriteTopics> => {
+
+  return customFetch<HomepageFavoriteTopics>(getGetHomepageFavoriteTopicsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetHomepageFavoriteTopicsQueryKey = () => {
+    return [
+    `/api/homepage-favorite-topics`
+    ] as const;
+    }
+
+
+export const getGetHomepageFavoriteTopicsQueryOptions = <TData = Awaited<ReturnType<typeof getHomepageFavoriteTopics>>, TError = ErrorType<ErrorResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getHomepageFavoriteTopics>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetHomepageFavoriteTopicsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getHomepageFavoriteTopics>>> = ({ signal }) => getHomepageFavoriteTopics({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getHomepageFavoriteTopics>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetHomepageFavoriteTopicsQueryResult = NonNullable<Awaited<ReturnType<typeof getHomepageFavoriteTopics>>>
+export type GetHomepageFavoriteTopicsQueryError = ErrorType<ErrorResponse>
+
+
+/**
+ * @summary Read visible homepage favorite topics
+ */
+
+export function useGetHomepageFavoriteTopics<TData = Awaited<ReturnType<typeof getHomepageFavoriteTopics>>, TError = ErrorType<ErrorResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getHomepageFavoriteTopics>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetHomepageFavoriteTopicsQueryOptions(options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
@@ -1739,6 +1976,501 @@ export const useUpdateHomepageAboutPreview = <TError = ErrorType<ErrorResponse>,
         TContext
       > => {
       return useMutation(getUpdateHomepageAboutPreviewMutationOptions(options));
+    }
+
+export const getGetAdminHomepageLiveUpdatesUrl = () => {
+
+
+
+
+  return `/api/admin/homepage-live-updates`
+}
+
+/**
+ * @summary Read homepage live updates for editing
+ */
+export const getAdminHomepageLiveUpdates = async ( options?: Parameters<typeof customFetch>[1]): Promise<HomepageLiveUpdate[]> => {
+
+  return customFetch<HomepageLiveUpdate[]>(getGetAdminHomepageLiveUpdatesUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAdminHomepageLiveUpdatesQueryKey = () => {
+    return [
+    `/api/admin/homepage-live-updates`
+    ] as const;
+    }
+
+
+export const getGetAdminHomepageLiveUpdatesQueryOptions = <TData = Awaited<ReturnType<typeof getAdminHomepageLiveUpdates>>, TError = ErrorType<ErrorResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminHomepageLiveUpdates>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAdminHomepageLiveUpdatesQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdminHomepageLiveUpdates>>> = ({ signal }) => getAdminHomepageLiveUpdates({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAdminHomepageLiveUpdates>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetAdminHomepageLiveUpdatesQueryResult = NonNullable<Awaited<ReturnType<typeof getAdminHomepageLiveUpdates>>>
+export type GetAdminHomepageLiveUpdatesQueryError = ErrorType<ErrorResponse>
+
+
+/**
+ * @summary Read homepage live updates for editing
+ */
+
+export function useGetAdminHomepageLiveUpdates<TData = Awaited<ReturnType<typeof getAdminHomepageLiveUpdates>>, TError = ErrorType<ErrorResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminHomepageLiveUpdates>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetAdminHomepageLiveUpdatesQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getUpdateHomepageLiveUpdatesUrl = () => {
+
+
+
+
+  return `/api/admin/homepage-live-updates`
+}
+
+/**
+ * @summary Update homepage live updates
+ */
+export const updateHomepageLiveUpdates = async (homepageLiveUpdateInput: HomepageLiveUpdateInput[], options?: Parameters<typeof customFetch>[1]): Promise<HomepageLiveUpdate[]> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<HomepageLiveUpdate[]>(getUpdateHomepageLiveUpdatesUrl(),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(homepageLiveUpdateInput)
+  }
+);}
+
+
+
+
+
+export const getUpdateHomepageLiveUpdatesMutationKey = () => ['updateHomepageLiveUpdates'] as const;
+
+export const getUpdateHomepageLiveUpdatesMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateHomepageLiveUpdates>>, TError,UpdateHomepageLiveUpdatesMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateHomepageLiveUpdates>>, TError,UpdateHomepageLiveUpdatesMutationVariables, TContext> => {
+
+const mutationKey = getUpdateHomepageLiveUpdatesMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateHomepageLiveUpdates>>, UpdateHomepageLiveUpdatesMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  updateHomepageLiveUpdates(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateHomepageLiveUpdatesMutationResult = NonNullable<Awaited<ReturnType<typeof updateHomepageLiveUpdates>>>
+    export type UpdateHomepageLiveUpdatesMutationBody = BodyType<HomepageLiveUpdateInput[]>
+    export type UpdateHomepageLiveUpdatesMutationError = ErrorType<ErrorResponse>
+    export type UpdateHomepageLiveUpdatesMutationVariables = {data: BodyType<HomepageLiveUpdateInput[]>}
+
+    /**
+ * @summary Update homepage live updates
+ */
+export const useUpdateHomepageLiveUpdates = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateHomepageLiveUpdates>>, TError,UpdateHomepageLiveUpdatesMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateHomepageLiveUpdates>>,
+        TError,
+        UpdateHomepageLiveUpdatesMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateHomepageLiveUpdatesMutationOptions(options));
+    }
+
+export const getGetAdminHomepageStatisticsUrl = () => {
+
+
+
+
+  return `/api/admin/homepage-statistics`
+}
+
+/**
+ * @summary Read homepage statistics for editing
+ */
+export const getAdminHomepageStatistics = async ( options?: Parameters<typeof customFetch>[1]): Promise<HomepageStatistics> => {
+
+  return customFetch<HomepageStatistics>(getGetAdminHomepageStatisticsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAdminHomepageStatisticsQueryKey = () => {
+    return [
+    `/api/admin/homepage-statistics`
+    ] as const;
+    }
+
+
+export const getGetAdminHomepageStatisticsQueryOptions = <TData = Awaited<ReturnType<typeof getAdminHomepageStatistics>>, TError = ErrorType<ErrorResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminHomepageStatistics>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAdminHomepageStatisticsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdminHomepageStatistics>>> = ({ signal }) => getAdminHomepageStatistics({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAdminHomepageStatistics>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetAdminHomepageStatisticsQueryResult = NonNullable<Awaited<ReturnType<typeof getAdminHomepageStatistics>>>
+export type GetAdminHomepageStatisticsQueryError = ErrorType<ErrorResponse>
+
+
+/**
+ * @summary Read homepage statistics for editing
+ */
+
+export function useGetAdminHomepageStatistics<TData = Awaited<ReturnType<typeof getAdminHomepageStatistics>>, TError = ErrorType<ErrorResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminHomepageStatistics>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetAdminHomepageStatisticsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getUpdateHomepageStatisticsUrl = () => {
+
+
+
+
+  return `/api/admin/homepage-statistics`
+}
+
+/**
+ * @summary Update homepage statistics
+ */
+export const updateHomepageStatistics = async (homepageStatisticsInput: HomepageStatisticsInput, options?: Parameters<typeof customFetch>[1]): Promise<HomepageStatistics> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<HomepageStatistics>(getUpdateHomepageStatisticsUrl(),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(homepageStatisticsInput)
+  }
+);}
+
+
+
+
+
+export const getUpdateHomepageStatisticsMutationKey = () => ['updateHomepageStatistics'] as const;
+
+export const getUpdateHomepageStatisticsMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateHomepageStatistics>>, TError,UpdateHomepageStatisticsMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateHomepageStatistics>>, TError,UpdateHomepageStatisticsMutationVariables, TContext> => {
+
+const mutationKey = getUpdateHomepageStatisticsMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateHomepageStatistics>>, UpdateHomepageStatisticsMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  updateHomepageStatistics(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateHomepageStatisticsMutationResult = NonNullable<Awaited<ReturnType<typeof updateHomepageStatistics>>>
+    export type UpdateHomepageStatisticsMutationBody = BodyType<HomepageStatisticsInput>
+    export type UpdateHomepageStatisticsMutationError = ErrorType<ErrorResponse>
+    export type UpdateHomepageStatisticsMutationVariables = {data: BodyType<HomepageStatisticsInput>}
+
+    /**
+ * @summary Update homepage statistics
+ */
+export const useUpdateHomepageStatistics = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateHomepageStatistics>>, TError,UpdateHomepageStatisticsMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateHomepageStatistics>>,
+        TError,
+        UpdateHomepageStatisticsMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateHomepageStatisticsMutationOptions(options));
+    }
+
+export const getGetAdminHomepageFavoriteTopicsUrl = () => {
+
+
+
+
+  return `/api/admin/homepage-favorite-topics`
+}
+
+/**
+ * @summary Read homepage favorite topics for editing
+ */
+export const getAdminHomepageFavoriteTopics = async ( options?: Parameters<typeof customFetch>[1]): Promise<HomepageFavoriteTopics> => {
+
+  return customFetch<HomepageFavoriteTopics>(getGetAdminHomepageFavoriteTopicsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAdminHomepageFavoriteTopicsQueryKey = () => {
+    return [
+    `/api/admin/homepage-favorite-topics`
+    ] as const;
+    }
+
+
+export const getGetAdminHomepageFavoriteTopicsQueryOptions = <TData = Awaited<ReturnType<typeof getAdminHomepageFavoriteTopics>>, TError = ErrorType<ErrorResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminHomepageFavoriteTopics>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAdminHomepageFavoriteTopicsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdminHomepageFavoriteTopics>>> = ({ signal }) => getAdminHomepageFavoriteTopics({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAdminHomepageFavoriteTopics>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetAdminHomepageFavoriteTopicsQueryResult = NonNullable<Awaited<ReturnType<typeof getAdminHomepageFavoriteTopics>>>
+export type GetAdminHomepageFavoriteTopicsQueryError = ErrorType<ErrorResponse>
+
+
+/**
+ * @summary Read homepage favorite topics for editing
+ */
+
+export function useGetAdminHomepageFavoriteTopics<TData = Awaited<ReturnType<typeof getAdminHomepageFavoriteTopics>>, TError = ErrorType<ErrorResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminHomepageFavoriteTopics>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetAdminHomepageFavoriteTopicsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getUpdateHomepageFavoriteTopicsUrl = () => {
+
+
+
+
+  return `/api/admin/homepage-favorite-topics`
+}
+
+/**
+ * @summary Update homepage favorite topics
+ */
+export const updateHomepageFavoriteTopics = async (homepageFavoriteTopicsInput: HomepageFavoriteTopicsInput, options?: Parameters<typeof customFetch>[1]): Promise<HomepageFavoriteTopics> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<HomepageFavoriteTopics>(getUpdateHomepageFavoriteTopicsUrl(),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(homepageFavoriteTopicsInput)
+  }
+);}
+
+
+
+
+
+export const getUpdateHomepageFavoriteTopicsMutationKey = () => ['updateHomepageFavoriteTopics'] as const;
+
+export const getUpdateHomepageFavoriteTopicsMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateHomepageFavoriteTopics>>, TError,UpdateHomepageFavoriteTopicsMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateHomepageFavoriteTopics>>, TError,UpdateHomepageFavoriteTopicsMutationVariables, TContext> => {
+
+const mutationKey = getUpdateHomepageFavoriteTopicsMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateHomepageFavoriteTopics>>, UpdateHomepageFavoriteTopicsMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  updateHomepageFavoriteTopics(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateHomepageFavoriteTopicsMutationResult = NonNullable<Awaited<ReturnType<typeof updateHomepageFavoriteTopics>>>
+    export type UpdateHomepageFavoriteTopicsMutationBody = BodyType<HomepageFavoriteTopicsInput>
+    export type UpdateHomepageFavoriteTopicsMutationError = ErrorType<ErrorResponse>
+    export type UpdateHomepageFavoriteTopicsMutationVariables = {data: BodyType<HomepageFavoriteTopicsInput>}
+
+    /**
+ * @summary Update homepage favorite topics
+ */
+export const useUpdateHomepageFavoriteTopics = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateHomepageFavoriteTopics>>, TError,UpdateHomepageFavoriteTopicsMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateHomepageFavoriteTopics>>,
+        TError,
+        UpdateHomepageFavoriteTopicsMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateHomepageFavoriteTopicsMutationOptions(options));
     }
 
 export const getGetAdminAboutHeroUrl = () => {

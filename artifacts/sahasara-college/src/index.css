@@ -345,6 +345,43 @@ body { min-width: 320px; }
 .story-timeline-title { animation: none; }
 .story-is-visible .story-timeline-title { animation: story-title-reach 680ms var(--story-delay) ease both; }
 
+@keyframes home-card-reveal {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.home-reveal-card,
+.home-topic-card,
+.home-statistic-item {
+  animation: home-card-reveal .7s var(--home-card-delay, 0ms) cubic-bezier(.22,1,.36,1) both;
+}
+.home-statistics-card {
+  isolation: isolate;
+}
+.home-statistics-texture {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: .6;
+  background:
+    radial-gradient(circle at 86% 18%, hsl(var(--accent) / .2), transparent 24%),
+    radial-gradient(circle at 14% 100%, hsl(190 42% 35% / .28), transparent 30%),
+    linear-gradient(115deg, transparent 40%, hsl(var(--primary-foreground) / .04) 40.2%, transparent 40.5%);
+}
+.scrollbar-none {
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-reveal-card,
+  .home-topic-card,
+  .home-statistic-item {
+    animation: none;
+  }
+}
+
 @media (max-width: 1023px) {
   .story-collage { min-height: 430px; }
 }

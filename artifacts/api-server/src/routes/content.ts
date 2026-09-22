@@ -21,7 +21,13 @@ import {
   GetAdminAboutStoryResponse,
   GetAdminAboutWhyParentsChooseResponse,
   GetAdminHomepageAboutPreviewResponse,
+  GetAdminHomepageFavoriteTopicsResponse,
+  GetAdminHomepageLiveUpdatesResponse,
+  GetAdminHomepageStatisticsResponse,
   GetHomepageAboutPreviewResponse,
+  GetHomepageFavoriteTopicsResponse,
+  GetHomepageLiveUpdatesResponse,
+  GetHomepageStatisticsResponse,
   UpdateAboutChairmanMessageBody,
   UpdateAboutChairmanMessageResponse,
   UpdateAboutAchievementsBody,
@@ -45,6 +51,12 @@ import {
   UpdateHomepageHeroBody,
   UpdateHomepageAboutPreviewBody,
   UpdateHomepageAboutPreviewResponse,
+  UpdateHomepageFavoriteTopicsBody,
+  UpdateHomepageFavoriteTopicsResponse,
+  UpdateHomepageLiveUpdatesBody,
+  UpdateHomepageLiveUpdatesResponse,
+  UpdateHomepageStatisticsBody,
+  UpdateHomepageStatisticsResponse,
   UpdateSiteSettingsBody,
 } from "@workspace/api-zod";
 import { prisma } from "../lib/prisma";
@@ -112,6 +124,20 @@ async function readAboutAdmissionCta() {
   return prisma.aboutAdmissionCta.findUnique({ where: { id: "singleton" } });
 }
 
+async function readHomepageStatistics() {
+  return prisma.homepageStatistics.findUnique({
+    where: { id: "singleton" },
+    include: { statistics: { orderBy: { displayOrder: "asc" } } },
+  });
+}
+
+async function readHomepageFavoriteTopics() {
+  return prisma.homepageFavoriteTopics.findUnique({
+    where: { id: "singleton" },
+    include: { topics: { orderBy: { displayOrder: "asc" } } },
+  });
+}
+
 function hasUniqueDisplayOrders(items: Array<{ displayOrder: number }>) {
   return new Set(items.map((item) => item.displayOrder)).size === items.length;
 }
@@ -162,6 +188,54 @@ router.get("/homepage-about-preview", async (req, res) => {
   } catch (error) {
     req.log.error({ err: error }, "Unable to read homepage About Preview");
     res.status(500).json({ error: "Unable to load homepage About Preview." });
+  }
+});
+
+router.get("/homepage-live-updates", async (req, res) => {
+  try {
+    const updates = await prisma.homepageLiveUpdate.findMany({
+      where: { isActive: true },
+      orderBy: [{ isFeatured: "desc" }, { publishDate: "desc" }, { displayOrder: "asc" }],
+      take: 3,
+    });
+    res.json(GetHomepageLiveUpdatesResponse.parse(updates));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read homepage live updates");
+    res.status(500).json({ error: "Unable to load homepage live updates." });
+  }
+});
+
+router.get("/homepage-statistics", async (req, res) => {
+  try {
+    const content = await readHomepageStatistics();
+    if (!content || !content.isVisible) {
+      res.status(404).json({ error: "Homepage statistics are not available." });
+      return;
+    }
+    res.json(GetHomepageStatisticsResponse.parse({
+      ...content,
+      statistics: content.statistics.filter((statistic) => statistic.isActive),
+    }));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read homepage statistics");
+    res.status(500).json({ error: "Unable to load homepage statistics." });
+  }
+});
+
+router.get("/homepage-favorite-topics", async (req, res) => {
+  try {
+    const content = await readHomepageFavoriteTopics();
+    if (!content || !content.isVisible) {
+      res.status(404).json({ error: "Homepage favorite topics are not available." });
+      return;
+    }
+    res.json(GetHomepageFavoriteTopicsResponse.parse({
+      ...content,
+      topics: content.topics.filter((topic) => topic.isActive),
+    }));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read homepage favorite topics");
+    res.status(500).json({ error: "Unable to load homepage favorite topics." });
   }
 });
 
@@ -386,6 +460,125 @@ router.put("/admin/homepage-about-preview", requireAdmin, async (req, res) => {
   } catch (error) {
     req.log.error({ err: error }, "Unable to update homepage About Preview");
     res.status(500).json({ error: "Unable to save homepage About Preview." });
+  }
+});
+
+router.get("/admin/homepage-live-updates", requireAdmin, async (req, res) => {
+  try {
+    const updates = await prisma.homepageLiveUpdate.findMany({ orderBy: { displayOrder: "asc" } });
+    res.json(GetAdminHomepageLiveUpdatesResponse.parse(updates));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read admin homepage live updates");
+    res.status(500).json({ error: "Unable to load homepage live updates." });
+  }
+});
+
+router.put("/admin/homepage-live-updates", requireAdmin, async (req, res) => {
+  const parsed = UpdateHomepageLiveUpdatesBody.safeParse(req.body);
+  if (
+    !parsed.success ||
+    !hasUniqueDisplayOrders(parsed.data) ||
+    parsed.data.some((update) => !isValidImageReference(update.imageUrl))
+  ) {
+    res.status(400).json({ error: "Check update fields, image references, and unique display orders." });
+    return;
+  }
+  try {
+    await prisma.$transaction(async (tx) => {
+      await tx.homepageLiveUpdate.deleteMany();
+      await tx.homepageLiveUpdate.createMany({ data: parsed.data });
+    });
+    const updates = await prisma.homepageLiveUpdate.findMany({ orderBy: { displayOrder: "asc" } });
+    res.json(UpdateHomepageLiveUpdatesResponse.parse(updates));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to update homepage live updates");
+    res.status(500).json({ error: "Unable to save homepage live updates." });
+  }
+});
+
+router.get("/admin/homepage-statistics", requireAdmin, async (req, res) => {
+  try {
+    const content = await readHomepageStatistics();
+    if (!content) {
+      res.status(404).json({ error: "Homepage statistics are not available." });
+      return;
+    }
+    res.json(GetAdminHomepageStatisticsResponse.parse(content));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read admin homepage statistics");
+    res.status(500).json({ error: "Unable to load homepage statistics." });
+  }
+});
+
+router.put("/admin/homepage-statistics", requireAdmin, async (req, res) => {
+  const parsed = UpdateHomepageStatisticsBody.safeParse(req.body);
+  if (!parsed.success || !hasUniqueDisplayOrders(parsed.data.statistics)) {
+    res.status(400).json({ error: "Check statistic fields and use unique display orders." });
+    return;
+  }
+  try {
+    const { statistics, ...sectionData } = parsed.data;
+    await prisma.$transaction(async (tx) => {
+      await tx.homepageStatistics.upsert({
+        where: { id: "singleton" },
+        update: sectionData,
+        create: { id: "singleton", ...sectionData },
+      });
+      await tx.homepageStatistic.deleteMany({ where: { homepageStatisticsId: "singleton" } });
+      await tx.homepageStatistic.createMany({
+        data: statistics.map((statistic) => ({ ...statistic, homepageStatisticsId: "singleton" })),
+      });
+    });
+    const content = await readHomepageStatistics();
+    res.json(UpdateHomepageStatisticsResponse.parse(content));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to update homepage statistics");
+    res.status(500).json({ error: "Unable to save homepage statistics." });
+  }
+});
+
+router.get("/admin/homepage-favorite-topics", requireAdmin, async (req, res) => {
+  try {
+    const content = await readHomepageFavoriteTopics();
+    if (!content) {
+      res.status(404).json({ error: "Homepage favorite topics are not available." });
+      return;
+    }
+    res.json(GetAdminHomepageFavoriteTopicsResponse.parse(content));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read admin homepage favorite topics");
+    res.status(500).json({ error: "Unable to load homepage favorite topics." });
+  }
+});
+
+router.put("/admin/homepage-favorite-topics", requireAdmin, async (req, res) => {
+  const parsed = UpdateHomepageFavoriteTopicsBody.safeParse(req.body);
+  if (
+    !parsed.success ||
+    !hasUniqueDisplayOrders(parsed.data.topics) ||
+    parsed.data.topics.some((topic) => !isValidImageReference(topic.imageUrl))
+  ) {
+    res.status(400).json({ error: "Check topic fields, image references, and unique display orders." });
+    return;
+  }
+  try {
+    const { topics, ...sectionData } = parsed.data;
+    await prisma.$transaction(async (tx) => {
+      await tx.homepageFavoriteTopics.upsert({
+        where: { id: "singleton" },
+        update: sectionData,
+        create: { id: "singleton", ...sectionData },
+      });
+      await tx.homepageFavoriteTopic.deleteMany({ where: { homepageFavoriteTopicsId: "singleton" } });
+      await tx.homepageFavoriteTopic.createMany({
+        data: topics.map((topic) => ({ ...topic, homepageFavoriteTopicsId: "singleton" })),
+      });
+    });
+    const content = await readHomepageFavoriteTopics();
+    res.json(UpdateHomepageFavoriteTopicsResponse.parse(content));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to update homepage favorite topics");
+    res.status(500).json({ error: "Unable to save homepage favorite topics." });
   }
 });
 

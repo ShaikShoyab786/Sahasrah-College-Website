@@ -12,6 +12,7 @@ import AdminOverview from '@/pages/admin-overview';
 import AdminSiteSettings from '@/pages/admin-site-settings';
 import AdminHomepageHero from '@/pages/admin-homepage-hero';
 import AdminHomepageAboutPreview from '@/pages/admin-homepage-about-preview';
+import { AdminHomepageFavoriteTopics, AdminHomepageLiveUpdates, AdminHomepageStatistics } from '@/pages/admin-homepage-content';
 import AdminAboutHero from '@/pages/admin-about-hero';
 import AdminAboutStory from '@/pages/admin-about-story';
 import AdminChairmanMessage from '@/pages/admin-chairman-message';
@@ -42,6 +43,15 @@ function Router() {
         </Route>
         <Route path="/admin/pages/home/about-preview">
           <AdminGuard><AdminHomepageAboutPreview /></AdminGuard>
+        </Route>
+        <Route path="/admin/pages/home/live-updates">
+          <AdminGuard><AdminHomepageLiveUpdates /></AdminGuard>
+        </Route>
+        <Route path="/admin/pages/home/statistics">
+          <AdminGuard><AdminHomepageStatistics /></AdminGuard>
+        </Route>
+        <Route path="/admin/pages/home/favorite-topics">
+          <AdminGuard><AdminHomepageFavoriteTopics /></AdminGuard>
         </Route>
         <Route path="/admin/pages/about/hero">
           <AdminGuard><AdminAboutHero /></AdminGuard>

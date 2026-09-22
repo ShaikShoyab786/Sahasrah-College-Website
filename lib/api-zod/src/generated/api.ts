@@ -116,6 +116,78 @@ export const GetHomepageAboutPreviewResponse = zod.object({
 
 
 /**
+ * @summary Read the latest active homepage updates
+ */
+export const GetHomepageLiveUpdatesResponseItem = zod.object({
+  "id": zod.string(),
+  "title": zod.string(),
+  "excerpt": zod.string(),
+  "category": zod.string(),
+  "actionBadge": zod.string().nullable(),
+  "publishDate": zod.coerce.date(),
+  "imageUrl": zod.string().nullable(),
+  "imageAltText": zod.string(),
+  "detailUrl": zod.string(),
+  "isFeatured": zod.boolean(),
+  "isActive": zod.boolean(),
+  "displayOrder": zod.number().int()
+})
+export const GetHomepageLiveUpdatesResponse = zod.array(GetHomepageLiveUpdatesResponseItem).max(3)
+
+
+/**
+ * @summary Read visible homepage statistics
+ */
+export const GetHomepageStatisticsResponse = zod.object({
+  "id": zod.string(),
+  "eyebrow": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date(),
+  "statistics": zod.array(zod.object({
+  "id": zod.string(),
+  "numericTarget": zod.number().int(),
+  "suffix": zod.string(),
+  "icon": zod.string().nullable(),
+  "label": zod.string(),
+  "displayOrder": zod.number().int(),
+  "isActive": zod.boolean()
+}))
+})
+
+
+/**
+ * @summary Read visible homepage favorite topics
+ */
+export const GetHomepageFavoriteTopicsResponse = zod.object({
+  "id": zod.string(),
+  "eyebrow": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date(),
+  "topics": zod.array(zod.object({
+  "id": zod.string(),
+  "categoryLabel": zod.string(),
+  "title": zod.string(),
+  "description": zod.string(),
+  "featureOne": zod.string(),
+  "featureTwo": zod.string(),
+  "featureThree": zod.string(),
+  "imageUrl": zod.string().nullable(),
+  "imageAltText": zod.string(),
+  "icon": zod.string().nullable(),
+  "curriculumUrl": zod.string(),
+  "displayOrder": zod.number().int(),
+  "isActive": zod.boolean()
+}))
+})
+
+
+/**
  * @summary Read the visible About page hero
  */
 export const getAboutHeroResponseStatsMin = 4;
@@ -508,6 +580,244 @@ export const UpdateHomepageAboutPreviewResponse = zod.object({
   "isVisible": zod.boolean(),
   "sortOrder": zod.number().int(),
   "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Read homepage live updates for editing
+ */
+export const GetAdminHomepageLiveUpdatesResponseItem = zod.object({
+  "id": zod.string(),
+  "title": zod.string(),
+  "excerpt": zod.string(),
+  "category": zod.string(),
+  "actionBadge": zod.string().nullable(),
+  "publishDate": zod.coerce.date(),
+  "imageUrl": zod.string().nullable(),
+  "imageAltText": zod.string(),
+  "detailUrl": zod.string(),
+  "isFeatured": zod.boolean(),
+  "isActive": zod.boolean(),
+  "displayOrder": zod.number().int()
+})
+export const GetAdminHomepageLiveUpdatesResponse = zod.array(GetAdminHomepageLiveUpdatesResponseItem)
+
+
+/**
+ * @summary Update homepage live updates
+ */
+
+
+
+
+
+export const updateHomepageLiveUpdatesBodyDisplayOrderMax = 20;
+
+
+
+export const UpdateHomepageLiveUpdatesBodyItem = zod.object({
+  "title": zod.string().min(1),
+  "excerpt": zod.string().min(1),
+  "category": zod.string().min(1),
+  "actionBadge": zod.string().nullable(),
+  "publishDate": zod.coerce.date(),
+  "imageUrl": zod.string().nullable(),
+  "imageAltText": zod.string().min(1),
+  "detailUrl": zod.string().min(1),
+  "isFeatured": zod.boolean(),
+  "isActive": zod.boolean(),
+  "displayOrder": zod.number().int().min(1).max(updateHomepageLiveUpdatesBodyDisplayOrderMax)
+})
+export const UpdateHomepageLiveUpdatesBody = zod.array(UpdateHomepageLiveUpdatesBodyItem).min(1).max(20)
+
+export const UpdateHomepageLiveUpdatesResponseItem = zod.object({
+  "id": zod.string(),
+  "title": zod.string(),
+  "excerpt": zod.string(),
+  "category": zod.string(),
+  "actionBadge": zod.string().nullable(),
+  "publishDate": zod.coerce.date(),
+  "imageUrl": zod.string().nullable(),
+  "imageAltText": zod.string(),
+  "detailUrl": zod.string(),
+  "isFeatured": zod.boolean(),
+  "isActive": zod.boolean(),
+  "displayOrder": zod.number().int()
+})
+export const UpdateHomepageLiveUpdatesResponse = zod.array(UpdateHomepageLiveUpdatesResponseItem)
+
+
+/**
+ * @summary Read homepage statistics for editing
+ */
+export const GetAdminHomepageStatisticsResponse = zod.object({
+  "id": zod.string(),
+  "eyebrow": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date(),
+  "statistics": zod.array(zod.object({
+  "id": zod.string(),
+  "numericTarget": zod.number().int(),
+  "suffix": zod.string(),
+  "icon": zod.string().nullable(),
+  "label": zod.string(),
+  "displayOrder": zod.number().int(),
+  "isActive": zod.boolean()
+}))
+})
+
+
+/**
+ * @summary Update homepage statistics
+ */
+
+export const updateHomepageStatisticsBodySortOrderMax = 20;
+
+export const updateHomepageStatisticsBodyStatisticsItemNumericTargetMin = 0;
+export const updateHomepageStatisticsBodyStatisticsItemNumericTargetMax = 1000000000;
+
+export const updateHomepageStatisticsBodyStatisticsItemSuffixMax = 8;
+
+
+export const updateHomepageStatisticsBodyStatisticsItemDisplayOrderMax = 20;
+
+export const updateHomepageStatisticsBodyStatisticsMax = 20;
+
+
+
+export const UpdateHomepageStatisticsBody = zod.object({
+  "eyebrow": zod.string(),
+  "heading": zod.string().min(1),
+  "description": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int().min(1).max(updateHomepageStatisticsBodySortOrderMax),
+  "statistics": zod.array(zod.object({
+  "numericTarget": zod.number().int().min(updateHomepageStatisticsBodyStatisticsItemNumericTargetMin).max(updateHomepageStatisticsBodyStatisticsItemNumericTargetMax),
+  "suffix": zod.string().max(updateHomepageStatisticsBodyStatisticsItemSuffixMax),
+  "icon": zod.string().nullable(),
+  "label": zod.string().min(1),
+  "displayOrder": zod.number().int().min(1).max(updateHomepageStatisticsBodyStatisticsItemDisplayOrderMax),
+  "isActive": zod.boolean()
+})).min(1).max(updateHomepageStatisticsBodyStatisticsMax)
+})
+
+export const UpdateHomepageStatisticsResponse = zod.object({
+  "id": zod.string(),
+  "eyebrow": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date(),
+  "statistics": zod.array(zod.object({
+  "id": zod.string(),
+  "numericTarget": zod.number().int(),
+  "suffix": zod.string(),
+  "icon": zod.string().nullable(),
+  "label": zod.string(),
+  "displayOrder": zod.number().int(),
+  "isActive": zod.boolean()
+}))
+})
+
+
+/**
+ * @summary Read homepage favorite topics for editing
+ */
+export const GetAdminHomepageFavoriteTopicsResponse = zod.object({
+  "id": zod.string(),
+  "eyebrow": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date(),
+  "topics": zod.array(zod.object({
+  "id": zod.string(),
+  "categoryLabel": zod.string(),
+  "title": zod.string(),
+  "description": zod.string(),
+  "featureOne": zod.string(),
+  "featureTwo": zod.string(),
+  "featureThree": zod.string(),
+  "imageUrl": zod.string().nullable(),
+  "imageAltText": zod.string(),
+  "icon": zod.string().nullable(),
+  "curriculumUrl": zod.string(),
+  "displayOrder": zod.number().int(),
+  "isActive": zod.boolean()
+}))
+})
+
+
+/**
+ * @summary Update homepage favorite topics
+ */
+
+export const updateHomepageFavoriteTopicsBodySortOrderMax = 20;
+
+
+
+
+
+
+
+
+
+export const updateHomepageFavoriteTopicsBodyTopicsItemDisplayOrderMax = 20;
+
+export const updateHomepageFavoriteTopicsBodyTopicsMax = 20;
+
+
+
+export const UpdateHomepageFavoriteTopicsBody = zod.object({
+  "eyebrow": zod.string(),
+  "heading": zod.string().min(1),
+  "description": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int().min(1).max(updateHomepageFavoriteTopicsBodySortOrderMax),
+  "topics": zod.array(zod.object({
+  "categoryLabel": zod.string().min(1),
+  "title": zod.string().min(1),
+  "description": zod.string().min(1),
+  "featureOne": zod.string().min(1),
+  "featureTwo": zod.string().min(1),
+  "featureThree": zod.string().min(1),
+  "imageUrl": zod.string().nullable(),
+  "imageAltText": zod.string().min(1),
+  "icon": zod.string().nullable(),
+  "curriculumUrl": zod.string().min(1),
+  "displayOrder": zod.number().int().min(1).max(updateHomepageFavoriteTopicsBodyTopicsItemDisplayOrderMax),
+  "isActive": zod.boolean()
+})).min(1).max(updateHomepageFavoriteTopicsBodyTopicsMax)
+})
+
+export const UpdateHomepageFavoriteTopicsResponse = zod.object({
+  "id": zod.string(),
+  "eyebrow": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date(),
+  "topics": zod.array(zod.object({
+  "id": zod.string(),
+  "categoryLabel": zod.string(),
+  "title": zod.string(),
+  "description": zod.string(),
+  "featureOne": zod.string(),
+  "featureTwo": zod.string(),
+  "featureThree": zod.string(),
+  "imageUrl": zod.string().nullable(),
+  "imageAltText": zod.string(),
+  "icon": zod.string().nullable(),
+  "curriculumUrl": zod.string(),
+  "displayOrder": zod.number().int(),
+  "isActive": zod.boolean()
+}))
 })
 
 
@@ -1319,12 +1629,12 @@ export const UpdateAboutAdmissionCtaResponse = zod.object({
  */
 export const UploadAdminImageBody = zod.object({
   "file": zod.instanceof(Blob),
-  "purpose": zod.enum(['logo', 'hero', 'campus', 'cta'])
+  "purpose": zod.enum(['logo', 'hero', 'campus', 'cta', 'update', 'topic'])
 })
 
 export const UploadAdminImageResponse = zod.object({
   "url": zod.string(),
-  "purpose": zod.enum(['logo', 'hero', 'campus', 'cta'])
+  "purpose": zod.enum(['logo', 'hero', 'campus', 'cta', 'update', 'topic'])
 })
 
 
