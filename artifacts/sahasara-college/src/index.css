@@ -241,6 +241,102 @@ body { min-width: 320px; }
 .animate-rise-delay { animation: rise .65s .12s cubic-bezier(.22,1,.36,1) both; }
 .animate-drift { animation: drift 5s ease-in-out infinite alternate; }
 
+@keyframes story-reveal-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes story-image-reveal {
+  from { opacity: 0; transform: translateY(18px) scale(.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes story-line-draw {
+  from { height: 0; }
+  to { height: 100%; }
+}
+@keyframes story-marker-reach {
+  0% { box-shadow: 0 0 0 0 hsl(var(--accent) / 0); transform: scale(.9); }
+  35% { box-shadow: 0 0 0 7px hsl(var(--accent) / .2), 0 0 18px hsl(var(--accent) / .35); transform: scale(1.12); }
+  100% { box-shadow: 0 0 0 1px hsl(var(--accent) / .35); transform: scale(1); }
+}
+@keyframes story-title-reach {
+  0%, 100% { color: hsl(var(--primary)); }
+  35% { color: hsl(var(--accent-foreground)); }
+}
+
+.story-reveal,
+.story-collage-card,
+.story-timeline-item,
+.story-timeline-progress {
+  opacity: 0;
+}
+.story-is-visible .story-reveal-eyebrow { animation: story-reveal-up .65s cubic-bezier(.22,1,.36,1) both; }
+.story-is-visible .story-reveal-heading { animation: story-reveal-up .65s .1s cubic-bezier(.22,1,.36,1) both; }
+.story-is-visible .story-reveal-description { animation: story-reveal-up .65s .2s cubic-bezier(.22,1,.36,1) both; }
+.story-is-visible .story-reveal-button { animation: story-reveal-up .65s .3s cubic-bezier(.22,1,.36,1) both; }
+.story-collage { min-height: 480px; }
+.story-collage-card { position: absolute; transition: transform .35s cubic-bezier(.22,1,.36,1), box-shadow .35s ease; }
+.story-collage-is-visible .story-collage-main { animation: story-image-reveal .72s cubic-bezier(.22,1,.36,1) both; }
+.story-collage-is-visible .story-collage-secondary { animation: story-image-reveal .72s .14s cubic-bezier(.22,1,.36,1) both; }
+.story-collage-is-visible .story-collage-third { animation: story-image-reveal .72s .28s cubic-bezier(.22,1,.36,1) both; }
+.story-collage-main { left: 0; top: 0; height: 70%; width: 70%; }
+.story-collage-secondary { right: 0; bottom: 0; height: 52%; width: 58%; }
+.story-collage-third { left: 35%; bottom: 23%; height: 25%; width: 31%; }
+.story-collage-card:hover { transform: translateY(-5px) scale(1.015); box-shadow: 0 22px 40px hsl(var(--primary) / .16); }
+.story-timeline-line { overflow: hidden; }
+.story-timeline-progress { position: absolute; left: 0; top: 0; width: 2px; background: hsl(var(--accent)); transform-origin: top; }
+.story-is-visible .story-timeline-progress { animation: story-line-draw var(--story-duration) cubic-bezier(.22,1,.36,1) both; }
+.story-is-visible .story-timeline-item { opacity: 1; }
+.story-timeline-marker { animation: none; }
+.story-is-visible .story-timeline-marker { animation: story-marker-reach 680ms var(--story-delay) cubic-bezier(.22,1,.36,1) both; }
+.story-timeline-title { animation: none; }
+.story-is-visible .story-timeline-title { animation: story-title-reach 680ms var(--story-delay) ease both; }
+
+@media (max-width: 1023px) {
+  .story-collage { min-height: 430px; }
+}
+@media (max-width: 767px) {
+  .story-collage {
+    display: grid;
+    min-height: 0;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: .75rem;
+  }
+  .story-collage-card {
+    position: relative;
+    inset: auto;
+    width: auto;
+    height: auto;
+    min-height: 190px;
+  }
+  .story-collage-main {
+    grid-column: 1 / -1;
+    min-height: 270px;
+  }
+  .story-collage-secondary,
+  .story-collage-third {
+    min-height: 190px;
+  }
+  .story-collage-card:hover { transform: translateY(-2px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .story-reveal,
+  .story-collage-card,
+  .story-timeline-item,
+  .story-timeline-progress {
+    opacity: 1;
+    transform: none;
+  }
+  .story-reveal,
+  .story-collage-card,
+  .story-timeline-marker,
+  .story-timeline-title,
+  .story-timeline-progress {
+    animation: none !important;
+    transition: none !important;
+  }
+  .story-timeline-progress { height: 100%; }
+}
+
 @layer base {
   * {
     @apply border-border;
