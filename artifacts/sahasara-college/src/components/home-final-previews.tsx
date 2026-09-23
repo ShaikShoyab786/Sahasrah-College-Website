@@ -220,7 +220,7 @@ export function HomeFinalCta({ content }: { content: HomepageFinalCta }) {
         <div className="home-cta-glow absolute -right-20 -top-28 h-72 w-72 rounded-full bg-[hsl(var(--accent)/.18)] blur-3xl" aria-hidden="true" />
         <div className="relative grid gap-9 p-8 md:p-12 lg:grid-cols-[1.1fr_.9fr] lg:items-center lg:p-16">
           <div>
-            <SectionEyebrow className="text-[hsl(var(--primary-foreground)/.75)]"><span>{content.eyebrow}</span></SectionEyebrow>
+            <SectionEyebrow variant="dark"><span>{content.eyebrow}</span></SectionEyebrow>
             <h2 id="home-final-cta-heading" className="mt-5 max-w-2xl font-display text-5xl font-semibold leading-[.96] tracking-[-.05em] md:text-6xl">{content.heading}</h2>
             <p className="mt-6 max-w-xl text-sm leading-7 text-[hsl(var(--primary-foreground)/.7)]">{content.supportingText}</p>
           </div>

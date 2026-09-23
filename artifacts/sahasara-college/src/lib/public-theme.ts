@@ -56,12 +56,39 @@ function contrastingForeground(value: string): string {
   return perceivedBrightness > 155 ? '216 48% 13%' : '42 33% 97%';
 }
 
+function relativeLuminance(value: string): number {
+  const { red, green, blue } = hexToRgb(value);
+  const toLinear = (channel: number) => {
+    const normalized = channel / 255;
+    return normalized <= 0.03928 ? normalized / 12.92 : ((normalized + 0.055) / 1.055) ** 2.4;
+  };
+  return (0.2126 * toLinear(red)) + (0.7152 * toLinear(green)) + (0.0722 * toLinear(blue));
+}
+
+function contrastRatio(first: string, second: string): number {
+  const firstLuminance = relativeLuminance(first);
+  const secondLuminance = relativeLuminance(second);
+  const lighter = Math.max(firstLuminance, secondLuminance);
+  const darker = Math.min(firstLuminance, secondLuminance);
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
+function eyebrowTextColor(value: string): string {
+  return contrastRatio(value, '#FFFFFF') >= 4.5 ? hexToHslChannels(value) : '216 48% 13%';
+}
+
 export function createPublicThemeStyle(primaryColor: string, accentColor: string): CSSProperties {
   const primary = hexToHslChannels(primaryColor);
   const accent = hexToHslChannels(accentColor);
   return {
     '--primary': primary,
     '--primary-foreground': contrastingForeground(primaryColor),
+    '--eyebrow-text': eyebrowTextColor(primaryColor),
+    '--eyebrow-dark-text': contrastingForeground(primaryColor),
+    '--eyebrow-background': `hsl(${accent} / .08)`,
+    '--eyebrow-border': `hsl(${accent} / .28)`,
+    '--eyebrow-dark-background': `hsl(${primary} / .08)`,
+    '--eyebrow-dark-border': `hsl(${primary} / .28)`,
     '--accent': accent,
     '--accent-foreground': contrastingForeground(accentColor),
     '--ring': accent,

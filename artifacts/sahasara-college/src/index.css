@@ -98,6 +98,12 @@
   --popover-border: 38 20% 86%;
   --primary: 216 48% 13%;
   --primary-foreground: 42 33% 97%;
+  --eyebrow-text: var(--primary);
+  --eyebrow-dark-text: var(--primary-foreground);
+  --eyebrow-background: hsl(var(--accent) / .08);
+  --eyebrow-border: hsl(var(--accent) / .28);
+  --eyebrow-dark-background: hsl(var(--primary-foreground) / .08);
+  --eyebrow-dark-border: hsl(var(--primary-foreground) / .28);
   --secondary: 42 36% 93%;
   --secondary-foreground: 214 42% 17%;
   --muted: 42 24% 93%;
@@ -618,18 +624,33 @@ body { min-width: 320px; }
   from { opacity: 0; transform: translateY(18px); }
   to { opacity: 1; transform: translateY(0); }
 }
+.section-eyebrow {
+  color: hsl(var(--eyebrow-text));
+}
+.section-eyebrow--dark {
+  color: hsl(var(--eyebrow-dark-text));
+}
 .about-eyebrow {
   position: relative;
   display: inline-flex;
   width: fit-content;
   max-width: 100%;
   overflow: hidden;
-  border: 1px solid hsl(var(--accent) / .28);
+  border: 1px solid var(--eyebrow-border);
   border-radius: 999px;
   padding: .52rem .78rem;
-  background: linear-gradient(110deg, hsl(var(--accent) / .12), hsl(var(--background) / .05));
+  background: var(--eyebrow-background);
+  background: color-mix(in srgb, hsl(var(--accent)) 8%, white);
   box-shadow: 0 7px 18px hsl(var(--primary) / .07);
   transition: transform .3s cubic-bezier(.22,1,.36,1), border-color .3s ease, box-shadow .3s ease;
+}
+.section-eyebrow--dark.about-eyebrow {
+  color: hsl(var(--eyebrow-dark-text));
+  border-color: var(--eyebrow-dark-border);
+  background: var(--eyebrow-dark-background);
+}
+.section-eyebrow--dark.about-eyebrow::after {
+  background: linear-gradient(90deg, transparent, hsl(var(--primary-foreground) / .24), transparent);
 }
 .about-eyebrow-centered { margin-inline: auto; }
 .about-eyebrow::after {
