@@ -400,6 +400,13 @@ body { min-width: 320px; }
     opacity: 1;
     transform: none;
     animation: none !important;
+    transition: none !important;
+  }
+  .about-preview-image-card:hover,
+  .about-preview-image-card:focus-visible,
+  .about-preview-image-card:hover .about-preview-image,
+  .about-preview-image-card:focus-visible .about-preview-image {
+    transform: none !important;
   }
   .about-preview-image,
   .about-preview-image-overlay {
