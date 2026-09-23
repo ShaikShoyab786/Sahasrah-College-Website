@@ -1,0 +1,407 @@
+Build the Main Contact Page and Separate Footer Details from Contact Details
+Create the complete main Contact page and update the admin dashboard so Footer information and Contact page information are managed separately.
+
+Use the attached Contact page reference as the visual direction.
+
+Do not duplicate contact APIs, database fields, or settings unnecessarily.
+
+1. Rename the Existing Site Settings Section
+In the admin dashboard, rename:
+
+How families can reach you
+
+to:
+
+Footer Details
+
+Add a description:
+
+Manage the static information displayed in the website footer.
+
+This section must contain only static Footer content.
+
+Footer Details should manage
+College name
+Logo
+Footer description
+Static Footer address
+Static Footer phone display
+Static Footer email display
+Footer navigation labels
+Social links
+Copyright text
+These values are only for displaying the Footer.
+
+Do not use Footer Details as the main source for Contact page enquiry routing.
+
+Do not delete existing saved values. Preserve existing API and database compatibility where possible.
+
+2. Add a Separate Contact Page Admin Menu
+Create a new admin menu item under Pages, alongside the existing Home and About sections:
+
+Contact
+
+The Contact admin page should manage the actual contact information used by parents and students.
+
+Use a dedicated Contact settings/content structure instead of reusing the Footer Details fields.
+
+3. Contact Page Admin Content
+Add editable fields for the Contact page.
+
+Contact page heading content
+Eyebrow text
+Main heading
+Supporting description
+Form heading
+Form supporting text
+Response-time message
+Use sensible default copy based on the reference:
+
+Admissions & Contact
+
+Let's Talk About Your Child's Future
+
+Call us, WhatsApp us, or send an enquiry — our admissions team responds quickly.
+
+Send an Enquiry
+
+We typically respond within 30 minutes during working hours.
+
+All of this must be editable from:
+
+Admin Dashboard → Pages → Contact
+
+4. Main Contact Information
+The Contact page must have its own primary contact details.
+
+Add fields for:
+
+Main college email
+Primary mobile number
+Additional phone numbers
+WhatsApp number, if applicable
+Contact address
+Working hours
+Google Maps embed URL or map configuration
+Contact page logo, if needed
+Optional social links
+Optional admission office name
+Important:
+
+The email configured in Contact settings is the main institutional email for real enquiries.
+
+The primary mobile number configured in Contact settings is the main contact number for real enquiries.
+
+These values must not be automatically taken from Footer Details.
+
+5. Contact Page Layout
+Create a professional Contact page inspired by the attached reference.
+
+Header area
+Use:
+
+Deep navy or selected theme background
+Contact eyebrow badge
+Main heading
+Supporting description
+Subtle background pattern or gradient
+Responsive spacing
+Main content area
+Use a two-column layout on desktop:
+
+Left: Send an Enquiry form
+Right: Contact details and map
+
+On mobile:
+
+Stack the form first or follow the existing responsive design system.
+Keep all fields and buttons easily accessible.
+Prevent horizontal overflow.
+Contact information card
+Display the Contact page settings:
+
+Address
+Primary phone
+Additional phone numbers
+Main email
+Working hours
+WhatsApp action if configured
+Use icons, clear spacing, and high-contrast text.
+
+Map section
+Use the configured map URL or embed settings.
+
+Do not hardcode a map location if the Contact admin settings provide one.
+
+If no map is configured:
+
+Show a professional location placeholder.
+Do not show a broken iframe.
+Allow the administrator to add the map later.
+6. Contact Enquiry Form
+Create the form fields shown in the reference:
+
+Required fields
+Student/parent name
+Student Name
+
+Required.
+
+Validation:
+
+Cannot be empty.
+Trim whitespace.
+Reasonable minimum and maximum length.
+Reject obviously invalid input.
+Mobile number
+Phone Number
+
+Required.
+
+Validation:
+
+Cannot be empty.
+Accept a valid Indian mobile number format.
+Allow an optional +91 prefix.
+Normalize the number safely before sending.
+Reject invalid or incomplete numbers.
+Course selection
+Select Course of Interest
+
+Required.
+
+The options should be manageable from the Contact admin page.
+
+Suggested default options:
+
+MPC
+BiPC
+MPC + IIT-JEE
+BiPC + NEET
+MPC + EAMCET
+NEET Foundation
+Other
+Do not allow an empty or invalid course value to be submitted.
+
+Optional fields
+Email
+Email (optional)
+
+Optional.
+
+If provided:
+
+Validate the email format.
+Do not require it.
+Use it for an acknowledgement email if the notification flow supports it.
+Message
+Message (optional)
+
+Optional.
+
+Allow a reasonable maximum length and trim whitespace.
+
+Submit button
+Submit Enquiry
+
+Add:
+
+Loading state
+Disabled state during submission
+Inline validation errors
+Clear success confirmation
+Clear failure message
+Accessible field labels
+Keyboard support
+7. Enquiry Delivery Requirements
+When a form is submitted successfully:
+
+Send the enquiry notification to the main email configured under Contact settings.
+Send the enquiry notification to the primary mobile number configured under Contact settings using the project’s supported SMS or WhatsApp delivery method.
+Show a clear confirmation message to the person who submitted the form.
+If the visitor provided an email address, send an acknowledgement to that email where the configured email system supports it.
+The enquiry notification should include:
+
+Name
+Mobile number
+Email if provided
+Selected course
+Message if provided
+Submission date and time
+Source page
+Do not silently report success if delivery fails.
+
+If email or SMS/WhatsApp delivery requires a provider:
+
+Use the project’s existing integration if one exists.
+Otherwise add the required integration/configuration through the project’s supported secure secrets/integration flow.
+Never expose API keys, passwords, or tokens in the dashboard or source code.
+Show a clear admin-facing error if delivery is not configured.
+The on-page success message should only be shown after the submission has been accepted successfully.
+
+8. Contact Form Storage and Admin Visibility
+Store enquiry submissions safely so they are not lost if email delivery is delayed.
+
+If consistent with the existing architecture, add a Contact Enquiries view under:
+
+Admin Dashboard → Pages → Contact → Enquiries
+
+Allow administrators to:
+
+View enquiry details
+See submission date
+See delivery status
+Mark an enquiry as contacted or resolved
+Delete an enquiry if required
+Do not expose enquiry data publicly.
+
+Do not store passwords or unnecessary sensitive information.
+
+Do not include full enquiry content in browser logs.
+
+9. Contact Page Buttons
+Add the supporting actions shown in the reference:
+
+Download Prospectus
+Book Campus Visit
+
+Use valid existing routes or configured assets.
+
+Do not create fake links.
+
+The following public CTA buttons must navigate to the Contact page:
+
+Apply Now
+Admissions
+Apply for Admission
+Talk to Admission Counselor
+Contact Admissions
+Start a Conversation
+Book Campus Visit, if it is intended as a contact action
+Any other CTA whose purpose is to start an admission enquiry
+Use the existing Contact route consistently:
+
+/contact
+
+Do not hardcode different contact paths in different components.
+
+Preserve unrelated actions such as:
+
+Download Prospectus
+View All Resources
+View All Achievements
+Explore Courses
+View Gallery
+unless their purpose is specifically to contact admissions.
+
+Audit Home, About, navigation, CTA sections, and shared buttons for broken or inconsistent admission links.
+
+10. Footer and Contact Data Separation
+The final data ownership must be:
+
+Footer Details
+Used only for:
+
+Static Footer display
+Footer branding
+Footer navigation
+Static Footer contact display
+Contact Page Details
+Used for:
+
+Contact page content
+Main enquiry email
+Primary enquiry mobile
+WhatsApp/SMS notification
+Contact page address
+Contact page map
+Contact form course options
+Contact form submission behavior
+Do not automatically overwrite Footer Details when Contact Details are changed.
+
+Do not automatically overwrite Contact Details when Footer Details are changed.
+
+If the same phone or email is intentionally displayed in both places, they must still be stored and managed through their intended scopes.
+
+11. Theme and Visual Quality
+Use the selected Sahasrah theme and existing public design system:
+
+Primary: #022A6C
+Accent:  #CE0B11
+Surface: #F5F7FB
+
+Add professional effects:
+
+Section reveal
+Form card fade-in
+Contact card reveal
+Map fade-in
+Button hover lift
+Input focus transition
+Subtle background glow
+Accent border transitions
+Do not add excessive animation.
+
+Respect:
+
+prefers-reduced-motion: reduce
+
+When reduced motion is enabled:
+
+Show content immediately.
+Disable reveal movement.
+Disable unnecessary background motion.
+Preserve all form functionality.
+Ensure all Contact page text remains readable in default, hover, focus, error, and success states.
+
+12. Admin Dashboard Requirements
+Add Contact management using the existing dashboard structure.
+
+The admin Contact page should allow editing:
+
+Contact page text
+Main email
+Primary mobile number
+Additional phone numbers
+WhatsApp number
+Address
+Working hours
+Map configuration
+Course options
+Form labels
+Success message
+Response-time message
+CTA labels and links
+Enquiry notification settings
+Do not mix these fields into Site Identity or Footer Details.
+
+Use server-side validation and protect all admin mutations with the existing authorization system.
+
+13. Verification Checklist
+Before finishing, confirm:
+
+How families can reach you is renamed to Footer Details.
+Footer Details manages only static Footer information.
+A separate Contact menu exists under Pages.
+Contact page content is editable from the Contact menu.
+Contact details are stored separately from Footer Details.
+The main Contact email is used for enquiry notifications.
+The primary mobile number is used for SMS/WhatsApp notifications where configured.
+Name validation is required.
+Mobile validation is required.
+Course selection is required.
+Email is optional but validated if provided.
+Message is optional.
+Contact form success and error states work correctly.
+Enquiries are not silently lost.
+Contact form notifications do not expose secrets.
+All admission-related CTA buttons navigate to /contact.
+The Contact page matches the attached reference direction.
+Footer still displays its static Site Identity values.
+Public Home and About pages continue working.
+Mobile layout works correctly.
+Reduced-motion behavior works.
+Production build passes.
+Backend starts successfully.
+No browser console errors occur.
+Do not start Courses or Knowledge Hub development in this task. Stop after completing the Contact page, Contact admin section, Footer Details separation, enquiry delivery, and CTA routing.

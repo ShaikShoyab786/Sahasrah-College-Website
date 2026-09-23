@@ -1,0 +1,294 @@
+Build the Main Contact Page and Contact Admin Settings
+Create the complete main Contact page using the attached reference image as the visual direction.
+
+Do not modify:
+
+Site Identity settings
+Footer settings
+Footer content
+Existing Home page content
+Existing About page content
+Public theme architecture
+Courses page
+Knowledge Hub page
+1. Add the Contact Page
+Create the public route:
+
+/contact
+
+Use the selected Sahasrah theme:
+
+Primary: #022A6C
+Accent:  #CE0B11
+Surface: #F5F7FB
+
+Contact page hero
+Add:
+
+Eyebrow:
+
+Admissions & Contact
+
+Heading:
+
+Let's Talk About Your Child's Future
+
+Supporting text:
+
+Call us, WhatsApp us, or send an enquiry — our admissions team responds quickly.
+
+Use a professional deep navy hero section with:
+
+Theme-aware background
+Centered heading
+Responsive spacing
+Subtle decorative pattern or gradient
+Readable contrast
+Professional eyebrow badge
+2. Contact Page Content Layout
+Use a responsive two-column layout.
+
+Desktop
+Left: Send an Enquiry form
+Right: Contact details and map
+
+Mobile
+Stack the form and contact details.
+Keep all controls visible.
+Prevent horizontal overflow.
+Preserve comfortable spacing.
+3. Enquiry Form
+Add a form card titled:
+
+Send an Enquiry
+
+Supporting text:
+
+We typically respond within 30 minutes during working hours.
+
+Required fields
+Name
+Student Name
+
+Validation:
+
+Required
+Cannot be empty
+Trim whitespace
+Reasonable minimum and maximum length
+Mobile number
+Phone Number
+
+Validation:
+
+Required
+Accept valid Indian mobile number formats
+Allow optional +91
+Reject invalid or incomplete numbers
+Normalize safely before submission
+Course selection
+Select Course of Interest
+
+Validation:
+
+Required
+Cannot be empty
+Must match one of the available course options
+Suggested default options:
+
+MPC
+BiPC
+MPC + IIT-JEE
+BiPC + NEET
+MPC + EAMCET
+NEET Foundation
+Other
+Optional fields
+Email
+Email (optional)
+
+Optional
+Validate format only when provided
+Message
+Message (optional)
+
+Optional
+Add a reasonable maximum length
+Trim whitespace
+Submit button
+Submit Enquiry
+
+Add:
+
+Loading state
+Disabled state during submission
+Inline field validation
+Clear success message
+Clear error message
+Keyboard accessibility
+Accessible labels and error announcements
+4. Enquiry Delivery
+When a valid form is submitted:
+
+Send the enquiry to the main Contact email configured in the Contact settings.
+Send a notification to the primary Contact mobile number using the project’s configured SMS or WhatsApp delivery method.
+Show an on-page success confirmation after the submission is accepted.
+If the visitor provides an email address, send an acknowledgement email when the configured email system supports it.
+The enquiry notification should include:
+
+Student/parent name
+Mobile number
+Email if provided
+Selected course
+Message if provided
+Submission date and time
+Source page
+Do not show a false success message if delivery fails.
+
+If email, SMS, or WhatsApp delivery requires an integration:
+
+Use the project’s supported integration flow.
+Do not expose API keys, passwords, or tokens.
+Do not hardcode credentials.
+Return a clear configuration error if delivery is unavailable.
+Do not silently discard enquiries.
+5. Contact Information Panel
+Add a contact details card beside the form with:
+
+Main email
+Primary mobile number
+Additional phone numbers if configured
+WhatsApp action if configured
+Address
+Working hours
+Contact icons
+Clear typography and spacing
+Add a map section below or beside the contact details.
+
+The map should use the Contact page’s configured map URL or embed settings.
+
+If no map is configured:
+
+Show a clean location placeholder.
+Do not display a broken map iframe.
+6. Contact Page Admin Menu
+Add a separate admin menu item:
+
+Pages → Contact
+
+This page must manage only Contact page content and Contact page communication details.
+
+Do not place these fields under Site Identity or Footer settings.
+
+Editable Contact content
+Eyebrow
+Heading
+Supporting description
+Form heading
+Form supporting text
+Response-time message
+Submit button label
+Success message
+Error message
+Editable Contact details
+Main email
+Primary mobile number
+Additional phone numbers
+WhatsApp number
+Address
+Working hours
+Map/embed URL
+Course options
+Form field labels
+Notification settings
+Admin behavior
+Add validation to every required setting.
+Preserve existing values when only some fields are updated.
+Make saved changes appear on the public Contact page after refresh.
+Protect admin changes with the existing authentication and authorization.
+Do not expose notification credentials in the dashboard.
+Do not create duplicate Site Identity or Footer fields.
+7. Contact Page Visual Design
+Make the page polished and professional:
+
+Deep navy hero
+White form card
+Navy contact details card
+Red accent highlights
+Rounded containers
+Refined shadows
+Clear input focus states
+Professional icons
+Responsive spacing
+Consistent eyebrow styling
+Strong button hierarchy
+Add tasteful effects:
+
+Hero content reveal
+Form card fade-in
+Contact card reveal
+Map fade-in
+Button hover lift
+Input focus transition
+Subtle card shadow transitions
+Respect:
+
+prefers-reduced-motion: reduce
+
+When reduced motion is enabled:
+
+Show content immediately.
+Disable reveal movement.
+Disable unnecessary decorative movement.
+Preserve all form functionality.
+8. Contact-Related CTA Routing
+After creating the Contact page, connect admission-related CTA actions to:
+
+/contact
+
+Update only CTAs whose purpose is to contact admissions, such as:
+
+Apply Now
+Admissions
+Apply for Admission
+Contact Admissions
+Talk to Admission Counselor
+Start a Conversation
+Book Campus Visit, when used as an enquiry action
+Do not change unrelated links such as:
+
+Download Prospectus
+View All Resources
+View All Achievements
+Explore Courses
+View Gallery
+Ensure there are no broken admission links or inconsistent contact routes.
+
+9. Verification Checklist
+Before finishing, confirm:
+
+/contact loads correctly.
+Contact page matches the reference direction.
+Form fields are responsive.
+Name is required.
+Mobile number is required and validated.
+Course selection is required.
+Email is optional but validated when provided.
+Message is optional.
+Form loading, success, and error states work.
+Enquiries reach the configured main email.
+Mobile notifications use the configured supported channel.
+No false success message appears when delivery fails.
+Contact information is editable under Pages → Contact.
+Contact course options are admin-manageable.
+Map settings are editable.
+Admission CTAs navigate to /contact.
+Existing Site Identity and Footer settings remain untouched.
+Existing Home and About pages remain functional.
+Mobile layout has no horizontal overflow.
+Reduced-motion behavior works.
+Production build passes.
+Backend starts successfully.
+No browser console errors occur.
+Stop after completing the Contact page, Contact admin settings, enquiry delivery, and contact-related CTA routing.
+
