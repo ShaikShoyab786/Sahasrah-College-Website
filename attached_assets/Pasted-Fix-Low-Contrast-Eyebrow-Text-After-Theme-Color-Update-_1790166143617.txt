@@ -1,0 +1,172 @@
+Fix Low-Contrast Eyebrow Text After Theme Color Update
+After setting the new brand colors:
+
+Primary: #022A6C
+Accent:  #CE0B11
+
+the eyebrow labels across the public website became difficult to read.
+
+Examples affected:
+
+About Sahasrah
+Explore Our Programs
+Pride of KVR
+Admissions FAQ
+Knowledge Hub
+Other Home and About page eyebrows
+The current problem is that the eyebrow has a light red/pink background while the text remains white.
+
+Fix the eyebrow styling globally without reverting the new Sahasrah theme colors.
+
+Required light-background eyebrow style
+For eyebrows placed on white or light sections, use:
+
+Dark primary blue text
+Light accent-tinted background
+Accent red dot or decorative line
+Subtle accent border
+Good contrast
+Professional pill shape
+Consistent padding and letter spacing
+Recommended visual treatment:
+
+Text:       #022A6C
+Background: very light red tint
+Border:     soft red tint
+Dot/line:   #CE0B11
+
+The text must never be white on a pale background.
+
+Use a structure similar to:
+
+.eyebrow {
+  color: var(--site-primary);
+  background: color-mix(in srgb, var(--site-accent) 8%, white);
+  border-color: color-mix(in srgb, var(--site-accent) 28%, white);
+}
+.eyebrow-mark {
+  background: var(--site-accent);
+}
+
+Add a safe fallback if color-mix() is not supported.
+
+The exact implementation should follow the project’s existing CSS and theme-token conventions.
+
+Remove conflicting styles
+Audit the shared eyebrow/chip styles and remove any conflicting rules such as:
+
+text-white
+text-gold-light
+Excessively low opacity
+opacity applied to the complete eyebrow
+mix-blend-mode
+Hardcoded light text colors
+Theme rules that override the eyebrow foreground color
+Do not make the entire eyebrow transparent.
+
+The text, dot, line, background, and border should each have their own controlled styling.
+
+Dark-background eyebrow variant
+Some eyebrows may appear on dark hero or CTA backgrounds.
+
+Create or preserve a separate dark-background variant:
+
+Dark background:
+- White or very light text
+- Semi-transparent light background
+- Light border
+- Accent dot or line
+
+Do not apply the light-section style blindly to dark sections.
+
+Use an explicit variant if necessary, such as:
+
+eyebrow--light
+eyebrow--dark
+
+or the project’s existing equivalent.
+
+The correct result should be:
+
+Light section → dark navy text
+Dark section  → white/light text
+
+Theme compatibility
+The eyebrow system must continue working when the admin changes the primary and accent colors.
+
+Requirements:
+
+Use the saved public theme values.
+Keep text readable against the generated background.
+Use the primary color for the main text on light backgrounds.
+Use the accent color mainly for the dot, line, border, and subtle background tint.
+Do not use the accent color as a pale background and white text combination.
+Preserve sufficient contrast for custom admin-selected colors.
+Keep fallback colors available if theme settings are unavailable.
+If necessary, derive separate theme tokens such as:
+
+--site-primary
+--site-accent
+--eyebrow-text
+--eyebrow-background
+--eyebrow-border
+--eyebrow-mark
+
+Do not create dynamic Tailwind class names from runtime hex values.
+
+Apply the fix everywhere
+Update every public eyebrow using the shared eyebrow/chip component or class, including:
+
+Home page
+About preview
+Full About page
+Live Updates
+Our Results, Our Pride
+Real Stories of Success
+Our Expert Faculty
+Life at KVR College
+Knowledge Hub preview
+Admissions FAQ
+Final CTA
+Any other section eyebrow
+Do not manually fix only the two visible examples.
+
+Preserve the current:
+
+Text content
+Section layout
+Animation effects
+Hover effects
+Responsive behavior
+Reduced-motion support
+Admin dashboard theme settings
+Accessibility and responsive behavior
+Verify:
+
+Eyebrow text is readable on light and dark backgrounds.
+Text does not clip at smaller widths.
+Longer eyebrow labels wrap or resize gracefully.
+Keyboard focus remains visible where the eyebrow is interactive.
+Hover transitions remain subtle.
+Reduced-motion mode disables unnecessary movement.
+No horizontal overflow is introduced.
+Verification
+Test with these theme values:
+
+Primary: #022A6C
+Accent:  #CE0B11
+
+Confirm that:
+
+About Sahasrah is clearly readable.
+Explore Our Programs is clearly readable.
+All Home page eyebrows are readable.
+Full About page eyebrows are readable.
+Light-section eyebrows use dark text.
+Dark-section eyebrows use light text.
+Accent red is still visible in dots, lines, borders, and subtle backgrounds.
+No eyebrow remains white on a pale red background.
+Changing the theme colors does not break contrast.
+Production build passes.
+No browser console errors occur.
+Stop after correcting the global eyebrow contrast and theme-aware styling.
