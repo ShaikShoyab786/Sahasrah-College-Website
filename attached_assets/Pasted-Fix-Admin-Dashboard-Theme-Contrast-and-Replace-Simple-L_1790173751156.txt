@@ -1,0 +1,300 @@
+Fix Admin Dashboard Theme Contrast and Replace Simple Logo
+The recent theme integration has caused several readability issues inside the admin dashboard only.
+
+Do not modify the public website in this task. The public Home page, About page, animations, colors, and layouts must remain unchanged.
+
+This task is limited to:
+
+Admin dashboard theme contrast
+Admin form readability
+Admin hover/focus states
+Admin empty/add-item controls
+Admin sidebar branding
+1. Fix Admin Dashboard Text Contrast
+The selected theme colors are currently being applied directly to admin text, badges, labels, and hover states. This causes some text to become white or too light on pale backgrounds.
+
+Fix this across the entire admin dashboard.
+
+Affected areas include:
+
+Home page editor
+About page editor
+Hero editor
+About preview editor
+Live Updates editor
+Results editor
+Faculty editor
+Gallery editor
+FAQ editor
+CTA editor
+Site Identity
+Theme settings
+Add/edit item forms
+Reorder controls
+Empty states
+Save and cancel controls
+Required contrast behavior
+On light admin surfaces:
+
+Labels must use a dark readable color.
+Form headings must use a dark readable color.
+Input text must remain dark.
+Helper text must remain visible.
+Badge text must not become white on a pale background.
+Hover states must not reduce text contrast.
+Disabled text should remain readable but visibly muted.
+On dark admin surfaces:
+
+Use white or an appropriately light foreground.
+Preserve readable muted text.
+Buttons must use a contrasting foreground color.
+Do not simply make every admin element white or black. Use semantic admin theme tokens.
+
+2. Add Admin-Specific Theme Tokens
+The public theme and admin theme should use the same selected theme colors, but the admin dashboard needs its own semantic mapping.
+
+Create or use admin-specific variables such as:
+
+--admin-primary
+--admin-accent
+--admin-surface
+--admin-surface-soft
+--admin-background
+--admin-text
+--admin-text-muted
+--admin-on-primary
+--admin-on-accent
+--admin-border
+--admin-input-background
+--admin-focus
+
+Use these variables for admin components instead of applying the raw primary or accent color directly to text.
+
+For example:
+
+Light card:
+  background: admin surface
+  heading: admin text
+  label: admin text
+  helper text: admin text muted
+  border: admin border
+Primary button:
+  background: admin primary
+  text: admin on primary
+Accent badge:
+  background: light accent tint
+  text: dark readable foreground
+  border: accent
+
+Do not use white text on a light accent background.
+
+Do not use dynamic runtime Tailwind class names such as:
+
+text-[${accentColor}]
+bg-[${primaryColor}]
+
+Use stable CSS classes and CSS custom properties.
+
+3. Fix the Specific Problems Shown in the Screenshots
+Home Hero editor
+The SLIDE badge and related hero editor content must remain readable.
+
+Fix:
+
+Badge text
+Badge background
+Badge border
+Heading text
+Description text
+Input labels
+Input values
+Placeholder text
+Reorder controls
+Save and remove controls
+The badge should use a readable dark foreground on a light surface or a properly contrasting foreground on a dark surface.
+
+About preview editor
+Ensure the About preview form remains readable, including:
+
+Eyebrow label
+Main heading
+Highlighted heading
+Description fields
+Image fields
+CTA fields
+Preview labels
+Save controls
+Do not allow the selected accent color to make headings or labels disappear.
+
+About page item editors
+In sections such as Guiding Principles and other repeatable item editors, labels such as:
+
+VALUE 3
+VALUE 4
+
+must remain visible.
+
+Fix:
+
+Item title/number labels
+Value labels
+Input labels
+Order labels
+Up/Down controls
+Remove controls
+Checkbox labels
+Empty item states
+Add new item buttons
+Do not use white text on the pale item-card backgrounds.
+
+Add new item controls
+The empty dashed add-item control shown in the screenshot must be clearly visible.
+
+It must have:
+
+Readable text
+Visible border
+Visible icon
+Clear hover state
+Clear focus state
+Proper contrast against the surrounding card
+Adequate height and padding
+The control should clearly communicate that it adds a new item.
+
+Do not leave a blank or nearly invisible button.
+
+4. Audit All Admin States
+Check every admin component in these states:
+
+Default
+Hover
+Focus
+Active
+Selected
+Disabled
+Loading
+Empty
+Error
+Success
+Expanded
+Collapsed
+Pay special attention to:
+
+Text on tinted backgrounds
+Text on cards
+Badge text
+Tooltip text
+Placeholder text
+Checkbox labels
+Tab labels
+Table headers
+Section titles
+Modal headings
+Toast messages
+Delete/remove actions
+Reorder buttons
+Add buttons
+No text should disappear or become unreadable when the cursor moves over it.
+
+5. Replace the Simple “S” Sidebar Logo
+The admin sidebar currently shows a simple S icon.
+
+Replace it with the official Sahasrah College logo.
+
+Use the existing configured site logo or the official logo asset already available in the project.
+
+Logo requirements
+Show the full logo in the expanded sidebar where space allows.
+Use the official Sahasrah logo rather than a generated S.
+Preserve the logo’s aspect ratio.
+Do not stretch or distort it.
+Use object-fit: contain.
+Add appropriate alt text:
+Sahasrah Junior College
+
+Keep the logo readable on the selected sidebar background.
+Preserve the existing sidebar spacing and navigation layout.
+For a collapsed sidebar:
+
+If an official emblem-only asset exists, use it.
+Otherwise use a properly contained version of the official logo rather than a plain S.
+Do not crop the logo awkwardly.
+Use the site identity logo dynamically where possible, with a safe fallback to the official Sahasrah logo asset.
+
+Do not change the public header logo in this task.
+
+6. Preserve Admin Layout and Behavior
+Do not change:
+
+Admin routes
+Admin authentication
+Admin permissions
+Form submission behavior
+Database structure
+Existing content
+Existing animations
+Existing sidebar navigation
+Mobile drawer behavior
+Public website styling
+Public theme behavior
+Only correct admin colors, contrast, logo presentation, and related visual states.
+
+Keep all existing theme presets available.
+
+7. Admin Theme Compatibility
+Test the admin dashboard with every available theme preset.
+
+For each theme, verify:
+
+Sidebar text is readable.
+Sidebar navigation is readable.
+Active navigation state is readable.
+Page headings are readable.
+Form labels are readable.
+Input text is readable.
+Badges are readable.
+Buttons are readable.
+Add/edit/remove controls are readable.
+Hover states are readable.
+Focus states are readable.
+Success and error messages remain readable.
+The admin dashboard should use the selected theme colors while deriving safe foreground colors automatically.
+
+Do not let any preset cause white text to appear on a pale background.
+
+8. Accessibility Requirements
+Ensure:
+
+All text meets readable contrast requirements.
+Focus indicators remain visible.
+Keyboard users can identify focused controls.
+Buttons have readable labels.
+Form labels are associated with their inputs.
+Tooltips remain readable.
+The logo has meaningful alt text.
+Disabled controls are visually distinct but still understandable.
+Reduced-motion behavior remains unchanged.
+9. Verification Checklist
+Before finishing, confirm:
+
+Admin Home Hero editor text is readable.
+Admin About preview editor text is readable.
+Admin About section item labels are readable.
+VALUE 3 and VALUE 4 labels are visible.
+Add New Item buttons are clearly visible.
+Hovering over text never makes it disappear.
+Input labels, placeholders, and values remain readable.
+Save, cancel, remove, up, and down controls remain readable.
+Empty states remain visible.
+The sidebar no longer displays only a simple S.
+The official Sahasrah logo appears in the admin sidebar.
+The logo is not stretched or cropped incorrectly.
+The admin dashboard works with every theme preset.
+Public Home and About pages remain unchanged.
+Existing animations remain intact.
+Mobile admin navigation remains functional.
+No layout shift or overflow is introduced.
+Production build passes.
+Backend starts successfully.
+No browser console errors occur.
+Stop after correcting the admin dashboard. Do not modify the public site in this task.
