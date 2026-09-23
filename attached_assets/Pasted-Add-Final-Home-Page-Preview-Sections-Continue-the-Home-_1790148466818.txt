@@ -1,0 +1,357 @@
+Add Final Home Page Preview Sections
+Continue the Home page by adding these sections beneath the completed Life at KVR College preview:
+
+Knowledge Hub Preview
+↓
+Admissions FAQ
+↓
+Final Admission CTA
+
+This task is only for Home page previews and their related admin dashboard controls.
+
+Do not build the complete Knowledge Hub page yet. Do not modify the completed About page, existing Home page sections, or previous preview sections except for reusing shared styling utilities.
+
+Use the attached reference images as visual direction while preserving the existing KVR Junior College design system.
+
+1. Knowledge Hub Preview
+Add a Home page preview section for the future Knowledge Hub.
+
+Use a professional eyebrow badge:
+
+Knowledge Hub
+
+Suggested heading:
+
+Your Digital Learning Library
+
+Suggested supporting text:
+
+Study materials, expert guidance, exam updates, and practical resources for JEE and NEET aspirants.
+
+Preview layout
+Create a compact preview inspired by the reference image.
+
+Include:
+
+Section eyebrow
+Heading
+Supporting description
+Optional visual search field
+Category pills
+One featured resource block
+Three smaller resource cards
+View All Resources button
+Suggested category pills:
+
+Physics
+Chemistry
+Mathematics
+Previous Papers
+DPP
+Mock Tests
+NCERT
+Formula Sheets
+
+The category pills should be visually interactive, but do not build the complete Knowledge Hub search/filter system yet.
+
+If the search field is included:
+
+It should either connect to an existing valid route or remain a clearly styled preview control.
+Do not create fake search behavior.
+Do not build the complete Knowledge Hub search backend in this task.
+Featured resource
+Create a large featured resource card with:
+
+Featured badge
+Resource title
+Short description
+Optional cover/document preview
+Resource category
+Download or View Resource button
+Example:
+
+Complete Target JEE Question Bank
+
+The button should use a valid configured resource link. Do not create broken download links.
+
+Resource cards
+Display three resource cards with:
+
+Category badge
+Resource icon or thumbnail
+Resource title
+Short description
+File size if available
+Download count if available
+Last updated date if available
+Download or View button
+Use clean white cards with:
+
+Soft borders
+Rounded corners
+Light shadows
+Subtle category color accents
+Clear typography hierarchy
+Knowledge Hub effects
+Add professional effects:
+
+Section content reveals on viewport entry.
+Featured resource fades in with a slight scale effect.
+Resource cards reveal with a subtle stagger.
+Card lifts slightly on hover or keyboard focus.
+Resource icon or thumbnail scales gently.
+Category pills have a refined active/hover state.
+Buttons receive a subtle lift and arrow/icon transition.
+Do not create layout shifts.
+Do not make the preview feel like a full application yet.
+Add a View All Resources button that links to the existing Knowledge Hub route if available. If the full route does not exist yet, follow the project’s current valid routing pattern without creating a duplicate page architecture.
+
+2. Admissions FAQ Section
+Place the FAQ section directly beneath the Knowledge Hub preview.
+
+Use the eyebrow:
+
+Admissions FAQ
+
+Add the heading:
+
+Common Questions, Clear Answers
+
+Add supporting text:
+
+Everything you need to know about joining KVR Junior College.
+
+Use the attached reference image as the design direction.
+
+FAQ content
+Create an accordion with questions such as:
+
+Why should I choose KVR over other junior colleges?
+Do you offer integrated coaching for IIT-JEE and NEET?
+What is the student-to-teacher ratio?
+Are separate hostel facilities available for boys and girls?
+How do you track and improve student performance?
+Use existing FAQ content where appropriate, but do not overwrite the completed About page FAQ content.
+
+If the project uses a shared FAQ data model, add a clear section/page scope so Home FAQs and About FAQs remain independently manageable.
+
+FAQ behavior
+Implement:
+
+One open answer at a time, unless the existing project convention uses another accessible pattern.
+Smooth height and opacity transition.
+Chevron or plus/minus icon rotation.
+Clear active question styling.
+First question may be open by default.
+Keyboard-accessible question buttons.
+Proper aria-expanded and aria-controls attributes.
+Enter and Space support.
+Visible focus states.
+Screen-reader-friendly structure.
+FAQ styling
+Use:
+
+Soft white cards
+Thin borders
+Rounded corners
+Navy text
+Teal/gold accent for the active item
+Subtle shadow
+Comfortable spacing
+Responsive layout
+Add a small reveal stagger for the FAQ items, but do not make the accordion animation slow or distracting.
+
+For prefers-reduced-motion: reduce:
+
+Disable movement and stagger effects.
+Keep the accordion fully functional.
+Show content immediately when opened.
+3. Final Admission CTA
+Place a full-width CTA section directly beneath the FAQ section.
+
+Use the eyebrow:
+
+Join KVR College
+
+Suggested heading:
+
+Seats Are Limited.
+Admissions Are Open.
+
+Add supporting text about:
+
+Personal mentorship
+Experienced faculty
+Integrated IIT-JEE and NEET preparation
+Limited admission availability
+Use the attached reference image as visual direction.
+
+CTA layout
+Create a premium dark navy rounded container with:
+
+Deep navy background
+Subtle gradient or campus texture
+Soft background glow
+Left-aligned heading and description on desktop
+Action buttons on the right
+Stacked layout on mobile
+Add these actions:
+
+Apply Now
+Call Admission Office
+
+Important routing:
+
+Apply Now must redirect to the existing Contact page.
+The call action must use the configured phone number with a proper tel: link.
+Do not hardcode a fake or outdated number if the project already stores contact details in site settings.
+Do not create a broken admission route.
+CTA effects
+Add:
+
+Viewport reveal animation.
+Subtle background gradient movement or glow.
+Button hover lift.
+Soft shadow enhancement.
+Arrow/icon transition.
+Keyboard focus styles.
+No excessive looping animation.
+No text clipping or layout shift.
+For reduced motion:
+
+Disable background movement and reveal movement.
+Keep the CTA fully visible and functional.
+Admin Dashboard Updates
+Gradually update the existing admin dashboard for the new Home page sections.
+
+Do not redesign the dashboard. Reuse the existing admin layout, authentication, content forms, upload components, validation, and save behavior.
+
+Organize these controls under:
+
+Home Page
+├── Knowledge Hub Preview
+├── Admissions FAQ
+└── Final CTA
+
+Knowledge Hub admin controls
+Support:
+
+Add resource
+Edit resource
+Delete resource
+Reorder resources
+Enable/disable resource
+Mark as featured
+Resource title
+Short description
+Category
+Thumbnail or cover image
+Resource icon
+File size
+Download count
+Last updated date
+Resource/download link
+Display order
+Support category pills through either:
+
+A managed category list, or
+A safe predefined category configuration
+Only active resources should appear publicly.
+
+Only one resource should be marked as the featured resource for the Home preview at a time, or handle multiple featured resources predictably.
+
+Do not build the full Knowledge Hub content management system yet. This is only the Home preview content layer.
+
+Home FAQ admin controls
+Support:
+
+Add question
+Edit question
+Delete question
+Reorder question
+Enable/disable question
+Question text
+Answer text
+Page/section scope
+Ensure Home FAQs do not accidentally replace About page FAQs.
+
+Prevent empty questions and empty answers from being published.
+
+CTA admin controls
+Add editable fields for:
+
+Eyebrow text
+Heading
+Supporting description
+Apply button label
+Apply button link
+Phone button label
+Phone number
+Optional background image
+Optional background overlay
+Active/inactive state
+The Apply button must remain connected to the Contact page unless an administrator intentionally changes it to another valid route.
+
+Data and Architecture Requirements
+Before adding new tables, endpoints, or settings:
+
+Inspect the existing content architecture.
+Reuse existing site settings, FAQ, resource, or media models where appropriate.
+Avoid duplicate data sources.
+Add page or section scopes when the same content type is used in multiple places.
+Add server-side validation for admin changes.
+Return only active/public content to the Home page.
+Keep sensible fallback content if no custom content has been configured.
+Preserve existing data.
+Keep admin mutations protected by the existing authorization system.
+Do not start the full Courses or Knowledge Hub pages in this task.
+
+Visual and Responsive Requirements
+All three sections must match the professional visual language already used on the About page:
+
+Consistent eyebrow badges
+Navy, gold, teal, white, and soft gray palette
+Refined shadows
+Rounded corners
+Strong typography hierarchy
+Smooth but restrained transitions
+Clean spacing
+Professional education-focused presentation
+Verify:
+
+Desktop layout
+Tablet layout
+Mobile layout
+No horizontal overflow
+No clipped text
+Search/category preview remains usable
+FAQ answers expand correctly
+CTA buttons stack properly on mobile
+All images have useful alt text
+All controls have keyboard focus states
+Reduced-motion mode works correctly
+Verification Checklist
+Before finishing, confirm:
+
+Knowledge Hub preview appears beneath Life at KVR College.
+Knowledge Hub preview shows featured content and three resource cards.
+Resource cards are manageable from the admin dashboard.
+Category pills have polished active and hover states.
+View All Resources uses a valid route.
+FAQ appears directly below the Knowledge Hub preview.
+Home FAQs are independent from About page FAQs.
+FAQ accordion works with mouse, keyboard, and screen readers.
+FAQ animation is smooth and not excessive.
+CTA appears directly below the FAQ section.
+Apply Now redirects to the Contact page.
+Call Admission Office uses the configured phone number.
+CTA content is editable from the admin dashboard.
+All three sections have professional reveal and hover effects.
+Reduced-motion mode disables unnecessary movement.
+Mobile layouts work without horizontal scrolling.
+Existing Home page sections remain unchanged.
+About page remains unchanged.
+Admin changes persist correctly.
+Production build passes.
+Backend starts successfully.
+Stop after completing these three Home page preview sections and their admin controls. Do not begin the full Knowledge Hub or Courses pages yet.
