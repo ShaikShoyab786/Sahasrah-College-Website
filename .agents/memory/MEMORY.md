@@ -4,3 +4,4 @@
 - [Native carousel compatibility](native-carousel-compatibility.md) — prefer native scroll-snap carousels over Embla hooks in this React workspace.
 - [Shared About preview records](shared-about-preview-records.md) — Home Faculty and Gallery reuse About records; remove from Home by hiding, never deleting the shared record.
 - [Public theme and content backfill](public-theme-and-content-backfill.md) — resolve saved colours into public HSL tokens and backfill persisted user-facing copy idempotently.
+- [Admin theme boundary](admin-theme-boundary.md) — keep admin semantic contrast tokens separate from the public theme root and prefer configured branding assets in admin chrome.

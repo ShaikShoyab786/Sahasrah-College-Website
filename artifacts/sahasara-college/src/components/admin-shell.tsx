@@ -4,7 +4,7 @@ import { BookOpen, ChevronDown, FileText, Home, LayoutDashboard, LogOut, Menu, P
 import { useLogoutAdmin, getGetAdminSessionQueryKey, useGetSiteSettings } from '@workspace/api-client-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { SiteMark } from '@/components/site-mark';
-import { createPublicThemeStyle, DEFAULT_ACCENT_COLOR, DEFAULT_PRIMARY_COLOR, DEFAULT_SURFACE_COLOR } from '@/lib/public-theme';
+import { createAdminThemeStyle, DEFAULT_ACCENT_COLOR, DEFAULT_PRIMARY_COLOR, DEFAULT_SURFACE_COLOR } from '@/lib/public-theme';
 
 type ShellProps = { children: React.ReactNode; displayName?: string; email?: string };
 
@@ -14,7 +14,7 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
   const queryClient = useQueryClient();
   const logout = useLogoutAdmin();
   const settings = useGetSiteSettings();
-  const themeStyle = createPublicThemeStyle(
+  const themeStyle = createAdminThemeStyle(
     settings.data?.primaryColor || DEFAULT_PRIMARY_COLOR,
     settings.data?.accentColor || DEFAULT_ACCENT_COLOR,
     settings.data?.surfaceColor || DEFAULT_SURFACE_COLOR,
@@ -89,10 +89,10 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
   const signOut = () => logout.mutate(undefined, { onSuccess: () => { queryClient.invalidateQueries({ queryKey: getGetAdminSessionQueryKey() }); setLocation('/admin/login'); } });
 
   return (
-    <div className="min-h-[100dvh] bg-[hsl(var(--background))] text-[hsl(var(--foreground))]" style={themeStyle}>
+    <div className="min-h-[100dvh] bg-[hsl(var(--admin-background))] text-[hsl(var(--admin-text))]" style={themeStyle}>
       <aside id="admin-sidebar" aria-label="Admin navigation" className={`admin-sidebar fixed inset-y-0 left-0 z-30 flex w-[276px] flex-col overflow-y-auto overscroll-contain bg-[hsl(var(--sidebar))] px-5 py-6 text-[hsl(var(--sidebar-foreground))] transition-transform duration-300 md:translate-x-0 ${open ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="flex items-center justify-between">
-          <SiteMark inverse compact name="Sahsrah" />
+          <SiteMark inverse compact name={settings.data?.collegeName || 'Sahsrah Junior College'} logoUrl={settings.data?.logoUrl} fallbackLogoUrl="/sahsrah-logo-fallback.svg" logoAlt="Sahsrah Junior College" />
           <button className="rounded-lg p-2 text-[hsl(var(--sidebar-foreground)/.7)] md:hidden" onClick={() => setOpen(false)} data-testid="button-close-sidebar"><X size={19} /></button>
         </div>
         <div className="mt-10 px-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[hsl(var(--sidebar-foreground)/.45)]">Workspace</div>
@@ -157,7 +157,7 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
         </nav>
         <div className="mt-auto border-t border-[hsl(var(--sidebar-border))] pt-4">
           <div className="mb-4 rounded-xl bg-[hsl(var(--sidebar-accent))] p-3">
-            <div className="grid h-9 w-9 place-items-center rounded-lg bg-[hsl(var(--accent))] text-sm font-bold text-[hsl(var(--primary))]">{displayName.charAt(0).toUpperCase()}</div>
+            <div className="grid h-9 w-9 place-items-center rounded-lg bg-[hsl(var(--admin-accent))] text-sm font-bold text-[hsl(var(--admin-on-accent))]">{displayName.charAt(0).toUpperCase()}</div>
             <p className="mt-3 truncate text-sm font-bold" data-testid="text-admin-display-name">{displayName}</p>
             <p className="truncate text-xs text-[hsl(var(--sidebar-foreground)/.54)]" data-testid="text-admin-email">{email}</p>
           </div>

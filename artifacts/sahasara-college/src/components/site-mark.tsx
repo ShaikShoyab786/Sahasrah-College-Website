@@ -4,15 +4,18 @@ type SiteMarkProps = {
   name?: string;
   tagline?: string | null;
   logoUrl?: string | null;
+  fallbackLogoUrl?: string | null;
+  logoAlt?: string;
   inverse?: boolean;
   compact?: boolean;
 };
 
-export function SiteMark({ name = 'Sahsrah Junior College', tagline = 'Your College Tagline', logoUrl, inverse = false, compact = false }: SiteMarkProps) {
+export function SiteMark({ name = 'Sahsrah Junior College', tagline = 'Your College Tagline', logoUrl, fallbackLogoUrl, logoAlt, inverse = false, compact = false }: SiteMarkProps) {
+  const resolvedLogoUrl = logoUrl || fallbackLogoUrl;
   return (
     <Link href="/" className="group inline-flex items-center gap-3" data-testid="link-site-logo">
-      {logoUrl ? (
-        <img src={logoUrl} alt={`${name} logo`} className={`${compact ? 'h-9 w-9' : 'h-11 w-11'} rounded-xl object-cover`} data-testid="img-college-logo" />
+      {resolvedLogoUrl ? (
+        <img src={resolvedLogoUrl} alt={logoAlt || (logoUrl ? `${name} logo` : 'Sahsrah Junior College')} className={`${compact ? 'h-9 w-9' : 'h-11 w-11'} rounded-xl object-contain`} data-testid="img-college-logo" />
       ) : (
         <span className={`${compact ? 'h-9 w-9 text-sm' : 'h-11 w-11 text-base'} grid place-items-center rounded-xl bg-[hsl(var(--accent))] font-bold text-[hsl(var(--primary))] shadow-sm`} data-testid="mark-college-initial">S</span>
       )}

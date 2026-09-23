@@ -160,3 +160,32 @@ export function createPublicThemeStyle(primaryColor: string, accentColor: string
     '--sidebar-primary-border': `hsl(${accent})`,
   } as CSSProperties;
 }
+
+export function createAdminThemeStyle(primaryColor: string, accentColor: string, surfaceColor = DEFAULT_SURFACE_COLOR): CSSProperties {
+  const publicStyle = createPublicThemeStyle(primaryColor, accentColor, surfaceColor);
+  const primary = hexToHslChannels(primaryColor);
+  const accent = hexToHslChannels(accentColor);
+  const surface = hexToHslChannels(surfaceColor);
+  const text = contrastingForeground(surfaceColor);
+  const onPrimary = contrastingForeground(primaryColor);
+  const onAccent = contrastingForeground(accentColor);
+  const border = adjustHslLightness(primary, text === '216 48% 13%' ? 28 : -24);
+
+  return {
+    ...publicStyle,
+    '--admin-primary': primary,
+    '--admin-accent': accent,
+    '--admin-surface': surface,
+    '--admin-background': surface,
+    '--admin-text': text,
+    '--admin-text-muted': text,
+    '--admin-on-primary': onPrimary,
+    '--admin-on-accent': onAccent,
+    '--admin-border': border,
+    '--admin-input-background': surface,
+    '--admin-focus': accent,
+    '--accent-foreground': text,
+    '--secondary-foreground': text,
+    '--card-foreground': text,
+  } as CSSProperties;
+}
