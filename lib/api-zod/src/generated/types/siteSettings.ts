@@ -20,4 +20,20 @@ export interface SiteSettings {
   surfaceColor: string;
   themePreset: string;
   footerText: string;
+  loginLeftEyebrow: string;
+  loginLeftHeading: string;
+  loginLeftHighlightedHeading: string;
+  loginLeftDescription: string;
+  loginLeftBottomText: string;
+  /** @nullable */
+  loginBackgroundImageUrl: string | null;
+  loginBackgroundImageAltText: string;
+  loginRightEyebrow: string;
+  loginRightHeading: string;
+  loginRightDescription: string;
+  loginEmailLabel: string;
+  loginPasswordLabel: string;
+  loginButtonLabel: string;
+  loginSecurityNote: string;
+  loginBackLinkLabel: string;
 }

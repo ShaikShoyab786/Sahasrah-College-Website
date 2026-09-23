@@ -21,4 +21,5 @@ export const ImageUploadInputPurpose = {
   faculty: 'faculty',
   gallery: 'gallery',
   knowledge: 'knowledge',
+  login: 'login',
 } as const;

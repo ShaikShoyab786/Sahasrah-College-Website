@@ -12,6 +12,8 @@ export interface HomepageResults {
   eyebrow: string;
   heading: string;
   description: string;
+  viewAllButtonLabel: string;
+  viewAllButtonLink: string;
   isVisible: boolean;
   sortOrder: number;
   updatedAt: Date;

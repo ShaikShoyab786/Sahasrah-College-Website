@@ -1820,6 +1820,36 @@ components:
           type: string
         footerText:
           type: string
+        loginLeftEyebrow:
+          type: string
+        loginLeftHeading:
+          type: string
+        loginLeftHighlightedHeading:
+          type: string
+        loginLeftDescription:
+          type: string
+        loginLeftBottomText:
+          type: string
+        loginBackgroundImageUrl:
+          type: ["string", "null"]
+        loginBackgroundImageAltText:
+          type: string
+        loginRightEyebrow:
+          type: string
+        loginRightHeading:
+          type: string
+        loginRightDescription:
+          type: string
+        loginEmailLabel:
+          type: string
+        loginPasswordLabel:
+          type: string
+        loginButtonLabel:
+          type: string
+        loginSecurityNote:
+          type: string
+        loginBackLinkLabel:
+          type: string
       required:
         - id
         - collegeName
@@ -1833,6 +1863,21 @@ components:
         - surfaceColor
         - themePreset
         - footerText
+        - loginLeftEyebrow
+        - loginLeftHeading
+        - loginLeftHighlightedHeading
+        - loginLeftDescription
+        - loginLeftBottomText
+        - loginBackgroundImageUrl
+        - loginBackgroundImageAltText
+        - loginRightEyebrow
+        - loginRightHeading
+        - loginRightDescription
+        - loginEmailLabel
+        - loginPasswordLabel
+        - loginButtonLabel
+        - loginSecurityNote
+        - loginBackLinkLabel
     SiteSettingsInput:
       type: object
       properties:
@@ -1866,6 +1911,50 @@ components:
           minLength: 1
         footerText:
           type: string
+        loginLeftEyebrow:
+          type: string
+          minLength: 1
+        loginLeftHeading:
+          type: string
+          minLength: 1
+        loginLeftHighlightedHeading:
+          type: string
+          minLength: 1
+        loginLeftDescription:
+          type: string
+          minLength: 1
+        loginLeftBottomText:
+          type: string
+          minLength: 1
+        loginBackgroundImageUrl:
+          type: ["string", "null"]
+        loginBackgroundImageAltText:
+          type: string
+          minLength: 1
+        loginRightEyebrow:
+          type: string
+          minLength: 1
+        loginRightHeading:
+          type: string
+          minLength: 1
+        loginRightDescription:
+          type: string
+          minLength: 1
+        loginEmailLabel:
+          type: string
+          minLength: 1
+        loginPasswordLabel:
+          type: string
+          minLength: 1
+        loginButtonLabel:
+          type: string
+          minLength: 1
+        loginSecurityNote:
+          type: string
+          minLength: 1
+        loginBackLinkLabel:
+          type: string
+          minLength: 1
       required:
         - collegeName
         - tagline
@@ -1878,6 +1967,21 @@ components:
         - surfaceColor
         - themePreset
         - footerText
+        - loginLeftEyebrow
+        - loginLeftHeading
+        - loginLeftHighlightedHeading
+        - loginLeftDescription
+        - loginLeftBottomText
+        - loginBackgroundImageUrl
+        - loginBackgroundImageAltText
+        - loginRightEyebrow
+        - loginRightHeading
+        - loginRightDescription
+        - loginEmailLabel
+        - loginPasswordLabel
+        - loginButtonLabel
+        - loginSecurityNote
+        - loginBackLinkLabel
     HomepageHeroSlide:
       type: object
       properties:
@@ -2401,6 +2505,10 @@ components:
           type: string
         description:
           type: string
+        viewAllButtonLabel:
+          type: string
+        viewAllButtonLink:
+          type: string
         isVisible:
           type: boolean
         sortOrder:
@@ -2412,7 +2520,7 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/HomepageResult"
-      required: [id, eyebrow, heading, description, isVisible, sortOrder, updatedAt, results]
+      required: [id, eyebrow, heading, description, viewAllButtonLabel, viewAllButtonLink, isVisible, sortOrder, updatedAt, results]
     HomepageResultsInput:
       type: object
       properties:
@@ -2423,6 +2531,12 @@ components:
           type: string
           minLength: 1
         description:
+          type: string
+          minLength: 1
+        viewAllButtonLabel:
+          type: string
+          minLength: 1
+        viewAllButtonLink:
           type: string
           minLength: 1
         isVisible:
@@ -2437,7 +2551,7 @@ components:
           maxItems: 20
           items:
             $ref: "#/components/schemas/HomepageResultInput"
-      required: [eyebrow, heading, description, isVisible, sortOrder, results]
+      required: [eyebrow, heading, description, viewAllButtonLabel, viewAllButtonLink, isVisible, sortOrder, results]
     HomepageAchievementRibbonPhrase:
       type: object
       properties:
@@ -4146,7 +4260,7 @@ components:
           format: binary
         purpose:
           type: string
-          enum: [logo, hero, campus, cta, update, topic, result, testimonial, faculty, gallery, knowledge]
+          enum: [logo, hero, campus, cta, update, topic, result, testimonial, faculty, gallery, knowledge, login]
       required:
         - file
         - purpose
@@ -4157,7 +4271,7 @@ components:
           type: string
         purpose:
           type: string
-          enum: [logo, hero, campus, cta, update, topic, result, testimonial, faculty, gallery, knowledge]
+          enum: [logo, hero, campus, cta, update, topic, result, testimonial, faculty, gallery, knowledge, login]
       required:
         - url
         - purpose

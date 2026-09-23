@@ -39,6 +39,21 @@ export async function initializeDatabase() {
       surfaceColor: "#F5F7FB",
       themePreset: "sahsrah-blue-red",
       footerText: "Building confident futures through focused learning.",
+      loginLeftEyebrow: "ACADEMIC ADMINISTRATION",
+      loginLeftHeading: "Manage with",
+      loginLeftHighlightedHeading: "clarity and purpose.",
+      loginLeftDescription: "A secure workspace for managing Sahsrah Junior College operations, academic information, student records, and institutional updates.",
+      loginLeftBottomText: "Authorized administrators only · Internal use",
+      loginBackgroundImageUrl: "/api/uploads/admin-login-background.png",
+      loginBackgroundImageAltText: "Sahsrah Junior College academic administration workspace",
+      loginRightEyebrow: "ADMIN WORKSPACE",
+      loginRightHeading: "Welcome back.",
+      loginRightDescription: "Sign in to access Sahsrah's administrative workspace.",
+      loginEmailLabel: "Official email address",
+      loginPasswordLabel: "Password",
+      loginButtonLabel: "Sign in →",
+      loginSecurityNote: "This workspace is restricted to authorized Sahsrah administrators.",
+      loginBackLinkLabel: "Back to website",
     },
   });
 
@@ -51,6 +66,12 @@ export async function initializeDatabase() {
     await prisma.siteSettings.update({
       where: { id: "singleton" },
       data: { primaryColor: "#022A6C", accentColor: "#CE0B11", surfaceColor: "#F5F7FB" },
+    });
+  }
+  if (currentSettings && !currentSettings.loginBackgroundImageUrl) {
+    await prisma.siteSettings.update({
+      where: { id: "singleton" },
+      data: { loginBackgroundImageUrl: "/api/uploads/admin-login-background.png" },
     });
   }
 
@@ -237,6 +258,8 @@ export async function initializeDatabase() {
       eyebrow: "Pride of KVR",
       heading: "Our Results, Our Pride",
       description: "Steady preparation, strong foundations, and focused guidance help our students turn ambition into meaningful academic achievement.",
+      viewAllButtonLabel: "View All Achievements",
+      viewAllButtonLink: "/about#achievement-statistics",
       isVisible: true,
       sortOrder: 6,
     },

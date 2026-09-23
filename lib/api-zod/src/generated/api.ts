@@ -68,7 +68,22 @@ export const GetSiteSettingsResponse = zod.object({
   "accentColor": zod.string(),
   "surfaceColor": zod.string(),
   "themePreset": zod.string(),
-  "footerText": zod.string()
+  "footerText": zod.string(),
+  "loginLeftEyebrow": zod.string(),
+  "loginLeftHeading": zod.string(),
+  "loginLeftHighlightedHeading": zod.string(),
+  "loginLeftDescription": zod.string(),
+  "loginLeftBottomText": zod.string(),
+  "loginBackgroundImageUrl": zod.string().nullable(),
+  "loginBackgroundImageAltText": zod.string(),
+  "loginRightEyebrow": zod.string(),
+  "loginRightHeading": zod.string(),
+  "loginRightDescription": zod.string(),
+  "loginEmailLabel": zod.string(),
+  "loginPasswordLabel": zod.string(),
+  "loginButtonLabel": zod.string(),
+  "loginSecurityNote": zod.string(),
+  "loginBackLinkLabel": zod.string()
 })
 
 
@@ -197,6 +212,8 @@ export const GetHomepageResultsResponse = zod.object({
   "eyebrow": zod.string(),
   "heading": zod.string(),
   "description": zod.string(),
+  "viewAllButtonLabel": zod.string(),
+  "viewAllButtonLink": zod.string(),
   "isVisible": zod.boolean(),
   "sortOrder": zod.number().int(),
   "updatedAt": zod.coerce.date(),
@@ -651,6 +668,20 @@ export const updateSiteSettingsBodySurfaceColorRegExp = new RegExp('^#[0-9A-Fa-f
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export const UpdateSiteSettingsBody = zod.object({
   "collegeName": zod.string().min(1),
   "tagline": zod.string(),
@@ -662,7 +693,22 @@ export const UpdateSiteSettingsBody = zod.object({
   "accentColor": zod.string().regex(updateSiteSettingsBodyAccentColorRegExp),
   "surfaceColor": zod.string().regex(updateSiteSettingsBodySurfaceColorRegExp),
   "themePreset": zod.string().min(1),
-  "footerText": zod.string()
+  "footerText": zod.string(),
+  "loginLeftEyebrow": zod.string().min(1),
+  "loginLeftHeading": zod.string().min(1),
+  "loginLeftHighlightedHeading": zod.string().min(1),
+  "loginLeftDescription": zod.string().min(1),
+  "loginLeftBottomText": zod.string().min(1),
+  "loginBackgroundImageUrl": zod.string().nullable(),
+  "loginBackgroundImageAltText": zod.string().min(1),
+  "loginRightEyebrow": zod.string().min(1),
+  "loginRightHeading": zod.string().min(1),
+  "loginRightDescription": zod.string().min(1),
+  "loginEmailLabel": zod.string().min(1),
+  "loginPasswordLabel": zod.string().min(1),
+  "loginButtonLabel": zod.string().min(1),
+  "loginSecurityNote": zod.string().min(1),
+  "loginBackLinkLabel": zod.string().min(1)
 })
 
 export const UpdateSiteSettingsResponse = zod.object({
@@ -677,7 +723,22 @@ export const UpdateSiteSettingsResponse = zod.object({
   "accentColor": zod.string(),
   "surfaceColor": zod.string(),
   "themePreset": zod.string(),
-  "footerText": zod.string()
+  "footerText": zod.string(),
+  "loginLeftEyebrow": zod.string(),
+  "loginLeftHeading": zod.string(),
+  "loginLeftHighlightedHeading": zod.string(),
+  "loginLeftDescription": zod.string(),
+  "loginLeftBottomText": zod.string(),
+  "loginBackgroundImageUrl": zod.string().nullable(),
+  "loginBackgroundImageAltText": zod.string(),
+  "loginRightEyebrow": zod.string(),
+  "loginRightHeading": zod.string(),
+  "loginRightDescription": zod.string(),
+  "loginEmailLabel": zod.string(),
+  "loginPasswordLabel": zod.string(),
+  "loginButtonLabel": zod.string(),
+  "loginSecurityNote": zod.string(),
+  "loginBackLinkLabel": zod.string()
 })
 
 
@@ -1032,6 +1093,8 @@ export const GetAdminHomepageResultsResponse = zod.object({
   "eyebrow": zod.string(),
   "heading": zod.string(),
   "description": zod.string(),
+  "viewAllButtonLabel": zod.string(),
+  "viewAllButtonLink": zod.string(),
   "isVisible": zod.boolean(),
   "sortOrder": zod.number().int(),
   "updatedAt": zod.coerce.date(),
@@ -1059,6 +1122,8 @@ export const GetAdminHomepageResultsResponse = zod.object({
 
 
 
+
+
 export const updateHomepageResultsBodySortOrderMax = 20;
 
 
@@ -1077,6 +1142,8 @@ export const UpdateHomepageResultsBody = zod.object({
   "eyebrow": zod.string().min(1),
   "heading": zod.string().min(1),
   "description": zod.string().min(1),
+  "viewAllButtonLabel": zod.string().min(1),
+  "viewAllButtonLink": zod.string().min(1),
   "isVisible": zod.boolean(),
   "sortOrder": zod.number().int().min(1).max(updateHomepageResultsBodySortOrderMax),
   "results": zod.array(zod.object({
@@ -1100,6 +1167,8 @@ export const UpdateHomepageResultsResponse = zod.object({
   "eyebrow": zod.string(),
   "heading": zod.string(),
   "description": zod.string(),
+  "viewAllButtonLabel": zod.string(),
+  "viewAllButtonLink": zod.string(),
   "isVisible": zod.boolean(),
   "sortOrder": zod.number().int(),
   "updatedAt": zod.coerce.date(),
@@ -2466,12 +2535,12 @@ export const UpdateAboutAdmissionCtaResponse = zod.object({
  */
 export const UploadAdminImageBody = zod.object({
   "file": zod.instanceof(Blob),
-  "purpose": zod.enum(['logo', 'hero', 'campus', 'cta', 'update', 'topic', 'result', 'testimonial', 'faculty', 'gallery', 'knowledge'])
+  "purpose": zod.enum(['logo', 'hero', 'campus', 'cta', 'update', 'topic', 'result', 'testimonial', 'faculty', 'gallery', 'knowledge', 'login'])
 })
 
 export const UploadAdminImageResponse = zod.object({
   "url": zod.string(),
-  "purpose": zod.enum(['logo', 'hero', 'campus', 'cta', 'update', 'topic', 'result', 'testimonial', 'faculty', 'gallery', 'knowledge'])
+  "purpose": zod.enum(['logo', 'hero', 'campus', 'cta', 'update', 'topic', 'result', 'testimonial', 'faculty', 'gallery', 'knowledge', 'login'])
 })
 
 

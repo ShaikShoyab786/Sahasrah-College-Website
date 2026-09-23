@@ -14,6 +14,8 @@ export const fallbackResults: HomepageResults = {
   eyebrow: 'Pride of KVR',
   heading: 'Our Results, Our Pride',
   description: 'Steady preparation, strong foundations, and focused guidance help our students turn ambition into meaningful academic achievement.',
+  viewAllButtonLabel: 'View All Achievements',
+  viewAllButtonLink: '/about#achievement-statistics',
   isVisible: true,
   sortOrder: 6,
   updatedAt: '2026-06-15T00:00:00.000Z',
@@ -77,11 +79,11 @@ export function HomeResults({ content }: { content: HomepageResults }) {
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
           <div className="max-w-2xl">
-            <SectionEyebrow className="about-eyebrow">Pride of KVR</SectionEyebrow>
+            <SectionEyebrow className="about-eyebrow">{content.eyebrow || 'Pride of KVR'}</SectionEyebrow>
             <h2 id="home-results-heading" className="mt-5 font-display text-5xl font-semibold leading-[.96] tracking-[-.05em] text-[hsl(var(--primary))] md:text-6xl">{content.heading}</h2>
             <p className="mt-5 max-w-xl text-base leading-7 text-[hsl(var(--muted-foreground))]">{content.description}</p>
           </div>
-          <a href="/about#achievement-statistics" className="group inline-flex w-fit items-center gap-2 rounded-full bg-[hsl(var(--primary))] px-5 py-3.5 text-sm font-bold text-[hsl(var(--primary-foreground))] transition hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--accent)/.3)]">View All Achievements <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" /></a>
+          <a href={content.viewAllButtonLink || '/about#achievement-statistics'} className="group inline-flex w-fit items-center gap-2 rounded-full bg-[hsl(var(--primary))] px-5 py-3.5 text-sm font-bold text-[hsl(var(--primary-foreground))] transition hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--accent)/.3)]">{content.viewAllButtonLabel || 'View All Achievements'} <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" /></a>
         </div>
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {results.map((result, index) => <ResultCard key={result.id} result={result} index={index} />)}

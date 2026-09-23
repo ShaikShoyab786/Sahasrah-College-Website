@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'wouter';
 import { BookOpen, ChevronDown, FileText, Home, LayoutDashboard, LogOut, Menu, PanelsTopLeft, Settings2, X } from 'lucide-react';
 import { useLogoutAdmin, getGetAdminSessionQueryKey, useGetSiteSettings } from '@workspace/api-client-react';
@@ -10,6 +10,9 @@ type ShellProps = { children: React.ReactNode; displayName?: string; email?: str
 
 export function AdminShell({ children, displayName = 'Administrator', email = '' }: ShellProps) {
   const [open, setOpen] = useState(false);
+  const [signOutOpen, setSignOutOpen] = useState(false);
+  const signOutButtonRef = useRef<HTMLButtonElement>(null);
+  const cancelSignOutRef = useRef<HTMLButtonElement>(null);
   const [location, setLocation] = useLocation();
   const queryClient = useQueryClient();
   const logout = useLogoutAdmin();
@@ -86,7 +89,21 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
     };
   }, [open]);
 
-  const signOut = () => logout.mutate(undefined, { onSuccess: () => { queryClient.invalidateQueries({ queryKey: getGetAdminSessionQueryKey() }); setLocation('/admin/login'); } });
+  useEffect(() => {
+    if (!signOutOpen) return;
+    cancelSignOutRef.current?.focus();
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setSignOutOpen(false);
+    };
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
+  }, [signOutOpen]);
+
+  useEffect(() => {
+    if (!signOutOpen) signOutButtonRef.current?.focus();
+  }, [signOutOpen]);
+
+  const signOut = () => logout.mutate(undefined, { onSuccess: () => { queryClient.invalidateQueries({ queryKey: getGetAdminSessionQueryKey() }); setSignOutOpen(false); setLocation('/admin/login'); } });
 
   return (
     <div className="min-h-[100dvh] bg-[hsl(var(--admin-background))] text-[hsl(var(--admin-text))]" style={themeStyle}>
@@ -161,7 +178,7 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
             <p className="mt-3 truncate text-sm font-bold" data-testid="text-admin-display-name">{displayName}</p>
             <p className="truncate text-xs text-[hsl(var(--sidebar-foreground)/.54)]" data-testid="text-admin-email">{email}</p>
           </div>
-          <button onClick={signOut} disabled={logout.isPending} className="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold text-[hsl(var(--sidebar-foreground)/.7)] transition hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]" data-testid="button-admin-logout"><LogOut size={18} /> Sign out</button>
+           <button ref={signOutButtonRef} onClick={() => setSignOutOpen(true)} disabled={logout.isPending} className="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold text-[hsl(var(--sidebar-foreground)/.7)] transition hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]" data-testid="button-admin-logout"><LogOut size={18} /> Sign out</button>
         </div>
       </aside>
       {open && <button aria-label="Close menu" className="fixed inset-0 z-20 bg-[hsl(var(--primary)/.35)] md:hidden" onClick={() => setOpen(false)} data-testid="button-menu-backdrop" />}
@@ -173,6 +190,19 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
         </header>
         <div className="admin-main-content mx-auto max-w-[1280px] px-5 py-8 pb-16 md:px-10 md:py-12 md:pb-20">{children}</div>
       </main>
+      {signOutOpen && (
+        <div className="fixed inset-0 z-50 grid place-items-center bg-[hsl(var(--primary)/.45)] p-5" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setSignOutOpen(false); }}>
+          <section role="alertdialog" aria-modal="true" aria-labelledby="sign-out-title" aria-describedby="sign-out-description" className="w-full max-w-md rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 text-[hsl(var(--foreground))] shadow-2xl motion-safe:animate-rise" onMouseDown={(event) => event.stopPropagation()}>
+            <div className="grid h-11 w-11 place-items-center rounded-xl bg-[hsl(var(--accent)/.12)] text-[hsl(var(--accent-foreground))]"><LogOut size={19} /></div>
+            <h2 id="sign-out-title" className="mt-5 font-display text-3xl font-semibold tracking-[-.03em] text-[hsl(var(--primary))]">Are you sure you want to sign out?</h2>
+            <p id="sign-out-description" className="mt-3 text-sm leading-6 text-[hsl(var(--muted-foreground))]">You will need to sign in again to access the admin dashboard.</p>
+            <div className="mt-7 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+              <button ref={cancelSignOutRef} type="button" onClick={() => setSignOutOpen(false)} className="inline-flex h-11 items-center justify-center rounded-xl border border-[hsl(var(--border))] px-4 text-sm font-bold text-[hsl(var(--foreground))] transition hover:border-[hsl(var(--accent))] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--accent)/.2)]" data-testid="button-cancel-signout">Cancel</button>
+              <button type="button" onClick={signOut} disabled={logout.isPending} className="inline-flex h-11 items-center justify-center rounded-xl bg-[hsl(var(--primary))] px-4 text-sm font-bold text-[hsl(var(--primary-foreground))] transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--accent)/.25)] disabled:opacity-60 motion-reduce:transform-none" data-testid="button-confirm-signout">{logout.isPending ? 'Signing out…' : 'Sign out'}</button>
+            </div>
+          </section>
+        </div>
+      )}
     </div>
   );
 }

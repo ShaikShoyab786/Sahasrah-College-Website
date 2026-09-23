@@ -14,6 +14,10 @@ export interface HomepageResultsInput {
   heading: string;
   /** @minLength 1 */
   description: string;
+  /** @minLength 1 */
+  viewAllButtonLabel: string;
+  /** @minLength 1 */
+  viewAllButtonLink: string;
   isVisible: boolean;
   /**
      * @minimum 1

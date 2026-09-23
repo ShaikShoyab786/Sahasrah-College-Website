@@ -43,6 +43,22 @@ export interface SiteSettings {
   surfaceColor: string;
   themePreset: string;
   footerText: string;
+  loginLeftEyebrow: string;
+  loginLeftHeading: string;
+  loginLeftHighlightedHeading: string;
+  loginLeftDescription: string;
+  loginLeftBottomText: string;
+  /** @nullable */
+  loginBackgroundImageUrl: string | null;
+  loginBackgroundImageAltText: string;
+  loginRightEyebrow: string;
+  loginRightHeading: string;
+  loginRightDescription: string;
+  loginEmailLabel: string;
+  loginPasswordLabel: string;
+  loginButtonLabel: string;
+  loginSecurityNote: string;
+  loginBackLinkLabel: string;
 }
 
 export interface SiteSettingsInput {
@@ -65,6 +81,36 @@ export interface SiteSettingsInput {
   /** @minLength 1 */
   themePreset: string;
   footerText: string;
+  /** @minLength 1 */
+  loginLeftEyebrow: string;
+  /** @minLength 1 */
+  loginLeftHeading: string;
+  /** @minLength 1 */
+  loginLeftHighlightedHeading: string;
+  /** @minLength 1 */
+  loginLeftDescription: string;
+  /** @minLength 1 */
+  loginLeftBottomText: string;
+  /** @nullable */
+  loginBackgroundImageUrl: string | null;
+  /** @minLength 1 */
+  loginBackgroundImageAltText: string;
+  /** @minLength 1 */
+  loginRightEyebrow: string;
+  /** @minLength 1 */
+  loginRightHeading: string;
+  /** @minLength 1 */
+  loginRightDescription: string;
+  /** @minLength 1 */
+  loginEmailLabel: string;
+  /** @minLength 1 */
+  loginPasswordLabel: string;
+  /** @minLength 1 */
+  loginButtonLabel: string;
+  /** @minLength 1 */
+  loginSecurityNote: string;
+  /** @minLength 1 */
+  loginBackLinkLabel: string;
 }
 
 export interface HomepageHeroSlide {
@@ -389,6 +435,8 @@ export interface HomepageResults {
   eyebrow: string;
   heading: string;
   description: string;
+  viewAllButtonLabel: string;
+  viewAllButtonLink: string;
   isVisible: boolean;
   sortOrder: number;
   updatedAt: string;
@@ -402,6 +450,10 @@ export interface HomepageResultsInput {
   heading: string;
   /** @minLength 1 */
   description: string;
+  /** @minLength 1 */
+  viewAllButtonLabel: string;
+  /** @minLength 1 */
+  viewAllButtonLink: string;
   isVisible: boolean;
   /**
      * @minimum 1
@@ -1434,6 +1486,7 @@ export const ImageUploadInputPurpose = {
   faculty: 'faculty',
   gallery: 'gallery',
   knowledge: 'knowledge',
+  login: 'login',
 } as const;
 
 export interface ImageUploadInput {
@@ -1456,6 +1509,7 @@ export const ImageUploadResultPurpose = {
   faculty: 'faculty',
   gallery: 'gallery',
   knowledge: 'knowledge',
+  login: 'login',
 } as const;
 
 export interface ImageUploadResult {

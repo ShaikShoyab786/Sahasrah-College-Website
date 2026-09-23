@@ -28,19 +28,34 @@ model AdminSession {
 }
 
 model SiteSettings {
-  id           String  @id @default("singleton")
-  collegeName  String
-  tagline      String
-  logoUrl      String?
-  email        String
-  phone        String
-  address      String
-  primaryColor String
-  accentColor  String
-  surfaceColor String @default("#F5F7FB")
-  themePreset  String @default("sahsrah-blue-red")
-  footerText   String
-  updatedAt    DateTime @updatedAt
+  id                       String  @id @default("singleton")
+  collegeName              String
+  tagline                  String
+  logoUrl                  String?
+  email                    String
+  phone                    String
+  address                  String
+  primaryColor             String
+  accentColor              String
+  surfaceColor             String @default("#F5F7FB")
+  themePreset              String @default("sahsrah-blue-red")
+  footerText               String
+  loginLeftEyebrow         String  @default("ACADEMIC ADMINISTRATION")
+  loginLeftHeading         String  @default("Manage with")
+  loginLeftHighlightedHeading String @default("clarity and purpose.")
+  loginLeftDescription      String  @default("A secure workspace for managing Sahsrah Junior College operations, academic information, student records, and institutional updates.")
+  loginLeftBottomText       String  @default("Authorized administrators only · Internal use")
+  loginBackgroundImageUrl   String?
+  loginBackgroundImageAltText String @default("Sahsrah Junior College academic administration workspace")
+  loginRightEyebrow        String  @default("ADMIN WORKSPACE")
+  loginRightHeading         String  @default("Welcome back.")
+  loginRightDescription     String  @default("Sign in to access Sahsrah's administrative workspace.")
+  loginEmailLabel           String  @default("Official email address")
+  loginPasswordLabel        String  @default("Password")
+  loginButtonLabel          String  @default("Sign in →")
+  loginSecurityNote         String  @default("This workspace is restricted to authorized Sahsrah administrators.")
+  loginBackLinkLabel        String  @default("Back to website")
+  updatedAt                 DateTime @updatedAt
 }
 
 model HomepageHero {
@@ -157,14 +172,16 @@ model HomepageFavoriteTopic {
 }
 
 model HomepageResults {
-  id          String            @id @default("singleton")
-  eyebrow     String
-  heading     String
-  description String
-  isVisible   Boolean           @default(true)
-  sortOrder   Int               @default(6)
-  updatedAt   DateTime          @updatedAt
-  results     HomepageResult[]
+  id                String            @id @default("singleton")
+  eyebrow           String
+  heading           String
+  description       String
+  viewAllButtonLabel String           @default("View All Achievements")
+  viewAllButtonLink  String           @default("/about#achievement-statistics")
+  isVisible         Boolean           @default(true)
+  sortOrder         Int               @default(6)
+  updatedAt         DateTime          @updatedAt
+  results           HomepageResult[]
 }
 
 model HomepageResult {

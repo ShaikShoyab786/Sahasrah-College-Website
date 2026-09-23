@@ -364,6 +364,7 @@ router.get("/homepage-results", async (req, res) => {
     }
     res.json(GetHomepageResultsResponse.parse({
       ...content,
+      eyebrow: content.eyebrow || "Pride of KVR",
       results: content.results.filter((result) => result.isActive),
     }));
   } catch (error) {
@@ -839,7 +840,7 @@ router.get("/admin/homepage-results", requireAdmin, async (req, res) => {
 
 router.put("/admin/homepage-results", requireAdmin, async (req, res) => {
   const parsed = UpdateHomepageResultsBody.safeParse(req.body);
-  if (!parsed.success || !hasUniqueDisplayOrders(parsed.data.results) || parsed.data.results.some((result) => !isValidImageReference(result.studentImageUrl))) {
+  if (!parsed.success || !hasUniqueDisplayOrders(parsed.data.results) || !isValidContentLink(parsed.data.viewAllButtonLink) || parsed.data.results.some((result) => !isValidImageReference(result.studentImageUrl))) {
     res.status(400).json({ error: "Check result fields, image references, and unique display orders." });
     return;
   }

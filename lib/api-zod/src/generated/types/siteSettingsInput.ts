@@ -26,4 +26,34 @@ export interface SiteSettingsInput {
   /** @minLength 1 */
   themePreset: string;
   footerText: string;
+  /** @minLength 1 */
+  loginLeftEyebrow: string;
+  /** @minLength 1 */
+  loginLeftHeading: string;
+  /** @minLength 1 */
+  loginLeftHighlightedHeading: string;
+  /** @minLength 1 */
+  loginLeftDescription: string;
+  /** @minLength 1 */
+  loginLeftBottomText: string;
+  /** @nullable */
+  loginBackgroundImageUrl: string | null;
+  /** @minLength 1 */
+  loginBackgroundImageAltText: string;
+  /** @minLength 1 */
+  loginRightEyebrow: string;
+  /** @minLength 1 */
+  loginRightHeading: string;
+  /** @minLength 1 */
+  loginRightDescription: string;
+  /** @minLength 1 */
+  loginEmailLabel: string;
+  /** @minLength 1 */
+  loginPasswordLabel: string;
+  /** @minLength 1 */
+  loginButtonLabel: string;
+  /** @minLength 1 */
+  loginSecurityNote: string;
+  /** @minLength 1 */
+  loginBackLinkLabel: string;
 }
