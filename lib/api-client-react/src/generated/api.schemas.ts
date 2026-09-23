@@ -29,6 +29,172 @@ export interface AuthSession {
   displayName: string;
 }
 
+export interface ContactSocialLink {
+  label: string;
+  href: string;
+}
+
+export interface ContactSettings {
+  id: string;
+  eyebrow: string;
+  heading: string;
+  description: string;
+  formHeading: string;
+  formDescription: string;
+  responseTimeMessage: string;
+  mainEmail: string;
+  primaryPhone: string;
+  additionalPhones: string[];
+  whatsappNumber: string;
+  address: string;
+  workingHours: string;
+  /** @nullable */
+  mapEmbedUrl: string | null;
+  mapLabel: string;
+  /** @nullable */
+  logoUrl: string | null;
+  socialLinks: ContactSocialLink[];
+  /** @minItems 1 */
+  courseOptions: string[];
+  nameLabel: string;
+  phoneLabel: string;
+  courseLabel: string;
+  emailLabel: string;
+  messageLabel: string;
+  submitButtonLabel: string;
+  successMessage: string;
+  prospectusButtonLabel: string;
+  prospectusButtonHref: string;
+  campusVisitButtonLabel: string;
+  campusVisitButtonHref: string;
+  isVisible: boolean;
+  updatedAt: string;
+}
+
+export interface ContactSocialLinkInput {
+  /** @minLength 1 */
+  label: string;
+  /** @minLength 1 */
+  href: string;
+}
+
+export interface ContactSettingsInput {
+  /** @minLength 1 */
+  eyebrow: string;
+  /** @minLength 1 */
+  heading: string;
+  description: string;
+  /** @minLength 1 */
+  formHeading: string;
+  formDescription: string;
+  responseTimeMessage: string;
+  mainEmail: string;
+  /** @minLength 1 */
+  primaryPhone: string;
+  additionalPhones: string[];
+  /** @minLength 1 */
+  whatsappNumber: string;
+  /** @minLength 1 */
+  address: string;
+  /** @minLength 1 */
+  workingHours: string;
+  /** @nullable */
+  mapEmbedUrl: string | null;
+  mapLabel: string;
+  /** @nullable */
+  logoUrl: string | null;
+  socialLinks: ContactSocialLinkInput[];
+  /**
+     * @minItems 1
+     * @maxItems 20
+     * @items.minLength 1
+     */
+  courseOptions: string[];
+  /** @minLength 1 */
+  nameLabel: string;
+  /** @minLength 1 */
+  phoneLabel: string;
+  /** @minLength 1 */
+  courseLabel: string;
+  /** @minLength 1 */
+  emailLabel: string;
+  /** @minLength 1 */
+  messageLabel: string;
+  /** @minLength 1 */
+  submitButtonLabel: string;
+  /** @minLength 1 */
+  successMessage: string;
+  /** @minLength 1 */
+  prospectusButtonLabel: string;
+  /** @minLength 1 */
+  prospectusButtonHref: string;
+  /** @minLength 1 */
+  campusVisitButtonLabel: string;
+  /** @minLength 1 */
+  campusVisitButtonHref: string;
+  isVisible: boolean;
+}
+
+export interface ContactEnquiryInput {
+  /**
+     * @minLength 2
+     * @maxLength 120
+     */
+  name: string;
+  /**
+     * @minLength 10
+     * @maxLength 14
+     */
+  phone: string;
+  /** @minLength 1 */
+  course: string;
+  /** @nullable */
+  email?: string | null;
+  /**
+     * @maxLength 2000
+     * @nullable
+     */
+  message?: string | null;
+}
+
+export interface ContactEnquirySubmission {
+  accepted: boolean;
+  enquiryId: string;
+  deliveryStatus: string;
+  message: string;
+}
+
+export interface ContactEnquiryDeliveryError {
+  error: string;
+  enquiryId: string;
+  deliveryStatus: string;
+}
+
+export interface ContactEnquiry {
+  id: string;
+  name: string;
+  phone: string;
+  course: string;
+  /** @nullable */
+  email: string | null;
+  /** @nullable */
+  message: string | null;
+  deliveryStatus: string;
+  /** @nullable */
+  deliveryError: string | null;
+  /** @nullable */
+  whatsappRecipient: string | null;
+  contacted: boolean;
+  resolved: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ContactEnquiryStatusInput {
+  contacted: boolean;
+  resolved: boolean;
+}
+
 export interface SiteSettings {
   id: string;
   collegeName: string;

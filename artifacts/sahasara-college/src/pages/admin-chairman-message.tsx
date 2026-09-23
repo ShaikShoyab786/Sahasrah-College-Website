@@ -21,7 +21,7 @@ const emptyForm: AboutChairmanMessageInput = {
   portraitImage: null,
   portraitAltText: '',
   buttonLabel: 'Read the Full Message',
-  buttonHref: '#contact',
+  buttonHref: '/contact',
   buttonVisible: false,
   isVisible: true,
   sortOrder: 3,

@@ -498,6 +498,54 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+  /contact:
+    get:
+      operationId: getContactSettings
+      tags: [public]
+      summary: Read the published Contact page settings
+      responses:
+        "200":
+          description: Contact page settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactSettings"
+        "404":
+          description: Contact page is hidden or unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /contact-enquiries:
+    post:
+      operationId: submitContactEnquiry
+      tags: [public]
+      summary: Store and deliver a Contact page enquiry through WhatsApp
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContactEnquiryInput"
+      responses:
+        "201":
+          description: Enquiry accepted by WhatsApp
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactEnquirySubmission"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "503":
+          description: Enquiry was stored but WhatsApp delivery is unavailable or failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactEnquiryDeliveryError"
   /admin/site-settings:
     put:
       operationId: updateSiteSettings
@@ -520,6 +568,117 @@ paths:
                 $ref: "#/components/schemas/SiteSettings"
         "400":
           description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/contact:
+    get:
+      operationId: getAdminContactSettings
+      tags: [admin]
+      summary: Read Contact page settings
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Contact page settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactSettings"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateContactSettings
+      tags: [admin]
+      summary: Update Contact page settings
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContactSettingsInput"
+      responses:
+        "200":
+          description: Updated Contact page settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactSettings"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/contact-enquiries:
+    get:
+      operationId: getAdminContactEnquiries
+      tags: [admin]
+      summary: Read Contact enquiries
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Contact enquiries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ContactEnquiry"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/contact-enquiries/{id}:
+    patch:
+      operationId: updateAdminContactEnquiry
+      tags: [admin]
+      summary: Update Contact enquiry follow-up state
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContactEnquiryStatusInput"
+      responses:
+        "200":
+          description: Updated Contact enquiry
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactEnquiry"
+        "404":
+          description: Enquiry not found
           content:
             application/json:
               schema:
@@ -1793,6 +1952,272 @@ components:
         - authenticated
         - email
         - displayName
+    ContactSettings:
+      type: object
+      properties:
+        id:
+          type: string
+        eyebrow:
+          type: string
+        heading:
+          type: string
+        description:
+          type: string
+        formHeading:
+          type: string
+        formDescription:
+          type: string
+        responseTimeMessage:
+          type: string
+        mainEmail:
+          type: string
+          format: email
+        primaryPhone:
+          type: string
+        additionalPhones:
+          type: array
+          items:
+            type: string
+        whatsappNumber:
+          type: string
+        address:
+          type: string
+        workingHours:
+          type: string
+        mapEmbedUrl:
+          type: ["string", "null"]
+        mapLabel:
+          type: string
+        logoUrl:
+          type: ["string", "null"]
+        socialLinks:
+          type: array
+          items:
+            $ref: "#/components/schemas/ContactSocialLink"
+        courseOptions:
+          type: array
+          minItems: 1
+          items:
+            type: string
+        nameLabel:
+          type: string
+        phoneLabel:
+          type: string
+        courseLabel:
+          type: string
+        emailLabel:
+          type: string
+        messageLabel:
+          type: string
+        submitButtonLabel:
+          type: string
+        successMessage:
+          type: string
+        prospectusButtonLabel:
+          type: string
+        prospectusButtonHref:
+          type: string
+        campusVisitButtonLabel:
+          type: string
+        campusVisitButtonHref:
+          type: string
+        isVisible:
+          type: boolean
+        updatedAt:
+          type: string
+          format: date-time
+      required: [id, eyebrow, heading, description, formHeading, formDescription, responseTimeMessage, mainEmail, primaryPhone, additionalPhones, whatsappNumber, address, workingHours, mapEmbedUrl, mapLabel, logoUrl, socialLinks, courseOptions, nameLabel, phoneLabel, courseLabel, emailLabel, messageLabel, submitButtonLabel, successMessage, prospectusButtonLabel, prospectusButtonHref, campusVisitButtonLabel, campusVisitButtonHref, isVisible, updatedAt]
+    ContactSettingsInput:
+      type: object
+      properties:
+        eyebrow:
+          type: string
+          minLength: 1
+        heading:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        formHeading:
+          type: string
+          minLength: 1
+        formDescription:
+          type: string
+        responseTimeMessage:
+          type: string
+        mainEmail:
+          type: string
+          format: email
+        primaryPhone:
+          type: string
+          minLength: 1
+        additionalPhones:
+          type: array
+          items:
+            type: string
+        whatsappNumber:
+          type: string
+          minLength: 1
+        address:
+          type: string
+          minLength: 1
+        workingHours:
+          type: string
+          minLength: 1
+        mapEmbedUrl:
+          type: ["string", "null"]
+        mapLabel:
+          type: string
+        logoUrl:
+          type: ["string", "null"]
+        socialLinks:
+          type: array
+          items:
+            $ref: "#/components/schemas/ContactSocialLinkInput"
+        courseOptions:
+          type: array
+          minItems: 1
+          maxItems: 20
+          items:
+            type: string
+            minLength: 1
+        nameLabel:
+          type: string
+          minLength: 1
+        phoneLabel:
+          type: string
+          minLength: 1
+        courseLabel:
+          type: string
+          minLength: 1
+        emailLabel:
+          type: string
+          minLength: 1
+        messageLabel:
+          type: string
+          minLength: 1
+        submitButtonLabel:
+          type: string
+          minLength: 1
+        successMessage:
+          type: string
+          minLength: 1
+        prospectusButtonLabel:
+          type: string
+          minLength: 1
+        prospectusButtonHref:
+          type: string
+          minLength: 1
+        campusVisitButtonLabel:
+          type: string
+          minLength: 1
+        campusVisitButtonHref:
+          type: string
+          minLength: 1
+        isVisible:
+          type: boolean
+      required: [eyebrow, heading, description, formHeading, formDescription, responseTimeMessage, mainEmail, primaryPhone, additionalPhones, whatsappNumber, address, workingHours, mapEmbedUrl, mapLabel, logoUrl, socialLinks, courseOptions, nameLabel, phoneLabel, courseLabel, emailLabel, messageLabel, submitButtonLabel, successMessage, prospectusButtonLabel, prospectusButtonHref, campusVisitButtonLabel, campusVisitButtonHref, isVisible]
+    ContactSocialLink:
+      type: object
+      properties:
+        label:
+          type: string
+        href:
+          type: string
+      required: [label, href]
+    ContactSocialLinkInput:
+      type: object
+      properties:
+        label:
+          type: string
+          minLength: 1
+        href:
+          type: string
+          minLength: 1
+      required: [label, href]
+    ContactEnquiryInput:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 2
+          maxLength: 120
+        phone:
+          type: string
+          minLength: 10
+          maxLength: 14
+        course:
+          type: string
+          minLength: 1
+        email:
+          type: ["string", "null"]
+          format: email
+        message:
+          type: ["string", "null"]
+          maxLength: 2000
+      required: [name, phone, course]
+    ContactEnquirySubmission:
+      type: object
+      properties:
+        accepted:
+          type: boolean
+        enquiryId:
+          type: string
+        deliveryStatus:
+          type: string
+        message:
+          type: string
+      required: [accepted, enquiryId, deliveryStatus, message]
+    ContactEnquiryDeliveryError:
+      type: object
+      properties:
+        error:
+          type: string
+        enquiryId:
+          type: string
+        deliveryStatus:
+          type: string
+      required: [error, enquiryId, deliveryStatus]
+    ContactEnquiry:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        phone:
+          type: string
+        course:
+          type: string
+        email:
+          type: ["string", "null"]
+        message:
+          type: ["string", "null"]
+        deliveryStatus:
+          type: string
+        deliveryError:
+          type: ["string", "null"]
+        whatsappRecipient:
+          type: ["string", "null"]
+        contacted:
+          type: boolean
+        resolved:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required: [id, name, phone, course, email, message, deliveryStatus, deliveryError, whatsappRecipient, contacted, resolved, createdAt, updatedAt]
+    ContactEnquiryStatusInput:
+      type: object
+      properties:
+        contacted:
+          type: boolean
+        resolved:
+          type: boolean
+      required: [contacted, resolved]
     SiteSettings:
       type: object
       properties:

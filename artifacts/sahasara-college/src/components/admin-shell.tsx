@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'wouter';
-import { BookOpen, ChevronDown, FileText, Home, LayoutDashboard, LogOut, Menu, PanelsTopLeft, Settings2, X } from 'lucide-react';
+import { BookOpen, ChevronDown, FileText, Home, LayoutDashboard, LogOut, Menu, MessageCircle, PanelsTopLeft, Settings2, X } from 'lucide-react';
 import { useLogoutAdmin, getGetAdminSessionQueryKey, useGetSiteSettings } from '@workspace/api-client-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { SiteMark } from '@/components/site-mark';
@@ -49,6 +49,7 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
   const achievementsActive = location.startsWith('/admin/pages/about/achievement-statistics');
   const faqActive = location.startsWith('/admin/pages/about/faqs');
   const admissionCtaActive = location.startsWith('/admin/pages/about/admission-cta');
+  const contactActive = location.startsWith('/admin/pages/contact');
   const nestedHomeRoute = heroActive || aboutActive || liveUpdatesActive || statisticsActive || favoriteTopicsActive || resultsActive || ribbonActive || testimonialsActive || facultyActive || galleryActive || knowledgeHubActive || admissionsFaqActive || finalCtaActive;
   const nestedAboutRoute = aboutHeroActive || aboutStoryActive || chairmanActive || principlesActive || parentChoiceActive || leadershipActive || campusHighlightsActive || achievementsActive || faqActive || admissionCtaActive;
   const [pagesOpen, setPagesOpen] = useState(false);
@@ -62,12 +63,14 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
     } else if (nestedAboutRoute) {
       setPagesOpen(true);
       setAboutOpen(true);
+    } else if (contactActive) {
+      setPagesOpen(true);
     } else {
       setPagesOpen(false);
       setHomeOpen(false);
       setAboutOpen(false);
     }
-  }, [location, nestedAboutRoute, nestedHomeRoute]);
+  }, [location, contactActive, nestedAboutRoute, nestedHomeRoute]);
 
   useEffect(() => {
     const mobile = window.matchMedia('(max-width: 767px)');
@@ -146,6 +149,12 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
                     <Link href="/admin/pages/home/final-cta" onClick={() => setOpen(false)} className={`mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5 pl-9 text-sm font-semibold transition ${finalCtaActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-home-final-cta"><PanelsTopLeft size={16} /><span>Final Admission CTA</span></Link>
                   </div>
                 )}
+              </div>
+            )}
+            {pagesOpen && (
+              <div className="mt-2 rounded-2xl bg-[hsl(var(--sidebar-accent)/.55)] p-2">
+                <Link href="/admin/pages/contact" onClick={() => setOpen(false)} className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition ${contactActive && !location.startsWith('/admin/pages/contact/enquiries') ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-contact"><MessageCircle size={16} /><span>Contact</span></Link>
+                <Link href="/admin/pages/contact/enquiries" onClick={() => setOpen(false)} className={`mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition ${location.startsWith('/admin/pages/contact/enquiries') ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-contact-enquiries"><MessageCircle size={16} /><span>Enquiries</span></Link>
               </div>
             )}
             {pagesOpen && (

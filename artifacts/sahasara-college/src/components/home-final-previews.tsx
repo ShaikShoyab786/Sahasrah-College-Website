@@ -48,7 +48,7 @@ export const fallbackFinalCta: HomepageFinalCta = {
   heading: 'Seats Are Limited. Admissions Are Open.',
   supportingText: 'Give your child the advantage of personal mentorship from experienced faculty and integrated IIT-JEE and NEET preparation. Limited admission availability for the new academic year.',
   applyButtonLabel: 'Apply Now',
-  applyButtonHref: '/#contact',
+  applyButtonHref: '/contact',
   phoneButtonLabel: 'Call Admission Office',
   phoneNumber: '',
   backgroundImage: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1800&q=85',
@@ -201,7 +201,7 @@ export function HomeAdmissionsFaq({ content }: { content: HomepageAdmissionsFaq 
           })}
         </div>
         <div className="mt-8 text-center">
-          <a href="#contact" className="group inline-flex items-center gap-2 text-sm font-bold text-[hsl(var(--primary))] underline decoration-[hsl(var(--accent)/.6)] decoration-2 underline-offset-4 transition hover:text-[hsl(var(--accent-foreground))] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--accent)/.25)]">Still have a question? Talk to admissions <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" /></a>
+          <a href="/contact" className="group inline-flex items-center gap-2 text-sm font-bold text-[hsl(var(--primary))] underline decoration-[hsl(var(--accent)/.6)] decoration-2 underline-offset-4 transition hover:text-[hsl(var(--accent-foreground))] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--accent)/.25)]">Still have a question? Talk to admissions <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" /></a>
         </div>
       </div>
     </section>

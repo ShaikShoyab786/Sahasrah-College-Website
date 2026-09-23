@@ -6,6 +6,7 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import NotFound from '@/pages/not-found';
 import Home from '@/pages/home';
 import About from '@/pages/about';
+import Contact from '@/pages/contact';
 import AdminLogin from '@/pages/admin-login';
 import AdminGuard from '@/pages/admin-guard';
 import AdminOverview from '@/pages/admin-overview';
@@ -22,6 +23,7 @@ import AdminGuidingPrinciples from '@/pages/admin-guiding-principles';
 import AdminWhyParentsChoose from '@/pages/admin-why-parents-choose';
 import AdminLeadership from '@/pages/admin-leadership';
 import { AdminAboutAchievements, AdminAboutAdmissionCta, AdminAboutCampusHighlights, AdminAboutFaq } from '@/pages/admin-about-sections';
+import { AdminContact, AdminContactEnquiries } from '@/pages/admin-contact';
 import {
   Route,
   Switch,
@@ -39,6 +41,7 @@ function Router() {
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/about" component={About} />
+        <Route path="/contact" component={Contact} />
         <Route path="/admin/login" component={AdminLogin} />
         <Route path="/admin/pages/home/hero">
           <AdminGuard><AdminHomepageHero /></AdminGuard>
@@ -108,6 +111,12 @@ function Router() {
         </Route>
         <Route path="/admin/pages/about/admission-cta">
           <AdminGuard><AdminAboutAdmissionCta /></AdminGuard>
+        </Route>
+        <Route path="/admin/pages/contact/enquiries">
+          <AdminGuard><AdminContactEnquiries /></AdminGuard>
+        </Route>
+        <Route path="/admin/pages/contact">
+          <AdminGuard><AdminContact /></AdminGuard>
         </Route>
         <Route path="/admin">
           <AdminGuard><AdminOverview /></AdminGuard>

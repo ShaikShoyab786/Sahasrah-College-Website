@@ -23,7 +23,7 @@ export function PublicFooter({ settings }: PublicFooterProps) {
           <p className="text-xs font-bold uppercase tracking-[.2em] text-[hsl(var(--accent))]">Navigate</p>
           <div className="mt-5 space-y-3 text-sm text-[hsl(var(--primary-foreground)/.7)]">
             <a href="/about" className="block hover:text-[hsl(var(--primary-foreground))]" data-testid="link-footer-about">About</a>
-            <a href="/#home-final-cta" className="block hover:text-[hsl(var(--primary-foreground))]" data-testid="link-footer-contact">Admissions</a>
+            <a href="/contact" className="block hover:text-[hsl(var(--primary-foreground))]" data-testid="link-footer-contact">Admissions</a>
             <a href="/admin/login" className="block pt-3 text-[hsl(var(--accent))] hover:text-[hsl(var(--primary-foreground))]" data-testid="link-footer-admin">Administrator sign in</a>
           </div>
         </div>

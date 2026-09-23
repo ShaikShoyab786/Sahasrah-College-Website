@@ -53,7 +53,7 @@ const ctaDefaults: HomepageFinalCtaInput = {
   heading: 'Seats Are Limited. Admissions Are Open.',
   supportingText: 'Give your child the advantage of personal mentorship from experienced faculty and integrated IIT-JEE and NEET preparation. Limited admission availability for the new academic year.',
   applyButtonLabel: 'Apply Now',
-  applyButtonHref: '/#contact',
+  applyButtonHref: '/contact',
   phoneButtonLabel: 'Call Admission Office',
   phoneNumber: '',
   backgroundImage: null,

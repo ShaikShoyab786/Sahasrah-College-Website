@@ -122,7 +122,7 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
                   {slide.description}
                 </p>
                 <div className="mt-9 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-                  <a href={slide.primaryButtonUrl || '#contact'} className="inline-flex h-13 items-center justify-center rounded-full bg-[hsl(var(--accent))] px-6 py-3.5 text-sm font-bold text-[hsl(var(--primary))] shadow-lg shadow-black/20 transition hover:-translate-y-1" data-testid={`link-hero-primary-${slide.displayOrder}`}>
+                  <a href={slide.primaryButtonUrl || '/contact'} className="inline-flex h-13 items-center justify-center rounded-full bg-[hsl(var(--accent))] px-6 py-3.5 text-sm font-bold text-[hsl(var(--primary))] shadow-lg shadow-black/20 transition hover:-translate-y-1" data-testid={`link-hero-primary-${slide.displayOrder}`}>
                     {slide.primaryButtonLabel}
                     <ArrowRight size={17} className="ml-2" />
                   </a>

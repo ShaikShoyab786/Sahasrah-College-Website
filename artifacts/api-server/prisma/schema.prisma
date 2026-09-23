@@ -58,6 +58,60 @@ model SiteSettings {
   updatedAt                 DateTime @updatedAt
 }
 
+model ContactSettings {
+  id                       String   @id @default("singleton")
+  eyebrow                  String
+  heading                  String
+  description              String
+  formHeading              String
+  formDescription          String
+  responseTimeMessage      String
+  mainEmail                String
+  primaryPhone             String
+  additionalPhones         String   @default("[]")
+  whatsappNumber           String
+  address                  String
+  workingHours             String
+  mapEmbedUrl              String?
+  mapLabel                 String
+  logoUrl                  String?
+  socialLinks              String   @default("[]")
+  courseOptions            String   @default("[\"MPC\",\"BiPC\"]")
+  nameLabel                String
+  phoneLabel               String
+  courseLabel              String
+  emailLabel               String
+  messageLabel             String
+  submitButtonLabel        String
+  successMessage           String
+  prospectusButtonLabel    String
+  prospectusButtonHref     String
+  campusVisitButtonLabel   String
+  campusVisitButtonHref    String
+  isVisible                Boolean  @default(true)
+  updatedAt                DateTime @updatedAt
+}
+
+model ContactEnquiry {
+  id                String   @id @default(cuid())
+  name              String
+  phone             String
+  course            String
+  email             String?
+  message           String?
+  deliveryStatus    String   @default("whatsapp_not_configured")
+  deliveryError     String?
+  whatsappRecipient String?
+  contacted         Boolean  @default(false)
+  resolved          Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@index([deliveryStatus])
+  @@index([contacted, resolved])
+  @@index([createdAt])
+}
+
 model HomepageHero {
   id                     String  @id @default(cuid())
   displayOrder           Int     @unique @default(1)

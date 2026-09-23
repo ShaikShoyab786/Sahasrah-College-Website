@@ -75,6 +75,43 @@ export async function initializeDatabase() {
     });
   }
 
+  await prisma.contactSettings.upsert({
+    where: { id: "singleton" },
+    update: {},
+    create: {
+      id: "singleton",
+      eyebrow: "CONTACT SAHSRAH",
+      heading: "Let’s plan the right next step.",
+      description: "Speak with our admissions team about courses, campus visits, and a focused start for your student.",
+      formHeading: "Start a conversation",
+      formDescription: "Share a few details and our admissions team will continue the conversation on WhatsApp.",
+      responseTimeMessage: "We usually respond during working hours.",
+      mainEmail: "admissions@sahsrah.edu",
+      primaryPhone: "+91 40 2458 0176",
+      additionalPhones: "[]",
+      whatsappNumber: "+91 40 2458 0176",
+      address: "18 Vidya Marg, Hyderabad, Telangana 500034",
+      workingHours: "Monday–Saturday, 9:00–16:30",
+      mapEmbedUrl: null,
+      mapLabel: "Open the campus location in Maps",
+      logoUrl: null,
+      socialLinks: "[]",
+      courseOptions: JSON.stringify(["MPC", "BiPC"]),
+      nameLabel: "Student or parent name",
+      phoneLabel: "Indian mobile number",
+      courseLabel: "Course of interest",
+      emailLabel: "Email address (optional)",
+      messageLabel: "Message (optional)",
+      submitButtonLabel: "Send enquiry on WhatsApp",
+      successMessage: "Thanks — your enquiry has reached our admissions team on WhatsApp.",
+      prospectusButtonLabel: "Request the prospectus",
+      prospectusButtonHref: "/contact",
+      campusVisitButtonLabel: "Plan a campus visit",
+      campusVisitButtonHref: "/contact",
+      isVisible: true,
+    },
+  });
+
   const heroSlides = [
     {
       displayOrder: 1,
@@ -84,7 +121,7 @@ export async function initializeDatabase() {
       description:
         "A welcoming academic environment where students build strong foundations, discover their strengths, and prepare for what comes next.",
       primaryButtonLabel: "Explore admissions",
-      primaryButtonUrl: "#contact",
+      primaryButtonUrl: "/contact",
       secondaryButtonLabel: "Discover our approach",
        secondaryButtonUrl: "#about-preview",
       heroImageUrl: null,
@@ -100,7 +137,7 @@ export async function initializeDatabase() {
       primaryButtonLabel: "See how we learn",
        primaryButtonUrl: "#about-preview",
       secondaryButtonLabel: "Meet Sahsrah",
-      secondaryButtonUrl: "#contact",
+      secondaryButtonUrl: "/contact",
       heroImageUrl: null,
       heroImageAltText: "Students collaborating in a Sahsrah classroom",
     },
@@ -112,9 +149,9 @@ export async function initializeDatabase() {
       description:
         "Choose a path that fits your strengths, then give yourself the space to discover what it can become.",
       primaryButtonLabel: "Start a conversation",
-      primaryButtonUrl: "#contact",
+      primaryButtonUrl: "/contact",
       secondaryButtonLabel: "Explore next steps",
-       secondaryButtonUrl: "#contact",
+       secondaryButtonUrl: "/contact",
       heroImageUrl: null,
       heroImageAltText: "Sahsrah students looking toward their future",
     },
@@ -161,7 +198,7 @@ export async function initializeDatabase() {
       publishDate: new Date("2026-06-15T00:00:00.000Z"),
       imageUrl: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1000&q=85",
       imageAltText: "Students collaborating around a table",
-      detailUrl: "/#contact",
+      detailUrl: "/contact",
       isFeatured: true,
       isActive: true,
       displayOrder: 1,
@@ -174,7 +211,7 @@ export async function initializeDatabase() {
       publishDate: new Date("2026-05-28T00:00:00.000Z"),
       imageUrl: "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1000&q=85",
       imageAltText: "Bright college classroom",
-      detailUrl: "/#contact",
+      detailUrl: "/contact",
       isFeatured: false,
       isActive: true,
       displayOrder: 2,
@@ -239,13 +276,13 @@ export async function initializeDatabase() {
   if ((await prisma.homepageFavoriteTopic.count({ where: { homepageFavoriteTopicsId: "singleton" } })) === 0) {
     await prisma.homepageFavoriteTopic.createMany({
       data: [
-        { homepageFavoriteTopicsId: "singleton", categoryLabel: "MPC · Integrated", title: "MPC + IIT-JEE", description: "Build strong concepts and exam confidence through a focused engineering pathway.", featureOne: "Physics, Chemistry & Maths", featureTwo: "IIT-JEE integrated preparation", featureThree: "Regular tests and feedback", imageUrl: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=1000&q=85", imageAltText: "Mathematics notes and geometry tools", icon: "atom", curriculumUrl: "/#contact", displayOrder: 1, isActive: true },
-        { homepageFavoriteTopicsId: "singleton", categoryLabel: "MPC · Integrated", title: "MPC + EAMCET", description: "A steady, practical routine for students preparing for state-level engineering admissions.", featureOne: "Concept-first classroom teaching", featureTwo: "EAMCET practice support", featureThree: "Personal progress guidance", imageUrl: "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=1000&q=85", imageAltText: "Geometry drawing on a classroom board", icon: "line-chart", curriculumUrl: "/#contact", displayOrder: 2, isActive: true },
-        { homepageFavoriteTopicsId: "singleton", categoryLabel: "MPC · Foundation", title: "MPC", description: "Strengthen the fundamentals that make higher study clearer and more confident.", featureOne: "Clear subject foundations", featureTwo: "Guided daily practice", featureThree: "Supportive doubt resolution", imageUrl: "https://images.unsplash.com/photo-1532619675605-1ede6c2ed2b0?auto=format&fit=crop&w=1000&q=85", imageAltText: "Student studying in a quiet library", icon: "book-open", curriculumUrl: "/#contact", displayOrder: 3, isActive: true },
-        { homepageFavoriteTopicsId: "singleton", categoryLabel: "BiPC · Foundation", title: "BiPC", description: "Learn biology and the sciences with structure, curiosity, and personal attention.", featureOne: "Biology, Physics & Chemistry", featureTwo: "Visual and practical learning", featureThree: "Consistent revision plans", imageUrl: "https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&w=1000&q=85", imageAltText: "Microscope and biology laboratory equipment", icon: "dna", curriculumUrl: "/#contact", displayOrder: 4, isActive: true },
-        { homepageFavoriteTopicsId: "singleton", categoryLabel: "BiPC · Integrated", title: "BiPC + NEET", description: "Prepare for medical pathways with a strong core and a calm, consistent rhythm.", featureOne: "NEET-aligned subject guidance", featureTwo: "Test analysis and revision", featureThree: "Mentorship for steady progress", imageUrl: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=85", imageAltText: "Medical science laboratory glassware", icon: "heart-pulse", curriculumUrl: "/#contact", displayOrder: 5, isActive: true },
-        { homepageFavoriteTopicsId: "singleton", categoryLabel: "NEET · Foundation", title: "NEET Foundation", description: "Start early with habits, concepts, and guidance that make later preparation stronger.", featureOne: "Early science foundations", featureTwo: "Focused study habits", featureThree: "Regular mentor check-ins", imageUrl: "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=1000&q=85", imageAltText: "Medical anatomy model and study notes", icon: "stethoscope", curriculumUrl: "/#contact", displayOrder: 6, isActive: true },
-        { homepageFavoriteTopicsId: "singleton", categoryLabel: "Competitive · Preparation", title: "Competitive Exam Preparation", description: "Develop the accuracy, speed, and resilience needed for ambitious academic goals.", featureOne: "Timed practice and analysis", featureTwo: "Exam strategy workshops", featureThree: "Confidence through repetition", imageUrl: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1000&q=85", imageAltText: "Student writing in a preparation notebook", icon: "trophy", curriculumUrl: "/#contact", displayOrder: 7, isActive: true },
+        { homepageFavoriteTopicsId: "singleton", categoryLabel: "MPC · Integrated", title: "MPC + IIT-JEE", description: "Build strong concepts and exam confidence through a focused engineering pathway.", featureOne: "Physics, Chemistry & Maths", featureTwo: "IIT-JEE integrated preparation", featureThree: "Regular tests and feedback", imageUrl: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=1000&q=85", imageAltText: "Mathematics notes and geometry tools", icon: "atom", curriculumUrl: "/contact", displayOrder: 1, isActive: true },
+        { homepageFavoriteTopicsId: "singleton", categoryLabel: "MPC · Integrated", title: "MPC + EAMCET", description: "A steady, practical routine for students preparing for state-level engineering admissions.", featureOne: "Concept-first classroom teaching", featureTwo: "EAMCET practice support", featureThree: "Personal progress guidance", imageUrl: "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=1000&q=85", imageAltText: "Geometry drawing on a classroom board", icon: "line-chart", curriculumUrl: "/contact", displayOrder: 2, isActive: true },
+        { homepageFavoriteTopicsId: "singleton", categoryLabel: "MPC · Foundation", title: "MPC", description: "Strengthen the fundamentals that make higher study clearer and more confident.", featureOne: "Clear subject foundations", featureTwo: "Guided daily practice", featureThree: "Supportive doubt resolution", imageUrl: "https://images.unsplash.com/photo-1532619675605-1ede6c2ed2b0?auto=format&fit=crop&w=1000&q=85", imageAltText: "Student studying in a quiet library", icon: "book-open", curriculumUrl: "/contact", displayOrder: 3, isActive: true },
+        { homepageFavoriteTopicsId: "singleton", categoryLabel: "BiPC · Foundation", title: "BiPC", description: "Learn biology and the sciences with structure, curiosity, and personal attention.", featureOne: "Biology, Physics & Chemistry", featureTwo: "Visual and practical learning", featureThree: "Consistent revision plans", imageUrl: "https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&w=1000&q=85", imageAltText: "Microscope and biology laboratory equipment", icon: "dna", curriculumUrl: "/contact", displayOrder: 4, isActive: true },
+        { homepageFavoriteTopicsId: "singleton", categoryLabel: "BiPC · Integrated", title: "BiPC + NEET", description: "Prepare for medical pathways with a strong core and a calm, consistent rhythm.", featureOne: "NEET-aligned subject guidance", featureTwo: "Test analysis and revision", featureThree: "Mentorship for steady progress", imageUrl: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=85", imageAltText: "Medical science laboratory glassware", icon: "heart-pulse", curriculumUrl: "/contact", displayOrder: 5, isActive: true },
+        { homepageFavoriteTopicsId: "singleton", categoryLabel: "NEET · Foundation", title: "NEET Foundation", description: "Start early with habits, concepts, and guidance that make later preparation stronger.", featureOne: "Early science foundations", featureTwo: "Focused study habits", featureThree: "Regular mentor check-ins", imageUrl: "https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=1000&q=85", imageAltText: "Medical anatomy model and study notes", icon: "stethoscope", curriculumUrl: "/contact", displayOrder: 6, isActive: true },
+        { homepageFavoriteTopicsId: "singleton", categoryLabel: "Competitive · Preparation", title: "Competitive Exam Preparation", description: "Develop the accuracy, speed, and resilience needed for ambitious academic goals.", featureOne: "Timed practice and analysis", featureTwo: "Exam strategy workshops", featureThree: "Confidence through repetition", imageUrl: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1000&q=85", imageAltText: "Student writing in a preparation notebook", icon: "trophy", curriculumUrl: "/contact", displayOrder: 7, isActive: true },
       ],
     });
   }
@@ -371,7 +408,7 @@ export async function initializeDatabase() {
       heading: "Seats Are Limited. Admissions Are Open.",
       supportingText: "Give your child the advantage of personal mentorship from experienced faculty and integrated IIT-JEE and NEET preparation. Limited admission availability for the new academic year.",
       applyButtonLabel: "Apply Now",
-      applyButtonHref: "/#contact",
+      applyButtonHref: "/contact",
       phoneButtonLabel: "Call Admission Office",
       phoneNumber: "",
       backgroundImage: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1800&q=85",
@@ -401,10 +438,10 @@ export async function initializeDatabase() {
       floatingImageUrl: null,
       floatingImageAltText: "Sahsrah students",
       primaryButtonLabel: "Apply for Admission",
-      primaryButtonUrl: "#contact",
+      primaryButtonUrl: "/contact",
       primaryButtonVisible: true,
       secondaryButtonLabel: "Schedule a Campus Visit",
-      secondaryButtonUrl: "#contact",
+      secondaryButtonUrl: "/contact",
       secondaryButtonVisible: true,
       isVisible: true,
       sortOrder: 1,
@@ -471,7 +508,7 @@ export async function initializeDatabase() {
         "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=900&q=85",
       portraitAltText: "Portrait placeholder for Sahsrah leadership",
       buttonLabel: "Read the Full Message",
-      buttonHref: "#contact",
+      buttonHref: "/contact",
       buttonVisible: false,
       isVisible: true,
       sortOrder: 3,
@@ -634,15 +671,15 @@ export async function initializeDatabase() {
       heading: "Begin Your Journey Towards Success with Sahsrah Junior College",
       supportingText: "Admissions for 2026–27 are now open. Limited seats are available for MPC, BiPC, IIT-JEE, and NEET integrated programs.",
       applyButtonLabel: "Apply Now",
-      applyButtonHref: "/#contact",
+      applyButtonHref: "/contact",
       campusVisitButtonLabel: "Book Campus Visit",
-      campusVisitButtonHref: "/#contact",
+      campusVisitButtonHref: "/contact",
       prospectusButtonLabel: "Download Prospectus",
-      prospectusButtonHref: "/#contact",
+      prospectusButtonHref: "/contact",
       backgroundImage: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1800&q=85",
       backgroundImageAltText: "Students walking across a college campus",
       counselorButtonLabel: "Talk to Admission Counselor",
-      counselorButtonHref: "/#contact",
+      counselorButtonHref: "/contact",
       admissionPhone: "+91 XXXXX XXXXX",
       workingHours: "Monday–Saturday, 9:00–16:30",
       isVisible: true,
@@ -650,14 +687,14 @@ export async function initializeDatabase() {
     },
   });
   const admissionCta = await prisma.aboutAdmissionCta.findUnique({ where: { id: "singleton" } });
-  if (admissionCta && [admissionCta.applyButtonHref, admissionCta.campusVisitButtonHref, admissionCta.prospectusButtonHref, admissionCta.counselorButtonHref].some((href) => href === "#contact" || href === "mailto:info@yourcollege.com")) {
+  if (admissionCta && [admissionCta.applyButtonHref, admissionCta.campusVisitButtonHref, admissionCta.prospectusButtonHref, admissionCta.counselorButtonHref].some((href) => href === "#contact" || href === "/#contact" || href === "mailto:info@yourcollege.com")) {
     await prisma.aboutAdmissionCta.update({
       where: { id: "singleton" },
       data: {
-        applyButtonHref: admissionCta.applyButtonHref === "#contact" ? "/#contact" : admissionCta.applyButtonHref,
-        campusVisitButtonHref: admissionCta.campusVisitButtonHref === "#contact" ? "/#contact" : admissionCta.campusVisitButtonHref,
-        prospectusButtonHref: admissionCta.prospectusButtonHref === "#contact" ? "/#contact" : admissionCta.prospectusButtonHref,
-        counselorButtonHref: admissionCta.counselorButtonHref === "#contact" || admissionCta.counselorButtonHref === "mailto:info@yourcollege.com" ? "/#contact" : admissionCta.counselorButtonHref,
+        applyButtonHref: admissionCta.applyButtonHref === "#contact" || admissionCta.applyButtonHref === "/#contact" ? "/contact" : admissionCta.applyButtonHref,
+        campusVisitButtonHref: admissionCta.campusVisitButtonHref === "#contact" || admissionCta.campusVisitButtonHref === "/#contact" ? "/contact" : admissionCta.campusVisitButtonHref,
+        prospectusButtonHref: admissionCta.prospectusButtonHref === "#contact" || admissionCta.prospectusButtonHref === "/#contact" ? "/contact" : admissionCta.prospectusButtonHref,
+        counselorButtonHref: admissionCta.counselorButtonHref === "#contact" || admissionCta.counselorButtonHref === "/#contact" || admissionCta.counselorButtonHref === "mailto:info@yourcollege.com" ? "/contact" : admissionCta.counselorButtonHref,
       },
     });
   }

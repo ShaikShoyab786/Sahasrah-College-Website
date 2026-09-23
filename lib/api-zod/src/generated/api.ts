@@ -657,6 +657,80 @@ export const GetAboutAdmissionCtaResponse = zod.object({
 
 
 /**
+ * @summary Read the published Contact page settings
+ */
+
+
+
+export const GetContactSettingsResponse = zod.object({
+  "id": zod.string(),
+  "eyebrow": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "formHeading": zod.string(),
+  "formDescription": zod.string(),
+  "responseTimeMessage": zod.string(),
+  "mainEmail": zod.string().email(),
+  "primaryPhone": zod.string(),
+  "additionalPhones": zod.array(zod.string()),
+  "whatsappNumber": zod.string(),
+  "address": zod.string(),
+  "workingHours": zod.string(),
+  "mapEmbedUrl": zod.string().nullable(),
+  "mapLabel": zod.string(),
+  "logoUrl": zod.string().nullable(),
+  "socialLinks": zod.array(zod.object({
+  "label": zod.string(),
+  "href": zod.string()
+})),
+  "courseOptions": zod.array(zod.string()).min(1),
+  "nameLabel": zod.string(),
+  "phoneLabel": zod.string(),
+  "courseLabel": zod.string(),
+  "emailLabel": zod.string(),
+  "messageLabel": zod.string(),
+  "submitButtonLabel": zod.string(),
+  "successMessage": zod.string(),
+  "prospectusButtonLabel": zod.string(),
+  "prospectusButtonHref": zod.string(),
+  "campusVisitButtonLabel": zod.string(),
+  "campusVisitButtonHref": zod.string(),
+  "isVisible": zod.boolean(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Store and deliver a Contact page enquiry through WhatsApp
+ */
+export const submitContactEnquiryBodyNameMin = 2;
+export const submitContactEnquiryBodyNameMax = 120;
+
+export const submitContactEnquiryBodyPhoneMin = 10;
+export const submitContactEnquiryBodyPhoneMax = 14;
+
+
+export const submitContactEnquiryBodyMessageMax = 2000;
+
+
+
+export const SubmitContactEnquiryBody = zod.object({
+  "name": zod.string().min(submitContactEnquiryBodyNameMin).max(submitContactEnquiryBodyNameMax),
+  "phone": zod.string().min(submitContactEnquiryBodyPhoneMin).max(submitContactEnquiryBodyPhoneMax),
+  "course": zod.string().min(1),
+  "email": zod.string().email().nullish(),
+  "message": zod.string().max(submitContactEnquiryBodyMessageMax).nullish()
+})
+
+export const SubmitContactEnquiryResponse = zod.object({
+  "accepted": zod.boolean(),
+  "enquiryId": zod.string(),
+  "deliveryStatus": zod.string(),
+  "message": zod.string()
+})
+
+
+/**
  * @summary Update public college identity settings
  */
 
@@ -739,6 +813,204 @@ export const UpdateSiteSettingsResponse = zod.object({
   "loginButtonLabel": zod.string(),
   "loginSecurityNote": zod.string(),
   "loginBackLinkLabel": zod.string()
+})
+
+
+/**
+ * @summary Read Contact page settings
+ */
+
+
+
+export const GetAdminContactSettingsResponse = zod.object({
+  "id": zod.string(),
+  "eyebrow": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "formHeading": zod.string(),
+  "formDescription": zod.string(),
+  "responseTimeMessage": zod.string(),
+  "mainEmail": zod.string().email(),
+  "primaryPhone": zod.string(),
+  "additionalPhones": zod.array(zod.string()),
+  "whatsappNumber": zod.string(),
+  "address": zod.string(),
+  "workingHours": zod.string(),
+  "mapEmbedUrl": zod.string().nullable(),
+  "mapLabel": zod.string(),
+  "logoUrl": zod.string().nullable(),
+  "socialLinks": zod.array(zod.object({
+  "label": zod.string(),
+  "href": zod.string()
+})),
+  "courseOptions": zod.array(zod.string()).min(1),
+  "nameLabel": zod.string(),
+  "phoneLabel": zod.string(),
+  "courseLabel": zod.string(),
+  "emailLabel": zod.string(),
+  "messageLabel": zod.string(),
+  "submitButtonLabel": zod.string(),
+  "successMessage": zod.string(),
+  "prospectusButtonLabel": zod.string(),
+  "prospectusButtonHref": zod.string(),
+  "campusVisitButtonLabel": zod.string(),
+  "campusVisitButtonHref": zod.string(),
+  "isVisible": zod.boolean(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Update Contact page settings
+ */
+
+
+
+
+
+
+
+
+
+
+export const updateContactSettingsBodyCourseOptionsMax = 20;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export const UpdateContactSettingsBody = zod.object({
+  "eyebrow": zod.string().min(1),
+  "heading": zod.string().min(1),
+  "description": zod.string(),
+  "formHeading": zod.string().min(1),
+  "formDescription": zod.string(),
+  "responseTimeMessage": zod.string(),
+  "mainEmail": zod.string().email(),
+  "primaryPhone": zod.string().min(1),
+  "additionalPhones": zod.array(zod.string()),
+  "whatsappNumber": zod.string().min(1),
+  "address": zod.string().min(1),
+  "workingHours": zod.string().min(1),
+  "mapEmbedUrl": zod.string().nullable(),
+  "mapLabel": zod.string(),
+  "logoUrl": zod.string().nullable(),
+  "socialLinks": zod.array(zod.object({
+  "label": zod.string().min(1),
+  "href": zod.string().min(1)
+})),
+  "courseOptions": zod.array(zod.string().min(1)).min(1).max(updateContactSettingsBodyCourseOptionsMax),
+  "nameLabel": zod.string().min(1),
+  "phoneLabel": zod.string().min(1),
+  "courseLabel": zod.string().min(1),
+  "emailLabel": zod.string().min(1),
+  "messageLabel": zod.string().min(1),
+  "submitButtonLabel": zod.string().min(1),
+  "successMessage": zod.string().min(1),
+  "prospectusButtonLabel": zod.string().min(1),
+  "prospectusButtonHref": zod.string().min(1),
+  "campusVisitButtonLabel": zod.string().min(1),
+  "campusVisitButtonHref": zod.string().min(1),
+  "isVisible": zod.boolean()
+})
+
+
+
+
+export const UpdateContactSettingsResponse = zod.object({
+  "id": zod.string(),
+  "eyebrow": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "formHeading": zod.string(),
+  "formDescription": zod.string(),
+  "responseTimeMessage": zod.string(),
+  "mainEmail": zod.string().email(),
+  "primaryPhone": zod.string(),
+  "additionalPhones": zod.array(zod.string()),
+  "whatsappNumber": zod.string(),
+  "address": zod.string(),
+  "workingHours": zod.string(),
+  "mapEmbedUrl": zod.string().nullable(),
+  "mapLabel": zod.string(),
+  "logoUrl": zod.string().nullable(),
+  "socialLinks": zod.array(zod.object({
+  "label": zod.string(),
+  "href": zod.string()
+})),
+  "courseOptions": zod.array(zod.string()).min(1),
+  "nameLabel": zod.string(),
+  "phoneLabel": zod.string(),
+  "courseLabel": zod.string(),
+  "emailLabel": zod.string(),
+  "messageLabel": zod.string(),
+  "submitButtonLabel": zod.string(),
+  "successMessage": zod.string(),
+  "prospectusButtonLabel": zod.string(),
+  "prospectusButtonHref": zod.string(),
+  "campusVisitButtonLabel": zod.string(),
+  "campusVisitButtonHref": zod.string(),
+  "isVisible": zod.boolean(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Read Contact enquiries
+ */
+export const GetAdminContactEnquiriesResponseItem = zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "phone": zod.string(),
+  "course": zod.string(),
+  "email": zod.string().nullable(),
+  "message": zod.string().nullable(),
+  "deliveryStatus": zod.string(),
+  "deliveryError": zod.string().nullable(),
+  "whatsappRecipient": zod.string().nullable(),
+  "contacted": zod.boolean(),
+  "resolved": zod.boolean(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+export const GetAdminContactEnquiriesResponse = zod.array(GetAdminContactEnquiriesResponseItem)
+
+
+/**
+ * @summary Update Contact enquiry follow-up state
+ */
+export const UpdateAdminContactEnquiryParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const UpdateAdminContactEnquiryBody = zod.object({
+  "contacted": zod.boolean(),
+  "resolved": zod.boolean()
+})
+
+export const UpdateAdminContactEnquiryResponse = zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "phone": zod.string(),
+  "course": zod.string(),
+  "email": zod.string().nullable(),
+  "message": zod.string().nullable(),
+  "deliveryStatus": zod.string(),
+  "deliveryError": zod.string().nullable(),
+  "whatsappRecipient": zod.string().nullable(),
+  "contacted": zod.boolean(),
+  "resolved": zod.boolean(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
 })
 
 
