@@ -264,6 +264,60 @@ paths:
                 maxItems: 3
                 items:
                   $ref: "#/components/schemas/HomepageGalleryItem"
+  /homepage-knowledge-hub:
+    get:
+      operationId: getHomepageKnowledgeHub
+      tags: [public]
+      summary: Read the visible homepage Knowledge Hub preview
+      responses:
+        "200":
+          description: Homepage Knowledge Hub preview
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomepageKnowledgeHub"
+        "404":
+          description: Knowledge Hub preview is hidden or unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /homepage-admissions-faq:
+    get:
+      operationId: getHomepageAdmissionsFaq
+      tags: [public]
+      summary: Read the visible homepage Admissions FAQ
+      responses:
+        "200":
+          description: Homepage Admissions FAQ
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomepageAdmissionsFaq"
+        "404":
+          description: Admissions FAQ is hidden or unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /homepage-final-cta:
+    get:
+      operationId: getHomepageFinalCta
+      tags: [public]
+      summary: Read the visible homepage final admission CTA
+      responses:
+        "200":
+          description: Homepage final admission CTA
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomepageFinalCta"
+        "404":
+          description: Final admission CTA is hidden or unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /about-hero:
     get:
       operationId: getAboutHero
@@ -979,6 +1033,159 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/HomepageGalleryItem"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/homepage-knowledge-hub:
+    get:
+      operationId: getAdminHomepageKnowledgeHub
+      tags: [admin]
+      summary: Read homepage Knowledge Hub preview for editing
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Homepage Knowledge Hub preview
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomepageKnowledgeHub"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateHomepageKnowledgeHub
+      tags: [admin]
+      summary: Update homepage Knowledge Hub preview
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HomepageKnowledgeHubInput"
+      responses:
+        "200":
+          description: Updated homepage Knowledge Hub preview
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomepageKnowledgeHub"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/homepage-admissions-faq:
+    get:
+      operationId: getAdminHomepageAdmissionsFaq
+      tags: [admin]
+      summary: Read homepage Admissions FAQ for editing
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Homepage Admissions FAQ
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomepageAdmissionsFaq"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateHomepageAdmissionsFaq
+      tags: [admin]
+      summary: Update homepage Admissions FAQ
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HomepageAdmissionsFaqInput"
+      responses:
+        "200":
+          description: Updated homepage Admissions FAQ
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomepageAdmissionsFaq"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/homepage-final-cta:
+    get:
+      operationId: getAdminHomepageFinalCta
+      tags: [admin]
+      summary: Read homepage final admission CTA for editing
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Homepage final admission CTA
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomepageFinalCta"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateHomepageFinalCta
+      tags: [admin]
+      summary: Update homepage final admission CTA
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HomepageFinalCtaInput"
+      responses:
+        "200":
+          description: Updated homepage final admission CTA
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomepageFinalCta"
         "400":
           description: Validation error
           content:
@@ -2392,6 +2599,273 @@ components:
           items:
             $ref: "#/components/schemas/HomepageTestimonialInput"
       required: [eyebrow, heading, description, isVisible, sortOrder, testimonials]
+    HomepageKnowledgeResource:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        category:
+          type: string
+        thumbnailUrl:
+          type: ["string", "null"]
+        thumbnailAltText:
+          type: string
+        icon:
+          type: ["string", "null"]
+        fileSize:
+          type: ["string", "null"]
+        downloadCount:
+          type: ["integer", "null"]
+        updatedLabel:
+          type: ["string", "null"]
+        resourceUrl:
+          type: string
+        isFeatured:
+          type: boolean
+        isActive:
+          type: boolean
+        displayOrder:
+          type: integer
+      required: [id, title, description, category, thumbnailUrl, thumbnailAltText, icon, fileSize, downloadCount, updatedLabel, resourceUrl, isFeatured, isActive, displayOrder]
+    HomepageKnowledgeResourceInput:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+        description:
+          type: string
+          minLength: 1
+          maxLength: 280
+        category:
+          type: string
+          minLength: 1
+        thumbnailUrl:
+          type: ["string", "null"]
+        thumbnailAltText:
+          type: string
+          minLength: 1
+        icon:
+          type: ["string", "null"]
+        fileSize:
+          type: ["string", "null"]
+        downloadCount:
+          type: ["integer", "null"]
+          minimum: 0
+        updatedLabel:
+          type: ["string", "null"]
+        resourceUrl:
+          type: string
+          minLength: 1
+        isFeatured:
+          type: boolean
+        isActive:
+          type: boolean
+        displayOrder:
+          type: integer
+          minimum: 1
+          maximum: 20
+      required: [title, description, category, thumbnailUrl, thumbnailAltText, icon, fileSize, downloadCount, updatedLabel, resourceUrl, isFeatured, isActive, displayOrder]
+    HomepageKnowledgeHub:
+      type: object
+      properties:
+        id:
+          type: string
+        eyebrow:
+          type: string
+        heading:
+          type: string
+        description:
+          type: string
+        isVisible:
+          type: boolean
+        sortOrder:
+          type: integer
+        updatedAt:
+          type: string
+          format: date-time
+        resources:
+          type: array
+          items:
+            $ref: "#/components/schemas/HomepageKnowledgeResource"
+      required: [id, eyebrow, heading, description, isVisible, sortOrder, updatedAt, resources]
+    HomepageKnowledgeHubInput:
+      type: object
+      properties:
+        eyebrow:
+          type: string
+          minLength: 1
+        heading:
+          type: string
+          minLength: 1
+        description:
+          type: string
+          minLength: 1
+        isVisible:
+          type: boolean
+        sortOrder:
+          type: integer
+          minimum: 1
+          maximum: 20
+        resources:
+          type: array
+          minItems: 1
+          maxItems: 20
+          items:
+            $ref: "#/components/schemas/HomepageKnowledgeResourceInput"
+      required: [eyebrow, heading, description, isVisible, sortOrder, resources]
+    HomepageAdmissionsFaqItem:
+      type: object
+      properties:
+        id:
+          type: string
+        question:
+          type: string
+        answer:
+          type: string
+        displayOrder:
+          type: integer
+        isVisible:
+          type: boolean
+      required: [id, question, answer, displayOrder, isVisible]
+    HomepageAdmissionsFaqItemInput:
+      type: object
+      properties:
+        question:
+          type: string
+          minLength: 1
+        answer:
+          type: string
+          minLength: 1
+        displayOrder:
+          type: integer
+          minimum: 1
+          maximum: 20
+        isVisible:
+          type: boolean
+      required: [question, answer, displayOrder, isVisible]
+    HomepageAdmissionsFaq:
+      type: object
+      properties:
+        id:
+          type: string
+        eyebrow:
+          type: string
+        heading:
+          type: string
+        description:
+          type: string
+        isVisible:
+          type: boolean
+        sortOrder:
+          type: integer
+        updatedAt:
+          type: string
+          format: date-time
+        questions:
+          type: array
+          items:
+            $ref: "#/components/schemas/HomepageAdmissionsFaqItem"
+      required: [id, eyebrow, heading, description, isVisible, sortOrder, updatedAt, questions]
+    HomepageAdmissionsFaqInput:
+      type: object
+      properties:
+        eyebrow:
+          type: string
+          minLength: 1
+        heading:
+          type: string
+          minLength: 1
+        description:
+          type: string
+          minLength: 1
+        isVisible:
+          type: boolean
+        sortOrder:
+          type: integer
+          minimum: 1
+          maximum: 20
+        questions:
+          type: array
+          minItems: 1
+          maxItems: 20
+          items:
+            $ref: "#/components/schemas/HomepageAdmissionsFaqItemInput"
+      required: [eyebrow, heading, description, isVisible, sortOrder, questions]
+    HomepageFinalCta:
+      type: object
+      properties:
+        id:
+          type: string
+        eyebrow:
+          type: string
+        heading:
+          type: string
+        supportingText:
+          type: string
+        applyButtonLabel:
+          type: string
+        applyButtonHref:
+          type: string
+        phoneButtonLabel:
+          type: string
+        phoneNumber:
+          type: string
+        backgroundImage:
+          type: ["string", "null"]
+        backgroundImageAltText:
+          type: string
+        backgroundOverlay:
+          type: boolean
+        isVisible:
+          type: boolean
+        sortOrder:
+          type: integer
+        updatedAt:
+          type: string
+          format: date-time
+      required: [id, eyebrow, heading, supportingText, applyButtonLabel, applyButtonHref, phoneButtonLabel, phoneNumber, backgroundImage, backgroundImageAltText, backgroundOverlay, isVisible, sortOrder, updatedAt]
+    HomepageFinalCtaInput:
+      type: object
+      properties:
+        eyebrow:
+          type: string
+          minLength: 1
+        heading:
+          type: string
+          minLength: 1
+        supportingText:
+          type: string
+          minLength: 1
+        applyButtonLabel:
+          type: string
+          minLength: 1
+        applyButtonHref:
+          type: string
+          minLength: 1
+        phoneButtonLabel:
+          type: string
+          minLength: 1
+        phoneNumber:
+          type: string
+        backgroundImage:
+          type: ["string", "null"]
+        backgroundImageAltText:
+          type: string
+          minLength: 1
+        backgroundOverlay:
+          type: boolean
+        isVisible:
+          type: boolean
+        sortOrder:
+          type: integer
+          minimum: 1
+          maximum: 20
+      required: [eyebrow, heading, supportingText, applyButtonLabel, applyButtonHref, phoneButtonLabel, phoneNumber, backgroundImage, backgroundImageAltText, backgroundOverlay, isVisible, sortOrder]
     HomepageFacultyMember:
       type: object
       properties:
@@ -3658,7 +4132,7 @@ components:
           format: binary
         purpose:
           type: string
-          enum: [logo, hero, campus, cta, update, topic, result, testimonial, faculty, gallery]
+          enum: [logo, hero, campus, cta, update, topic, result, testimonial, faculty, gallery, knowledge]
       required:
         - file
         - purpose
@@ -3669,7 +4143,7 @@ components:
           type: string
         purpose:
           type: string
-          enum: [logo, hero, campus, cta, update, topic]
+          enum: [logo, hero, campus, cta, update, topic, result, testimonial, faculty, gallery, knowledge]
       required:
         - url
         - purpose

@@ -536,6 +536,192 @@ export interface HomepageTestimonialsInput {
   testimonials: HomepageTestimonialInput[];
 }
 
+export interface HomepageKnowledgeResource {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  /** @nullable */
+  thumbnailUrl: string | null;
+  thumbnailAltText: string;
+  /** @nullable */
+  icon: string | null;
+  /** @nullable */
+  fileSize: string | null;
+  /** @nullable */
+  downloadCount: number | null;
+  /** @nullable */
+  updatedLabel: string | null;
+  resourceUrl: string;
+  isFeatured: boolean;
+  isActive: boolean;
+  displayOrder: number;
+}
+
+export interface HomepageKnowledgeResourceInput {
+  /** @minLength 1 */
+  title: string;
+  /**
+     * @minLength 1
+     * @maxLength 280
+     */
+  description: string;
+  /** @minLength 1 */
+  category: string;
+  /** @nullable */
+  thumbnailUrl: string | null;
+  /** @minLength 1 */
+  thumbnailAltText: string;
+  /** @nullable */
+  icon: string | null;
+  /** @nullable */
+  fileSize: string | null;
+  /**
+     * @minimum 0
+     * @nullable
+     */
+  downloadCount: number | null;
+  /** @nullable */
+  updatedLabel: string | null;
+  /** @minLength 1 */
+  resourceUrl: string;
+  isFeatured: boolean;
+  isActive: boolean;
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  displayOrder: number;
+}
+
+export interface HomepageKnowledgeHub {
+  id: string;
+  eyebrow: string;
+  heading: string;
+  description: string;
+  isVisible: boolean;
+  sortOrder: number;
+  updatedAt: string;
+  resources: HomepageKnowledgeResource[];
+}
+
+export interface HomepageKnowledgeHubInput {
+  /** @minLength 1 */
+  eyebrow: string;
+  /** @minLength 1 */
+  heading: string;
+  /** @minLength 1 */
+  description: string;
+  isVisible: boolean;
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  sortOrder: number;
+  /**
+     * @minItems 1
+     * @maxItems 20
+     */
+  resources: HomepageKnowledgeResourceInput[];
+}
+
+export interface HomepageAdmissionsFaqItem {
+  id: string;
+  question: string;
+  answer: string;
+  displayOrder: number;
+  isVisible: boolean;
+}
+
+export interface HomepageAdmissionsFaqItemInput {
+  /** @minLength 1 */
+  question: string;
+  /** @minLength 1 */
+  answer: string;
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  displayOrder: number;
+  isVisible: boolean;
+}
+
+export interface HomepageAdmissionsFaq {
+  id: string;
+  eyebrow: string;
+  heading: string;
+  description: string;
+  isVisible: boolean;
+  sortOrder: number;
+  updatedAt: string;
+  questions: HomepageAdmissionsFaqItem[];
+}
+
+export interface HomepageAdmissionsFaqInput {
+  /** @minLength 1 */
+  eyebrow: string;
+  /** @minLength 1 */
+  heading: string;
+  /** @minLength 1 */
+  description: string;
+  isVisible: boolean;
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  sortOrder: number;
+  /**
+     * @minItems 1
+     * @maxItems 20
+     */
+  questions: HomepageAdmissionsFaqItemInput[];
+}
+
+export interface HomepageFinalCta {
+  id: string;
+  eyebrow: string;
+  heading: string;
+  supportingText: string;
+  applyButtonLabel: string;
+  applyButtonHref: string;
+  phoneButtonLabel: string;
+  phoneNumber: string;
+  /** @nullable */
+  backgroundImage: string | null;
+  backgroundImageAltText: string;
+  backgroundOverlay: boolean;
+  isVisible: boolean;
+  sortOrder: number;
+  updatedAt: string;
+}
+
+export interface HomepageFinalCtaInput {
+  /** @minLength 1 */
+  eyebrow: string;
+  /** @minLength 1 */
+  heading: string;
+  /** @minLength 1 */
+  supportingText: string;
+  /** @minLength 1 */
+  applyButtonLabel: string;
+  /** @minLength 1 */
+  applyButtonHref: string;
+  /** @minLength 1 */
+  phoneButtonLabel: string;
+  phoneNumber: string;
+  /** @nullable */
+  backgroundImage: string | null;
+  /** @minLength 1 */
+  backgroundImageAltText: string;
+  backgroundOverlay: boolean;
+  isVisible: boolean;
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  sortOrder: number;
+}
+
 export interface HomepageFacultyMember {
   id: string;
   /** @nullable */
@@ -1241,6 +1427,7 @@ export const ImageUploadInputPurpose = {
   testimonial: 'testimonial',
   faculty: 'faculty',
   gallery: 'gallery',
+  knowledge: 'knowledge',
 } as const;
 
 export interface ImageUploadInput {
@@ -1258,6 +1445,11 @@ export const ImageUploadResultPurpose = {
   cta: 'cta',
   update: 'update',
   topic: 'topic',
+  result: 'result',
+  testimonial: 'testimonial',
+  faculty: 'faculty',
+  gallery: 'gallery',
+  knowledge: 'knowledge',
 } as const;
 
 export interface ImageUploadResult {

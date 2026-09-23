@@ -1,5 +1,5 @@
 import { ArrowRight, Mail, MapPin, Phone, Quote } from 'lucide-react';
-import { useGetHomepageAboutPreview, useGetHomepageAchievementRibbon, useGetHomepageFaculty, useGetHomepageFavoriteTopics, useGetHomepageGallery, useGetHomepageHero, useGetHomepageLiveUpdates, useGetHomepageResults, useGetHomepageStatistics, useGetHomepageTestimonials, useGetSiteSettings, type HomepageFavoriteTopics, type HomepageLiveUpdate, type HomepageStatistics } from '@workspace/api-client-react';
+import { useGetHomepageAboutPreview, useGetHomepageAchievementRibbon, useGetHomepageAdmissionsFaq, useGetHomepageFaculty, useGetHomepageFavoriteTopics, useGetHomepageFinalCta, useGetHomepageGallery, useGetHomepageHero, useGetHomepageKnowledgeHub, useGetHomepageLiveUpdates, useGetHomepageResults, useGetHomepageStatistics, useGetHomepageTestimonials, useGetSiteSettings, type HomepageFavoriteTopics, type HomepageLiveUpdate, type HomepageStatistics } from '@workspace/api-client-react';
 import { HeroCarousel } from '@/components/hero-carousel';
 import { AboutPreview } from '@/components/about-preview';
 import { SiteMark } from '@/components/site-mark';
@@ -7,6 +7,7 @@ import { HomeLiveUpdates } from '@/components/home-live-updates';
 import { HomeStatistics } from '@/components/home-statistics';
 import { FavoriteTopics } from '@/components/favorite-topics';
 import { AchievementRibbon, fallbackFaculty, fallbackGallery, fallbackRibbon, fallbackResults, fallbackTestimonials, HomeFaculty, HomeGallery, HomeResults, HomeTestimonials } from '@/components/home-previews';
+import { fallbackAdmissionsFaq, fallbackFinalCta, fallbackKnowledgeHub, HomeAdmissionsFaq, HomeFinalCta, HomeKnowledgeHub } from '@/components/home-final-previews';
 
 const fallbackSettings = {
   collegeName: 'Sahasara Junior College',
@@ -156,11 +157,17 @@ export default function Home() {
   const testimonialsQuery = useGetHomepageTestimonials();
   const facultyQuery = useGetHomepageFaculty();
   const galleryQuery = useGetHomepageGallery();
+  const knowledgeHubQuery = useGetHomepageKnowledgeHub();
+  const admissionsFaqQuery = useGetHomepageAdmissionsFaq();
+  const finalCtaQuery = useGetHomepageFinalCta();
   if (settingsQuery.isLoading || heroQuery.isLoading) return <HomeSkeleton />;
   const settings = settingsQuery.data ?? fallbackSettings;
   const slides = heroQuery.data?.length === 3 ? heroQuery.data : fallbackHeroSlides;
   const primaryColor = settings.primaryColor || '#102846';
   const accentColor = settings.accentColor || '#D6AD59';
+  const knowledgeHub = knowledgeHubQuery.isError ? null : (knowledgeHubQuery.data ?? fallbackKnowledgeHub);
+  const admissionsFaq = admissionsFaqQuery.isError ? null : (admissionsFaqQuery.data ?? fallbackAdmissionsFaq);
+  const finalCta = finalCtaQuery.isError ? null : (finalCtaQuery.data ?? { ...fallbackFinalCta, phoneNumber: settings.phone });
 
   return (
     <div className="paper-grain overflow-hidden bg-[hsl(var(--background))]" style={{ '--site-primary': primaryColor, '--site-accent': accentColor } as React.CSSProperties}>
@@ -186,6 +193,9 @@ export default function Home() {
         <HomeTestimonials content={testimonialsQuery.data?.isVisible ? testimonialsQuery.data : fallbackTestimonials} />
         <HomeFaculty faculty={facultyQuery.data?.length ? facultyQuery.data : fallbackFaculty} />
         <HomeGallery gallery={galleryQuery.data?.length ? galleryQuery.data : fallbackGallery} />
+        {knowledgeHub?.isVisible && <HomeKnowledgeHub content={knowledgeHub} />}
+        {admissionsFaq?.isVisible && <HomeAdmissionsFaq content={admissionsFaq} />}
+        {finalCta?.isVisible && <HomeFinalCta content={finalCta} />}
 
         <section id="contact" className="mx-auto max-w-7xl px-6 py-24 lg:px-10 lg:py-32">
           <div className="grid overflow-hidden rounded-[2rem] bg-[hsl(var(--accent))] text-[hsl(var(--primary))] lg:grid-cols-[1.1fr_.9fr]">

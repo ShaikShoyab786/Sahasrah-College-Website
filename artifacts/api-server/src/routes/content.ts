@@ -25,6 +25,9 @@ import {
   GetAdminHomepageAchievementRibbonResponse,
   GetAdminHomepageFacultyResponse,
   GetAdminHomepageGalleryResponse,
+  GetAdminHomepageKnowledgeHubResponse,
+  GetAdminHomepageAdmissionsFaqResponse,
+  GetAdminHomepageFinalCtaResponse,
   GetAdminHomepageResultsResponse,
   GetAdminHomepageLiveUpdatesResponse,
   GetAdminHomepageStatisticsResponse,
@@ -34,6 +37,9 @@ import {
   GetHomepageFacultyResponse,
   GetHomepageFavoriteTopicsResponse,
   GetHomepageGalleryResponse,
+  GetHomepageKnowledgeHubResponse,
+  GetHomepageAdmissionsFaqResponse,
+  GetHomepageFinalCtaResponse,
   GetHomepageLiveUpdatesResponse,
   GetHomepageResultsResponse,
   GetHomepageStatisticsResponse,
@@ -69,6 +75,12 @@ import {
   UpdateHomepageFacultyResponse,
   UpdateHomepageGalleryBody,
   UpdateHomepageGalleryResponse,
+  UpdateHomepageKnowledgeHubBody,
+  UpdateHomepageKnowledgeHubResponse,
+  UpdateHomepageAdmissionsFaqBody,
+  UpdateHomepageAdmissionsFaqResponse,
+  UpdateHomepageFinalCtaBody,
+  UpdateHomepageFinalCtaResponse,
   UpdateHomepageLiveUpdatesBody,
   UpdateHomepageResultsBody,
   UpdateHomepageResultsResponse,
@@ -179,6 +191,24 @@ async function readHomepageTestimonials() {
   });
 }
 
+async function readHomepageKnowledgeHub() {
+  return prisma.homepageKnowledgeHub.findUnique({
+    where: { id: "singleton" },
+    include: { resources: { orderBy: { displayOrder: "asc" } } },
+  });
+}
+
+async function readHomepageAdmissionsFaq() {
+  return prisma.homepageAdmissionsFaq.findUnique({
+    where: { id: "singleton" },
+    include: { questions: { orderBy: { displayOrder: "asc" } } },
+  });
+}
+
+async function readHomepageFinalCta() {
+  return prisma.homepageFinalCta.findUnique({ where: { id: "singleton" } });
+}
+
 async function readHomepageFaculty() {
   const content = await prisma.aboutLeadership.findUnique({
     where: { id: "singleton" },
@@ -222,6 +252,14 @@ function hasUniqueDisplayOrders(items: Array<{ displayOrder: number }>) {
 
 function isValidImageReference(value: string | null) {
   return value === null || value.startsWith("/api/uploads/") || value.startsWith("https://") || value.startsWith("http://");
+}
+
+function isValidContentLink(value: string) {
+  return value.startsWith("/") || value.startsWith("#") || value.startsWith("https://") || value.startsWith("http://");
+}
+
+function isValidPhoneNumber(value: string | null | undefined) {
+  return Boolean(value && value.replace(/\D/g, "").length >= 7);
 }
 
 router.get("/site-settings", async (req, res) => {
@@ -387,6 +425,58 @@ router.get("/homepage-gallery", async (req, res) => {
   } catch (error) {
     req.log.error({ err: error }, "Unable to read homepage gallery");
     res.status(500).json({ error: "Unable to load homepage gallery." });
+  }
+});
+
+router.get("/homepage-knowledge-hub", async (req, res) => {
+  try {
+    const content = await readHomepageKnowledgeHub();
+    if (!content || !content.isVisible) {
+      res.status(404).json({ error: "Homepage Knowledge Hub preview is not available." });
+      return;
+    }
+    res.json(GetHomepageKnowledgeHubResponse.parse({
+      ...content,
+      resources: content.resources.filter((resource) => resource.isActive),
+    }));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read homepage Knowledge Hub preview");
+    res.status(500).json({ error: "Unable to load homepage Knowledge Hub preview." });
+  }
+});
+
+router.get("/homepage-admissions-faq", async (req, res) => {
+  try {
+    const content = await readHomepageAdmissionsFaq();
+    if (!content || !content.isVisible) {
+      res.status(404).json({ error: "Homepage Admissions FAQ is not available." });
+      return;
+    }
+    res.json(GetHomepageAdmissionsFaqResponse.parse({
+      ...content,
+      questions: content.questions.filter((question) => question.isVisible && question.question.trim() && question.answer.trim()),
+    }));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read homepage Admissions FAQ");
+    res.status(500).json({ error: "Unable to load homepage Admissions FAQ." });
+  }
+});
+
+router.get("/homepage-final-cta", async (req, res) => {
+  try {
+    const content = await readHomepageFinalCta();
+    if (!content || !content.isVisible) {
+      res.status(404).json({ error: "Homepage final admission CTA is not available." });
+      return;
+    }
+    const settings = await prisma.siteSettings.findUnique({ where: { id: "singleton" } });
+    res.json(GetHomepageFinalCtaResponse.parse({
+      ...content,
+      phoneNumber: isValidPhoneNumber(content.phoneNumber) ? content.phoneNumber.trim() : (isValidPhoneNumber(settings?.phone) ? settings?.phone ?? "" : ""),
+    }));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read homepage final admission CTA");
+    res.status(500).json({ error: "Unable to load homepage final admission CTA." });
   }
 });
 
@@ -981,6 +1071,131 @@ router.put("/admin/homepage-gallery", requireAdmin, async (req, res) => {
   } catch (error) {
     req.log.error({ err: error }, "Unable to update homepage gallery");
     res.status(500).json({ error: "Unable to save homepage gallery." });
+  }
+});
+
+router.get("/admin/homepage-knowledge-hub", requireAdmin, async (req, res) => {
+  try {
+    const content = await readHomepageKnowledgeHub();
+    if (!content) {
+      res.status(404).json({ error: "Homepage Knowledge Hub preview is not available." });
+      return;
+    }
+    res.json(GetAdminHomepageKnowledgeHubResponse.parse(content));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read admin homepage Knowledge Hub preview");
+    res.status(500).json({ error: "Unable to load homepage Knowledge Hub preview." });
+  }
+});
+
+router.put("/admin/homepage-knowledge-hub", requireAdmin, async (req, res) => {
+  const parsed = UpdateHomepageKnowledgeHubBody.safeParse(req.body);
+  if (
+    !parsed.success ||
+    !hasUniqueDisplayOrders(parsed.data.resources) ||
+    parsed.data.resources.some((resource) => !isValidImageReference(resource.thumbnailUrl) || !isValidContentLink(resource.resourceUrl))
+  ) {
+    res.status(400).json({ error: "Check Knowledge Hub fields, resource links, image references, and unique display orders." });
+    return;
+  }
+  try {
+    const { resources, ...sectionData } = parsed.data;
+    await prisma.$transaction(async (tx) => {
+      await tx.homepageKnowledgeHub.upsert({
+        where: { id: "singleton" },
+        update: sectionData,
+        create: { id: "singleton", ...sectionData },
+      });
+      await tx.homepageKnowledgeResource.deleteMany({ where: { homepageKnowledgeHubId: "singleton" } });
+      await tx.homepageKnowledgeResource.createMany({
+        data: resources.map((resource) => ({ ...resource, homepageKnowledgeHubId: "singleton" })),
+      });
+    });
+    res.json(UpdateHomepageKnowledgeHubResponse.parse(await readHomepageKnowledgeHub()));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to update homepage Knowledge Hub preview");
+    res.status(500).json({ error: "Unable to save homepage Knowledge Hub preview." });
+  }
+});
+
+router.get("/admin/homepage-admissions-faq", requireAdmin, async (req, res) => {
+  try {
+    const content = await readHomepageAdmissionsFaq();
+    if (!content) {
+      res.status(404).json({ error: "Homepage Admissions FAQ is not available." });
+      return;
+    }
+    res.json(GetAdminHomepageAdmissionsFaqResponse.parse(content));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read admin homepage Admissions FAQ");
+    res.status(500).json({ error: "Unable to load homepage Admissions FAQ." });
+  }
+});
+
+router.put("/admin/homepage-admissions-faq", requireAdmin, async (req, res) => {
+  const parsed = UpdateHomepageAdmissionsFaqBody.safeParse(req.body);
+  if (!parsed.success || !hasUniqueDisplayOrders(parsed.data.questions) || parsed.data.questions.some((question) => !question.question.trim() || !question.answer.trim())) {
+    res.status(400).json({ error: "Check FAQ questions, answers, and unique display orders." });
+    return;
+  }
+  try {
+    const { questions, ...sectionData } = parsed.data;
+    await prisma.$transaction(async (tx) => {
+      await tx.homepageAdmissionsFaq.upsert({
+        where: { id: "singleton" },
+        update: sectionData,
+        create: { id: "singleton", ...sectionData },
+      });
+      await tx.homepageAdmissionsFaqItem.deleteMany({ where: { homepageAdmissionsFaqId: "singleton" } });
+      await tx.homepageAdmissionsFaqItem.createMany({
+        data: questions.map((question) => ({ ...question, homepageAdmissionsFaqId: "singleton" })),
+      });
+    });
+    res.json(UpdateHomepageAdmissionsFaqResponse.parse(await readHomepageAdmissionsFaq()));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to update homepage Admissions FAQ");
+    res.status(500).json({ error: "Unable to save homepage Admissions FAQ." });
+  }
+});
+
+router.get("/admin/homepage-final-cta", requireAdmin, async (req, res) => {
+  try {
+    const content = await readHomepageFinalCta();
+    if (!content) {
+      res.status(404).json({ error: "Homepage final admission CTA is not available." });
+      return;
+    }
+    const settings = await prisma.siteSettings.findUnique({ where: { id: "singleton" } });
+    res.json(GetAdminHomepageFinalCtaResponse.parse({
+      ...content,
+      phoneNumber: isValidPhoneNumber(content.phoneNumber) ? content.phoneNumber.trim() : (isValidPhoneNumber(settings?.phone) ? settings?.phone ?? "" : ""),
+    }));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read admin homepage final admission CTA");
+    res.status(500).json({ error: "Unable to load homepage final admission CTA." });
+  }
+});
+
+router.put("/admin/homepage-final-cta", requireAdmin, async (req, res) => {
+  const parsed = UpdateHomepageFinalCtaBody.safeParse(req.body);
+  if (!parsed.success || !isValidImageReference(parsed.data.backgroundImage) || !isValidContentLink(parsed.data.applyButtonHref)) {
+    res.status(400).json({ error: "Check final CTA fields, application link, and background image reference." });
+    return;
+  }
+  try {
+    const content = await prisma.homepageFinalCta.upsert({
+      where: { id: "singleton" },
+      update: parsed.data,
+      create: { id: "singleton", ...parsed.data },
+    });
+    const settings = await prisma.siteSettings.findUnique({ where: { id: "singleton" } });
+    res.json(UpdateHomepageFinalCtaResponse.parse({
+      ...content,
+      phoneNumber: isValidPhoneNumber(content.phoneNumber) ? content.phoneNumber.trim() : (isValidPhoneNumber(settings?.phone) ? settings?.phone ?? "" : ""),
+    }));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to update homepage final admission CTA");
+    res.status(500).json({ error: "Unable to save homepage final admission CTA." });
   }
 });
 

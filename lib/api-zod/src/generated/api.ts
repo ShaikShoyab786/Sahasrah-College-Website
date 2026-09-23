@@ -303,6 +303,78 @@ export const GetHomepageGalleryResponse = zod.array(GetHomepageGalleryResponseIt
 
 
 /**
+ * @summary Read the visible homepage Knowledge Hub preview
+ */
+export const GetHomepageKnowledgeHubResponse = zod.object({
+  "id": zod.string(),
+  "eyebrow": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date(),
+  "resources": zod.array(zod.object({
+  "id": zod.string(),
+  "title": zod.string(),
+  "description": zod.string(),
+  "category": zod.string(),
+  "thumbnailUrl": zod.string().nullable(),
+  "thumbnailAltText": zod.string(),
+  "icon": zod.string().nullable(),
+  "fileSize": zod.string().nullable(),
+  "downloadCount": zod.number().int().nullable(),
+  "updatedLabel": zod.string().nullable(),
+  "resourceUrl": zod.string(),
+  "isFeatured": zod.boolean(),
+  "isActive": zod.boolean(),
+  "displayOrder": zod.number().int()
+}))
+})
+
+
+/**
+ * @summary Read the visible homepage Admissions FAQ
+ */
+export const GetHomepageAdmissionsFaqResponse = zod.object({
+  "id": zod.string(),
+  "eyebrow": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date(),
+  "questions": zod.array(zod.object({
+  "id": zod.string(),
+  "question": zod.string(),
+  "answer": zod.string(),
+  "displayOrder": zod.number().int(),
+  "isVisible": zod.boolean()
+}))
+})
+
+
+/**
+ * @summary Read the visible homepage final admission CTA
+ */
+export const GetHomepageFinalCtaResponse = zod.object({
+  "id": zod.string(),
+  "eyebrow": zod.string(),
+  "heading": zod.string(),
+  "supportingText": zod.string(),
+  "applyButtonLabel": zod.string(),
+  "applyButtonHref": zod.string(),
+  "phoneButtonLabel": zod.string(),
+  "phoneNumber": zod.string(),
+  "backgroundImage": zod.string().nullable(),
+  "backgroundImageAltText": zod.string(),
+  "backgroundOverlay": zod.boolean(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
  * @summary Read the visible About page hero
  */
 export const getAboutHeroResponseStatsMin = 4;
@@ -1316,6 +1388,245 @@ export const UpdateHomepageGalleryResponse = zod.array(UpdateHomepageGalleryResp
 
 
 /**
+ * @summary Read homepage Knowledge Hub preview for editing
+ */
+export const GetAdminHomepageKnowledgeHubResponse = zod.object({
+  "id": zod.string(),
+  "eyebrow": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date(),
+  "resources": zod.array(zod.object({
+  "id": zod.string(),
+  "title": zod.string(),
+  "description": zod.string(),
+  "category": zod.string(),
+  "thumbnailUrl": zod.string().nullable(),
+  "thumbnailAltText": zod.string(),
+  "icon": zod.string().nullable(),
+  "fileSize": zod.string().nullable(),
+  "downloadCount": zod.number().int().nullable(),
+  "updatedLabel": zod.string().nullable(),
+  "resourceUrl": zod.string(),
+  "isFeatured": zod.boolean(),
+  "isActive": zod.boolean(),
+  "displayOrder": zod.number().int()
+}))
+})
+
+
+/**
+ * @summary Update homepage Knowledge Hub preview
+ */
+
+
+
+export const updateHomepageKnowledgeHubBodySortOrderMax = 20;
+
+
+export const updateHomepageKnowledgeHubBodyResourcesItemDescriptionMax = 280;
+
+
+
+export const updateHomepageKnowledgeHubBodyResourcesItemDownloadCountMin = 0;
+
+
+export const updateHomepageKnowledgeHubBodyResourcesItemDisplayOrderMax = 20;
+
+export const updateHomepageKnowledgeHubBodyResourcesMax = 20;
+
+
+
+export const UpdateHomepageKnowledgeHubBody = zod.object({
+  "eyebrow": zod.string().min(1),
+  "heading": zod.string().min(1),
+  "description": zod.string().min(1),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int().min(1).max(updateHomepageKnowledgeHubBodySortOrderMax),
+  "resources": zod.array(zod.object({
+  "title": zod.string().min(1),
+  "description": zod.string().min(1).max(updateHomepageKnowledgeHubBodyResourcesItemDescriptionMax),
+  "category": zod.string().min(1),
+  "thumbnailUrl": zod.string().nullable(),
+  "thumbnailAltText": zod.string().min(1),
+  "icon": zod.string().nullable(),
+  "fileSize": zod.string().nullable(),
+  "downloadCount": zod.number().int().min(updateHomepageKnowledgeHubBodyResourcesItemDownloadCountMin).nullable(),
+  "updatedLabel": zod.string().nullable(),
+  "resourceUrl": zod.string().min(1),
+  "isFeatured": zod.boolean(),
+  "isActive": zod.boolean(),
+  "displayOrder": zod.number().int().min(1).max(updateHomepageKnowledgeHubBodyResourcesItemDisplayOrderMax)
+})).min(1).max(updateHomepageKnowledgeHubBodyResourcesMax)
+})
+
+export const UpdateHomepageKnowledgeHubResponse = zod.object({
+  "id": zod.string(),
+  "eyebrow": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date(),
+  "resources": zod.array(zod.object({
+  "id": zod.string(),
+  "title": zod.string(),
+  "description": zod.string(),
+  "category": zod.string(),
+  "thumbnailUrl": zod.string().nullable(),
+  "thumbnailAltText": zod.string(),
+  "icon": zod.string().nullable(),
+  "fileSize": zod.string().nullable(),
+  "downloadCount": zod.number().int().nullable(),
+  "updatedLabel": zod.string().nullable(),
+  "resourceUrl": zod.string(),
+  "isFeatured": zod.boolean(),
+  "isActive": zod.boolean(),
+  "displayOrder": zod.number().int()
+}))
+})
+
+
+/**
+ * @summary Read homepage Admissions FAQ for editing
+ */
+export const GetAdminHomepageAdmissionsFaqResponse = zod.object({
+  "id": zod.string(),
+  "eyebrow": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date(),
+  "questions": zod.array(zod.object({
+  "id": zod.string(),
+  "question": zod.string(),
+  "answer": zod.string(),
+  "displayOrder": zod.number().int(),
+  "isVisible": zod.boolean()
+}))
+})
+
+
+/**
+ * @summary Update homepage Admissions FAQ
+ */
+
+
+
+export const updateHomepageAdmissionsFaqBodySortOrderMax = 20;
+
+
+
+export const updateHomepageAdmissionsFaqBodyQuestionsItemDisplayOrderMax = 20;
+
+export const updateHomepageAdmissionsFaqBodyQuestionsMax = 20;
+
+
+
+export const UpdateHomepageAdmissionsFaqBody = zod.object({
+  "eyebrow": zod.string().min(1),
+  "heading": zod.string().min(1),
+  "description": zod.string().min(1),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int().min(1).max(updateHomepageAdmissionsFaqBodySortOrderMax),
+  "questions": zod.array(zod.object({
+  "question": zod.string().min(1),
+  "answer": zod.string().min(1),
+  "displayOrder": zod.number().int().min(1).max(updateHomepageAdmissionsFaqBodyQuestionsItemDisplayOrderMax),
+  "isVisible": zod.boolean()
+})).min(1).max(updateHomepageAdmissionsFaqBodyQuestionsMax)
+})
+
+export const UpdateHomepageAdmissionsFaqResponse = zod.object({
+  "id": zod.string(),
+  "eyebrow": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date(),
+  "questions": zod.array(zod.object({
+  "id": zod.string(),
+  "question": zod.string(),
+  "answer": zod.string(),
+  "displayOrder": zod.number().int(),
+  "isVisible": zod.boolean()
+}))
+})
+
+
+/**
+ * @summary Read homepage final admission CTA for editing
+ */
+export const GetAdminHomepageFinalCtaResponse = zod.object({
+  "id": zod.string(),
+  "eyebrow": zod.string(),
+  "heading": zod.string(),
+  "supportingText": zod.string(),
+  "applyButtonLabel": zod.string(),
+  "applyButtonHref": zod.string(),
+  "phoneButtonLabel": zod.string(),
+  "phoneNumber": zod.string(),
+  "backgroundImage": zod.string().nullable(),
+  "backgroundImageAltText": zod.string(),
+  "backgroundOverlay": zod.boolean(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Update homepage final admission CTA
+ */
+
+
+
+
+
+
+
+export const updateHomepageFinalCtaBodySortOrderMax = 20;
+
+
+
+export const UpdateHomepageFinalCtaBody = zod.object({
+  "eyebrow": zod.string().min(1),
+  "heading": zod.string().min(1),
+  "supportingText": zod.string().min(1),
+  "applyButtonLabel": zod.string().min(1),
+  "applyButtonHref": zod.string().min(1),
+  "phoneButtonLabel": zod.string().min(1),
+  "phoneNumber": zod.string(),
+  "backgroundImage": zod.string().nullable(),
+  "backgroundImageAltText": zod.string().min(1),
+  "backgroundOverlay": zod.boolean(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int().min(1).max(updateHomepageFinalCtaBodySortOrderMax)
+})
+
+export const UpdateHomepageFinalCtaResponse = zod.object({
+  "id": zod.string(),
+  "eyebrow": zod.string(),
+  "heading": zod.string(),
+  "supportingText": zod.string(),
+  "applyButtonLabel": zod.string(),
+  "applyButtonHref": zod.string(),
+  "phoneButtonLabel": zod.string(),
+  "phoneNumber": zod.string(),
+  "backgroundImage": zod.string().nullable(),
+  "backgroundImageAltText": zod.string(),
+  "backgroundOverlay": zod.boolean(),
+  "isVisible": zod.boolean(),
+  "sortOrder": zod.number().int(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
  * @summary Read About page hero settings
  */
 export const getAdminAboutHeroResponseStatsMin = 4;
@@ -2147,12 +2458,12 @@ export const UpdateAboutAdmissionCtaResponse = zod.object({
  */
 export const UploadAdminImageBody = zod.object({
   "file": zod.instanceof(Blob),
-  "purpose": zod.enum(['logo', 'hero', 'campus', 'cta', 'update', 'topic', 'result', 'testimonial', 'faculty', 'gallery'])
+  "purpose": zod.enum(['logo', 'hero', 'campus', 'cta', 'update', 'topic', 'result', 'testimonial', 'faculty', 'gallery', 'knowledge'])
 })
 
 export const UploadAdminImageResponse = zod.object({
   "url": zod.string(),
-  "purpose": zod.enum(['logo', 'hero', 'campus', 'cta', 'update', 'topic'])
+  "purpose": zod.enum(['logo', 'hero', 'campus', 'cta', 'update', 'topic', 'result', 'testimonial', 'faculty', 'gallery', 'knowledge'])
 })
 
 

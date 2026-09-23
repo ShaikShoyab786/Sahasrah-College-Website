@@ -20,4 +20,5 @@ export const ImageUploadInputPurpose = {
   testimonial: 'testimonial',
   faculty: 'faculty',
   gallery: 'gallery',
+  knowledge: 'knowledge',
 } as const;

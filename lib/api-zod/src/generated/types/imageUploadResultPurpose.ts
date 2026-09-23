@@ -16,4 +16,9 @@ export const ImageUploadResultPurpose = {
   cta: 'cta',
   update: 'update',
   topic: 'topic',
+  result: 'result',
+  testimonial: 'testimonial',
+  faculty: 'faculty',
+  gallery: 'gallery',
+  knowledge: 'knowledge',
 } as const;

@@ -26,6 +26,9 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
   const testimonialsActive = location.startsWith('/admin/pages/home/testimonials');
   const facultyActive = location.startsWith('/admin/pages/home/faculty');
   const galleryActive = location.startsWith('/admin/pages/home/gallery');
+  const knowledgeHubActive = location.startsWith('/admin/pages/home/knowledge-hub');
+  const admissionsFaqActive = location.startsWith('/admin/pages/home/admissions-faq');
+  const finalCtaActive = location.startsWith('/admin/pages/home/final-cta');
   const aboutHeroActive = location.startsWith('/admin/pages/about/hero');
   const aboutStoryActive = location.startsWith('/admin/pages/about/our-story');
   const chairmanActive = location.startsWith('/admin/pages/about/chairman-message');
@@ -36,7 +39,7 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
   const achievementsActive = location.startsWith('/admin/pages/about/achievement-statistics');
   const faqActive = location.startsWith('/admin/pages/about/faqs');
   const admissionCtaActive = location.startsWith('/admin/pages/about/admission-cta');
-  const nestedHomeRoute = heroActive || aboutActive || liveUpdatesActive || statisticsActive || favoriteTopicsActive || resultsActive || ribbonActive || testimonialsActive || facultyActive || galleryActive;
+  const nestedHomeRoute = heroActive || aboutActive || liveUpdatesActive || statisticsActive || favoriteTopicsActive || resultsActive || ribbonActive || testimonialsActive || facultyActive || galleryActive || knowledgeHubActive || admissionsFaqActive || finalCtaActive;
   const nestedAboutRoute = aboutHeroActive || aboutStoryActive || chairmanActive || principlesActive || parentChoiceActive || leadershipActive || campusHighlightsActive || achievementsActive || faqActive || admissionCtaActive;
   const [pagesOpen, setPagesOpen] = useState(false);
   const [homeOpen, setHomeOpen] = useState(false);
@@ -114,6 +117,9 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
                     <Link href="/admin/pages/home/testimonials" onClick={() => setOpen(false)} className={`mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5 pl-9 text-sm font-semibold transition ${testimonialsActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-home-testimonials"><PanelsTopLeft size={16} /><span>Testimonials</span></Link>
                     <Link href="/admin/pages/home/faculty" onClick={() => setOpen(false)} className={`mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5 pl-9 text-sm font-semibold transition ${facultyActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-home-faculty"><PanelsTopLeft size={16} /><span>Faculty Preview</span></Link>
                     <Link href="/admin/pages/home/gallery" onClick={() => setOpen(false)} className={`mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5 pl-9 text-sm font-semibold transition ${galleryActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-home-gallery"><PanelsTopLeft size={16} /><span>Gallery Preview</span></Link>
+                    <Link href="/admin/pages/home/knowledge-hub" onClick={() => setOpen(false)} className={`mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5 pl-9 text-sm font-semibold transition ${knowledgeHubActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-home-knowledge-hub"><PanelsTopLeft size={16} /><span>Knowledge Hub</span></Link>
+                    <Link href="/admin/pages/home/admissions-faq" onClick={() => setOpen(false)} className={`mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5 pl-9 text-sm font-semibold transition ${admissionsFaqActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-home-admissions-faq"><PanelsTopLeft size={16} /><span>Admissions FAQ</span></Link>
+                    <Link href="/admin/pages/home/final-cta" onClick={() => setOpen(false)} className={`mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5 pl-9 text-sm font-semibold transition ${finalCtaActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-home-final-cta"><PanelsTopLeft size={16} /><span>Final Admission CTA</span></Link>
                   </div>
                 )}
               </div>

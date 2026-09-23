@@ -297,6 +297,27 @@ body { min-width: 320px; }
 .faculty-preview-overlay {
   background: linear-gradient(to top, hsl(var(--primary) / .96) 0%, hsl(var(--primary) / .64) 34%, transparent 76%);
 }
+.home-paper-grid {
+  background-color: hsl(var(--background));
+  background-image:
+    linear-gradient(hsl(var(--primary) / .045) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(var(--primary) / .045) 1px, transparent 1px);
+  background-size: 34px 34px;
+}
+.knowledge-featured {
+  --knowledge-featured-accent: hsl(var(--accent));
+}
+.knowledge-card,
+.home-faq-item,
+.home-cta-panel {
+  will-change: transform;
+}
+.home-cta-panel {
+  isolation: isolate;
+}
+.home-cta-glow {
+  animation: drift 6s ease-in-out infinite alternate;
+}
 
 @media (prefers-reduced-motion: reduce) {
   .home-reveal {
@@ -307,6 +328,15 @@ body { min-width: 320px; }
     animation: none;
     flex-wrap: wrap;
     width: 100%;
+  }
+  .home-cta-glow {
+    animation: none;
+  }
+  .knowledge-featured,
+  .knowledge-card,
+  .home-faq-item,
+  .home-cta-panel {
+    transition: none;
   }
 }
 @keyframes story-marker-reach {

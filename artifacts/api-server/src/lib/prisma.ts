@@ -260,6 +260,73 @@ export async function initializeDatabase() {
     });
   }
 
+  await prisma.homepageKnowledgeHub.upsert({
+    where: { id: "singleton" },
+    update: {},
+    create: {
+      id: "singleton",
+      eyebrow: "Knowledge Hub",
+      heading: "Your Digital Learning Library",
+      description: "Study materials, expert guidance, exam updates, and practical resources for JEE and NEET aspirants.",
+      isVisible: true,
+      sortOrder: 11,
+    },
+  });
+  if ((await prisma.homepageKnowledgeResource.count({ where: { homepageKnowledgeHubId: "singleton" } })) === 0) {
+    await prisma.homepageKnowledgeResource.createMany({
+      data: [
+        { homepageKnowledgeHubId: "singleton", title: "Complete Target JEE Question Bank", description: "5,000+ handpicked questions with weightage analysis, difficulty ratings, and detailed solutions.", category: "Featured", thumbnailUrl: "https://images.unsplash.com/photo-1456324504439-367cee3b3c32?auto=format&fit=crop&w=900&q=85", thumbnailAltText: "Open study book and notes for JEE preparation", icon: "file-text", fileSize: "8.4 MB", downloadCount: 5200, updatedLabel: "Updated Jun 2026", resourceUrl: "/#home-knowledge-hub", isFeatured: true, isActive: true, displayOrder: 1 },
+        { homepageKnowledgeHubId: "singleton", title: "Complete Physics Mechanics Master Notes", description: "Concept-first notes covering kinematics, laws of motion, and rotational dynamics.", category: "Physics", thumbnailUrl: null, thumbnailAltText: "Physics resource document icon", icon: "file-text", fileSize: "4.2 MB", downloadCount: 12500, updatedLabel: "Updated Oct 2023", resourceUrl: "/#home-knowledge-hub", isFeatured: false, isActive: true, displayOrder: 2 },
+        { homepageKnowledgeHubId: "singleton", title: "Organic Chemistry Reaction Mechanisms", description: "Visual guidance to the reaction mechanisms required for NEET and JEE Advanced.", category: "Chemistry", thumbnailUrl: null, thumbnailAltText: "Chemistry resource document icon", icon: "file-text", fileSize: "3.8 MB", downloadCount: 8300, updatedLabel: "Updated Nov 2023", resourceUrl: "/#home-knowledge-hub", isFeatured: false, isActive: true, displayOrder: 3 },
+        { homepageKnowledgeHubId: "singleton", title: "Integral Calculus Formula Sheet", description: "Quick revision cheat sheet for integration formulas and shortcuts.", category: "Mathematics", thumbnailUrl: null, thumbnailAltText: "Mathematics resource document icon", icon: "file-text", fileSize: "1.2 MB", downloadCount: 15400, updatedLabel: "Updated Dec 2023", resourceUrl: "/#home-knowledge-hub", isFeatured: false, isActive: true, displayOrder: 4 },
+      ],
+    });
+  }
+
+  await prisma.homepageAdmissionsFaq.upsert({
+    where: { id: "singleton" },
+    update: {},
+    create: {
+      id: "singleton",
+      eyebrow: "Admissions FAQ",
+      heading: "Common Questions, Clear Answers",
+      description: "Everything you need to know about joining Sahasara Junior College.",
+      isVisible: true,
+      sortOrder: 12,
+    },
+  });
+  if ((await prisma.homepageAdmissionsFaqItem.count({ where: { homepageAdmissionsFaqId: "singleton" } })) === 0) {
+    await prisma.homepageAdmissionsFaqItem.createMany({
+      data: [
+        { homepageAdmissionsFaqId: "singleton", question: "Why should I choose Sahasara over other junior colleges?", answer: "We combine focused concept learning with personal mentorship, regular feedback, and a supportive environment that helps students build confidence without losing sight of their goals.", displayOrder: 1, isVisible: true },
+        { homepageAdmissionsFaqId: "singleton", question: "Do you offer integrated coaching for IIT-JEE and NEET?", answer: "Yes. Our MPC and BiPC pathways include integrated preparation, guided practice, regular tests, and subject support for ambitious IIT-JEE and NEET goals.", displayOrder: 2, isVisible: true },
+        { homepageAdmissionsFaqId: "singleton", question: "What is the student-to-teacher ratio?", answer: "We keep groups focused so teachers can notice individual progress, answer questions, and give students useful feedback throughout the academic year.", displayOrder: 3, isVisible: true },
+        { homepageAdmissionsFaqId: "singleton", question: "Are separate hostel facilities available for boys and girls?", answer: "Hostel support is available for eligible students. Contact the admissions office for current availability, routines, safety details, and a campus visit.", displayOrder: 4, isVisible: true },
+        { homepageAdmissionsFaqId: "singleton", question: "How do you track and improve student performance?", answer: "Regular assessments, review meetings, practice plans, and individual guidance help students identify gaps early and build steady improvement.", displayOrder: 5, isVisible: true },
+      ],
+    });
+  }
+
+  await prisma.homepageFinalCta.upsert({
+    where: { id: "singleton" },
+    update: {},
+    create: {
+      id: "singleton",
+      eyebrow: "Join Sahasara College",
+      heading: "Seats Are Limited. Admissions Are Open.",
+      supportingText: "Give your child the advantage of personal mentorship from experienced faculty and integrated IIT-JEE and NEET preparation. Limited admission availability for the new academic year.",
+      applyButtonLabel: "Apply Now",
+      applyButtonHref: "/#contact",
+      phoneButtonLabel: "Call Admission Office",
+      phoneNumber: "",
+      backgroundImage: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1800&q=85",
+      backgroundImageAltText: "Students walking across a college campus",
+      backgroundOverlay: true,
+      isVisible: true,
+      sortOrder: 13,
+    },
+  });
+
   await prisma.aboutHero.upsert({
     where: { id: "singleton" },
     update: {},

@@ -14,6 +14,7 @@ import AdminHomepageHero from '@/pages/admin-homepage-hero';
 import AdminHomepageAboutPreview from '@/pages/admin-homepage-about-preview';
 import { AdminHomepageFavoriteTopics, AdminHomepageLiveUpdates, AdminHomepageStatistics } from '@/pages/admin-homepage-content';
 import { AdminHomepageAchievementRibbon, AdminHomepageFaculty, AdminHomepageGallery, AdminHomepageResults, AdminHomepageTestimonials } from '@/pages/admin-homepage-previews';
+import { AdminHomepageAdmissionsFaq, AdminHomepageFinalCta, AdminHomepageKnowledgeHub } from '@/pages/admin-homepage-final-sections';
 import AdminAboutHero from '@/pages/admin-about-hero';
 import AdminAboutStory from '@/pages/admin-about-story';
 import AdminChairmanMessage from '@/pages/admin-chairman-message';
@@ -68,6 +69,15 @@ function Router() {
         </Route>
         <Route path="/admin/pages/home/gallery">
           <AdminGuard><AdminHomepageGallery /></AdminGuard>
+        </Route>
+        <Route path="/admin/pages/home/knowledge-hub">
+          <AdminGuard><AdminHomepageKnowledgeHub /></AdminGuard>
+        </Route>
+        <Route path="/admin/pages/home/admissions-faq">
+          <AdminGuard><AdminHomepageAdmissionsFaq /></AdminGuard>
+        </Route>
+        <Route path="/admin/pages/home/final-cta">
+          <AdminGuard><AdminHomepageFinalCta /></AdminGuard>
         </Route>
         <Route path="/admin/pages/about/hero">
           <AdminGuard><AdminAboutHero /></AdminGuard>

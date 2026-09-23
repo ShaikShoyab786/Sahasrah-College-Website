@@ -47,14 +47,20 @@ import type {
   HomepageAboutPreviewInput,
   HomepageAchievementRibbon,
   HomepageAchievementRibbonInput,
+  HomepageAdmissionsFaq,
+  HomepageAdmissionsFaqInput,
   HomepageFacultyMember,
   HomepageFacultyMemberInput,
   HomepageFavoriteTopics,
   HomepageFavoriteTopicsInput,
+  HomepageFinalCta,
+  HomepageFinalCtaInput,
   HomepageGalleryItem,
   HomepageGalleryItemInput,
   HomepageHeroSlides,
   HomepageHeroSlidesInput,
+  HomepageKnowledgeHub,
+  HomepageKnowledgeHubInput,
   HomepageLiveUpdate,
   HomepageLiveUpdateInput,
   HomepageResults,
@@ -1250,6 +1256,237 @@ export function useGetHomepageGallery<TData = Awaited<ReturnType<typeof getHomep
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
   const queryOptions = getGetHomepageGalleryQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetHomepageKnowledgeHubUrl = () => {
+
+
+
+
+  return `/api/homepage-knowledge-hub`
+}
+
+/**
+ * @summary Read the visible homepage Knowledge Hub preview
+ */
+export const getHomepageKnowledgeHub = async ( options?: Parameters<typeof customFetch>[1]): Promise<HomepageKnowledgeHub> => {
+
+  return customFetch<HomepageKnowledgeHub>(getGetHomepageKnowledgeHubUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetHomepageKnowledgeHubQueryKey = () => {
+    return [
+    `/api/homepage-knowledge-hub`
+    ] as const;
+    }
+
+
+export const getGetHomepageKnowledgeHubQueryOptions = <TData = Awaited<ReturnType<typeof getHomepageKnowledgeHub>>, TError = ErrorType<ErrorResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getHomepageKnowledgeHub>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetHomepageKnowledgeHubQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getHomepageKnowledgeHub>>> = ({ signal }) => getHomepageKnowledgeHub({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getHomepageKnowledgeHub>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetHomepageKnowledgeHubQueryResult = NonNullable<Awaited<ReturnType<typeof getHomepageKnowledgeHub>>>
+export type GetHomepageKnowledgeHubQueryError = ErrorType<ErrorResponse>
+
+
+/**
+ * @summary Read the visible homepage Knowledge Hub preview
+ */
+
+export function useGetHomepageKnowledgeHub<TData = Awaited<ReturnType<typeof getHomepageKnowledgeHub>>, TError = ErrorType<ErrorResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getHomepageKnowledgeHub>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetHomepageKnowledgeHubQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetHomepageAdmissionsFaqUrl = () => {
+
+
+
+
+  return `/api/homepage-admissions-faq`
+}
+
+/**
+ * @summary Read the visible homepage Admissions FAQ
+ */
+export const getHomepageAdmissionsFaq = async ( options?: Parameters<typeof customFetch>[1]): Promise<HomepageAdmissionsFaq> => {
+
+  return customFetch<HomepageAdmissionsFaq>(getGetHomepageAdmissionsFaqUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetHomepageAdmissionsFaqQueryKey = () => {
+    return [
+    `/api/homepage-admissions-faq`
+    ] as const;
+    }
+
+
+export const getGetHomepageAdmissionsFaqQueryOptions = <TData = Awaited<ReturnType<typeof getHomepageAdmissionsFaq>>, TError = ErrorType<ErrorResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getHomepageAdmissionsFaq>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetHomepageAdmissionsFaqQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getHomepageAdmissionsFaq>>> = ({ signal }) => getHomepageAdmissionsFaq({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getHomepageAdmissionsFaq>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetHomepageAdmissionsFaqQueryResult = NonNullable<Awaited<ReturnType<typeof getHomepageAdmissionsFaq>>>
+export type GetHomepageAdmissionsFaqQueryError = ErrorType<ErrorResponse>
+
+
+/**
+ * @summary Read the visible homepage Admissions FAQ
+ */
+
+export function useGetHomepageAdmissionsFaq<TData = Awaited<ReturnType<typeof getHomepageAdmissionsFaq>>, TError = ErrorType<ErrorResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getHomepageAdmissionsFaq>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetHomepageAdmissionsFaqQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetHomepageFinalCtaUrl = () => {
+
+
+
+
+  return `/api/homepage-final-cta`
+}
+
+/**
+ * @summary Read the visible homepage final admission CTA
+ */
+export const getHomepageFinalCta = async ( options?: Parameters<typeof customFetch>[1]): Promise<HomepageFinalCta> => {
+
+  return customFetch<HomepageFinalCta>(getGetHomepageFinalCtaUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetHomepageFinalCtaQueryKey = () => {
+    return [
+    `/api/homepage-final-cta`
+    ] as const;
+    }
+
+
+export const getGetHomepageFinalCtaQueryOptions = <TData = Awaited<ReturnType<typeof getHomepageFinalCta>>, TError = ErrorType<ErrorResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getHomepageFinalCta>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetHomepageFinalCtaQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getHomepageFinalCta>>> = ({ signal }) => getHomepageFinalCta({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getHomepageFinalCta>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetHomepageFinalCtaQueryResult = NonNullable<Awaited<ReturnType<typeof getHomepageFinalCta>>>
+export type GetHomepageFinalCtaQueryError = ErrorType<ErrorResponse>
+
+
+/**
+ * @summary Read the visible homepage final admission CTA
+ */
+
+export function useGetHomepageFinalCta<TData = Awaited<ReturnType<typeof getHomepageFinalCta>>, TError = ErrorType<ErrorResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getHomepageFinalCta>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetHomepageFinalCtaQueryOptions(options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
@@ -3691,6 +3928,501 @@ export const useUpdateHomepageGallery = <TError = ErrorType<ErrorResponse>,
         TContext
       > => {
       return useMutation(getUpdateHomepageGalleryMutationOptions(options));
+    }
+
+export const getGetAdminHomepageKnowledgeHubUrl = () => {
+
+
+
+
+  return `/api/admin/homepage-knowledge-hub`
+}
+
+/**
+ * @summary Read homepage Knowledge Hub preview for editing
+ */
+export const getAdminHomepageKnowledgeHub = async ( options?: Parameters<typeof customFetch>[1]): Promise<HomepageKnowledgeHub> => {
+
+  return customFetch<HomepageKnowledgeHub>(getGetAdminHomepageKnowledgeHubUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAdminHomepageKnowledgeHubQueryKey = () => {
+    return [
+    `/api/admin/homepage-knowledge-hub`
+    ] as const;
+    }
+
+
+export const getGetAdminHomepageKnowledgeHubQueryOptions = <TData = Awaited<ReturnType<typeof getAdminHomepageKnowledgeHub>>, TError = ErrorType<ErrorResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminHomepageKnowledgeHub>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAdminHomepageKnowledgeHubQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdminHomepageKnowledgeHub>>> = ({ signal }) => getAdminHomepageKnowledgeHub({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAdminHomepageKnowledgeHub>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetAdminHomepageKnowledgeHubQueryResult = NonNullable<Awaited<ReturnType<typeof getAdminHomepageKnowledgeHub>>>
+export type GetAdminHomepageKnowledgeHubQueryError = ErrorType<ErrorResponse>
+
+
+/**
+ * @summary Read homepage Knowledge Hub preview for editing
+ */
+
+export function useGetAdminHomepageKnowledgeHub<TData = Awaited<ReturnType<typeof getAdminHomepageKnowledgeHub>>, TError = ErrorType<ErrorResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminHomepageKnowledgeHub>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetAdminHomepageKnowledgeHubQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getUpdateHomepageKnowledgeHubUrl = () => {
+
+
+
+
+  return `/api/admin/homepage-knowledge-hub`
+}
+
+/**
+ * @summary Update homepage Knowledge Hub preview
+ */
+export const updateHomepageKnowledgeHub = async (homepageKnowledgeHubInput: HomepageKnowledgeHubInput, options?: Parameters<typeof customFetch>[1]): Promise<HomepageKnowledgeHub> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<HomepageKnowledgeHub>(getUpdateHomepageKnowledgeHubUrl(),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(homepageKnowledgeHubInput)
+  }
+);}
+
+
+
+
+
+export const getUpdateHomepageKnowledgeHubMutationKey = () => ['updateHomepageKnowledgeHub'] as const;
+
+export const getUpdateHomepageKnowledgeHubMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateHomepageKnowledgeHub>>, TError,UpdateHomepageKnowledgeHubMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateHomepageKnowledgeHub>>, TError,UpdateHomepageKnowledgeHubMutationVariables, TContext> => {
+
+const mutationKey = getUpdateHomepageKnowledgeHubMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateHomepageKnowledgeHub>>, UpdateHomepageKnowledgeHubMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  updateHomepageKnowledgeHub(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateHomepageKnowledgeHubMutationResult = NonNullable<Awaited<ReturnType<typeof updateHomepageKnowledgeHub>>>
+    export type UpdateHomepageKnowledgeHubMutationBody = BodyType<HomepageKnowledgeHubInput>
+    export type UpdateHomepageKnowledgeHubMutationError = ErrorType<ErrorResponse>
+    export type UpdateHomepageKnowledgeHubMutationVariables = {data: BodyType<HomepageKnowledgeHubInput>}
+
+    /**
+ * @summary Update homepage Knowledge Hub preview
+ */
+export const useUpdateHomepageKnowledgeHub = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateHomepageKnowledgeHub>>, TError,UpdateHomepageKnowledgeHubMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateHomepageKnowledgeHub>>,
+        TError,
+        UpdateHomepageKnowledgeHubMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateHomepageKnowledgeHubMutationOptions(options));
+    }
+
+export const getGetAdminHomepageAdmissionsFaqUrl = () => {
+
+
+
+
+  return `/api/admin/homepage-admissions-faq`
+}
+
+/**
+ * @summary Read homepage Admissions FAQ for editing
+ */
+export const getAdminHomepageAdmissionsFaq = async ( options?: Parameters<typeof customFetch>[1]): Promise<HomepageAdmissionsFaq> => {
+
+  return customFetch<HomepageAdmissionsFaq>(getGetAdminHomepageAdmissionsFaqUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAdminHomepageAdmissionsFaqQueryKey = () => {
+    return [
+    `/api/admin/homepage-admissions-faq`
+    ] as const;
+    }
+
+
+export const getGetAdminHomepageAdmissionsFaqQueryOptions = <TData = Awaited<ReturnType<typeof getAdminHomepageAdmissionsFaq>>, TError = ErrorType<ErrorResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminHomepageAdmissionsFaq>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAdminHomepageAdmissionsFaqQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdminHomepageAdmissionsFaq>>> = ({ signal }) => getAdminHomepageAdmissionsFaq({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAdminHomepageAdmissionsFaq>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetAdminHomepageAdmissionsFaqQueryResult = NonNullable<Awaited<ReturnType<typeof getAdminHomepageAdmissionsFaq>>>
+export type GetAdminHomepageAdmissionsFaqQueryError = ErrorType<ErrorResponse>
+
+
+/**
+ * @summary Read homepage Admissions FAQ for editing
+ */
+
+export function useGetAdminHomepageAdmissionsFaq<TData = Awaited<ReturnType<typeof getAdminHomepageAdmissionsFaq>>, TError = ErrorType<ErrorResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminHomepageAdmissionsFaq>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetAdminHomepageAdmissionsFaqQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getUpdateHomepageAdmissionsFaqUrl = () => {
+
+
+
+
+  return `/api/admin/homepage-admissions-faq`
+}
+
+/**
+ * @summary Update homepage Admissions FAQ
+ */
+export const updateHomepageAdmissionsFaq = async (homepageAdmissionsFaqInput: HomepageAdmissionsFaqInput, options?: Parameters<typeof customFetch>[1]): Promise<HomepageAdmissionsFaq> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<HomepageAdmissionsFaq>(getUpdateHomepageAdmissionsFaqUrl(),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(homepageAdmissionsFaqInput)
+  }
+);}
+
+
+
+
+
+export const getUpdateHomepageAdmissionsFaqMutationKey = () => ['updateHomepageAdmissionsFaq'] as const;
+
+export const getUpdateHomepageAdmissionsFaqMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateHomepageAdmissionsFaq>>, TError,UpdateHomepageAdmissionsFaqMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateHomepageAdmissionsFaq>>, TError,UpdateHomepageAdmissionsFaqMutationVariables, TContext> => {
+
+const mutationKey = getUpdateHomepageAdmissionsFaqMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateHomepageAdmissionsFaq>>, UpdateHomepageAdmissionsFaqMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  updateHomepageAdmissionsFaq(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateHomepageAdmissionsFaqMutationResult = NonNullable<Awaited<ReturnType<typeof updateHomepageAdmissionsFaq>>>
+    export type UpdateHomepageAdmissionsFaqMutationBody = BodyType<HomepageAdmissionsFaqInput>
+    export type UpdateHomepageAdmissionsFaqMutationError = ErrorType<ErrorResponse>
+    export type UpdateHomepageAdmissionsFaqMutationVariables = {data: BodyType<HomepageAdmissionsFaqInput>}
+
+    /**
+ * @summary Update homepage Admissions FAQ
+ */
+export const useUpdateHomepageAdmissionsFaq = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateHomepageAdmissionsFaq>>, TError,UpdateHomepageAdmissionsFaqMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateHomepageAdmissionsFaq>>,
+        TError,
+        UpdateHomepageAdmissionsFaqMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateHomepageAdmissionsFaqMutationOptions(options));
+    }
+
+export const getGetAdminHomepageFinalCtaUrl = () => {
+
+
+
+
+  return `/api/admin/homepage-final-cta`
+}
+
+/**
+ * @summary Read homepage final admission CTA for editing
+ */
+export const getAdminHomepageFinalCta = async ( options?: Parameters<typeof customFetch>[1]): Promise<HomepageFinalCta> => {
+
+  return customFetch<HomepageFinalCta>(getGetAdminHomepageFinalCtaUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAdminHomepageFinalCtaQueryKey = () => {
+    return [
+    `/api/admin/homepage-final-cta`
+    ] as const;
+    }
+
+
+export const getGetAdminHomepageFinalCtaQueryOptions = <TData = Awaited<ReturnType<typeof getAdminHomepageFinalCta>>, TError = ErrorType<ErrorResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminHomepageFinalCta>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAdminHomepageFinalCtaQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdminHomepageFinalCta>>> = ({ signal }) => getAdminHomepageFinalCta({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAdminHomepageFinalCta>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetAdminHomepageFinalCtaQueryResult = NonNullable<Awaited<ReturnType<typeof getAdminHomepageFinalCta>>>
+export type GetAdminHomepageFinalCtaQueryError = ErrorType<ErrorResponse>
+
+
+/**
+ * @summary Read homepage final admission CTA for editing
+ */
+
+export function useGetAdminHomepageFinalCta<TData = Awaited<ReturnType<typeof getAdminHomepageFinalCta>>, TError = ErrorType<ErrorResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminHomepageFinalCta>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetAdminHomepageFinalCtaQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getUpdateHomepageFinalCtaUrl = () => {
+
+
+
+
+  return `/api/admin/homepage-final-cta`
+}
+
+/**
+ * @summary Update homepage final admission CTA
+ */
+export const updateHomepageFinalCta = async (homepageFinalCtaInput: HomepageFinalCtaInput, options?: Parameters<typeof customFetch>[1]): Promise<HomepageFinalCta> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<HomepageFinalCta>(getUpdateHomepageFinalCtaUrl(),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(homepageFinalCtaInput)
+  }
+);}
+
+
+
+
+
+export const getUpdateHomepageFinalCtaMutationKey = () => ['updateHomepageFinalCta'] as const;
+
+export const getUpdateHomepageFinalCtaMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateHomepageFinalCta>>, TError,UpdateHomepageFinalCtaMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateHomepageFinalCta>>, TError,UpdateHomepageFinalCtaMutationVariables, TContext> => {
+
+const mutationKey = getUpdateHomepageFinalCtaMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateHomepageFinalCta>>, UpdateHomepageFinalCtaMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  updateHomepageFinalCta(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateHomepageFinalCtaMutationResult = NonNullable<Awaited<ReturnType<typeof updateHomepageFinalCta>>>
+    export type UpdateHomepageFinalCtaMutationBody = BodyType<HomepageFinalCtaInput>
+    export type UpdateHomepageFinalCtaMutationError = ErrorType<ErrorResponse>
+    export type UpdateHomepageFinalCtaMutationVariables = {data: BodyType<HomepageFinalCtaInput>}
+
+    /**
+ * @summary Update homepage final admission CTA
+ */
+export const useUpdateHomepageFinalCta = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateHomepageFinalCta>>, TError,UpdateHomepageFinalCtaMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateHomepageFinalCta>>,
+        TError,
+        UpdateHomepageFinalCtaMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateHomepageFinalCtaMutationOptions(options));
     }
 
 export const getGetAdminAboutHeroUrl = () => {

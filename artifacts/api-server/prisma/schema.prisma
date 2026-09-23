@@ -241,6 +241,82 @@ model HomepageTestimonial {
   @@index([homepageTestimonialsId])
 }
 
+model HomepageKnowledgeHub {
+  id          String                    @id @default("singleton")
+  eyebrow     String
+  heading     String
+  description String
+  isVisible   Boolean                   @default(true)
+  sortOrder   Int                       @default(11)
+  updatedAt   DateTime                  @updatedAt
+  resources   HomepageKnowledgeResource[]
+}
+
+model HomepageKnowledgeResource {
+  id                    String              @id @default(cuid())
+  homepageKnowledgeHubId String             @default("singleton")
+  title                 String
+  description           String
+  category              String
+  thumbnailUrl          String?
+  thumbnailAltText      String
+  icon                  String?
+  fileSize              String?
+  downloadCount         Int?
+  updatedLabel          String?
+  resourceUrl           String
+  isFeatured            Boolean             @default(false)
+  isActive              Boolean             @default(true)
+  displayOrder          Int
+  updatedAt             DateTime            @updatedAt
+  homepageKnowledgeHub  HomepageKnowledgeHub @relation(fields: [homepageKnowledgeHubId], references: [id], onDelete: Cascade)
+
+  @@unique([homepageKnowledgeHubId, displayOrder])
+  @@index([homepageKnowledgeHubId, isActive, isFeatured])
+}
+
+model HomepageAdmissionsFaq {
+  id          String                    @id @default("singleton")
+  eyebrow     String
+  heading     String
+  description String
+  isVisible   Boolean                   @default(true)
+  sortOrder   Int                       @default(12)
+  updatedAt   DateTime                  @updatedAt
+  questions   HomepageAdmissionsFaqItem[]
+}
+
+model HomepageAdmissionsFaqItem {
+  id                    String                @id @default(cuid())
+  homepageAdmissionsFaqId String              @default("singleton")
+  question              String
+  answer                String
+  displayOrder          Int
+  isVisible             Boolean               @default(true)
+  updatedAt             DateTime              @updatedAt
+  homepageAdmissionsFaq HomepageAdmissionsFaq @relation(fields: [homepageAdmissionsFaqId], references: [id], onDelete: Cascade)
+
+  @@unique([homepageAdmissionsFaqId, displayOrder])
+  @@index([homepageAdmissionsFaqId, isVisible])
+}
+
+model HomepageFinalCta {
+  id                    String   @id @default("singleton")
+  eyebrow               String
+  heading               String
+  supportingText        String
+  applyButtonLabel      String
+  applyButtonHref       String
+  phoneButtonLabel      String
+  phoneNumber           String
+  backgroundImage       String?
+  backgroundImageAltText String
+  backgroundOverlay     Boolean  @default(true)
+  isVisible              Boolean  @default(true)
+  sortOrder              Int      @default(13)
+  updatedAt             DateTime @updatedAt
+}
+
 model AboutHero {
   id                       String   @id @default("singleton")
   eyebrow                  String
