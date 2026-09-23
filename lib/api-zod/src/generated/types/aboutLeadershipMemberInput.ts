@@ -18,6 +18,13 @@ export interface AboutLeadershipMemberInput {
   biography: string;
   /** @nullable */
   socialUrl: string | null;
+  /** @nullable */
+  subject?: string | null;
+  /** @nullable */
+  experience?: string | null;
+  /** @nullable */
+  homepageProfileUrl?: string | null;
+  homepageActive?: boolean;
   /**
      * @minimum 1
      * @maximum 20

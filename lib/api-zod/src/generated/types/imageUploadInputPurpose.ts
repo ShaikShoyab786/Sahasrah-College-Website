@@ -16,4 +16,8 @@ export const ImageUploadInputPurpose = {
   cta: 'cta',
   update: 'update',
   topic: 'topic',
+  result: 'result',
+  testimonial: 'testimonial',
+  faculty: 'faculty',
+  gallery: 'gallery',
 } as const;

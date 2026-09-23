@@ -197,6 +197,69 @@ export async function initializeDatabase() {
     });
   }
 
+  await prisma.homepageResults.upsert({
+    where: { id: "singleton" },
+    update: {},
+    create: {
+      id: "singleton",
+      eyebrow: "Pride of KVR",
+      heading: "Our Results, Our Pride",
+      description: "Steady preparation, strong foundations, and focused guidance help our students turn ambition into meaningful academic achievement.",
+      isVisible: true,
+      sortOrder: 6,
+    },
+  });
+  if ((await prisma.homepageResult.count({ where: { homepageResultsId: "singleton" } })) === 0) {
+    await prisma.homepageResult.createMany({
+      data: [
+        { homepageResultsId: "singleton", studentImageUrl: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=500&q=85", studentImageAltText: "KVR student portrait", studentName: "Aarav Reddy", examCourse: "MPC · IIT-JEE", score: "98.6%", achievement: "State Rank 42", resultLabel: "Top Scorer", examName: "JEE Main", year: "2025", accentColor: "#D6AD59", displayOrder: 1, isActive: true },
+        { homepageResultsId: "singleton", studentImageUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=500&q=85", studentImageAltText: "KVR student portrait", studentName: "Saanvi Rao", examCourse: "BiPC · NEET", score: "675 / 720", achievement: "Medical Seat Secured", resultLabel: "Selected", examName: "NEET", year: "2025", accentColor: "#2E8C7B", displayOrder: 2, isActive: true },
+        { homepageResultsId: "singleton", studentImageUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=500&q=85", studentImageAltText: "KVR student portrait", studentName: "Vihaan Kumar", examCourse: "MPC · EAMCET", score: "96.2%", achievement: "Engineering Pathway", resultLabel: "Outstanding", examName: "TS EAMCET", year: "2025", accentColor: "#17365D", displayOrder: 3, isActive: true },
+        { homepageResultsId: "singleton", studentImageUrl: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=500&q=85", studentImageAltText: "KVR student portrait", studentName: "Ishita Varma", examCourse: "BiPC · NEET", score: "99.1%", achievement: "District Top 10", resultLabel: "Top Scorer", examName: "Intermediate", year: "2025", accentColor: "#C26D3E", displayOrder: 4, isActive: true },
+      ],
+    });
+  }
+
+  await prisma.homepageAchievementRibbon.upsert({
+    where: { id: "singleton" },
+    update: {},
+    create: { id: "singleton", isVisible: true, sortOrder: 7 },
+  });
+  if ((await prisma.homepageAchievementRibbonPhrase.count({ where: { homepageAchievementRibbonId: "singleton" } })) === 0) {
+    await prisma.homepageAchievementRibbonPhrase.createMany({
+      data: [
+        { homepageAchievementRibbonId: "singleton", phrase: "Best NEET Preparation", displayOrder: 1, isActive: true, accentColor: "#D6AD59", separatorStyle: "star" },
+        { homepageAchievementRibbonId: "singleton", phrase: "Excellence", displayOrder: 2, isActive: true, accentColor: "#FFFFFF", separatorStyle: "dot" },
+        { homepageAchievementRibbonId: "singleton", phrase: "Discipline", displayOrder: 3, isActive: true, accentColor: "#75C7B5", separatorStyle: "star" },
+        { homepageAchievementRibbonId: "singleton", phrase: "Dedication", displayOrder: 4, isActive: true, accentColor: "#FFFFFF", separatorStyle: "dot" },
+        { homepageAchievementRibbonId: "singleton", phrase: "Top IIT-JEE Coaching", displayOrder: 5, isActive: true, accentColor: "#D6AD59", separatorStyle: "star" },
+      ],
+    });
+  }
+
+  await prisma.homepageTestimonials.upsert({
+    where: { id: "singleton" },
+    update: {},
+    create: {
+      id: "singleton",
+      eyebrow: "What Parents & Students Say",
+      heading: "Real Stories of Success",
+      description: "Real stories from the KVR Junior College family.",
+      isVisible: true,
+      sortOrder: 8,
+    },
+  });
+  if ((await prisma.homepageTestimonial.count({ where: { homepageTestimonialsId: "singleton" } })) === 0) {
+    await prisma.homepageTestimonial.createMany({
+      data: [
+        { homepageTestimonialsId: "singleton", rating: 5, quote: "The regular feedback and personal attention gave our daughter the confidence to keep improving without feeling overwhelmed.", personName: "Mrs. Lakshmi Rao", role: "Parent", courseAchievement: "BiPC · NEET 2025", avatarImageUrl: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=300&q=85", avatarAltText: "Parent from the KVR college community", accentColor: "#D6AD59", displayOrder: 1, isActive: true },
+        { homepageTestimonialsId: "singleton", rating: 5, quote: "Every subject became clearer because our teachers made time for questions. I learned how to prepare with a steady routine.", personName: "Rohan Mehta", role: "Student", courseAchievement: "MPC · IIT-JEE 2025", avatarImageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=85", avatarAltText: "Student from the KVR college community", accentColor: "#2E8C7B", displayOrder: 2, isActive: true },
+        { homepageTestimonialsId: "singleton", rating: 5, quote: "We chose KVR for the combination of discipline and care. The transition to junior college felt structured and genuinely supportive.", personName: "Mr. Anil Kumar", role: "Parent", courseAchievement: "MPC · EAMCET 2025", avatarImageUrl: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=300&q=85", avatarAltText: "Parent from the KVR college community", accentColor: "#17365D", displayOrder: 3, isActive: true },
+        { homepageTestimonialsId: "singleton", rating: 5, quote: "The mentors helped me see the path ahead, then supported me with the practice and patience to walk it.", personName: "Nandini Shah", role: "Alumni", courseAchievement: "NEET · 2024", avatarImageUrl: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=85", avatarAltText: "Alumna from the KVR college community", accentColor: "#C26D3E", displayOrder: 4, isActive: true },
+      ],
+    });
+  }
+
   await prisma.aboutHero.upsert({
     where: { id: "singleton" },
     update: {},

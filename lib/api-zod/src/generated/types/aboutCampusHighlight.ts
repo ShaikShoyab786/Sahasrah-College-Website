@@ -15,6 +15,12 @@ export interface AboutCampusHighlight {
   icon: string | null;
   title: string;
   description: string;
+  /** @nullable */
+  category: string | null;
+  /** @nullable */
+  locationLabel: string | null;
+  homepageFeatured: boolean;
+  homepageActive: boolean;
   displayOrder: number;
   isVisible: boolean;
 }

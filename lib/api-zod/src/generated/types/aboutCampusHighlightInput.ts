@@ -19,6 +19,12 @@ export interface AboutCampusHighlightInput {
      * @maxLength 280
      */
   description: string;
+  /** @nullable */
+  category?: string | null;
+  /** @nullable */
+  locationLabel?: string | null;
+  homepageFeatured?: boolean;
+  homepageActive?: boolean;
   /**
      * @minimum 1
      * @maximum 20

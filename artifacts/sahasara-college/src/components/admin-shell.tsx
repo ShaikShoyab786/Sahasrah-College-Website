@@ -21,6 +21,11 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
   const liveUpdatesActive = location.startsWith('/admin/pages/home/live-updates');
   const statisticsActive = location.startsWith('/admin/pages/home/statistics');
   const favoriteTopicsActive = location.startsWith('/admin/pages/home/favorite-topics');
+  const resultsActive = location.startsWith('/admin/pages/home/results');
+  const ribbonActive = location.startsWith('/admin/pages/home/achievement-ribbon');
+  const testimonialsActive = location.startsWith('/admin/pages/home/testimonials');
+  const facultyActive = location.startsWith('/admin/pages/home/faculty');
+  const galleryActive = location.startsWith('/admin/pages/home/gallery');
   const aboutHeroActive = location.startsWith('/admin/pages/about/hero');
   const aboutStoryActive = location.startsWith('/admin/pages/about/our-story');
   const chairmanActive = location.startsWith('/admin/pages/about/chairman-message');
@@ -31,7 +36,7 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
   const achievementsActive = location.startsWith('/admin/pages/about/achievement-statistics');
   const faqActive = location.startsWith('/admin/pages/about/faqs');
   const admissionCtaActive = location.startsWith('/admin/pages/about/admission-cta');
-  const nestedHomeRoute = heroActive || aboutActive || liveUpdatesActive || statisticsActive || favoriteTopicsActive;
+  const nestedHomeRoute = heroActive || aboutActive || liveUpdatesActive || statisticsActive || favoriteTopicsActive || resultsActive || ribbonActive || testimonialsActive || facultyActive || galleryActive;
   const nestedAboutRoute = aboutHeroActive || aboutStoryActive || chairmanActive || principlesActive || parentChoiceActive || leadershipActive || campusHighlightsActive || achievementsActive || faqActive || admissionCtaActive;
   const [pagesOpen, setPagesOpen] = useState(false);
   const [homeOpen, setHomeOpen] = useState(false);
@@ -104,6 +109,11 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
                     <Link href="/admin/pages/home/live-updates" onClick={() => setOpen(false)} className={`mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5 pl-9 text-sm font-semibold transition ${liveUpdatesActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-home-live-updates"><PanelsTopLeft size={16} /><span>Live Updates</span></Link>
                     <Link href="/admin/pages/home/statistics" onClick={() => setOpen(false)} className={`mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5 pl-9 text-sm font-semibold transition ${statisticsActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-home-statistics"><PanelsTopLeft size={16} /><span>Statistics</span></Link>
                     <Link href="/admin/pages/home/favorite-topics" onClick={() => setOpen(false)} className={`mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5 pl-9 text-sm font-semibold transition ${favoriteTopicsActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-home-favorite-topics"><PanelsTopLeft size={16} /><span>Favorite Topics</span></Link>
+                    <Link href="/admin/pages/home/results" onClick={() => setOpen(false)} className={`mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5 pl-9 text-sm font-semibold transition ${resultsActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-home-results"><PanelsTopLeft size={16} /><span>Results</span></Link>
+                    <Link href="/admin/pages/home/achievement-ribbon" onClick={() => setOpen(false)} className={`mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5 pl-9 text-sm font-semibold transition ${ribbonActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-home-achievement-ribbon"><PanelsTopLeft size={16} /><span>Achievement Ribbon</span></Link>
+                    <Link href="/admin/pages/home/testimonials" onClick={() => setOpen(false)} className={`mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5 pl-9 text-sm font-semibold transition ${testimonialsActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-home-testimonials"><PanelsTopLeft size={16} /><span>Testimonials</span></Link>
+                    <Link href="/admin/pages/home/faculty" onClick={() => setOpen(false)} className={`mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5 pl-9 text-sm font-semibold transition ${facultyActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-home-faculty"><PanelsTopLeft size={16} /><span>Faculty Preview</span></Link>
+                    <Link href="/admin/pages/home/gallery" onClick={() => setOpen(false)} className={`mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5 pl-9 text-sm font-semibold transition ${galleryActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-home-gallery"><PanelsTopLeft size={16} /><span>Gallery Preview</span></Link>
                   </div>
                 )}
               </div>

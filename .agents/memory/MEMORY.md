@@ -2,3 +2,4 @@
 - [Artifact build environment](artifact-build-environment.md) — standalone artifact builds need PORT and BASE_PATH; managed workflows provide them automatically.
 - [About visual refinement boundary](about-visual-refinement.md) — keep About styling work presentation-only; preserve backend content and admin editing behavior.
 - [Native carousel compatibility](native-carousel-compatibility.md) — prefer native scroll-snap carousels over Embla hooks in this React workspace.
+- [Shared About preview records](shared-about-preview-records.md) — Home Faculty and Gallery reuse About records; remove from Home by hiding, never deleting the shared record.

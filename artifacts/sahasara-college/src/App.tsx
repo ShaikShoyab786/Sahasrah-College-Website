@@ -13,6 +13,7 @@ import AdminSiteSettings from '@/pages/admin-site-settings';
 import AdminHomepageHero from '@/pages/admin-homepage-hero';
 import AdminHomepageAboutPreview from '@/pages/admin-homepage-about-preview';
 import { AdminHomepageFavoriteTopics, AdminHomepageLiveUpdates, AdminHomepageStatistics } from '@/pages/admin-homepage-content';
+import { AdminHomepageAchievementRibbon, AdminHomepageFaculty, AdminHomepageGallery, AdminHomepageResults, AdminHomepageTestimonials } from '@/pages/admin-homepage-previews';
 import AdminAboutHero from '@/pages/admin-about-hero';
 import AdminAboutStory from '@/pages/admin-about-story';
 import AdminChairmanMessage from '@/pages/admin-chairman-message';
@@ -52,6 +53,21 @@ function Router() {
         </Route>
         <Route path="/admin/pages/home/favorite-topics">
           <AdminGuard><AdminHomepageFavoriteTopics /></AdminGuard>
+        </Route>
+        <Route path="/admin/pages/home/results">
+          <AdminGuard><AdminHomepageResults /></AdminGuard>
+        </Route>
+        <Route path="/admin/pages/home/achievement-ribbon">
+          <AdminGuard><AdminHomepageAchievementRibbon /></AdminGuard>
+        </Route>
+        <Route path="/admin/pages/home/testimonials">
+          <AdminGuard><AdminHomepageTestimonials /></AdminGuard>
+        </Route>
+        <Route path="/admin/pages/home/faculty">
+          <AdminGuard><AdminHomepageFaculty /></AdminGuard>
+        </Route>
+        <Route path="/admin/pages/home/gallery">
+          <AdminGuard><AdminHomepageGallery /></AdminGuard>
         </Route>
         <Route path="/admin/pages/about/hero">
           <AdminGuard><AdminAboutHero /></AdminGuard>

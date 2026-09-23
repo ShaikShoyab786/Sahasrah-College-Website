@@ -24,7 +24,7 @@ router.post(
   upload.single("file"),
   async (req, res) => {
     const purpose = req.body?.purpose;
-    if (purpose !== "logo" && purpose !== "hero" && purpose !== "campus" && purpose !== "cta" && purpose !== "update" && purpose !== "topic") {
+    if (purpose !== "logo" && purpose !== "hero" && purpose !== "campus" && purpose !== "cta" && purpose !== "update" && purpose !== "topic" && purpose !== "result" && purpose !== "testimonial" && purpose !== "faculty" && purpose !== "gallery") {
       res.status(400).json({ error: "Choose a valid image purpose." });
       return;
     }

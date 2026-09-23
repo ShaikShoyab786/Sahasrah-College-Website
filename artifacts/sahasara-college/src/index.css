@@ -260,6 +260,55 @@ body { min-width: 320px; }
   from { height: 0; }
   to { height: 100%; }
 }
+
+@keyframes home-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.home-preview-section {
+  content-visibility: auto;
+  contain-intrinsic-size: 700px;
+}
+.home-reveal {
+  animation: rise .7s var(--home-card-delay, 0ms) cubic-bezier(.22,1,.36,1) both;
+}
+.home-marquee {
+  overflow: hidden;
+  width: 100%;
+  outline: none;
+}
+.home-marquee:focus-visible {
+  box-shadow: inset 0 0 0 3px hsl(var(--accent) / .7);
+}
+.home-marquee-track {
+  display: flex;
+  width: max-content;
+  min-width: 200%;
+  align-items: center;
+  padding: 1.1rem 0;
+  animation: home-marquee 34s linear infinite;
+  will-change: transform;
+}
+.home-marquee:hover .home-marquee-track,
+.home-marquee:focus-within .home-marquee-track {
+  animation-play-state: paused;
+}
+.faculty-preview-overlay {
+  background: linear-gradient(to top, hsl(var(--primary) / .96) 0%, hsl(var(--primary) / .64) 34%, transparent 76%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-reveal {
+    animation: none;
+  }
+  .home-marquee-track {
+    min-width: 0;
+    animation: none;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+}
 @keyframes story-marker-reach {
   0% { box-shadow: 0 0 0 0 hsl(var(--accent) / 0), 0 0 0 hsl(var(--accent) / 0); transform: scale(.82); }
   18% { box-shadow: 0 0 0 8px hsl(var(--accent) / .24), 0 0 24px hsl(var(--accent) / .45); transform: scale(1.22); }

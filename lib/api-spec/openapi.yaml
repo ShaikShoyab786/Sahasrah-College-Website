@@ -181,6 +181,89 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+  /homepage-results:
+    get:
+      operationId: getHomepageResults
+      tags: [public]
+      summary: Read visible homepage results
+      responses:
+        "200":
+          description: Homepage results preview
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomepageResults"
+        "404":
+          description: Results are hidden or unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /homepage-achievement-ribbon:
+    get:
+      operationId: getHomepageAchievementRibbon
+      tags: [public]
+      summary: Read active homepage achievement ribbon phrases
+      responses:
+        "200":
+          description: Homepage achievement ribbon
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomepageAchievementRibbon"
+        "404":
+          description: Achievement ribbon is hidden or unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /homepage-testimonials:
+    get:
+      operationId: getHomepageTestimonials
+      tags: [public]
+      summary: Read active homepage testimonials
+      responses:
+        "200":
+          description: Homepage testimonials preview
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomepageTestimonials"
+        "404":
+          description: Testimonials are hidden or unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /homepage-faculty:
+    get:
+      operationId: getHomepageFaculty
+      tags: [public]
+      summary: Read active homepage faculty preview
+      responses:
+        "200":
+          description: Homepage faculty preview
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/HomepageFacultyMember"
+  /homepage-gallery:
+    get:
+      operationId: getHomepageGallery
+      tags: [public]
+      summary: Read featured homepage gallery preview
+      responses:
+        "200":
+          description: Homepage gallery preview
+          content:
+            application/json:
+              schema:
+                type: array
+                maxItems: 3
+                items:
+                  $ref: "#/components/schemas/HomepageGalleryItem"
   /about-hero:
     get:
       operationId: getAboutHero
@@ -625,6 +708,277 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HomepageFavoriteTopics"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/homepage-results:
+    get:
+      operationId: getAdminHomepageResults
+      tags: [admin]
+      summary: Read homepage results for editing
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Homepage results
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomepageResults"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateHomepageResults
+      tags: [admin]
+      summary: Update homepage results
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HomepageResultsInput"
+      responses:
+        "200":
+          description: Updated homepage results
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomepageResults"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/homepage-achievement-ribbon:
+    get:
+      operationId: getAdminHomepageAchievementRibbon
+      tags: [admin]
+      summary: Read homepage achievement ribbon for editing
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Homepage achievement ribbon
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomepageAchievementRibbon"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateHomepageAchievementRibbon
+      tags: [admin]
+      summary: Update homepage achievement ribbon
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HomepageAchievementRibbonInput"
+      responses:
+        "200":
+          description: Updated homepage achievement ribbon
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomepageAchievementRibbon"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/homepage-testimonials:
+    get:
+      operationId: getAdminHomepageTestimonials
+      tags: [admin]
+      summary: Read homepage testimonials for editing
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Homepage testimonials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomepageTestimonials"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateHomepageTestimonials
+      tags: [admin]
+      summary: Update homepage testimonials
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HomepageTestimonialsInput"
+      responses:
+        "200":
+          description: Updated homepage testimonials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomepageTestimonials"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/homepage-faculty:
+    get:
+      operationId: getAdminHomepageFaculty
+      tags: [admin]
+      summary: Read homepage faculty preview for editing
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Homepage faculty preview
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/HomepageFacultyMember"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateHomepageFaculty
+      tags: [admin]
+      summary: Update homepage faculty preview
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              minItems: 1
+              maxItems: 20
+              items:
+                $ref: "#/components/schemas/HomepageFacultyMemberInput"
+      responses:
+        "200":
+          description: Updated homepage faculty preview
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/HomepageFacultyMember"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/homepage-gallery:
+    get:
+      operationId: getAdminHomepageGallery
+      tags: [admin]
+      summary: Read homepage gallery preview for editing
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Homepage gallery preview
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/HomepageGalleryItem"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateHomepageGallery
+      tags: [admin]
+      summary: Update homepage gallery preview
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              minItems: 1
+              maxItems: 20
+              items:
+                $ref: "#/components/schemas/HomepageGalleryItemInput"
+      responses:
+        "200":
+          description: Updated homepage gallery preview
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/HomepageGalleryItem"
         "400":
           description: Validation error
           content:
@@ -1749,6 +2103,400 @@ components:
           items:
             $ref: "#/components/schemas/HomepageFavoriteTopicInput"
       required: [eyebrow, heading, description, isVisible, sortOrder, topics]
+    HomepageResult:
+      type: object
+      properties:
+        id:
+          type: string
+        studentImageUrl:
+          type: ["string", "null"]
+        studentImageAltText:
+          type: string
+        studentName:
+          type: string
+        examCourse:
+          type: string
+        score:
+          type: string
+        achievement:
+          type: string
+        resultLabel:
+          type: string
+        examName:
+          type: ["string", "null"]
+        year:
+          type: ["string", "null"]
+        accentColor:
+          type: ["string", "null"]
+        displayOrder:
+          type: integer
+        isActive:
+          type: boolean
+      required: [id, studentImageUrl, studentImageAltText, studentName, examCourse, score, achievement, resultLabel, examName, year, accentColor, displayOrder, isActive]
+    HomepageResultInput:
+      type: object
+      properties:
+        studentImageUrl:
+          type: ["string", "null"]
+        studentImageAltText:
+          type: string
+          minLength: 1
+        studentName:
+          type: string
+          minLength: 1
+        examCourse:
+          type: string
+          minLength: 1
+        score:
+          type: string
+          minLength: 1
+        achievement:
+          type: string
+          minLength: 1
+        resultLabel:
+          type: string
+          minLength: 1
+        examName:
+          type: ["string", "null"]
+        year:
+          type: ["string", "null"]
+        accentColor:
+          type: ["string", "null"]
+        displayOrder:
+          type: integer
+          minimum: 1
+          maximum: 20
+        isActive:
+          type: boolean
+      required: [studentImageUrl, studentImageAltText, studentName, examCourse, score, achievement, resultLabel, examName, year, accentColor, displayOrder, isActive]
+    HomepageResults:
+      type: object
+      properties:
+        id:
+          type: string
+        eyebrow:
+          type: string
+        heading:
+          type: string
+        description:
+          type: string
+        isVisible:
+          type: boolean
+        sortOrder:
+          type: integer
+        updatedAt:
+          type: string
+          format: date-time
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/HomepageResult"
+      required: [id, eyebrow, heading, description, isVisible, sortOrder, updatedAt, results]
+    HomepageResultsInput:
+      type: object
+      properties:
+        eyebrow:
+          type: string
+          minLength: 1
+        heading:
+          type: string
+          minLength: 1
+        description:
+          type: string
+          minLength: 1
+        isVisible:
+          type: boolean
+        sortOrder:
+          type: integer
+          minimum: 1
+          maximum: 20
+        results:
+          type: array
+          minItems: 1
+          maxItems: 20
+          items:
+            $ref: "#/components/schemas/HomepageResultInput"
+      required: [eyebrow, heading, description, isVisible, sortOrder, results]
+    HomepageAchievementRibbonPhrase:
+      type: object
+      properties:
+        id:
+          type: string
+        phrase:
+          type: string
+        displayOrder:
+          type: integer
+        isActive:
+          type: boolean
+        accentColor:
+          type: ["string", "null"]
+        separatorStyle:
+          type: ["string", "null"]
+      required: [id, phrase, displayOrder, isActive, accentColor, separatorStyle]
+    HomepageAchievementRibbonPhraseInput:
+      type: object
+      properties:
+        phrase:
+          type: string
+          minLength: 1
+        displayOrder:
+          type: integer
+          minimum: 1
+          maximum: 20
+        isActive:
+          type: boolean
+        accentColor:
+          type: ["string", "null"]
+        separatorStyle:
+          type: ["string", "null"]
+      required: [phrase, displayOrder, isActive, accentColor, separatorStyle]
+    HomepageAchievementRibbon:
+      type: object
+      properties:
+        id:
+          type: string
+        isVisible:
+          type: boolean
+        sortOrder:
+          type: integer
+        updatedAt:
+          type: string
+          format: date-time
+        phrases:
+          type: array
+          items:
+            $ref: "#/components/schemas/HomepageAchievementRibbonPhrase"
+      required: [id, isVisible, sortOrder, updatedAt, phrases]
+    HomepageAchievementRibbonInput:
+      type: object
+      properties:
+        isVisible:
+          type: boolean
+        sortOrder:
+          type: integer
+          minimum: 1
+          maximum: 20
+        phrases:
+          type: array
+          minItems: 1
+          maxItems: 20
+          items:
+            $ref: "#/components/schemas/HomepageAchievementRibbonPhraseInput"
+      required: [isVisible, sortOrder, phrases]
+    HomepageTestimonial:
+      type: object
+      properties:
+        id:
+          type: string
+        rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+        quote:
+          type: string
+        personName:
+          type: string
+        role:
+          type: string
+        courseAchievement:
+          type: string
+        avatarImageUrl:
+          type: ["string", "null"]
+        avatarAltText:
+          type: string
+        accentColor:
+          type: ["string", "null"]
+        displayOrder:
+          type: integer
+        isActive:
+          type: boolean
+      required: [id, rating, quote, personName, role, courseAchievement, avatarImageUrl, avatarAltText, accentColor, displayOrder, isActive]
+    HomepageTestimonialInput:
+      type: object
+      properties:
+        rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+        quote:
+          type: string
+          minLength: 1
+        personName:
+          type: string
+          minLength: 1
+        role:
+          type: string
+          minLength: 1
+        courseAchievement:
+          type: string
+          minLength: 1
+        avatarImageUrl:
+          type: ["string", "null"]
+        avatarAltText:
+          type: string
+          minLength: 1
+        accentColor:
+          type: ["string", "null"]
+        displayOrder:
+          type: integer
+          minimum: 1
+          maximum: 20
+        isActive:
+          type: boolean
+      required: [rating, quote, personName, role, courseAchievement, avatarImageUrl, avatarAltText, accentColor, displayOrder, isActive]
+    HomepageTestimonials:
+      type: object
+      properties:
+        id:
+          type: string
+        eyebrow:
+          type: string
+        heading:
+          type: string
+        description:
+          type: string
+        isVisible:
+          type: boolean
+        sortOrder:
+          type: integer
+        updatedAt:
+          type: string
+          format: date-time
+        testimonials:
+          type: array
+          items:
+            $ref: "#/components/schemas/HomepageTestimonial"
+      required: [id, eyebrow, heading, description, isVisible, sortOrder, updatedAt, testimonials]
+    HomepageTestimonialsInput:
+      type: object
+      properties:
+        eyebrow:
+          type: string
+          minLength: 1
+        heading:
+          type: string
+          minLength: 1
+        description:
+          type: string
+          minLength: 1
+        isVisible:
+          type: boolean
+        sortOrder:
+          type: integer
+          minimum: 1
+          maximum: 20
+        testimonials:
+          type: array
+          minItems: 1
+          maxItems: 20
+          items:
+            $ref: "#/components/schemas/HomepageTestimonialInput"
+      required: [eyebrow, heading, description, isVisible, sortOrder, testimonials]
+    HomepageFacultyMember:
+      type: object
+      properties:
+        id:
+          type: string
+        imageUrl:
+          type: ["string", "null"]
+        imageAltText:
+          type: string
+        name:
+          type: string
+        role:
+          type: string
+        subject:
+          type: string
+        experience:
+          type: ["string", "null"]
+        profileUrl:
+          type: ["string", "null"]
+        displayOrder:
+          type: integer
+        isActive:
+          type: boolean
+      required: [id, imageUrl, imageAltText, name, role, subject, experience, profileUrl, displayOrder, isActive]
+    HomepageFacultyMemberInput:
+      type: object
+      properties:
+        imageUrl:
+          type: ["string", "null"]
+        imageAltText:
+          type: string
+          minLength: 1
+        name:
+          type: string
+          minLength: 1
+        role:
+          type: string
+          minLength: 1
+        subject:
+          type: string
+          minLength: 1
+        experience:
+          type: ["string", "null"]
+        profileUrl:
+          type: ["string", "null"]
+        displayOrder:
+          type: integer
+          minimum: 1
+          maximum: 20
+        isActive:
+          type: boolean
+      required: [imageUrl, imageAltText, name, role, subject, experience, profileUrl, displayOrder, isActive]
+    HomepageGalleryItem:
+      type: object
+      properties:
+        id:
+          type: string
+        imageUrl:
+          type: ["string", "null"]
+        imageAltText:
+          type: string
+        title:
+          type: string
+        category:
+          type: string
+        description:
+          type: string
+        locationLabel:
+          type: ["string", "null"]
+        displayOrder:
+          type: integer
+        isFeatured:
+          type: boolean
+        isActive:
+          type: boolean
+      required: [id, imageUrl, imageAltText, title, category, description, locationLabel, displayOrder, isFeatured, isActive]
+    HomepageGalleryItemInput:
+      type: object
+      properties:
+        imageUrl:
+          type: ["string", "null"]
+        imageAltText:
+          type: string
+          minLength: 1
+        title:
+          type: string
+          minLength: 1
+        category:
+          type: string
+          minLength: 1
+        description:
+          type: string
+          minLength: 1
+          maxLength: 280
+        locationLabel:
+          type: ["string", "null"]
+        displayOrder:
+          type: integer
+          minimum: 1
+          maximum: 20
+        isFeatured:
+          type: boolean
+        isActive:
+          type: boolean
+      required: [imageUrl, imageAltText, title, category, description, locationLabel, displayOrder, isFeatured, isActive]
     AboutHeroStat:
       type: object
       properties:
@@ -2434,6 +3182,14 @@ components:
           type: string
         socialUrl:
           type: ["string", "null"]
+        subject:
+          type: ["string", "null"]
+        experience:
+          type: ["string", "null"]
+        homepageProfileUrl:
+          type: ["string", "null"]
+        homepageActive:
+          type: boolean
         displayOrder:
           type: integer
         isVisible:
@@ -2447,6 +3203,10 @@ components:
         - qualification
         - biography
         - socialUrl
+        - subject
+        - experience
+        - homepageProfileUrl
+        - homepageActive
         - displayOrder
         - isVisible
     AboutLeadershipMemberInput:
@@ -2468,6 +3228,14 @@ components:
           type: string
         socialUrl:
           type: ["string", "null"]
+        subject:
+          type: ["string", "null"]
+        experience:
+          type: ["string", "null"]
+        homepageProfileUrl:
+          type: ["string", "null"]
+        homepageActive:
+          type: boolean
         displayOrder:
           type: integer
           minimum: 1
@@ -2551,11 +3319,19 @@ components:
           type: string
         description:
           type: string
+        category:
+          type: ["string", "null"]
+        locationLabel:
+          type: ["string", "null"]
+        homepageFeatured:
+          type: boolean
+        homepageActive:
+          type: boolean
         displayOrder:
           type: integer
         isVisible:
           type: boolean
-      required: [id, imageUrl, imageAltText, icon, title, description, displayOrder, isVisible]
+      required: [id, imageUrl, imageAltText, icon, title, description, category, locationLabel, homepageFeatured, homepageActive, displayOrder, isVisible]
     AboutCampusHighlightInput:
       type: object
       properties:
@@ -2572,6 +3348,14 @@ components:
           type: string
           minLength: 1
           maxLength: 280
+        category:
+          type: ["string", "null"]
+        locationLabel:
+          type: ["string", "null"]
+        homepageFeatured:
+          type: boolean
+        homepageActive:
+          type: boolean
         displayOrder:
           type: integer
           minimum: 1
@@ -2874,7 +3658,7 @@ components:
           format: binary
         purpose:
           type: string
-          enum: [logo, hero, campus, cta, update, topic]
+          enum: [logo, hero, campus, cta, update, topic, result, testimonial, faculty, gallery]
       required:
         - file
         - purpose

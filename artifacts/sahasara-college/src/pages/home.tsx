@@ -1,11 +1,12 @@
 import { ArrowRight, Mail, MapPin, Phone, Quote } from 'lucide-react';
-import { useGetHomepageAboutPreview, useGetHomepageFavoriteTopics, useGetHomepageHero, useGetHomepageLiveUpdates, useGetHomepageStatistics, useGetSiteSettings, type HomepageFavoriteTopics, type HomepageLiveUpdate, type HomepageStatistics } from '@workspace/api-client-react';
+import { useGetHomepageAboutPreview, useGetHomepageAchievementRibbon, useGetHomepageFaculty, useGetHomepageFavoriteTopics, useGetHomepageGallery, useGetHomepageHero, useGetHomepageLiveUpdates, useGetHomepageResults, useGetHomepageStatistics, useGetHomepageTestimonials, useGetSiteSettings, type HomepageFavoriteTopics, type HomepageLiveUpdate, type HomepageStatistics } from '@workspace/api-client-react';
 import { HeroCarousel } from '@/components/hero-carousel';
 import { AboutPreview } from '@/components/about-preview';
 import { SiteMark } from '@/components/site-mark';
 import { HomeLiveUpdates } from '@/components/home-live-updates';
 import { HomeStatistics } from '@/components/home-statistics';
 import { FavoriteTopics } from '@/components/favorite-topics';
+import { AchievementRibbon, fallbackFaculty, fallbackGallery, fallbackRibbon, fallbackResults, fallbackTestimonials, HomeFaculty, HomeGallery, HomeResults, HomeTestimonials } from '@/components/home-previews';
 
 const fallbackSettings = {
   collegeName: 'Sahasara Junior College',
@@ -150,6 +151,11 @@ export default function Home() {
   const liveUpdatesQuery = useGetHomepageLiveUpdates();
   const statisticsQuery = useGetHomepageStatistics();
   const favoriteTopicsQuery = useGetHomepageFavoriteTopics();
+  const resultsQuery = useGetHomepageResults();
+  const ribbonQuery = useGetHomepageAchievementRibbon();
+  const testimonialsQuery = useGetHomepageTestimonials();
+  const facultyQuery = useGetHomepageFaculty();
+  const galleryQuery = useGetHomepageGallery();
   if (settingsQuery.isLoading || heroQuery.isLoading) return <HomeSkeleton />;
   const settings = settingsQuery.data ?? fallbackSettings;
   const slides = heroQuery.data?.length === 3 ? heroQuery.data : fallbackHeroSlides;
@@ -175,6 +181,11 @@ export default function Home() {
         <HomeLiveUpdates updates={liveUpdatesQuery.data?.length ? liveUpdatesQuery.data : fallbackLiveUpdates} />
         <HomeStatistics content={statisticsQuery.data?.isVisible ? statisticsQuery.data : fallbackStatistics} />
         <FavoriteTopics content={favoriteTopicsQuery.data?.isVisible ? favoriteTopicsQuery.data : fallbackFavoriteTopics} />
+        <HomeResults content={resultsQuery.data?.isVisible ? resultsQuery.data : fallbackResults} />
+        <AchievementRibbon content={ribbonQuery.data?.isVisible ? ribbonQuery.data : fallbackRibbon} />
+        <HomeTestimonials content={testimonialsQuery.data?.isVisible ? testimonialsQuery.data : fallbackTestimonials} />
+        <HomeFaculty faculty={facultyQuery.data?.length ? facultyQuery.data : fallbackFaculty} />
+        <HomeGallery gallery={galleryQuery.data?.length ? galleryQuery.data : fallbackGallery} />
 
         <section id="contact" className="mx-auto max-w-7xl px-6 py-24 lg:px-10 lg:py-32">
           <div className="grid overflow-hidden rounded-[2rem] bg-[hsl(var(--accent))] text-[hsl(var(--primary))] lg:grid-cols-[1.1fr_.9fr]">

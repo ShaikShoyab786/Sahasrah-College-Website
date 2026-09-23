@@ -17,6 +17,13 @@ export interface AboutLeadershipMember {
   biography: string;
   /** @nullable */
   socialUrl: string | null;
+  /** @nullable */
+  subject: string | null;
+  /** @nullable */
+  experience: string | null;
+  /** @nullable */
+  homepageProfileUrl: string | null;
+  homepageActive: boolean;
   displayOrder: number;
   isVisible: boolean;
 }

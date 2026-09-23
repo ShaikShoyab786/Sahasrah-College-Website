@@ -329,6 +329,292 @@ export interface HomepageFavoriteTopicsInput {
   topics: HomepageFavoriteTopicInput[];
 }
 
+export interface HomepageResult {
+  id: string;
+  /** @nullable */
+  studentImageUrl: string | null;
+  studentImageAltText: string;
+  studentName: string;
+  examCourse: string;
+  score: string;
+  achievement: string;
+  resultLabel: string;
+  /** @nullable */
+  examName: string | null;
+  /** @nullable */
+  year: string | null;
+  /** @nullable */
+  accentColor: string | null;
+  displayOrder: number;
+  isActive: boolean;
+}
+
+export interface HomepageResultInput {
+  /** @nullable */
+  studentImageUrl: string | null;
+  /** @minLength 1 */
+  studentImageAltText: string;
+  /** @minLength 1 */
+  studentName: string;
+  /** @minLength 1 */
+  examCourse: string;
+  /** @minLength 1 */
+  score: string;
+  /** @minLength 1 */
+  achievement: string;
+  /** @minLength 1 */
+  resultLabel: string;
+  /** @nullable */
+  examName: string | null;
+  /** @nullable */
+  year: string | null;
+  /** @nullable */
+  accentColor: string | null;
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  displayOrder: number;
+  isActive: boolean;
+}
+
+export interface HomepageResults {
+  id: string;
+  eyebrow: string;
+  heading: string;
+  description: string;
+  isVisible: boolean;
+  sortOrder: number;
+  updatedAt: string;
+  results: HomepageResult[];
+}
+
+export interface HomepageResultsInput {
+  /** @minLength 1 */
+  eyebrow: string;
+  /** @minLength 1 */
+  heading: string;
+  /** @minLength 1 */
+  description: string;
+  isVisible: boolean;
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  sortOrder: number;
+  /**
+     * @minItems 1
+     * @maxItems 20
+     */
+  results: HomepageResultInput[];
+}
+
+export interface HomepageAchievementRibbonPhrase {
+  id: string;
+  phrase: string;
+  displayOrder: number;
+  isActive: boolean;
+  /** @nullable */
+  accentColor: string | null;
+  /** @nullable */
+  separatorStyle: string | null;
+}
+
+export interface HomepageAchievementRibbonPhraseInput {
+  /** @minLength 1 */
+  phrase: string;
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  displayOrder: number;
+  isActive: boolean;
+  /** @nullable */
+  accentColor: string | null;
+  /** @nullable */
+  separatorStyle: string | null;
+}
+
+export interface HomepageAchievementRibbon {
+  id: string;
+  isVisible: boolean;
+  sortOrder: number;
+  updatedAt: string;
+  phrases: HomepageAchievementRibbonPhrase[];
+}
+
+export interface HomepageAchievementRibbonInput {
+  isVisible: boolean;
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  sortOrder: number;
+  /**
+     * @minItems 1
+     * @maxItems 20
+     */
+  phrases: HomepageAchievementRibbonPhraseInput[];
+}
+
+export interface HomepageTestimonial {
+  id: string;
+  /**
+     * @minimum 1
+     * @maximum 5
+     */
+  rating: number;
+  quote: string;
+  personName: string;
+  role: string;
+  courseAchievement: string;
+  /** @nullable */
+  avatarImageUrl: string | null;
+  avatarAltText: string;
+  /** @nullable */
+  accentColor: string | null;
+  displayOrder: number;
+  isActive: boolean;
+}
+
+export interface HomepageTestimonialInput {
+  /**
+     * @minimum 1
+     * @maximum 5
+     */
+  rating: number;
+  /** @minLength 1 */
+  quote: string;
+  /** @minLength 1 */
+  personName: string;
+  /** @minLength 1 */
+  role: string;
+  /** @minLength 1 */
+  courseAchievement: string;
+  /** @nullable */
+  avatarImageUrl: string | null;
+  /** @minLength 1 */
+  avatarAltText: string;
+  /** @nullable */
+  accentColor: string | null;
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  displayOrder: number;
+  isActive: boolean;
+}
+
+export interface HomepageTestimonials {
+  id: string;
+  eyebrow: string;
+  heading: string;
+  description: string;
+  isVisible: boolean;
+  sortOrder: number;
+  updatedAt: string;
+  testimonials: HomepageTestimonial[];
+}
+
+export interface HomepageTestimonialsInput {
+  /** @minLength 1 */
+  eyebrow: string;
+  /** @minLength 1 */
+  heading: string;
+  /** @minLength 1 */
+  description: string;
+  isVisible: boolean;
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  sortOrder: number;
+  /**
+     * @minItems 1
+     * @maxItems 20
+     */
+  testimonials: HomepageTestimonialInput[];
+}
+
+export interface HomepageFacultyMember {
+  id: string;
+  /** @nullable */
+  imageUrl: string | null;
+  imageAltText: string;
+  name: string;
+  role: string;
+  subject: string;
+  /** @nullable */
+  experience: string | null;
+  /** @nullable */
+  profileUrl: string | null;
+  displayOrder: number;
+  isActive: boolean;
+}
+
+export interface HomepageFacultyMemberInput {
+  /** @nullable */
+  imageUrl: string | null;
+  /** @minLength 1 */
+  imageAltText: string;
+  /** @minLength 1 */
+  name: string;
+  /** @minLength 1 */
+  role: string;
+  /** @minLength 1 */
+  subject: string;
+  /** @nullable */
+  experience: string | null;
+  /** @nullable */
+  profileUrl: string | null;
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  displayOrder: number;
+  isActive: boolean;
+}
+
+export interface HomepageGalleryItem {
+  id: string;
+  /** @nullable */
+  imageUrl: string | null;
+  imageAltText: string;
+  title: string;
+  category: string;
+  description: string;
+  /** @nullable */
+  locationLabel: string | null;
+  displayOrder: number;
+  isFeatured: boolean;
+  isActive: boolean;
+}
+
+export interface HomepageGalleryItemInput {
+  /** @nullable */
+  imageUrl: string | null;
+  /** @minLength 1 */
+  imageAltText: string;
+  /** @minLength 1 */
+  title: string;
+  /** @minLength 1 */
+  category: string;
+  /**
+     * @minLength 1
+     * @maxLength 280
+     */
+  description: string;
+  /** @nullable */
+  locationLabel: string | null;
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  displayOrder: number;
+  isFeatured: boolean;
+  isActive: boolean;
+}
+
 export interface AboutHeroStat {
   id: string;
   value: string;
@@ -643,6 +929,13 @@ export interface AboutLeadershipMember {
   biography: string;
   /** @nullable */
   socialUrl: string | null;
+  /** @nullable */
+  subject: string | null;
+  /** @nullable */
+  experience: string | null;
+  /** @nullable */
+  homepageProfileUrl: string | null;
+  homepageActive: boolean;
   displayOrder: number;
   isVisible: boolean;
 }
@@ -659,6 +952,13 @@ export interface AboutLeadershipMemberInput {
   biography: string;
   /** @nullable */
   socialUrl: string | null;
+  /** @nullable */
+  subject?: string | null;
+  /** @nullable */
+  experience?: string | null;
+  /** @nullable */
+  homepageProfileUrl?: string | null;
+  homepageActive?: boolean;
   /**
      * @minimum 1
      * @maximum 20
@@ -699,6 +999,12 @@ export interface AboutCampusHighlight {
   icon: string | null;
   title: string;
   description: string;
+  /** @nullable */
+  category: string | null;
+  /** @nullable */
+  locationLabel: string | null;
+  homepageFeatured: boolean;
+  homepageActive: boolean;
   displayOrder: number;
   isVisible: boolean;
 }
@@ -716,6 +1022,12 @@ export interface AboutCampusHighlightInput {
      * @maxLength 280
      */
   description: string;
+  /** @nullable */
+  category?: string | null;
+  /** @nullable */
+  locationLabel?: string | null;
+  homepageFeatured?: boolean;
+  homepageActive?: boolean;
   /**
      * @minimum 1
      * @maximum 20
@@ -925,6 +1237,10 @@ export const ImageUploadInputPurpose = {
   cta: 'cta',
   update: 'update',
   topic: 'topic',
+  result: 'result',
+  testimonial: 'testimonial',
+  faculty: 'faculty',
+  gallery: 'gallery',
 } as const;
 
 export interface ImageUploadInput {

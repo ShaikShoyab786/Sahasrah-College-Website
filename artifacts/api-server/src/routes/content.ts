@@ -22,12 +22,22 @@ import {
   GetAdminAboutWhyParentsChooseResponse,
   GetAdminHomepageAboutPreviewResponse,
   GetAdminHomepageFavoriteTopicsResponse,
+  GetAdminHomepageAchievementRibbonResponse,
+  GetAdminHomepageFacultyResponse,
+  GetAdminHomepageGalleryResponse,
+  GetAdminHomepageResultsResponse,
   GetAdminHomepageLiveUpdatesResponse,
   GetAdminHomepageStatisticsResponse,
+  GetAdminHomepageTestimonialsResponse,
+  GetHomepageAchievementRibbonResponse,
   GetHomepageAboutPreviewResponse,
+  GetHomepageFacultyResponse,
   GetHomepageFavoriteTopicsResponse,
+  GetHomepageGalleryResponse,
   GetHomepageLiveUpdatesResponse,
+  GetHomepageResultsResponse,
   GetHomepageStatisticsResponse,
+  GetHomepageTestimonialsResponse,
   UpdateAboutChairmanMessageBody,
   UpdateAboutChairmanMessageResponse,
   UpdateAboutAchievementsBody,
@@ -53,10 +63,20 @@ import {
   UpdateHomepageAboutPreviewResponse,
   UpdateHomepageFavoriteTopicsBody,
   UpdateHomepageFavoriteTopicsResponse,
+  UpdateHomepageAchievementRibbonBody,
+  UpdateHomepageAchievementRibbonResponse,
+  UpdateHomepageFacultyBody,
+  UpdateHomepageFacultyResponse,
+  UpdateHomepageGalleryBody,
+  UpdateHomepageGalleryResponse,
   UpdateHomepageLiveUpdatesBody,
+  UpdateHomepageResultsBody,
+  UpdateHomepageResultsResponse,
   UpdateHomepageLiveUpdatesResponse,
   UpdateHomepageStatisticsBody,
   UpdateHomepageStatisticsResponse,
+  UpdateHomepageTestimonialsBody,
+  UpdateHomepageTestimonialsResponse,
   UpdateSiteSettingsBody,
 } from "@workspace/api-zod";
 import { prisma } from "../lib/prisma";
@@ -138,6 +158,64 @@ async function readHomepageFavoriteTopics() {
   });
 }
 
+async function readHomepageResults() {
+  return prisma.homepageResults.findUnique({
+    where: { id: "singleton" },
+    include: { results: { orderBy: { displayOrder: "asc" } } },
+  });
+}
+
+async function readHomepageAchievementRibbon() {
+  return prisma.homepageAchievementRibbon.findUnique({
+    where: { id: "singleton" },
+    include: { phrases: { orderBy: { displayOrder: "asc" } } },
+  });
+}
+
+async function readHomepageTestimonials() {
+  return prisma.homepageTestimonials.findUnique({
+    where: { id: "singleton" },
+    include: { testimonials: { orderBy: { displayOrder: "asc" } } },
+  });
+}
+
+async function readHomepageFaculty() {
+  const content = await prisma.aboutLeadership.findUnique({
+    where: { id: "singleton" },
+    include: { members: { orderBy: { displayOrder: "asc" } } },
+  });
+  return content?.members.map((member) => ({
+    id: member.id,
+    imageUrl: member.portraitImage,
+    imageAltText: member.portraitAltText,
+    name: member.name,
+    role: member.designation,
+    subject: member.subject || member.qualification || "Academic guidance",
+    experience: member.experience || "Experienced educator",
+    profileUrl: member.homepageProfileUrl || member.socialUrl,
+    displayOrder: member.displayOrder,
+    isActive: member.isVisible && member.homepageActive,
+  })) ?? [];
+}
+
+async function readHomepageGallery() {
+  const content = await prisma.aboutCampusHighlights.findUnique({
+    where: { id: "singleton" },
+    include: { highlights: { orderBy: { displayOrder: "asc" } } },
+  });
+  return content?.highlights.map((highlight) => ({
+    id: highlight.id,
+    imageUrl: highlight.imageUrl,
+    imageAltText: highlight.imageAltText,
+    title: highlight.title,
+    category: highlight.category || "Campus Feature",
+    description: highlight.description,
+    locationLabel: highlight.locationLabel,
+    displayOrder: highlight.displayOrder,
+    isFeatured: highlight.homepageFeatured,
+    isActive: highlight.isVisible && highlight.homepageActive,
+  })) ?? [];
+}
 function hasUniqueDisplayOrders(items: Array<{ displayOrder: number }>) {
   return new Set(items.map((item) => item.displayOrder)).size === items.length;
 }
@@ -236,6 +314,79 @@ router.get("/homepage-favorite-topics", async (req, res) => {
   } catch (error) {
     req.log.error({ err: error }, "Unable to read homepage favorite topics");
     res.status(500).json({ error: "Unable to load homepage favorite topics." });
+  }
+});
+
+router.get("/homepage-results", async (req, res) => {
+  try {
+    const content = await readHomepageResults();
+    if (!content || !content.isVisible) {
+      res.status(404).json({ error: "Homepage results are not available." });
+      return;
+    }
+    res.json(GetHomepageResultsResponse.parse({
+      ...content,
+      results: content.results.filter((result) => result.isActive),
+    }));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read homepage results");
+    res.status(500).json({ error: "Unable to load homepage results." });
+  }
+});
+
+router.get("/homepage-achievement-ribbon", async (req, res) => {
+  try {
+    const content = await readHomepageAchievementRibbon();
+    if (!content || !content.isVisible) {
+      res.status(404).json({ error: "Homepage achievement ribbon is not available." });
+      return;
+    }
+    res.json(GetHomepageAchievementRibbonResponse.parse({
+      ...content,
+      phrases: content.phrases.filter((phrase) => phrase.isActive),
+    }));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read homepage achievement ribbon");
+    res.status(500).json({ error: "Unable to load homepage achievement ribbon." });
+  }
+});
+
+router.get("/homepage-testimonials", async (req, res) => {
+  try {
+    const content = await readHomepageTestimonials();
+    if (!content || !content.isVisible) {
+      res.status(404).json({ error: "Homepage testimonials are not available." });
+      return;
+    }
+    res.json(GetHomepageTestimonialsResponse.parse({
+      ...content,
+      testimonials: content.testimonials.filter((testimonial) => testimonial.isActive),
+    }));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read homepage testimonials");
+    res.status(500).json({ error: "Unable to load homepage testimonials." });
+  }
+});
+
+router.get("/homepage-faculty", async (req, res) => {
+  try {
+    const faculty = (await readHomepageFaculty()).filter((member) => member.isActive);
+    res.json(GetHomepageFacultyResponse.parse(faculty));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read homepage faculty");
+    res.status(500).json({ error: "Unable to load homepage faculty." });
+  }
+});
+
+router.get("/homepage-gallery", async (req, res) => {
+  try {
+    const gallery = (await readHomepageGallery())
+      .filter((item) => item.isActive && item.isFeatured)
+      .slice(0, 3);
+    res.json(GetHomepageGalleryResponse.parse(gallery));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read homepage gallery");
+    res.status(500).json({ error: "Unable to load homepage gallery." });
   }
 });
 
@@ -579,6 +730,257 @@ router.put("/admin/homepage-favorite-topics", requireAdmin, async (req, res) => 
   } catch (error) {
     req.log.error({ err: error }, "Unable to update homepage favorite topics");
     res.status(500).json({ error: "Unable to save homepage favorite topics." });
+  }
+});
+
+router.get("/admin/homepage-results", requireAdmin, async (req, res) => {
+  try {
+    const content = await readHomepageResults();
+    if (!content) {
+      res.status(404).json({ error: "Homepage results are not available." });
+      return;
+    }
+    res.json(GetAdminHomepageResultsResponse.parse(content));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read admin homepage results");
+    res.status(500).json({ error: "Unable to load homepage results." });
+  }
+});
+
+router.put("/admin/homepage-results", requireAdmin, async (req, res) => {
+  const parsed = UpdateHomepageResultsBody.safeParse(req.body);
+  if (!parsed.success || !hasUniqueDisplayOrders(parsed.data.results) || parsed.data.results.some((result) => !isValidImageReference(result.studentImageUrl))) {
+    res.status(400).json({ error: "Check result fields, image references, and unique display orders." });
+    return;
+  }
+  try {
+    const { results, ...sectionData } = parsed.data;
+    await prisma.$transaction(async (tx) => {
+      await tx.homepageResults.upsert({
+        where: { id: "singleton" },
+        update: sectionData,
+        create: { id: "singleton", ...sectionData },
+      });
+      await tx.homepageResult.deleteMany({ where: { homepageResultsId: "singleton" } });
+      await tx.homepageResult.createMany({ data: results.map((result) => ({ ...result, homepageResultsId: "singleton" })) });
+    });
+    const content = await readHomepageResults();
+    res.json(UpdateHomepageResultsResponse.parse(content));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to update homepage results");
+    res.status(500).json({ error: "Unable to save homepage results." });
+  }
+});
+
+router.get("/admin/homepage-achievement-ribbon", requireAdmin, async (req, res) => {
+  try {
+    const content = await readHomepageAchievementRibbon();
+    if (!content) {
+      res.status(404).json({ error: "Homepage achievement ribbon is not available." });
+      return;
+    }
+    res.json(GetAdminHomepageAchievementRibbonResponse.parse(content));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read admin homepage achievement ribbon");
+    res.status(500).json({ error: "Unable to load homepage achievement ribbon." });
+  }
+});
+
+router.put("/admin/homepage-achievement-ribbon", requireAdmin, async (req, res) => {
+  const parsed = UpdateHomepageAchievementRibbonBody.safeParse(req.body);
+  if (!parsed.success || !hasUniqueDisplayOrders(parsed.data.phrases)) {
+    res.status(400).json({ error: "Check ribbon phrases and use unique display orders." });
+    return;
+  }
+  try {
+    const { phrases, ...sectionData } = parsed.data;
+    await prisma.$transaction(async (tx) => {
+      await tx.homepageAchievementRibbon.upsert({
+        where: { id: "singleton" },
+        update: sectionData,
+        create: { id: "singleton", ...sectionData },
+      });
+      await tx.homepageAchievementRibbonPhrase.deleteMany({ where: { homepageAchievementRibbonId: "singleton" } });
+      await tx.homepageAchievementRibbonPhrase.createMany({
+        data: phrases.map((phrase) => ({ ...phrase, homepageAchievementRibbonId: "singleton" })),
+      });
+    });
+    const content = await readHomepageAchievementRibbon();
+    res.json(UpdateHomepageAchievementRibbonResponse.parse(content));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to update homepage achievement ribbon");
+    res.status(500).json({ error: "Unable to save homepage achievement ribbon." });
+  }
+});
+
+router.get("/admin/homepage-testimonials", requireAdmin, async (req, res) => {
+  try {
+    const content = await readHomepageTestimonials();
+    if (!content) {
+      res.status(404).json({ error: "Homepage testimonials are not available." });
+      return;
+    }
+    res.json(GetAdminHomepageTestimonialsResponse.parse(content));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read admin homepage testimonials");
+    res.status(500).json({ error: "Unable to load homepage testimonials." });
+  }
+});
+
+router.put("/admin/homepage-testimonials", requireAdmin, async (req, res) => {
+  const parsed = UpdateHomepageTestimonialsBody.safeParse(req.body);
+  if (!parsed.success || !hasUniqueDisplayOrders(parsed.data.testimonials) || parsed.data.testimonials.some((testimonial) => !isValidImageReference(testimonial.avatarImageUrl))) {
+    res.status(400).json({ error: "Check testimonial fields, image references, and unique display orders." });
+    return;
+  }
+  try {
+    const { testimonials, ...sectionData } = parsed.data;
+    await prisma.$transaction(async (tx) => {
+      await tx.homepageTestimonials.upsert({
+        where: { id: "singleton" },
+        update: sectionData,
+        create: { id: "singleton", ...sectionData },
+      });
+      await tx.homepageTestimonial.deleteMany({ where: { homepageTestimonialsId: "singleton" } });
+      await tx.homepageTestimonial.createMany({
+        data: testimonials.map((testimonial) => ({ ...testimonial, homepageTestimonialsId: "singleton" })),
+      });
+    });
+    const content = await readHomepageTestimonials();
+    res.json(UpdateHomepageTestimonialsResponse.parse(content));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to update homepage testimonials");
+    res.status(500).json({ error: "Unable to save homepage testimonials." });
+  }
+});
+
+router.get("/admin/homepage-faculty", requireAdmin, async (req, res) => {
+  try {
+    res.json(GetAdminHomepageFacultyResponse.parse(await readHomepageFaculty()));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read admin homepage faculty");
+    res.status(500).json({ error: "Unable to load homepage faculty." });
+  }
+});
+
+router.put("/admin/homepage-faculty", requireAdmin, async (req, res) => {
+  const parsed = UpdateHomepageFacultyBody.safeParse(req.body);
+  if (!parsed.success || !hasUniqueDisplayOrders(parsed.data) || parsed.data.some((member) => !isValidImageReference(member.imageUrl))) {
+    res.status(400).json({ error: "Check faculty fields, image references, and unique display orders." });
+    return;
+  }
+  try {
+    await prisma.$transaction(async (tx) => {
+      await tx.aboutLeadership.upsert({
+        where: { id: "singleton" },
+        update: {},
+        create: { id: "singleton", heading: "Our Leadership", description: "Meet the people who guide learning at Sahasara.", isVisible: true, sortOrder: 6 },
+      });
+      const orders = parsed.data.map((member) => member.displayOrder);
+      await tx.aboutLeadershipMember.updateMany({
+        where: { aboutLeadershipId: "singleton", displayOrder: { notIn: orders } },
+        data: { homepageActive: false },
+      });
+      for (const member of parsed.data) {
+        await tx.aboutLeadershipMember.upsert({
+          where: { aboutLeadershipId_displayOrder: { aboutLeadershipId: "singleton", displayOrder: member.displayOrder } },
+          update: {
+            portraitImage: member.imageUrl,
+            portraitAltText: member.imageAltText,
+            name: member.name,
+            designation: member.role,
+            subject: member.subject,
+            experience: member.experience,
+            homepageProfileUrl: member.profileUrl,
+            homepageActive: member.isActive,
+          },
+          create: {
+            aboutLeadershipId: "singleton",
+            portraitImage: member.imageUrl,
+            portraitAltText: member.imageAltText,
+            name: member.name,
+            designation: member.role,
+            qualification: member.subject,
+            biography: member.experience || "",
+            socialUrl: member.profileUrl,
+            subject: member.subject,
+            experience: member.experience,
+            homepageProfileUrl: member.profileUrl,
+            homepageActive: member.isActive,
+            displayOrder: member.displayOrder,
+            isVisible: true,
+          },
+        });
+      }
+    });
+    res.json(UpdateHomepageFacultyResponse.parse(await readHomepageFaculty()));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to update homepage faculty");
+    res.status(500).json({ error: "Unable to save homepage faculty." });
+  }
+});
+
+router.get("/admin/homepage-gallery", requireAdmin, async (req, res) => {
+  try {
+    res.json(GetAdminHomepageGalleryResponse.parse(await readHomepageGallery()));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read admin homepage gallery");
+    res.status(500).json({ error: "Unable to load homepage gallery." });
+  }
+});
+
+router.put("/admin/homepage-gallery", requireAdmin, async (req, res) => {
+  const parsed = UpdateHomepageGalleryBody.safeParse(req.body);
+  if (!parsed.success || !hasUniqueDisplayOrders(parsed.data) || parsed.data.some((item) => !isValidImageReference(item.imageUrl))) {
+    res.status(400).json({ error: "Check gallery fields, image references, and unique display orders." });
+    return;
+  }
+  try {
+    await prisma.$transaction(async (tx) => {
+      await tx.aboutCampusHighlights.upsert({
+        where: { id: "singleton" },
+        update: {},
+        create: { id: "singleton", heading: "Our Campus Highlights", description: "Spaces that help students learn and grow.", isVisible: true, sortOrder: 7 },
+      });
+      const orders = parsed.data.map((item) => item.displayOrder);
+      await tx.aboutCampusHighlight.updateMany({
+        where: { aboutCampusHighlightsId: "singleton", displayOrder: { notIn: orders } },
+        data: { homepageActive: false },
+      });
+      for (const item of parsed.data) {
+        await tx.aboutCampusHighlight.upsert({
+          where: { aboutCampusHighlightsId_displayOrder: { aboutCampusHighlightsId: "singleton", displayOrder: item.displayOrder } },
+          update: {
+            imageUrl: item.imageUrl,
+            imageAltText: item.imageAltText,
+            title: item.title,
+            description: item.description,
+            category: item.category,
+            locationLabel: item.locationLabel,
+            homepageFeatured: item.isFeatured,
+            homepageActive: item.isActive,
+          },
+          create: {
+            aboutCampusHighlightsId: "singleton",
+            imageUrl: item.imageUrl,
+            imageAltText: item.imageAltText,
+            icon: null,
+            title: item.title,
+            description: item.description,
+            category: item.category,
+            locationLabel: item.locationLabel,
+            homepageFeatured: item.isFeatured,
+            homepageActive: item.isActive,
+            displayOrder: item.displayOrder,
+            isVisible: true,
+          },
+        });
+      }
+    });
+    res.json(UpdateHomepageGalleryResponse.parse(await readHomepageGallery()));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to update homepage gallery");
+    res.status(500).json({ error: "Unable to save homepage gallery." });
   }
 });
 
