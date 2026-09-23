@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'wouter';
 import { BookOpen, ChevronDown, FileText, Home, LayoutDashboard, LogOut, Menu, PanelsTopLeft, Settings2, X } from 'lucide-react';
-import { useLogoutAdmin, getGetAdminSessionQueryKey } from '@workspace/api-client-react';
+import { useLogoutAdmin, getGetAdminSessionQueryKey, useGetSiteSettings } from '@workspace/api-client-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { SiteMark } from '@/components/site-mark';
+import { createPublicThemeStyle, DEFAULT_ACCENT_COLOR, DEFAULT_PRIMARY_COLOR, DEFAULT_SURFACE_COLOR } from '@/lib/public-theme';
 
 type ShellProps = { children: React.ReactNode; displayName?: string; email?: string };
 
@@ -12,6 +13,12 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
   const [location, setLocation] = useLocation();
   const queryClient = useQueryClient();
   const logout = useLogoutAdmin();
+  const settings = useGetSiteSettings();
+  const themeStyle = createPublicThemeStyle(
+    settings.data?.primaryColor || DEFAULT_PRIMARY_COLOR,
+    settings.data?.accentColor || DEFAULT_ACCENT_COLOR,
+    settings.data?.surfaceColor || DEFAULT_SURFACE_COLOR,
+  );
   const nav = [
     { href: '/admin', label: 'Overview', icon: LayoutDashboard },
     { href: '/admin/site-settings', label: 'Site identity', icon: Settings2 },
@@ -82,7 +89,7 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
   const signOut = () => logout.mutate(undefined, { onSuccess: () => { queryClient.invalidateQueries({ queryKey: getGetAdminSessionQueryKey() }); setLocation('/admin/login'); } });
 
   return (
-    <div className="min-h-[100dvh] bg-[hsl(var(--background))] text-[hsl(var(--foreground))]">
+    <div className="min-h-[100dvh] bg-[hsl(var(--background))] text-[hsl(var(--foreground))]" style={themeStyle}>
       <aside id="admin-sidebar" aria-label="Admin navigation" className={`admin-sidebar fixed inset-y-0 left-0 z-30 flex w-[276px] flex-col overflow-y-auto overscroll-contain bg-[hsl(var(--sidebar))] px-5 py-6 text-[hsl(var(--sidebar-foreground))] transition-transform duration-300 md:translate-x-0 ${open ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="flex items-center justify-between">
           <SiteMark inverse compact name="Sahsrah" />

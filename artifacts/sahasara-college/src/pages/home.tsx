@@ -8,7 +8,7 @@ import { HomeStatistics } from '@/components/home-statistics';
 import { FavoriteTopics } from '@/components/favorite-topics';
 import { AchievementRibbon, fallbackFaculty, fallbackGallery, fallbackRibbon, fallbackResults, fallbackTestimonials, HomeFaculty, HomeGallery, HomeResults, HomeTestimonials } from '@/components/home-previews';
 import { fallbackAdmissionsFaq, fallbackFinalCta, fallbackKnowledgeHub, HomeAdmissionsFaq, HomeFinalCta, HomeKnowledgeHub } from '@/components/home-final-previews';
-import { createPublicThemeStyle, DEFAULT_ACCENT_COLOR, DEFAULT_PRIMARY_COLOR } from '@/lib/public-theme';
+import { createPublicThemeStyle, DEFAULT_ACCENT_COLOR, DEFAULT_PRIMARY_COLOR, DEFAULT_SURFACE_COLOR } from '@/lib/public-theme';
 
 const fallbackSettings = {
   collegeName: 'Sahsrah Junior College',
@@ -19,6 +19,7 @@ const fallbackSettings = {
   address: '18 Vidya Marg, Hyderabad, Telangana 500034',
   primaryColor: DEFAULT_PRIMARY_COLOR,
   accentColor: DEFAULT_ACCENT_COLOR,
+  surfaceColor: DEFAULT_SURFACE_COLOR,
   footerText: 'A public junior college for curious minds and purposeful lives.',
 };
 const fallbackHeroSlides = [
@@ -166,12 +167,13 @@ export default function Home() {
   const slides = heroQuery.data?.length === 3 ? heroQuery.data : fallbackHeroSlides;
   const primaryColor = settings.primaryColor || DEFAULT_PRIMARY_COLOR;
   const accentColor = settings.accentColor || DEFAULT_ACCENT_COLOR;
+  const surfaceColor = settings.surfaceColor || DEFAULT_SURFACE_COLOR;
   const knowledgeHub = knowledgeHubQuery.isError ? null : (knowledgeHubQuery.data ?? fallbackKnowledgeHub);
   const admissionsFaq = admissionsFaqQuery.isError ? null : (admissionsFaqQuery.data ?? fallbackAdmissionsFaq);
   const finalCta = finalCtaQuery.isError ? null : (finalCtaQuery.data ?? { ...fallbackFinalCta, phoneNumber: settings.phone });
 
   return (
-    <div className="paper-grain overflow-hidden bg-[hsl(var(--background))]" style={createPublicThemeStyle(primaryColor, accentColor)}>
+    <div className="paper-grain overflow-hidden bg-[hsl(var(--background))]" style={createPublicThemeStyle(primaryColor, accentColor, surfaceColor)}>
        <PublicHeader settings={settings} activePage="home" />
 
       <main>

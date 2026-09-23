@@ -34,11 +34,25 @@ export async function initializeDatabase() {
       email: "info@yourcollege.com",
       phone: "+91 XXXXX XXXXX",
       address: "Your College Address",
-      primaryColor: "#12365D",
-      accentColor: "#D5A63A",
+      primaryColor: "#022A6C",
+      accentColor: "#CE0B11",
+      surfaceColor: "#F5F7FB",
+      themePreset: "sahsrah-blue-red",
       footerText: "Building confident futures through focused learning.",
     },
   });
+
+  const currentSettings = await prisma.siteSettings.findUnique({ where: { id: "singleton" } });
+  if (
+    currentSettings?.themePreset === "sahsrah-blue-red" &&
+    currentSettings.primaryColor === "#12365D" &&
+    currentSettings.accentColor === "#D5A63A"
+  ) {
+    await prisma.siteSettings.update({
+      where: { id: "singleton" },
+      data: { primaryColor: "#022A6C", accentColor: "#CE0B11", surfaceColor: "#F5F7FB" },
+    });
+  }
 
   const heroSlides = [
     {

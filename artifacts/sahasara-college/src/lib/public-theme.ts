@@ -1,7 +1,28 @@
 import type { CSSProperties } from 'react';
 
-export const DEFAULT_PRIMARY_COLOR = '#102846';
-export const DEFAULT_ACCENT_COLOR = '#D6AD59';
+export const DEFAULT_PRIMARY_COLOR = '#022A6C';
+export const DEFAULT_ACCENT_COLOR = '#CE0B11';
+export const DEFAULT_SURFACE_COLOR = '#F5F7FB';
+
+export type ThemePresetId = 'sahsrah-blue-red' | 'midnight-purple' | 'crimson-red' | 'emerald-green' | 'ocean-blue' | 'sunset-orange' | 'custom';
+
+export type ThemePreset = {
+  id: ThemePresetId;
+  name: string;
+  description: string;
+  primary: string;
+  accent: string;
+  surface: string;
+};
+
+export const THEME_PRESETS: ThemePreset[] = [
+  { id: 'sahsrah-blue-red', name: 'Sahsrah Blue & Red', description: 'The official Sahsrah logo palette.', primary: '#022A6C', accent: '#CE0B11', surface: '#F5F7FB' },
+  { id: 'midnight-purple', name: 'Midnight Purple', description: 'Deep purple with a bright violet highlight.', primary: '#32156B', accent: '#8B5CF6', surface: '#F5F3FF' },
+  { id: 'crimson-red', name: 'Crimson Red', description: 'A focused red palette with a soft rose surface.', primary: '#7F1D1D', accent: '#EF4444', surface: '#FFF1F2' },
+  { id: 'emerald-green', name: 'Emerald Green', description: 'A calm, confident green palette.', primary: '#065F46', accent: '#34D399', surface: '#ECFDF5' },
+  { id: 'ocean-blue', name: 'Ocean Blue', description: 'Clear blue tones for a fresh academic feel.', primary: '#0369A1', accent: '#38BDF8', surface: '#F0F9FF' },
+  { id: 'sunset-orange', name: 'Sunset Orange', description: 'Warm orange accents on a welcoming surface.', primary: '#C2410C', accent: '#FB923C', surface: '#FFF7ED' },
+];
 
 export function normalizeHexColor(value: string): string | null {
   const trimmed = value.trim().toUpperCase();
@@ -50,6 +71,12 @@ function hexToHslChannels(value: string): string {
   return `${Math.round(hue)} ${Math.round(saturation * 100)}% ${Math.round(lightness * 100)}%`;
 }
 
+function adjustHslLightness(channels: string, amount: number): string {
+  const match = channels.match(/^(\d+) (\d+)% (\d+)%$/);
+  if (!match) return channels;
+  return `${match[1]} ${match[2]}% ${Math.max(0, Math.min(100, Number(match[3]) + amount))}%`;
+}
+
 function contrastingForeground(value: string): string {
   const { red, green, blue } = hexToRgb(value);
   const perceivedBrightness = (red * 299 + green * 587 + blue * 114) / 1000;
@@ -77,23 +104,56 @@ function eyebrowTextColor(value: string): string {
   return contrastRatio(value, '#FFFFFF') >= 4.5 ? hexToHslChannels(value) : '216 48% 13%';
 }
 
-export function createPublicThemeStyle(primaryColor: string, accentColor: string): CSSProperties {
+export function createPublicThemeStyle(primaryColor: string, accentColor: string, surfaceColor = DEFAULT_SURFACE_COLOR): CSSProperties {
   const primary = hexToHslChannels(primaryColor);
   const accent = hexToHslChannels(accentColor);
+  const surface = hexToHslChannels(surfaceColor);
+  const surfaceForeground = contrastingForeground(surfaceColor);
+  const primaryForeground = contrastingForeground(primaryColor);
+  const accentForeground = contrastingForeground(accentColor);
+  const border = adjustHslLightness(primary, surfaceForeground === '216 48% 13%' ? 28 : -24);
   return {
+    '--theme-primary': `hsl(${primary})`,
+    '--theme-accent': `hsl(${accent})`,
+    '--theme-surface': `hsl(${surface})`,
+    '--theme-text': `hsl(${surfaceForeground})`,
+    '--theme-text-muted': `hsl(${primary} / .68)`,
+    '--theme-on-primary': `hsl(${primaryForeground})`,
+    '--theme-on-accent': `hsl(${accentForeground})`,
+    '--theme-border': `hsl(${border})`,
+    '--theme-surface-soft': `hsl(${surface})`,
+    '--background': surface,
+    '--foreground': surfaceForeground,
+    '--border': border,
+    '--input': border,
+    '--card': surface,
+    '--card-foreground': surfaceForeground,
+    '--card-border': border,
+    '--secondary': adjustHslLightness(surface, surfaceForeground === '216 48% 13%' ? -3 : 3),
+    '--secondary-foreground': surfaceForeground,
+    '--muted': adjustHslLightness(surface, surfaceForeground === '216 48% 13%' ? -4 : 4),
+    '--muted-foreground': primary,
+    '--popover': surface,
+    '--popover-foreground': surfaceForeground,
+    '--popover-border': border,
     '--primary': primary,
-    '--primary-foreground': contrastingForeground(primaryColor),
+    '--primary-foreground': primaryForeground,
     '--eyebrow-text': eyebrowTextColor(primaryColor),
-    '--eyebrow-dark-text': contrastingForeground(primaryColor),
+    '--eyebrow-dark-text': primaryForeground,
     '--eyebrow-background': `hsl(${accent} / .08)`,
     '--eyebrow-border': `hsl(${accent} / .28)`,
-    '--eyebrow-dark-background': `hsl(${primary} / .08)`,
-    '--eyebrow-dark-border': `hsl(${primary} / .28)`,
+    '--eyebrow-dark-background': `hsl(${primaryForeground} / .08)`,
+    '--eyebrow-dark-border': `hsl(${primaryForeground} / .28)`,
     '--accent': accent,
-    '--accent-foreground': contrastingForeground(accentColor),
+    '--accent-foreground': accentForeground,
     '--ring': accent,
+    '--sidebar': adjustHslLightness(primary, -7),
+    '--sidebar-foreground': primaryForeground,
+    '--sidebar-border': border,
     '--sidebar-primary': accent,
-    '--sidebar-primary-foreground': contrastingForeground(accentColor),
+    '--sidebar-primary-foreground': accentForeground,
+    '--sidebar-accent': adjustHslLightness(primary, 7),
+    '--sidebar-accent-foreground': primaryForeground,
     '--sidebar-ring': accent,
     '--primary-border': `hsl(${primary})`,
     '--accent-border': `hsl(${accent})`,

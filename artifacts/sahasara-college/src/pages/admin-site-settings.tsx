@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { ImagePlus, Palette } from 'lucide-react';
+import { Check, ImagePlus, Palette } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { getGetSiteSettingsQueryKey, useGetSiteSettings, useUpdateSiteSettings, useUploadAdminImage } from '@workspace/api-client-react';
 import { Area, Field, SaveButton } from '@/components/form-fields';
-import { DEFAULT_ACCENT_COLOR, DEFAULT_PRIMARY_COLOR, normalizeHexColor } from '@/lib/public-theme';
+import { DEFAULT_ACCENT_COLOR, DEFAULT_PRIMARY_COLOR, DEFAULT_SURFACE_COLOR, normalizeHexColor, THEME_PRESETS, type ThemePresetId } from '@/lib/public-theme';
 
-const empty = { collegeName: '', tagline: '', logoUrl: '', email: '', phone: '', address: '', primaryColor: DEFAULT_PRIMARY_COLOR, accentColor: DEFAULT_ACCENT_COLOR, footerText: '' };
+const empty = { collegeName: '', tagline: '', logoUrl: '', email: '', phone: '', address: '', primaryColor: DEFAULT_PRIMARY_COLOR, accentColor: DEFAULT_ACCENT_COLOR, surfaceColor: DEFAULT_SURFACE_COLOR, themePreset: 'sahsrah-blue-red' as ThemePresetId, footerText: '' };
 
 export default function AdminSiteSettings() {
   const queryClient = useQueryClient();
@@ -15,18 +15,21 @@ export default function AdminSiteSettings() {
   const [form, setForm] = useState(empty);
   const [notice, setNotice] = useState('');
   const [error, setError] = useState('');
-  useEffect(() => { if (query.data) setForm({ collegeName: query.data.collegeName, tagline: query.data.tagline, logoUrl: query.data.logoUrl ?? '', email: query.data.email, phone: query.data.phone, address: query.data.address, primaryColor: normalizeHexColor(query.data.primaryColor) ?? DEFAULT_PRIMARY_COLOR, accentColor: normalizeHexColor(query.data.accentColor) ?? DEFAULT_ACCENT_COLOR, footerText: query.data.footerText }); }, [query.data]);
+  useEffect(() => { if (query.data) setForm({ collegeName: query.data.collegeName, tagline: query.data.tagline, logoUrl: query.data.logoUrl ?? '', email: query.data.email, phone: query.data.phone, address: query.data.address, primaryColor: normalizeHexColor(query.data.primaryColor) ?? DEFAULT_PRIMARY_COLOR, accentColor: normalizeHexColor(query.data.accentColor) ?? DEFAULT_ACCENT_COLOR, surfaceColor: normalizeHexColor(query.data.surfaceColor) ?? DEFAULT_SURFACE_COLOR, themePreset: (query.data.themePreset as ThemePresetId) || 'custom', footerText: query.data.footerText }); }, [query.data]);
   const set = (key: keyof typeof empty, value: string) => setForm((current) => ({ ...current, [key]: value }));
   const submit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); setNotice(''); setError('');
     const primaryColor = normalizeHexColor(form.primaryColor);
     const accentColor = normalizeHexColor(form.accentColor);
-    if (!primaryColor || !accentColor) {
-      setError('Use valid hex colours for both primary and accent, such as #102846 or #D6AD59.');
+    const surfaceColor = normalizeHexColor(form.surfaceColor);
+    if (!primaryColor || !accentColor || !surfaceColor) {
+      setError('Use valid hex colours for primary, accent, and surface, such as #022A6C, #CE0B11, and #F5F7FB.');
       return;
     }
-    update.mutate({ data: { ...form, logoUrl: form.logoUrl || null, primaryColor, accentColor } }, { onSuccess: (savedSettings) => { queryClient.setQueryData(getGetSiteSettingsQueryKey(), savedSettings); queryClient.invalidateQueries({ queryKey: getGetSiteSettingsQueryKey() }); setForm((current) => ({ ...current, primaryColor, accentColor })); setNotice('Identity saved. The public site is up to date.'); }, onError: () => setError('We could not save these changes. Please try again.') });
+    update.mutate({ data: { ...form, logoUrl: form.logoUrl || null, primaryColor, accentColor, surfaceColor, themePreset: form.themePreset || 'custom' } }, { onSuccess: (savedSettings) => { queryClient.setQueryData(getGetSiteSettingsQueryKey(), savedSettings); queryClient.invalidateQueries({ queryKey: getGetSiteSettingsQueryKey() }); setForm((current) => ({ ...current, primaryColor, accentColor, surfaceColor })); setNotice('Identity saved. The selected theme is live across the public site and dashboard.'); }, onError: () => setError('We could not save these changes. Please try again.') });
   };
+  const selectPreset = (preset: typeof THEME_PRESETS[number]) => setForm((current) => ({ ...current, themePreset: preset.id, primaryColor: preset.primary, accentColor: preset.accent, surfaceColor: preset.surface }));
+  const useCustomTheme = () => setForm((current) => ({ ...current, themePreset: 'custom' }));
   const handleUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]; if (!file) return;
     upload.mutate({ data: { file, purpose: 'logo' } }, { onSuccess: (result) => { set('logoUrl', result.url); setNotice('Logo uploaded. Save identity to publish it.'); }, onError: () => setError('That image could not be uploaded. Try another file.') });
@@ -38,7 +41,32 @@ export default function AdminSiteSettings() {
       <section className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 md:p-8"><SectionTitle icon={<Palette size={18} />} title="The essentials" description="The name and voice families meet first." /><div className="mt-7 grid gap-5 md:grid-cols-2"><Field id="collegeName" label="College name" value={form.collegeName} onChange={(e) => set('collegeName', e.target.value)} required placeholder="Sahsrah Junior College" /><Field id="tagline" label="Tagline" value={form.tagline} onChange={(e) => set('tagline', e.target.value)} placeholder="A clear beginning for a remarkable future." /><div className="md:col-span-2"><Area id="footerText" label="Footer text" hint="Short and human" value={form.footerText} onChange={(e) => set('footerText', e.target.value)} placeholder="A public junior college for curious minds and purposeful lives." /></div></div></section>
       <section className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 md:p-8"><SectionTitle icon={<ImagePlus size={18} />} title="Logo" description="Use a square mark with a transparent or light background." /><div className="mt-7 flex flex-col gap-5 sm:flex-row sm:items-center"><div className="grid h-24 w-24 shrink-0 place-items-center overflow-hidden rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--secondary))]">{form.logoUrl ? <img src={form.logoUrl} alt="Current college logo" className="h-full w-full object-cover" data-testid="img-settings-logo" /> : <span className="font-display text-3xl text-[hsl(var(--accent-foreground))]" data-testid="text-logo-empty">S</span>}</div><div><label className="inline-flex h-11 cursor-pointer items-center rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--background))] px-4 text-sm font-bold transition hover:border-[hsl(var(--accent))]" data-testid="label-upload-logo"><input type="file" accept="image/png,image/jpeg,image/webp" className="sr-only" onChange={handleUpload} data-testid="input-upload-logo" />{upload.isPending ? 'Uploading…' : 'Upload a logo'}</label><p className="mt-2 text-xs text-[hsl(var(--muted-foreground))]">PNG, JPG, or WebP · up to 5MB</p></div></div><div className="mt-6"><Field id="logoUrl" label="Or paste a logo URL" value={form.logoUrl} onChange={(e) => set('logoUrl', e.target.value)} placeholder="https://…" /></div></section>
       <section className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 md:p-8"><SectionTitle title="How families can reach you" description="Keep these precise — they are shown on every public page." /><div className="mt-7 grid gap-5 md:grid-cols-2"><Field id="email" label="Admissions email" type="email" value={form.email} onChange={(e) => set('email', e.target.value)} placeholder="admissions@sahsrah.edu" /><Field id="phone" label="Phone number" value={form.phone} onChange={(e) => set('phone', e.target.value)} required placeholder="+91 40 2458 0176" /><div className="md:col-span-2"><Area id="address" label="Campus address" value={form.address} onChange={(e) => set('address', e.target.value)} required placeholder="18 Vidya Marg, Hyderabad, Telangana 500034" /></div></div></section>
-      <section className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 md:p-8"><SectionTitle title="Colour cues" description="A little consistency goes a long way." /><div className="mt-7 grid gap-5 sm:grid-cols-2"><ColorField id="primaryColor" label="Primary colour" value={form.primaryColor} onChange={(value) => set('primaryColor', value)} /><ColorField id="accentColor" label="Accent colour" value={form.accentColor} onChange={(value) => set('accentColor', value)} /></div></section>
+       <section className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 md:p-8">
+         <SectionTitle icon={<Palette size={18} />} title="Available Themes" description="Choose a reusable colour system for the public site and admin dashboard." />
+         <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+           {THEME_PRESETS.map((preset) => {
+             const selected = form.themePreset === preset.id;
+             return <button key={preset.id} type="button" onClick={() => selectPreset(preset)} aria-pressed={selected} className={`relative overflow-hidden rounded-2xl border p-4 text-left transition hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--accent)/.2)] ${selected ? 'border-[hsl(var(--accent))] bg-[hsl(var(--accent)/.07)] shadow-sm' : 'border-[hsl(var(--border))] bg-[hsl(var(--background))]'}`} data-testid={`theme-preset-${preset.id}`}>
+               {selected && <span className="absolute right-3 top-3 grid h-6 w-6 place-items-center rounded-full bg-[hsl(var(--accent))] text-[hsl(var(--accent-foreground))]"><Check size={15} strokeWidth={3} /></span>}
+               <div className="flex h-20 overflow-hidden rounded-xl border border-black/10" style={{ background: preset.surface }}>
+                 <div className="flex-1 p-3" style={{ background: preset.primary }}><span className="block h-2 w-16 rounded-full opacity-60" style={{ background: preset.surface }} /><span className="mt-2 block h-2 w-10 rounded-full opacity-40" style={{ background: preset.accent }} /></div>
+                 <div className="flex w-1/3 items-end justify-end p-3" style={{ background: preset.accent }}><span className="h-5 w-5 rounded-full border-2" style={{ borderColor: preset.primary }} /></div>
+               </div>
+               <div className="mt-4 flex items-center gap-2">
+                 {[preset.primary, preset.accent, preset.surface].map((color) => <span key={color} className="h-5 w-5 rounded-full border border-black/10" style={{ background: color }} aria-label={color} />)}
+               </div>
+               <h3 className="mt-3 text-sm font-bold text-[hsl(var(--primary))]">{preset.name}</h3>
+               <p className="mt-1 text-xs leading-5 text-[hsl(var(--muted-foreground))]">{preset.description}</p>
+             </button>;
+           })}
+         </div>
+         <button type="button" onClick={useCustomTheme} className={`mt-5 rounded-xl border px-4 py-2.5 text-sm font-bold transition hover:border-[hsl(var(--accent))] ${form.themePreset === 'custom' ? 'border-[hsl(var(--accent))] text-[hsl(var(--primary))]' : 'border-[hsl(var(--border))] text-[hsl(var(--muted-foreground))]'}`} aria-pressed={form.themePreset === 'custom'} data-testid="button-custom-theme">Use custom colours</button>
+         <details className="mt-5 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--background))] p-4" open={form.themePreset === 'custom'}>
+           <summary className="cursor-pointer text-sm font-bold text-[hsl(var(--primary))]">Advanced Custom Theme</summary>
+           <p className="mt-2 text-xs leading-5 text-[hsl(var(--muted-foreground))]">Optional: adjust the three semantic theme colours. Contrast-aware foregrounds and supporting tokens are derived automatically.</p>
+           <div className="mt-5 grid gap-5 sm:grid-cols-3"><ColorField id="primaryColor" label="Primary colour" value={form.primaryColor} onChange={(value) => { set('themePreset', 'custom'); set('primaryColor', value); }} /><ColorField id="accentColor" label="Accent colour" value={form.accentColor} onChange={(value) => { set('themePreset', 'custom'); set('accentColor', value); }} /><ColorField id="surfaceColor" label="Surface colour" value={form.surfaceColor} onChange={(value) => { set('themePreset', 'custom'); set('surfaceColor', value); }} /></div>
+         </details>
+       </section>
       {error && <p className="rounded-xl border border-[hsl(var(--destructive)/.25)] bg-[hsl(var(--destructive)/.08)] px-4 py-3 text-sm text-[hsl(var(--destructive))]" data-testid="status-settings-error">{error}</p>}{notice && <p className="rounded-xl border border-emerald-700/20 bg-emerald-50 px-4 py-3 text-sm text-emerald-800" data-testid="status-settings-success">{notice}</p>}<div className="flex justify-end"><SaveButton pending={update.isPending} testId="button-save-settings">Save identity</SaveButton></div>
     </form>
   </div>;

@@ -37,6 +37,8 @@ model SiteSettings {
   address      String
   primaryColor String
   accentColor  String
+  surfaceColor String @default("#F5F7FB")
+  themePreset  String @default("sahsrah-blue-red")
   footerText   String
   updatedAt    DateTime @updatedAt
 }

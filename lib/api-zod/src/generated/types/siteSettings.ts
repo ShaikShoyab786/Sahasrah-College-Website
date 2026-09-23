@@ -17,5 +17,7 @@ export interface SiteSettings {
   address: string;
   primaryColor: string;
   accentColor: string;
+  surfaceColor: string;
+  themePreset: string;
   footerText: string;
 }

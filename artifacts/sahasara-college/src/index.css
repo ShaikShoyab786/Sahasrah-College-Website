@@ -432,7 +432,7 @@ body { min-width: 320px; }
 }
 @keyframes story-title-reach {
   0%, 100% { color: hsl(var(--primary)); }
-  35% { color: hsl(var(--accent-foreground)); }
+  35% { color: hsl(var(--primary)); }
 }
 
 .story-reveal,
@@ -712,7 +712,7 @@ body { min-width: 320px; }
   transform: scale(1.12);
 }
 .principle-card:hover .principle-title,
-.principle-card:focus-within .principle-title { color: hsl(var(--accent-foreground)); }
+.principle-card:focus-within .principle-title { color: hsl(var(--primary)); }
 .benefit-item {
   border-radius: 1rem;
   padding: .35rem .25rem;

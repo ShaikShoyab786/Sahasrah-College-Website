@@ -38,7 +38,7 @@ export function Area({ label, hint, id, ...props }: AreaProps) {
 
 export function SaveButton({ children, pending, testId = 'button-save' }: { children: string; pending?: boolean; testId?: string }) {
   return (
-    <button type="submit" disabled={pending} className="inline-flex h-11 items-center justify-center rounded-xl bg-[hsl(var(--primary))] px-5 text-sm font-bold text-[hsl(var(--primary-foreground))] shadow-sm transition hover:-translate-y-0.5 hover:bg-[hsl(216_48%_19%)] disabled:cursor-not-allowed disabled:opacity-60" data-testid={testId}>
+    <button type="submit" disabled={pending} className="inline-flex h-11 items-center justify-center rounded-xl bg-[hsl(var(--primary))] px-5 text-sm font-bold text-[hsl(var(--primary-foreground))] shadow-sm transition hover:-translate-y-0.5 hover:bg-[hsl(var(--primary)/.9)] disabled:cursor-not-allowed disabled:opacity-60" data-testid={testId}>
       {pending ? 'Saving changes…' : children}
     </button>
   );

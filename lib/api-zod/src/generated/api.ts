@@ -66,6 +66,8 @@ export const GetSiteSettingsResponse = zod.object({
   "address": zod.string(),
   "primaryColor": zod.string(),
   "accentColor": zod.string(),
+  "surfaceColor": zod.string(),
+  "themePreset": zod.string(),
   "footerText": zod.string()
 })
 
@@ -645,6 +647,8 @@ export const GetAboutAdmissionCtaResponse = zod.object({
 
 export const updateSiteSettingsBodyPrimaryColorRegExp = new RegExp('^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$');
 export const updateSiteSettingsBodyAccentColorRegExp = new RegExp('^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$');
+export const updateSiteSettingsBodySurfaceColorRegExp = new RegExp('^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$');
+
 
 
 export const UpdateSiteSettingsBody = zod.object({
@@ -656,6 +660,8 @@ export const UpdateSiteSettingsBody = zod.object({
   "address": zod.string().min(1),
   "primaryColor": zod.string().regex(updateSiteSettingsBodyPrimaryColorRegExp),
   "accentColor": zod.string().regex(updateSiteSettingsBodyAccentColorRegExp),
+  "surfaceColor": zod.string().regex(updateSiteSettingsBodySurfaceColorRegExp),
+  "themePreset": zod.string().min(1),
   "footerText": zod.string()
 })
 
@@ -669,6 +675,8 @@ export const UpdateSiteSettingsResponse = zod.object({
   "address": zod.string(),
   "primaryColor": zod.string(),
   "accentColor": zod.string(),
+  "surfaceColor": zod.string(),
+  "themePreset": zod.string(),
   "footerText": zod.string()
 })
 

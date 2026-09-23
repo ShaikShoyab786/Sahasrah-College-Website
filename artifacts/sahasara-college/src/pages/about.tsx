@@ -26,7 +26,7 @@ import {
 import { SectionEyebrow } from '@/components/section-eyebrow';
 import { PublicFooter } from '@/components/public-footer';
 import { PublicHeader } from '@/components/public-header';
-import { createPublicThemeStyle, DEFAULT_ACCENT_COLOR, DEFAULT_PRIMARY_COLOR } from '@/lib/public-theme';
+import { createPublicThemeStyle, DEFAULT_ACCENT_COLOR, DEFAULT_PRIMARY_COLOR, DEFAULT_SURFACE_COLOR } from '@/lib/public-theme';
 
 type PublicSettings = {
   collegeName: string;
@@ -37,6 +37,7 @@ type PublicSettings = {
   address: string;
   primaryColor: string;
   accentColor: string;
+  surfaceColor: string;
   footerText: string;
 };
 
@@ -49,6 +50,7 @@ const fallbackSettings: PublicSettings = {
   address: '18 Vidya Marg, Hyderabad, Telangana 500034',
   primaryColor: DEFAULT_PRIMARY_COLOR,
   accentColor: DEFAULT_ACCENT_COLOR,
+  surfaceColor: DEFAULT_SURFACE_COLOR,
   footerText: 'A public junior college for curious minds and purposeful lives.',
 };
 
@@ -67,13 +69,14 @@ export default function About() {
   const settings = settingsQuery.data ?? fallbackSettings;
   const primaryColor = settings.primaryColor || DEFAULT_PRIMARY_COLOR;
   const accentColor = settings.accentColor || DEFAULT_ACCENT_COLOR;
+  const surfaceColor = settings.surfaceColor || DEFAULT_SURFACE_COLOR;
 
   if (settingsQuery.isLoading || heroQuery.isLoading || storyQuery.isLoading || chairmanQuery.isLoading || principlesQuery.isLoading || parentChoiceQuery.isLoading || leadershipQuery.isLoading || campusQuery.isLoading || achievementsQuery.isLoading || faqQuery.isLoading || admissionCtaQuery.isLoading) {
     return <AboutSkeleton />;
   }
 
   return (
-    <div className="paper-grain overflow-hidden bg-[hsl(var(--background))]" style={createPublicThemeStyle(primaryColor, accentColor)}>
+    <div className="paper-grain overflow-hidden bg-[hsl(var(--background))]" style={createPublicThemeStyle(primaryColor, accentColor, surfaceColor)}>
       <PublicHeader settings={settings} activePage="about" />
       <main>
         {heroQuery.data?.isVisible && <AboutHeroSection content={heroQuery.data} />}
@@ -165,7 +168,7 @@ function OurStorySection({ content }: { content: AboutStory }) {
               <span className="story-timeline-marker h-[21px] w-[21px] rounded-full border-[5px] border-[hsl(var(--background))] bg-[hsl(var(--accent))] shadow-[0_0_0_1px_hsl(var(--accent)/.35)]" aria-hidden="true" />
               {index < timeline.length - 1 && <span className="story-timeline-connector" aria-hidden="true"><span className="story-timeline-progress" /></span>}
               <div className="min-w-0">
-                <p className="text-xs font-bold uppercase tracking-[.18em] text-[hsl(var(--accent-foreground))]">{item.period}</p>
+                <p className="text-xs font-bold uppercase tracking-[.18em] text-[hsl(var(--primary))]">{item.period}</p>
                 <h3 className="story-timeline-title mt-2 font-display text-2xl font-semibold text-[hsl(var(--primary))]">{item.title}</h3>
                 <p className="mt-2 text-sm leading-6 text-[hsl(var(--muted-foreground))]">{item.description}</p>
               </div>
@@ -270,7 +273,7 @@ function WhyParentsChooseSection({ content }: { content: AboutWhyParentsChoose }
         <div className="mt-14 grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-3 lg:grid-cols-6">
           {benefits.map((benefit, index) => {
             const Icon = benefitIcons[benefit.icon] || Sparkles;
-            return <article key={benefit.id} tabIndex={0} className="benefit-item about-reveal-card group text-center outline-none" style={{ '--about-card-delay': `${index * 80}ms` } as React.CSSProperties}><div className="benefit-icon mx-auto grid h-16 w-16 place-items-center rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--background))] text-[hsl(var(--primary))] transition duration-300 group-hover:border-[hsl(var(--accent))] group-hover:bg-[hsl(var(--accent))] group-hover:text-[hsl(var(--primary))] group-focus-visible:border-[hsl(var(--accent))] group-focus-visible:bg-[hsl(var(--accent))]"><Icon size={25} strokeWidth={1.7} /></div><h3 className="benefit-title mt-5 text-sm font-bold leading-5 text-[hsl(var(--primary))] transition-colors duration-300 group-hover:text-[hsl(var(--accent-foreground))] group-focus-visible:text-[hsl(var(--accent-foreground))]">{benefit.title}</h3>{benefit.description && <p className="benefit-description mt-2 text-xs leading-5 text-[hsl(var(--muted-foreground))]">{benefit.description}</p>}</article>;
+            return <article key={benefit.id} tabIndex={0} className="benefit-item about-reveal-card group text-center outline-none" style={{ '--about-card-delay': `${index * 80}ms` } as React.CSSProperties}><div className="benefit-icon mx-auto grid h-16 w-16 place-items-center rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--background))] text-[hsl(var(--primary))] transition duration-300 group-hover:border-[hsl(var(--accent))] group-hover:bg-[hsl(var(--accent))] group-hover:text-[hsl(var(--primary))] group-focus-visible:border-[hsl(var(--accent))] group-focus-visible:bg-[hsl(var(--accent))]"><Icon size={25} strokeWidth={1.7} /></div><h3 className="benefit-title mt-5 text-sm font-bold leading-5 text-[hsl(var(--primary))] transition-colors duration-300 group-hover:text-[hsl(var(--primary))] group-focus-visible:text-[hsl(var(--primary))]">{benefit.title}</h3>{benefit.description && <p className="benefit-description mt-2 text-xs leading-5 text-[hsl(var(--muted-foreground))]">{benefit.description}</p>}</article>;
           })}
         </div>
       </div>

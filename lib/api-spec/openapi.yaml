@@ -1814,6 +1814,10 @@ components:
           type: string
         accentColor:
           type: string
+        surfaceColor:
+          type: string
+        themePreset:
+          type: string
         footerText:
           type: string
       required:
@@ -1826,6 +1830,8 @@ components:
         - address
         - primaryColor
         - accentColor
+        - surfaceColor
+        - themePreset
         - footerText
     SiteSettingsInput:
       type: object
@@ -1852,6 +1858,12 @@ components:
         accentColor:
           type: string
           pattern: "^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$"
+        surfaceColor:
+          type: string
+          pattern: "^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$"
+        themePreset:
+          type: string
+          minLength: 1
         footerText:
           type: string
       required:
@@ -1863,6 +1875,8 @@ components:
         - address
         - primaryColor
         - accentColor
+        - surfaceColor
+        - themePreset
         - footerText
     HomepageHeroSlide:
       type: object

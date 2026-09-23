@@ -21,5 +21,9 @@ export interface SiteSettingsInput {
   primaryColor: string;
   /** @pattern ^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$ */
   accentColor: string;
+  /** @pattern ^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$ */
+  surfaceColor: string;
+  /** @minLength 1 */
+  themePreset: string;
   footerText: string;
 }
