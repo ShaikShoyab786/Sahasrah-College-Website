@@ -214,7 +214,7 @@ export function HomeFinalCta({ content }: { content: HomepageFinalCta }) {
   const phoneHref = `tel:${content.phoneNumber.replace(/[^\d+]/g, '')}`;
   return (
     <section id="home-final-cta" className="home-preview-section px-6 py-20 lg:px-10 lg:py-28" aria-labelledby="home-final-cta-heading">
-      <div className="home-cta-panel relative mx-auto max-w-7xl overflow-hidden rounded-[2rem] bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] shadow-2xl">
+      <div id="contact" className="home-cta-panel relative mx-auto max-w-7xl overflow-hidden rounded-[2rem] bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] shadow-2xl">
         {content.backgroundImage && <img src={content.backgroundImage} alt={content.backgroundImageAltText} className="absolute inset-0 h-full w-full object-cover opacity-25" />}
         {content.backgroundOverlay && <div className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--primary)/.98)] via-[hsl(var(--primary)/.92)] to-[hsl(181_58%_20%/.86)]" aria-hidden="true" />}
         <div className="home-cta-glow absolute -right-20 -top-28 h-72 w-72 rounded-full bg-[hsl(var(--accent)/.18)] blur-3xl" aria-hidden="true" />

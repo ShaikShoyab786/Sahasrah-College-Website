@@ -1,8 +1,8 @@
-import { ArrowRight, Mail, MapPin, Phone, Quote } from 'lucide-react';
 import { useGetHomepageAboutPreview, useGetHomepageAchievementRibbon, useGetHomepageAdmissionsFaq, useGetHomepageFaculty, useGetHomepageFavoriteTopics, useGetHomepageFinalCta, useGetHomepageGallery, useGetHomepageHero, useGetHomepageKnowledgeHub, useGetHomepageLiveUpdates, useGetHomepageResults, useGetHomepageStatistics, useGetHomepageTestimonials, useGetSiteSettings, type HomepageFavoriteTopics, type HomepageLiveUpdate, type HomepageStatistics } from '@workspace/api-client-react';
 import { HeroCarousel } from '@/components/hero-carousel';
 import { AboutPreview } from '@/components/about-preview';
 import { SiteMark } from '@/components/site-mark';
+import { PublicHeader } from '@/components/public-header';
 import { HomeLiveUpdates } from '@/components/home-live-updates';
 import { HomeStatistics } from '@/components/home-statistics';
 import { FavoriteTopics } from '@/components/favorite-topics';
@@ -171,16 +171,7 @@ export default function Home() {
 
   return (
     <div className="paper-grain overflow-hidden bg-[hsl(var(--background))]" style={{ '--site-primary': primaryColor, '--site-accent': accentColor } as React.CSSProperties}>
-      <header className="absolute inset-x-0 top-0 z-20 bg-gradient-to-b from-black/45 to-transparent">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-10">
-          <SiteMark name={settings.collegeName} tagline={settings.tagline} logoUrl={settings.logoUrl} inverse />
-           <nav className="hidden items-center gap-8 text-sm font-semibold text-white/90 lg:flex">
-             <a href="/about" className="transition hover:text-white" data-testid="link-nav-about">About</a>
-            <a href="#contact" className="transition hover:text-white" data-testid="link-nav-contact">Contact</a>
-          </nav>
-          <a href="#contact" className="inline-flex h-11 items-center rounded-full bg-[hsl(var(--accent))] px-5 text-sm font-bold text-[hsl(var(--primary))] shadow-sm transition hover:-translate-y-0.5" data-testid="link-header-admissions">Admissions <ArrowRight size={16} className="ml-2" /></a>
-        </div>
-      </header>
+       <PublicHeader settings={settings} activePage="home" />
 
       <main>
         <HeroCarousel slides={slides} />
@@ -197,14 +188,6 @@ export default function Home() {
         {admissionsFaq?.isVisible && <HomeAdmissionsFaq content={admissionsFaq} />}
         {finalCta?.isVisible && <HomeFinalCta content={finalCta} />}
 
-        <section id="contact" className="mx-auto max-w-7xl px-6 py-24 lg:px-10 lg:py-32">
-          <div className="grid overflow-hidden rounded-[2rem] bg-[hsl(var(--accent))] text-[hsl(var(--primary))] lg:grid-cols-[1.1fr_.9fr]">
-            <div className="p-8 md:p-12 lg:p-16"><p className="text-xs font-bold uppercase tracking-[.2em]">Your next chapter starts here</p><h2 className="mt-5 max-w-lg font-display text-5xl font-semibold leading-[.96] tracking-[-.045em]">Bring us your questions. We’ll bring the time.</h2><p className="mt-6 max-w-md text-sm leading-7 text-[hsl(var(--primary)/.72)]">Our admissions team is happy to help with courses, campus visits, applications, and the questions you haven’t found the words for yet.</p><a href={`mailto:${settings.email}`} className="mt-8 inline-flex items-center rounded-full bg-[hsl(var(--primary))] px-5 py-3.5 text-sm font-bold text-[hsl(var(--primary-foreground))] transition hover:-translate-y-0.5" data-testid="link-contact-email">Contact admissions <ArrowRight size={16} className="ml-2" /></a></div>
-            <div className="flex flex-col justify-end bg-[hsl(var(--primary))] p-8 text-[hsl(var(--primary-foreground))] md:p-12 lg:p-16"><p className="text-xs font-bold uppercase tracking-[.2em] text-[hsl(var(--accent))]">Come say hello</p><div className="mt-8 space-y-6 text-sm"><div className="flex gap-4"><Mail size={18} className="mt-0.5 text-[hsl(var(--accent))]" /><span data-testid="text-contact-email">{settings.email}</span></div><div className="flex gap-4"><Phone size={18} className="mt-0.5 text-[hsl(var(--accent))]" /><span data-testid="text-contact-phone">{settings.phone}</span></div><div className="flex gap-4"><MapPin size={18} className="mt-0.5 text-[hsl(var(--accent))]" /><span className="leading-6" data-testid="text-contact-address">{settings.address}</span></div></div><div className="mt-10 border-t border-[hsl(var(--primary-foreground)/.16)] pt-5 text-xs text-[hsl(var(--primary-foreground)/.55)]">Office hours · Monday–Saturday, 9:00–16:30</div></div>
-          </div>
-        </section>
-
-        <section className="border-y border-[hsl(var(--border))] bg-[hsl(var(--card))] px-6 py-10 lg:px-10"><div className="mx-auto flex max-w-7xl items-center gap-4"><Quote size={22} className="shrink-0 text-[hsl(var(--accent-foreground))]" /><p className="font-display text-xl italic text-[hsl(var(--primary))]">“The most useful thing we can teach is how to keep becoming.”</p></div></section>
       </main>
         <footer className="bg-[hsl(var(--primary))] px-6 py-12 text-[hsl(var(--primary-foreground))] lg:px-10"><div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-[1.3fr_.7fr_.7fr]"><div><SiteMark name={settings.collegeName} tagline={settings.tagline} logoUrl={settings.logoUrl} inverse /><p className="mt-6 max-w-xs text-sm leading-6 text-[hsl(var(--primary-foreground)/.58)]" data-testid="text-footer">{settings.footerText || fallbackSettings.footerText}</p></div><div><p className="text-xs font-bold uppercase tracking-[.2em] text-[hsl(var(--accent))]">Navigate</p><div className="mt-5 space-y-3 text-sm text-[hsl(var(--primary-foreground)/.7)]"><a href="/about" className="block hover:text-[hsl(var(--primary-foreground))]" data-testid="link-footer-about">About</a><a href="#contact" className="block hover:text-[hsl(var(--primary-foreground))]" data-testid="link-footer-contact">Admissions</a><a href="/admin/login" className="block pt-3 text-[hsl(var(--accent))] hover:text-[hsl(var(--primary-foreground))]" data-testid="link-footer-admin">Administrator sign in</a></div></div><div><p className="text-xs font-bold uppercase tracking-[.2em] text-[hsl(var(--accent))]">Stay in touch</p><p className="mt-5 text-sm leading-6 text-[hsl(var(--primary-foreground)/.7)]">{settings.email}<br />{settings.phone}</p></div></div><div className="mx-auto mt-12 max-w-7xl border-t border-[hsl(var(--primary-foreground)/.15)] pt-5 text-xs text-[hsl(var(--primary-foreground)/.42)]">© {new Date().getFullYear()} {settings.collegeName}. A public college for purposeful beginnings.</div></footer>
     </div>

@@ -1,0 +1,198 @@
+Home Page Cleanup and About Preview Refinement
+Make the following targeted refinements to the Home page.
+
+Do not redesign the Home page or modify the completed preview sections. Do not change the full About page, Contact page, admin authentication, or existing content architecture unless required for this cleanup.
+
+1. Remove the Duplicate Bottom CTA
+There are currently two CTA sections near the bottom of the Home page.
+
+Keep the newer final admission CTA that appears after the FAQ section:
+
+Seats Are Limited.
+Admissions Are Open.
+
+Remove the older duplicate CTA that appears between the final CTA and the footer.
+
+The final Home page order must be:
+
+Final FAQ section
+↓
+Final admission CTA
+↓
+Footer
+
+There must be no additional CTA, contact block, or duplicated admission panel between the final CTA and the Footer.
+
+Important:
+
+Remove the duplicate Home page section only.
+Do not remove the CTA from the Contact page.
+Do not delete admin content or database records if the old CTA content is stored there.
+If the old CTA component is shared by other pages, keep the component available but stop rendering it on the Home page.
+Do not leave an empty wrapper, unnecessary whitespace, divider, or background section where the old CTA was removed.
+Make sure the Footer follows the final CTA naturally.
+2. Add Home to the Main Navigation
+The Home link is currently missing from the main navigation.
+
+Add:
+
+Home
+
+Use the existing Home route:
+
+/
+
+Navigation requirements
+Place Home in the primary navigation in a logical order.
+Preserve all existing navigation items.
+Add an active state when the user is on the Home page.
+Ensure the logo behavior remains unchanged.
+Add Home to the mobile navigation menu as well.
+Ensure the active state works on desktop and mobile.
+Keep the navigation responsive.
+Preserve the existing Apply Now or admissions button.
+Do not create duplicate Home links.
+Make sure the Home link is keyboard accessible.
+Keep visible focus styles.
+Do not break the mobile menu open/close behavior.
+Suggested order:
+
+Home
+About
+Courses
+Results
+Knowledge Hub
+Gallery
+Contact
+Login
+Apply Now
+
+Use the project’s existing navigation order if it follows another established structure, but Home must be clearly visible.
+
+3. Refine the About Preview Section on the Home Page
+The About preview section currently has a collage of images, but the images do not have the same professional interaction quality as the full About page.
+
+Add polished effects to every image in the Home page About preview.
+
+About preview image effects
+For the main and overlapping collage images:
+
+Add a subtle image scale effect on hover.
+Add a soft shadow enhancement.
+Add a refined border or accent glow.
+Add a subtle overlay transition.
+Let the image wrapper lift slightly on hover.
+Preserve the collage positioning and layering.
+Keep the foreground image above the background image.
+Ensure images remain clipped inside their rounded containers.
+Do not allow images to overflow into the text or outside the section.
+Do not create layout shifts.
+Use a structure similar to:
+
+image wrapper: relative, overflow-hidden, rounded
+image: transition-transform
+overlay: opacity transition
+
+The scale should be subtle and professional. Do not zoom so far that faces or important image content are cropped awkwardly.
+
+If the image or image wrapper is interactive:
+
+Apply the same visual treatment on keyboard focus.
+Add a visible focus state.
+Use meaningful alt text.
+Responsive behavior
+On desktop:
+
+Preserve the layered image collage.
+Allow the hover effect to feel noticeable but controlled.
+On tablet and mobile:
+
+Reduce the image movement if needed.
+Preserve the collage layout.
+Prevent horizontal overflow.
+Prevent overlapping images from covering the text or CTA.
+Keep the entire image composition visible and usable.
+4. Update the About Preview Eyebrow
+The About preview eyebrow is still using the old plain-text styling.
+
+Update it to match the professional eyebrow badge treatment used on the completed About page.
+
+Use the existing About-page eyebrow styling rather than creating a completely separate style.
+
+The eyebrow should include:
+
+Soft background or subtle gradient
+Rounded pill shape
+Accent border
+Small decorative dot or icon
+Uppercase typography
+Letter spacing
+Balanced horizontal and vertical padding
+Subtle shadow
+Responsive sizing
+Use the existing About preview label/content. Do not change the meaning of the text unless necessary.
+
+The eyebrow should look like a designed section badge rather than plain text.
+
+Add a restrained hover/focus effect:
+
+Slight upward movement
+Small shadow increase
+Accent border transition
+Optional subtle shine effect
+Do not make the eyebrow distract from the main heading.
+
+5. About Preview Section Effects
+Add a professional viewport reveal to the About preview section:
+
+Eyebrow fades in first.
+Heading and paragraph follow.
+Image collage reveals with a subtle fade and scale.
+CTA appears last with a small stagger.
+Keep the animation short and polished.
+Do not delay important content excessively.
+For prefers-reduced-motion: reduce:
+
+Show the entire section immediately.
+Disable image movement.
+Disable reveal movement and stagger.
+Keep hover/focus styling minimal.
+Preserve full functionality.
+6. Preserve Existing Functionality
+Do not change:
+
+About page content
+Completed About page effects
+Home page preview sections
+Final FAQ section
+Final admission CTA content
+Footer content
+Admin authentication
+Database structure
+Existing routes
+Contact page CTA
+Knowledge Hub or Courses pages
+Do not start any new page development in this task.
+
+Verification Checklist
+Before finishing, confirm:
+
+Only one final CTA remains on the Home page.
+The final CTA is immediately followed by the Footer.
+No empty CTA wrapper or extra whitespace remains.
+The old CTA is still available elsewhere if it is shared.
+Home appears in the desktop navigation.
+Home appears in the mobile navigation.
+Home receives the correct active state on /.
+All existing navigation links still work.
+About preview images have smooth hover effects.
+Hover effects do not disturb the image collage layout.
+About preview images remain correctly layered.
+About preview eyebrow uses the same badge treatment as the About page.
+About preview reveal animation works on desktop and mobile.
+Reduced-motion mode disables unnecessary movement.
+No horizontal overflow is introduced.
+Footer displays directly after the final CTA.
+Production build passes.
+Existing Home, About, Contact, and admin functionality remains intact.
+Stop after completing these cleanup and refinement changes.
