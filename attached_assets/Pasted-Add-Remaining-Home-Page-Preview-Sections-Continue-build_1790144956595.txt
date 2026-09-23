@@ -1,0 +1,441 @@
+Add Remaining Home Page Preview Sections
+Continue building the existing Home page by adding these preview sections after the completed Favorite Topics To Learn section:
+
+Our Results, Our Pride
+↓
+Moving achievement ribbon
+↓
+Real Stories of Success
+↓
+Our Expert Faculty
+↓
+Life at KVR College
+
+This task is only for Home page previews and their admin controls.
+
+Do not start the full Results, Testimonials, Faculty, or Gallery pages yet. Do not modify the completed About page or the already completed Home page sections except where shared styling utilities are reused.
+
+Use the attached reference images as visual direction, but preserve the existing KVR Junior College design system.
+
+1. Our Results, Our Pride
+Add a section with the eyebrow:
+
+Pride of KVR
+
+Use the same professional eyebrow badge style already established on the About page:
+
+Soft background
+Rounded pill shape
+Accent border
+Small decorative icon or dot
+Uppercase letter spacing
+Balanced padding
+Subtle shadow
+Responsive alignment
+Add the heading:
+
+Our Results, Our Pride
+
+Add a short supporting description about student performance and academic achievement.
+
+Result card layout
+Create a responsive results preview:
+
+Desktop: 4 cards in a row
+Tablet: 2 cards per row or controlled horizontal layout
+Mobile: one card per view or a readable stacked layout
+Each result card should support:
+
+Student image or avatar
+Student name
+Course or exam category
+Score, percentage, rank, or achievement
+Result label such as Top Scorer, Selected, or Outstanding
+Optional exam name
+Optional year
+Accent color
+Display order
+Use premium result card styling:
+
+White card on a soft background
+Rounded corners
+Subtle shadow
+Light border
+Gold, teal, and navy accents
+Strong typography hierarchy
+Clear visual emphasis on the score or rank
+Result card effects
+Add:
+
+Section reveal on viewport entry
+Subtle staggered card reveal
+Gentle card lift on hover
+Soft shadow enhancement
+Image/avatar scale transition
+Score or badge accent transition
+Keyboard focus state
+No layout shift
+If the result cards become horizontally scrollable on smaller screens, ensure the page itself does not gain unwanted horizontal overflow.
+
+Add a button such as:
+
+View All Achievements
+
+Use an existing valid Results route if available. Do not create a fake link or start the complete Results page in this task.
+
+2. Moving Achievement Ribbon
+Place a full-width dark navy ribbon directly below the Results section.
+
+Use short achievement phrases separated by decorative stars or dots, for example:
+
+Best NEET Preparation
+Excellence
+Discipline
+Dedication
+Top IIT-JEE Coaching
+Best NEET Preparation
+
+Ribbon animation
+Create a seamless horizontal marquee animation:
+
+The ribbon moves continuously from right to left.
+Duplicate the content internally so there is no visible blank gap.
+The loop must be seamless.
+Use a slow, smooth, premium speed.
+Do not make it move too quickly.
+Prevent the ribbon from causing horizontal page overflow.
+Keep the text vertically centered.
+Use readable letter spacing and contrast.
+Use gold, white, and teal accents.
+Accessibility requirements:
+
+Pause the ribbon when the user hovers over it.
+Pause when the ribbon receives keyboard focus.
+Disable continuous movement for prefers-reduced-motion: reduce.
+Ensure the text remains readable when motion is disabled.
+Do not rely on the animation to communicate important information.
+Make the ribbon content editable from the admin dashboard.
+
+Admin fields should support:
+
+Ribbon phrase
+Display order
+Active/inactive state
+Optional accent color
+Optional separator style
+3. Real Stories of Success
+Add a section with the eyebrow:
+
+What Parents & Students Say
+
+Add the heading:
+
+Real Stories of Success
+
+Add a supporting description:
+
+Real stories from the KVR Junior College family.
+
+Use the visual direction from the attached reference image.
+
+Testimonial carousel
+Create an auto-moving testimonial carousel with:
+
+3 visible cards on desktop
+1 or 2 cards on tablet
+1 card on mobile
+Previous button
+Next button
+Optional pagination indicators
+Each testimonial card should support:
+
+Rating
+Quote
+Person name
+Role such as Parent, Student, or Alumni
+Course or achievement
+Initial/avatar/image
+Accent color
+Display order
+Active/inactive state
+Testimonial animation
+The carousel should:
+
+Auto-advance slowly.
+Move smoothly between cards.
+Pause on hover.
+Pause when a control or card receives focus.
+Pause during touch or drag interaction.
+Support manual previous/next controls.
+Support keyboard interaction.
+Avoid sudden jumps or flickering.
+Use a controlled infinite loop if possible.
+Add tasteful card styling:
+
+Soft patterned or curved background detail
+Rounded corners
+Colored bottom accent
+Star rating treatment
+Subtle active-card emphasis
+Gentle hover lift
+Smooth border/shadow transition
+For prefers-reduced-motion: reduce:
+
+Disable autoplay.
+Show a static or user-controlled carousel.
+Preserve all testimonial content and controls.
+4. Our Expert Faculty
+Add a faculty preview section with the eyebrow:
+
+Learn From the Best
+
+Add the heading:
+
+Our Expert Faculty
+
+Add a short supporting description about experienced subject-matter experts.
+
+Add a button:
+
+More Faculty
+
+Use an existing valid Faculty or About route if available. Do not build the full Faculty page yet.
+
+Faculty card layout
+Create a responsive row/grid:
+
+Desktop: 5 cards if space allows
+Tablet: 2–3 cards
+Mobile: one card or a controlled horizontal carousel
+Each faculty card should support:
+
+Faculty image
+Name
+Role
+Subject or specialization
+Optional experience
+Display order
+Active/inactive state
+Optional profile link
+Reuse existing leadership/faculty data if the project already has a compatible source. Do not create duplicate faculty records if the current admin system already stores them.
+
+Faculty card styling
+Use the same professional visual language developed on the About page:
+
+Rounded image/card container
+Image fills the card
+Dark gradient overlay near the bottom
+Name and role remain readable over the image
+Subtle image zoom on hover
+Small card lift
+Shadow enhancement
+Accent border or glow
+Smooth reveal animation
+Visible keyboard focus state
+Ensure faculty images do not become distorted or incorrectly cropped.
+
+On mobile, preserve readable text and avoid relying only on hover.
+
+5. Life at KVR College
+Add a gallery preview section with the eyebrow:
+
+Campus Gallery
+
+Add the heading:
+
+Life at KVR College
+
+Use the attached reference image as the visual direction.
+
+This is a preview of the future Gallery page, not the full Gallery page.
+
+Gallery preview cards
+Show 3 featured gallery cards on desktop.
+
+Each card should support:
+
+Image
+Category such as Campus Feature, Events, Labs, Library, or Activities
+Title
+Short description
+Optional location or source label
+Display order
+Active/inactive state
+Use the existing facilities/gallery images where available.
+
+Avoid duplicating image records if the Gallery or Facilities admin content already exists. Reuse the current content source or create a clean shared source that can later power the full Gallery page.
+
+Gallery card effects
+Add:
+
+Scroll reveal and stagger
+Image zoom on hover
+Soft overlay transition
+Subtle card lift
+Accent curve, border, or color treatment
+Smooth arrow/icon movement
+Keyboard focus state
+Readable image captions
+No layout shifts
+Add previous/next controls if the section uses a horizontal carousel.
+
+On mobile:
+
+Support touch swipe if using a carousel.
+Keep one card fully readable.
+Prevent page-level horizontal overflow.
+Ensure controls are large enough to use comfortably.
+Add a button such as:
+
+View Gallery
+
+Use an existing valid Gallery route if available. Do not build the full Gallery page in this task.
+
+Admin Dashboard Updates
+Gradually update the existing admin dashboard for these Home page previews.
+
+Do not redesign the entire dashboard. Reuse the existing admin layout, forms, validation patterns, upload behavior, and authorization.
+
+Organize the content into clear groups:
+
+Home Page
+├── Results
+├── Achievement Ribbon
+├── Testimonials
+├── Faculty Preview
+└── Gallery Preview
+
+Results admin management
+Support:
+
+Add result
+Edit result
+Delete result
+Reorder results
+Enable/disable result
+Student name
+Student image
+Exam/course
+Score or percentage
+Rank or achievement text
+Badge label
+Year
+Accent color
+Validate required fields and prevent incomplete results from appearing publicly.
+
+Ribbon admin management
+Support:
+
+Add phrase
+Edit phrase
+Delete phrase
+Reorder phrase
+Enable/disable phrase
+Optional accent color
+The public ribbon should render only active phrases.
+
+Testimonial admin management
+Support:
+
+Add testimonial
+Edit testimonial
+Delete testimonial
+Reorder testimonial
+Enable/disable testimonial
+Quote
+Person name
+Role
+Course/achievement
+Rating
+Image or avatar
+Accent color
+The Home page should render only active testimonials.
+
+Faculty preview management
+Reuse the existing faculty or leadership data source if possible.
+
+Support the fields needed for the Home preview:
+
+Name
+Image
+Role
+Subject
+Experience
+Display order
+Active/inactive state
+Optional profile link
+Do not create duplicate records if the About page already uses the same faculty data.
+
+Gallery preview management
+Reuse the existing gallery, facilities, or campus content data source if possible.
+
+Support:
+
+Image
+Title
+Category
+Description
+Location/source label
+Display order
+Featured state
+Active/inactive state
+Only featured and active items should appear in the Home page preview.
+
+Data and Public Rendering Requirements
+Before adding new tables or endpoints:
+
+Inspect the existing content/settings architecture.
+Reuse compatible data sources.
+Avoid duplicate content models.
+Add migrations only when necessary.
+Protect admin mutations using the existing authentication system.
+Return only active/public content on the Home page.
+Keep defaults available if admin content has not yet been customized.
+Do not hardcode production content directly inside the UI when it should be editable.
+Responsive and Accessibility Requirements
+Verify all new sections on:
+
+Desktop
+Tablet
+Mobile
+Short viewport heights
+Keyboard navigation
+Touch interaction
+Ensure:
+
+No horizontal page overflow
+Marquee does not expand the document width
+Carousels pause on hover and focus
+Carousel controls have accessible labels
+Images have meaningful alt text
+Buttons use real links or valid actions
+Focus states are visible
+Testimonial controls work with keyboard
+Faculty and gallery cards remain readable without hover
+Reduced-motion mode disables autoplay, marquee, and unnecessary movement
+Important information remains visible when animation is disabled
+Verification Checklist
+Before finishing, confirm:
+
+Results section appears after Favorite Topics.
+Results cards render correctly from admin data.
+View All Achievements uses a valid route.
+Achievement ribbon moves seamlessly.
+Ribbon does not cause horizontal scrolling.
+Ribbon pauses on hover and focus.
+Real Stories carousel auto-moves smoothly.
+Real Stories carousel supports manual controls.
+Testimonial autoplay pauses during interaction.
+Faculty preview matches the professional About page styling.
+Faculty images have polished hover effects.
+Life at KVR College shows the featured gallery content.
+Gallery preview supports responsive controls or swipe behavior.
+All five sections have consistent eyebrow badge styling.
+New content is manageable from the admin dashboard.
+Existing Home and About sections remain unchanged.
+No full Results, Faculty, Gallery, Courses, or Knowledge Hub pages are started.
+Reduced-motion behavior works correctly.
+Desktop, tablet, and mobile layouts are stable.
+Production build passes.
+Backend starts successfully.
+Stop after completing these Home page preview sections and their admin controls. Do not begin the remaining Home page previews yet.
