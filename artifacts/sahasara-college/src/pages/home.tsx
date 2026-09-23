@@ -8,16 +8,17 @@ import { HomeStatistics } from '@/components/home-statistics';
 import { FavoriteTopics } from '@/components/favorite-topics';
 import { AchievementRibbon, fallbackFaculty, fallbackGallery, fallbackRibbon, fallbackResults, fallbackTestimonials, HomeFaculty, HomeGallery, HomeResults, HomeTestimonials } from '@/components/home-previews';
 import { fallbackAdmissionsFaq, fallbackFinalCta, fallbackKnowledgeHub, HomeAdmissionsFaq, HomeFinalCta, HomeKnowledgeHub } from '@/components/home-final-previews';
+import { createPublicThemeStyle, DEFAULT_ACCENT_COLOR, DEFAULT_PRIMARY_COLOR } from '@/lib/public-theme';
 
 const fallbackSettings = {
-  collegeName: 'Sahasara Junior College',
+  collegeName: 'Sahsrah Junior College',
   tagline: 'Your College Tagline',
   logoUrl: null,
-  email: 'admissions@sahasara.edu',
+  email: 'admissions@sahsrah.edu',
   phone: '+91 40 2458 0176',
   address: '18 Vidya Marg, Hyderabad, Telangana 500034',
-  primaryColor: '#102846',
-  accentColor: '#D6AD59',
+  primaryColor: DEFAULT_PRIMARY_COLOR,
+  accentColor: DEFAULT_ACCENT_COLOR,
   footerText: 'A public junior college for curious minds and purposeful lives.',
 };
 const fallbackHeroSlides = [
@@ -33,7 +34,7 @@ const fallbackHeroSlides = [
     secondaryButtonLabel: 'Discover our approach',
      secondaryButtonUrl: '#about-preview',
     heroImageUrl: null,
-    heroImageAltText: 'Sahasara students learning together',
+    heroImageAltText: 'Sahsrah students learning together',
   },
   {
     id: 'fallback-2',
@@ -41,13 +42,13 @@ const fallbackHeroSlides = [
     eyebrowText: 'Make room for possibility',
     heading: 'Ask better',
     highlightedHeadingText: 'questions.',
-    description: 'At Sahasara, curiosity is not a detour from learning. It is where confidence, creativity, and clarity begin.',
+    description: 'At Sahsrah, curiosity is not a detour from learning. It is where confidence, creativity, and clarity begin.',
     primaryButtonLabel: 'See how we learn',
      primaryButtonUrl: '#about-preview',
-    secondaryButtonLabel: 'Meet Sahasara',
+    secondaryButtonLabel: 'Meet Sahsrah',
     secondaryButtonUrl: '#contact',
     heroImageUrl: null,
-    heroImageAltText: 'Students collaborating in a Sahasara classroom',
+    heroImageAltText: 'Students collaborating in a Sahsrah classroom',
   },
   {
     id: 'fallback-3',
@@ -61,7 +62,7 @@ const fallbackHeroSlides = [
     secondaryButtonLabel: 'Explore next steps',
      secondaryButtonUrl: '#contact',
     heroImageUrl: null,
-    heroImageAltText: 'Sahasara students looking toward their future',
+    heroImageAltText: 'Sahsrah students looking toward their future',
   },
 ];
 const fallbackLiveUpdates: HomepageLiveUpdate[] = [
@@ -82,7 +83,7 @@ const fallbackLiveUpdates: HomepageLiveUpdate[] = [
   {
     id: 'fallback-update-2',
     title: 'Campus visit days are open for booking',
-    excerpt: 'Walk through our classrooms, laboratories, and student spaces with a member of the Sahasara team.',
+    excerpt: 'Walk through our classrooms, laboratories, and student spaces with a member of the Sahsrah team.',
     category: 'Campus',
     actionBadge: 'Schedule',
     publishDate: '2026-05-28T00:00:00.000Z',
@@ -110,7 +111,7 @@ const fallbackLiveUpdates: HomepageLiveUpdate[] = [
 ];
 const fallbackStatistics: HomepageStatistics = {
   id: 'fallback-home-statistics',
-  eyebrow: 'THE SAHASARA DIFFERENCE',
+  eyebrow: 'THE SAHSRAH DIFFERENCE',
   heading: 'Progress you can feel.',
   description: 'A focused learning environment turns daily effort into outcomes students can carry forward.',
   isVisible: true,
@@ -163,14 +164,14 @@ export default function Home() {
   if (settingsQuery.isLoading || heroQuery.isLoading) return <HomeSkeleton />;
   const settings = settingsQuery.data ?? fallbackSettings;
   const slides = heroQuery.data?.length === 3 ? heroQuery.data : fallbackHeroSlides;
-  const primaryColor = settings.primaryColor || '#102846';
-  const accentColor = settings.accentColor || '#D6AD59';
+  const primaryColor = settings.primaryColor || DEFAULT_PRIMARY_COLOR;
+  const accentColor = settings.accentColor || DEFAULT_ACCENT_COLOR;
   const knowledgeHub = knowledgeHubQuery.isError ? null : (knowledgeHubQuery.data ?? fallbackKnowledgeHub);
   const admissionsFaq = admissionsFaqQuery.isError ? null : (admissionsFaqQuery.data ?? fallbackAdmissionsFaq);
   const finalCta = finalCtaQuery.isError ? null : (finalCtaQuery.data ?? { ...fallbackFinalCta, phoneNumber: settings.phone });
 
   return (
-    <div className="paper-grain overflow-hidden bg-[hsl(var(--background))]" style={{ '--site-primary': primaryColor, '--site-accent': accentColor } as React.CSSProperties}>
+    <div className="paper-grain overflow-hidden bg-[hsl(var(--background))]" style={createPublicThemeStyle(primaryColor, accentColor)}>
        <PublicHeader settings={settings} activePage="home" />
 
       <main>

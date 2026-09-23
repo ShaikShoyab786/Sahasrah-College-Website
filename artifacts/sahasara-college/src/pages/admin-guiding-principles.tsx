@@ -13,7 +13,7 @@ import { EditorCard, EditorFrame, EditorSkeleton, LoadError, SaveStatus, Visibil
 
 const emptyForm: AboutGuidingPrinciplesInput = {
   heading: 'Our Guiding Principles',
-  description: 'The principles that shape how Sahasara teaches, supports, and prepares every student.',
+  description: 'The principles that shape how Sahsrah teaches, supports, and prepares every student.',
   visionIcon: 'eye',
   visionTitle: 'Our Vision',
   visionDescription: '',
@@ -94,7 +94,7 @@ export default function AdminGuidingPrinciples() {
   if (query.isLoading) return <EditorSkeleton />;
   if (query.isError && !query.data) return <LoadError onRetry={() => query.refetch()} />;
   return (
-    <EditorFrame eyebrow="Pages / About / Guiding Principles" title="Make the college’s principles clear." description="Shape the vision, mission, and values families should feel throughout the Sahasara experience." previewHref="/about#guiding-principles">
+    <EditorFrame eyebrow="Pages / About / Guiding Principles" title="Make the college’s principles clear." description="Shape the vision, mission, and values families should feel throughout the Sahsrah experience." previewHref="/about#guiding-principles">
       <form onSubmit={submit} className="mt-10 space-y-6">
         <EditorCard icon={<BookOpenCheck size={19} />} title="Section introduction" description="The heading and supporting text above the three principle cards.">
           <div className="space-y-5"><Field id="principles-heading" label="Section heading" value={form.heading} onChange={(event) => setField('heading', event.target.value)} required /><Area id="principles-description" label="Section description" value={form.description} onChange={(event) => setField('description', event.target.value)} required /></div>

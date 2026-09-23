@@ -67,7 +67,7 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-/* LIGHT MODE — Sahasara palette: ink navy, aged gold, and paper ivory */
+/* LIGHT MODE — Sahsrah palette: ink navy, aged gold, and paper ivory */
 :root {
   --button-outline: rgba(0, 0, 0, 0.1);
   --badge-outline: rgba(0, 0, 0, 0.05);
@@ -518,7 +518,7 @@ body { min-width: 320px; }
   opacity: .6;
   background:
     radial-gradient(circle at 86% 18%, hsl(var(--accent) / .2), transparent 24%),
-    radial-gradient(circle at 14% 100%, hsl(190 42% 35% / .28), transparent 30%),
+    radial-gradient(circle at 14% 100%, hsl(var(--accent) / .28), transparent 30%),
     linear-gradient(115deg, transparent 40%, hsl(var(--primary-foreground) / .04) 40.2%, transparent 40.5%);
 }
 .scrollbar-none {
@@ -816,7 +816,7 @@ body { min-width: 320px; }
   position: absolute;
   inset: 0;
   opacity: .72;
-  background: radial-gradient(circle at 12% 18%, hsl(var(--accent) / .18), transparent 30%), radial-gradient(circle at 86% 76%, hsl(181 57% 45% / .14), transparent 28%), linear-gradient(135deg, transparent 0 48%, hsl(var(--primary-foreground) / .035) 48% 49%, transparent 49% 100%);
+   background: radial-gradient(circle at 12% 18%, hsl(var(--accent) / .18), transparent 30%), radial-gradient(circle at 86% 76%, hsl(var(--accent) / .14), transparent 28%), linear-gradient(135deg, transparent 0 48%, hsl(var(--primary-foreground) / .035) 48% 49%, transparent 49% 100%);
 }
 .achievement-stat {
   min-width: 0;

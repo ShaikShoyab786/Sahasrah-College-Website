@@ -643,8 +643,8 @@ export const GetAboutAdmissionCtaResponse = zod.object({
 
 
 
-export const updateSiteSettingsBodyPrimaryColorRegExp = new RegExp('^#[0-9A-Fa-f]{6}$');
-export const updateSiteSettingsBodyAccentColorRegExp = new RegExp('^#[0-9A-Fa-f]{6}$');
+export const updateSiteSettingsBodyPrimaryColorRegExp = new RegExp('^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$');
+export const updateSiteSettingsBodyAccentColorRegExp = new RegExp('^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$');
 
 
 export const UpdateSiteSettingsBody = zod.object({

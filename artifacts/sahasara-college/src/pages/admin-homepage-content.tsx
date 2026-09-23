@@ -26,12 +26,12 @@ import { EditorCard, EditorFrame, EditorSkeleton, ImageField, LoadError, SaveSta
 
 const liveUpdateDefaults: HomepageLiveUpdateInput[] = [
   { title: 'Admissions for 2026–27 are now open', excerpt: 'Meet our admissions team, compare pathways, and find the right academic start for your student.', category: 'Admissions', actionBadge: 'Apply Now', publishDate: '2026-06-15T00:00:00.000Z', imageUrl: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1000&q=85', imageAltText: 'Students collaborating around a table', detailUrl: '/#contact', isFeatured: true, isActive: true, displayOrder: 1 },
-  { title: 'Campus visit days are open for booking', excerpt: 'Walk through our classrooms, laboratories, and student spaces with a member of the Sahasara team.', category: 'Campus', actionBadge: 'Schedule', publishDate: '2026-05-28T00:00:00.000Z', imageUrl: 'https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1000&q=85', imageAltText: 'Bright college classroom', detailUrl: '/#contact', isFeatured: false, isActive: true, displayOrder: 2 },
+  { title: 'Campus visit days are open for booking', excerpt: 'Walk through our classrooms, laboratories, and student spaces with a member of the Sahsrah team.', category: 'Campus', actionBadge: 'Schedule', publishDate: '2026-05-28T00:00:00.000Z', imageUrl: 'https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1000&q=85', imageAltText: 'Bright college classroom', detailUrl: '/#contact', isFeatured: false, isActive: true, displayOrder: 2 },
   { title: 'A new term of focused learning begins', excerpt: 'Explore the routines, support, and subject guidance that help students build steady momentum.', category: 'Community', actionBadge: 'Latest', publishDate: '2026-05-09T00:00:00.000Z', imageUrl: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=1000&q=85', imageAltText: 'Students working together in a science laboratory', detailUrl: '/about', isFeatured: false, isActive: true, displayOrder: 3 },
 ];
 
 const statisticsDefaults: HomepageStatisticsInput = {
-  eyebrow: 'THE SAHASARA DIFFERENCE',
+  eyebrow: 'THE SAHSRAH DIFFERENCE',
   heading: 'Progress you can feel.',
   description: 'A focused learning environment turns daily effort into outcomes students can carry forward.',
   isVisible: true,

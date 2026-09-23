@@ -104,7 +104,7 @@ export default function AdminHomepageAboutPreview() {
       <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
         <div>
           <p className="text-xs font-bold uppercase tracking-[.2em] text-[hsl(var(--accent-foreground))]">Pages / Home / About Preview</p>
-          <h1 className="mt-3 max-w-2xl font-display text-5xl font-semibold leading-[.98] tracking-[-.05em] text-[hsl(var(--primary))]" data-testid="text-about-preview-editor-title">Introduce the Sahasara way.</h1>
+          <h1 className="mt-3 max-w-2xl font-display text-5xl font-semibold leading-[.98] tracking-[-.05em] text-[hsl(var(--primary))]" data-testid="text-about-preview-editor-title">Introduce the Sahsrah way.</h1>
           <p className="mt-4 max-w-xl text-sm leading-6 text-[hsl(var(--muted-foreground))]">Shape the first story visitors read after the hero. This content stays separate from the future full About page.</p>
         </div>
         <a href="/" target="_blank" rel="noreferrer" className="inline-flex w-fit items-center gap-2 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] px-4 py-2.5 text-sm font-bold text-[hsl(var(--primary))]" data-testid="link-preview-about">Preview live site <ArrowUpRight size={16} /></a>
@@ -112,9 +112,9 @@ export default function AdminHomepageAboutPreview() {
 
       <form onSubmit={submit} className="mt-10 space-y-6">
         <section className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 md:p-8">
-          <SectionTitle icon={<LayoutPanelTop size={19} />} title="The story" description="A concise introduction for families learning what makes Sahasara different." />
+            <SectionTitle icon={<LayoutPanelTop size={19} />} title="The story" description="A concise introduction for families learning what makes Sahsrah different." />
           <div className="mt-7 space-y-5">
-            <Field id="about-eyebrow" label="Eyebrow" value={form.eyebrow} onChange={(event) => setField('eyebrow', event.target.value)} required placeholder="About Sahasara" />
+            <Field id="about-eyebrow" label="Eyebrow" value={form.eyebrow} onChange={(event) => setField('eyebrow', event.target.value)} required placeholder="About Sahsrah" />
             <Field id="about-heading" label="Heading" value={form.heading} onChange={(event) => setField('heading', event.target.value)} required placeholder="Building Strong Foundations for a Brighter Future" />
             <Area id="about-description" label="Introductory description" value={form.description} onChange={(event) => setField('description', event.target.value)} required placeholder="A short introduction to the college's approach." />
             <Area id="about-body" label="Supporting paragraph" value={form.body} onChange={(event) => setField('body', event.target.value)} required placeholder="Add a little more context about the student experience." />

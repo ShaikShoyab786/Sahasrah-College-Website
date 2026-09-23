@@ -12,7 +12,7 @@ export function HomeLiveUpdates({ updates }: HomeLiveUpdatesProps) {
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
           <div>
-            <SectionEyebrow>From Sahasara</SectionEyebrow>
+            <SectionEyebrow>From Sahsrah</SectionEyebrow>
             <h2 id="live-updates-heading" className="mt-4 font-display text-5xl font-semibold leading-[.98] tracking-[-.05em] text-[hsl(var(--primary))] md:text-6xl">Live Updates</h2>
           </div>
           <a href="#live-updates" className="inline-flex w-fit items-center gap-2 text-sm font-bold text-[hsl(var(--primary))] transition hover:-translate-y-0.5 hover:text-[hsl(var(--accent-foreground))]" aria-label="View all updates; the homepage shows the latest three">

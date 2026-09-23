@@ -1,4 +1,4 @@
-# Sahasara Junior College
+# Sahsrah Junior College
 
 A connected public college website and protected admin dashboard for managing the institution's identity and homepage hero.
 
@@ -18,7 +18,7 @@ A connected public college website and protected admin dashboard for managing th
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9
 - API: Express 5
-- DB: PostgreSQL + Prisma ORM for the Sahasara application
+- DB: PostgreSQL + Prisma ORM for the Sahsrah application
 - Validation: Zod (`zod/v4`), `drizzle-zod`
 - API codegen: Orval (from OpenAPI spec)
 - Build: esbuild (CJS bundle)

@@ -36,7 +36,7 @@ export function AboutPreview({ content }: AboutPreviewProps) {
             {content.primaryImage ? (
               <img src={content.primaryImage} alt={content.primaryImageAltText} className="about-preview-image h-full w-full object-cover" data-testid="img-about-primary" />
             ) : (
-              <ImageFallback label="Sahasara learning together" />
+              <ImageFallback label="Sahsrah learning together" />
             )}
             <div className="about-preview-image-overlay absolute inset-0" aria-hidden="true" />
           </div>
@@ -71,7 +71,7 @@ export function AboutPreview({ content }: AboutPreviewProps) {
 
 function ImageFallback({ label, dark = false }: { label: string; dark?: boolean }) {
   return (
-    <div className={`grid h-full w-full place-items-center p-8 text-center ${dark ? 'bg-[radial-gradient(circle_at_35%_25%,hsl(42_63%_60%/.32),transparent_35%),hsl(var(--primary))] text-white/70' : 'bg-[radial-gradient(circle_at_70%_20%,hsl(42_63%_60%/.45),transparent_30%),hsl(var(--secondary))] text-[hsl(var(--primary)/.65)]'}`} data-testid="about-image-fallback">
+    <div className={`grid h-full w-full place-items-center p-8 text-center ${dark ? 'bg-[radial-gradient(circle_at_35%_25%,hsl(var(--accent)/.32),transparent_35%),hsl(var(--primary))] text-white/70' : 'bg-[radial-gradient(circle_at_70%_20%,hsl(var(--accent)/.45),transparent_30%),hsl(var(--secondary))] text-[hsl(var(--primary)/.65)]'}`} data-testid="about-image-fallback">
       <div>
         <ImageIcon className="mx-auto mb-3 opacity-60" size={26} />
         <span className="text-xs font-bold uppercase tracking-[.16em]">{label}</span>

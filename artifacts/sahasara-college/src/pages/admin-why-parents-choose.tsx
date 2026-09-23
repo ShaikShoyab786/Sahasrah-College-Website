@@ -12,7 +12,7 @@ import { Area, Field, SaveButton } from '@/components/form-fields';
 import { EditorCard, EditorFrame, EditorSkeleton, LoadError, SaveStatus, VisibilityToggle } from '@/pages/admin-about-hero';
 
 const emptyForm: AboutWhyParentsChooseInput = {
-  heading: 'Why Parents Choose Sahasara',
+  heading: 'Why Parents Choose Sahsrah',
   description: 'A focused, supportive approach that helps students build strong foundations and steady momentum.',
   isVisible: true,
   sortOrder: 5,
@@ -80,7 +80,7 @@ export default function AdminWhyParentsChoose() {
   if (query.isLoading) return <EditorSkeleton />;
   if (query.isError && !query.data) return <LoadError onRetry={() => query.refetch()} />;
   return (
-    <EditorFrame eyebrow="Pages / About / Why Parents Choose" title="Show what support feels like." description="Keep the six family-facing reasons clear, editable, and connected to the Sahasara experience." previewHref="/about#why-parents-choose">
+    <EditorFrame eyebrow="Pages / About / Why Parents Choose" title="Show what support feels like." description="Keep the six family-facing reasons clear, editable, and connected to the Sahsrah experience." previewHref="/about#why-parents-choose">
       <form onSubmit={submit} className="mt-10 space-y-6">
         <EditorCard icon={<ListChecks size={19} />} title="Section introduction" description="This heading is shown above the benefits grid.">
           <div className="space-y-5"><Field id="parents-heading" label="Section heading" value={form.heading} onChange={(event) => setField('heading', event.target.value)} required /><Area id="parents-description" label="Section description" value={form.description} onChange={(event) => setField('description', event.target.value)} required /></div>

@@ -38,18 +38,18 @@ const knowledgeDefaults: HomepageKnowledgeHubInput = {
 const faqDefaults: HomepageAdmissionsFaqInput = {
   eyebrow: 'Admissions FAQ',
   heading: 'Common Questions, Clear Answers',
-  description: 'Everything you need to know about joining Sahasara Junior College.',
+  description: 'Everything you need to know about joining Sahsrah Junior College.',
   isVisible: true,
   sortOrder: 12,
   questions: [
-    { question: 'Why should I choose Sahasara over other junior colleges?', answer: 'We combine focused concept learning with personal mentorship, regular feedback, and a supportive environment that helps students build confidence without losing sight of their goals.', displayOrder: 1, isVisible: true },
+    { question: 'Why should I choose Sahsrah over other junior colleges?', answer: 'We combine focused concept learning with personal mentorship, regular feedback, and a supportive environment that helps students build confidence without losing sight of their goals.', displayOrder: 1, isVisible: true },
     { question: 'Do you offer integrated coaching for IIT-JEE and NEET?', answer: 'Yes. Our MPC and BiPC pathways include integrated preparation, guided practice, regular tests, and subject support for ambitious IIT-JEE and NEET goals.', displayOrder: 2, isVisible: true },
     { question: 'What is the student-to-teacher ratio?', answer: 'We keep groups focused so teachers can notice individual progress, answer questions, and give students useful feedback throughout the academic year.', displayOrder: 3, isVisible: true },
   ],
 };
 
 const ctaDefaults: HomepageFinalCtaInput = {
-  eyebrow: 'Join Sahasara College',
+  eyebrow: 'Join Sahsrah College',
   heading: 'Seats Are Limited. Admissions Are Open.',
   supportingText: 'Give your child the advantage of personal mentorship from experienced faculty and integrated IIT-JEE and NEET preparation. Limited admission availability for the new academic year.',
   applyButtonLabel: 'Apply Now',

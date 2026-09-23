@@ -8,7 +8,7 @@ type SiteMarkProps = {
   compact?: boolean;
 };
 
-export function SiteMark({ name = 'Sahasara Junior College', tagline = 'Your College Tagline', logoUrl, inverse = false, compact = false }: SiteMarkProps) {
+export function SiteMark({ name = 'Sahsrah Junior College', tagline = 'Your College Tagline', logoUrl, inverse = false, compact = false }: SiteMarkProps) {
   return (
     <Link href="/" className="group inline-flex items-center gap-3" data-testid="link-site-logo">
       {logoUrl ? (

@@ -85,7 +85,7 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
     <div className="min-h-[100dvh] bg-[hsl(var(--background))] text-[hsl(var(--foreground))]">
       <aside id="admin-sidebar" aria-label="Admin navigation" className={`admin-sidebar fixed inset-y-0 left-0 z-30 flex w-[276px] flex-col overflow-y-auto overscroll-contain bg-[hsl(var(--sidebar))] px-5 py-6 text-[hsl(var(--sidebar-foreground))] transition-transform duration-300 md:translate-x-0 ${open ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="flex items-center justify-between">
-          <SiteMark inverse compact name="Sahasara" />
+          <SiteMark inverse compact name="Sahsrah" />
           <button className="rounded-lg p-2 text-[hsl(var(--sidebar-foreground)/.7)] md:hidden" onClick={() => setOpen(false)} data-testid="button-close-sidebar"><X size={19} /></button>
         </div>
         <div className="mt-10 px-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[hsl(var(--sidebar-foreground)/.45)]">Workspace</div>

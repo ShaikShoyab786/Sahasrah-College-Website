@@ -2,15 +2,33 @@ import { PrismaClient } from "@prisma/client";
 
 export const prisma = new PrismaClient();
 
+async function backfillCollegeNameTypo() {
+  const columns = await prisma.$queryRaw<Array<{ tableName: string; columnName: string }>>`
+    SELECT table_name AS "tableName", column_name AS "columnName"
+    FROM information_schema.columns
+    WHERE table_schema = 'public'
+      AND data_type IN ('character varying', 'text', 'character')
+      AND column_name NOT IN ('id', 'tokenHash', 'passwordHash')
+  `;
+
+  for (const { tableName, columnName } of columns) {
+    if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(tableName) || !/^[A-Za-z_][A-Za-z0-9_]*$/.test(columnName)) continue;
+    await prisma.$executeRawUnsafe(
+      `UPDATE "${tableName}" SET "${columnName}" = replace(replace(replace("${columnName}", 'Sahasara', 'Sahsrah'), 'SAHASARA', 'SAHSRAH'), 'sahasara', 'sahsrah') WHERE "${columnName}" LIKE '%Sahasara%' OR "${columnName}" LIKE '%SAHASARA%' OR "${columnName}" LIKE '%sahasara%'`,
+    );
+  }
+}
+
 export async function initializeDatabase() {
   await prisma.$connect();
+  await backfillCollegeNameTypo();
 
   await prisma.siteSettings.upsert({
     where: { id: "singleton" },
     update: {},
     create: {
       id: "singleton",
-      collegeName: "Your College Name",
+      collegeName: "Sahsrah Junior College",
       tagline: "Your College Tagline",
       logoUrl: null,
       email: "info@yourcollege.com",
@@ -35,7 +53,7 @@ export async function initializeDatabase() {
       secondaryButtonLabel: "Discover our approach",
        secondaryButtonUrl: "#about-preview",
       heroImageUrl: null,
-      heroImageAltText: "Sahasara students learning together",
+      heroImageAltText: "Sahsrah students learning together",
     },
     {
       displayOrder: 2,
@@ -43,13 +61,13 @@ export async function initializeDatabase() {
       heading: "Ask better",
       highlightedHeadingText: "questions.",
       description:
-        "At Sahasara, curiosity is not a detour from learning. It is where confidence, creativity, and clarity begin.",
+        "At Sahsrah, curiosity is not a detour from learning. It is where confidence, creativity, and clarity begin.",
       primaryButtonLabel: "See how we learn",
        primaryButtonUrl: "#about-preview",
-      secondaryButtonLabel: "Meet Sahasara",
+      secondaryButtonLabel: "Meet Sahsrah",
       secondaryButtonUrl: "#contact",
       heroImageUrl: null,
-      heroImageAltText: "Students collaborating in a Sahasara classroom",
+      heroImageAltText: "Students collaborating in a Sahsrah classroom",
     },
     {
       displayOrder: 3,
@@ -63,7 +81,7 @@ export async function initializeDatabase() {
       secondaryButtonLabel: "Explore next steps",
        secondaryButtonUrl: "#contact",
       heroImageUrl: null,
-      heroImageAltText: "Sahasara students looking toward their future",
+      heroImageAltText: "Sahsrah students looking toward their future",
     },
   ];
 
@@ -80,10 +98,10 @@ export async function initializeDatabase() {
     update: {},
     create: {
       id: "singleton",
-      eyebrow: "About Sahasara",
+      eyebrow: "About Sahsrah",
       heading: "Building Strong Foundations for a Brighter Future",
       description:
-        "Sahasara Junior College is committed to helping students grow through academic guidance, personal attention, and a supportive learning environment.",
+        "Sahsrah Junior College is committed to helping students grow through academic guidance, personal attention, and a supportive learning environment.",
       body:
         "Our approach combines focused preparation, experienced guidance, and values that help students move confidently toward higher education and future opportunities.",
       buttonLabel: "Explore Our Philosophy",
@@ -115,7 +133,7 @@ export async function initializeDatabase() {
     },
     {
       title: "Campus visit days are open for booking",
-      excerpt: "Walk through our classrooms, laboratories, and student spaces with a member of the Sahasara team.",
+      excerpt: "Walk through our classrooms, laboratories, and student spaces with a member of the Sahsrah team.",
       category: "Campus",
       actionBadge: "Schedule",
       publishDate: new Date("2026-05-28T00:00:00.000Z"),
@@ -153,7 +171,7 @@ export async function initializeDatabase() {
     update: {},
     create: {
       id: "singleton",
-      eyebrow: "THE SAHASARA DIFFERENCE",
+      eyebrow: "THE SAHSRAH DIFFERENCE",
       heading: "Progress you can feel.",
       description: "A focused learning environment turns daily effort into outcomes students can carry forward.",
       isVisible: true,
@@ -290,7 +308,7 @@ export async function initializeDatabase() {
       id: "singleton",
       eyebrow: "Admissions FAQ",
       heading: "Common Questions, Clear Answers",
-      description: "Everything you need to know about joining Sahasara Junior College.",
+      description: "Everything you need to know about joining Sahsrah Junior College.",
       isVisible: true,
       sortOrder: 12,
     },
@@ -298,7 +316,7 @@ export async function initializeDatabase() {
   if ((await prisma.homepageAdmissionsFaqItem.count({ where: { homepageAdmissionsFaqId: "singleton" } })) === 0) {
     await prisma.homepageAdmissionsFaqItem.createMany({
       data: [
-        { homepageAdmissionsFaqId: "singleton", question: "Why should I choose Sahasara over other junior colleges?", answer: "We combine focused concept learning with personal mentorship, regular feedback, and a supportive environment that helps students build confidence without losing sight of their goals.", displayOrder: 1, isVisible: true },
+        { homepageAdmissionsFaqId: "singleton", question: "Why should I choose Sahsrah over other junior colleges?", answer: "We combine focused concept learning with personal mentorship, regular feedback, and a supportive environment that helps students build confidence without losing sight of their goals.", displayOrder: 1, isVisible: true },
         { homepageAdmissionsFaqId: "singleton", question: "Do you offer integrated coaching for IIT-JEE and NEET?", answer: "Yes. Our MPC and BiPC pathways include integrated preparation, guided practice, regular tests, and subject support for ambitious IIT-JEE and NEET goals.", displayOrder: 2, isVisible: true },
         { homepageAdmissionsFaqId: "singleton", question: "What is the student-to-teacher ratio?", answer: "We keep groups focused so teachers can notice individual progress, answer questions, and give students useful feedback throughout the academic year.", displayOrder: 3, isVisible: true },
         { homepageAdmissionsFaqId: "singleton", question: "Are separate hostel facilities available for boys and girls?", answer: "Hostel support is available for eligible students. Contact the admissions office for current availability, routines, safety details, and a campus visit.", displayOrder: 4, isVisible: true },
@@ -312,7 +330,7 @@ export async function initializeDatabase() {
     update: {},
     create: {
       id: "singleton",
-      eyebrow: "Join Sahasara College",
+      eyebrow: "Join Sahsrah College",
       heading: "Seats Are Limited. Admissions Are Open.",
       supportingText: "Give your child the advantage of personal mentorship from experienced faculty and integrated IIT-JEE and NEET preparation. Limited admission availability for the new academic year.",
       applyButtonLabel: "Apply Now",
@@ -332,10 +350,10 @@ export async function initializeDatabase() {
     update: {},
     create: {
       id: "singleton",
-      eyebrow: "ABOUT SAHASARA",
+      eyebrow: "ABOUT SAHSRAH",
       heading: "Growing with Purpose, Learning for Tomorrow.",
       description:
-        "Sahasara Junior College is committed to helping students build strong academic foundations through focused learning, personal guidance, and a supportive environment.",
+        "Sahsrah Junior College is committed to helping students build strong academic foundations through focused learning, personal guidance, and a supportive environment.",
       mainImageUrl:
         "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1400&q=85",
       mainImageAltText: "Students learning together in a bright classroom",
@@ -344,7 +362,7 @@ export async function initializeDatabase() {
       floatingAvailabilityText: "Limited Seats Available",
       floatingSupportingText: "Join a growing community of successful students.",
       floatingImageUrl: null,
-      floatingImageAltText: "Sahasara students",
+      floatingImageAltText: "Sahsrah students",
       primaryButtonLabel: "Apply for Admission",
       primaryButtonUrl: "#contact",
       primaryButtonVisible: true,
@@ -374,7 +392,7 @@ export async function initializeDatabase() {
       eyebrow: "OUR STORY",
       heading: "A Journey Built on Learning and Purpose",
       description:
-        "Sahasara Junior College continues to grow through a commitment to academic discipline, student guidance, and a learning environment that prepares students for the next stage of their journey.",
+        "Sahsrah Junior College continues to grow through a commitment to academic discipline, student guidance, and a learning environment that prepares students for the next stage of their journey.",
       buttonLabel: "Explore Our Journey",
       buttonHref: "#our-story-timeline",
       mainImage:
@@ -393,10 +411,10 @@ export async function initializeDatabase() {
   if ((await prisma.aboutTimelineItem.count({ where: { aboutStoryId: "singleton" } })) === 0) {
     await prisma.aboutTimelineItem.createMany({
       data: [
-        { aboutStoryId: "singleton", period: "20XX", title: "The Beginning", description: "Sahasara Junior College begins its journey with a commitment to focused learning.", displayOrder: 1, isVisible: true },
+        { aboutStoryId: "singleton", period: "20XX", title: "The Beginning", description: "Sahsrah Junior College begins its journey with a commitment to focused learning.", displayOrder: 1, isVisible: true },
         { aboutStoryId: "singleton", period: "20XX", title: "Growing Horizons", description: "The college expands its academic guidance and student support initiatives.", displayOrder: 2, isVisible: true },
-        { aboutStoryId: "singleton", period: "20XX", title: "A Stronger Community", description: "More students and families become part of the Sahasara learning community.", displayOrder: 3, isVisible: true },
-        { aboutStoryId: "singleton", period: "Today", title: "Looking Ahead", description: "Sahasara continues preparing students for higher education and future opportunities.", displayOrder: 4, isVisible: true },
+        { aboutStoryId: "singleton", period: "20XX", title: "A Stronger Community", description: "More students and families become part of the Sahsrah learning community.", displayOrder: 3, isVisible: true },
+        { aboutStoryId: "singleton", period: "Today", title: "Looking Ahead", description: "Sahsrah continues preparing students for higher education and future opportunities.", displayOrder: 4, isVisible: true },
       ],
     });
   }
@@ -409,12 +427,12 @@ export async function initializeDatabase() {
       eyebrow: "CHAIRMAN'S MESSAGE",
       heading: "Education is the foundation of every meaningful future.",
       message:
-        "At Sahasara Junior College, we believe every student deserves the guidance, encouragement, and learning environment needed to grow with confidence. Our responsibility is to support every learner with purpose and care.",
-      signatureName: "Sahasara Leadership",
+        "At Sahsrah Junior College, we believe every student deserves the guidance, encouragement, and learning environment needed to grow with confidence. Our responsibility is to support every learner with purpose and care.",
+      signatureName: "Sahsrah Leadership",
       role: "Chairman",
       portraitImage:
         "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=900&q=85",
-      portraitAltText: "Portrait placeholder for Sahasara leadership",
+      portraitAltText: "Portrait placeholder for Sahsrah leadership",
       buttonLabel: "Read the Full Message",
       buttonHref: "#contact",
       buttonVisible: false,
@@ -429,7 +447,7 @@ export async function initializeDatabase() {
     create: {
       id: "singleton",
       heading: "Our Guiding Principles",
-      description: "The principles that shape how Sahasara teaches, supports, and prepares every student.",
+      description: "The principles that shape how Sahsrah teaches, supports, and prepares every student.",
       visionIcon: "eye",
       visionTitle: "Our Vision",
       visionDescription: "To create a learning environment that helps students build knowledge, confidence, discipline, and a clear direction for the future.",
@@ -458,7 +476,7 @@ export async function initializeDatabase() {
     update: {},
     create: {
       id: "singleton",
-      heading: "Why Parents Choose Sahasara",
+      heading: "Why Parents Choose Sahsrah",
       description: "A focused, supportive approach that helps students build strong foundations and steady momentum.",
       isVisible: true,
       sortOrder: 5,
@@ -483,7 +501,7 @@ export async function initializeDatabase() {
     create: {
       id: "singleton",
       heading: "Our Leadership",
-      description: "Meet the people who help Sahasara stay focused on thoughtful teaching, student care, and meaningful progress.",
+      description: "Meet the people who help Sahsrah stay focused on thoughtful teaching, student care, and meaningful progress.",
       isVisible: true,
       sortOrder: 6,
     },
@@ -491,10 +509,10 @@ export async function initializeDatabase() {
   if ((await prisma.aboutLeadershipMember.count({ where: { aboutLeadershipId: "singleton" } })) === 0) {
     await prisma.aboutLeadershipMember.createMany({
       data: [
-        { aboutLeadershipId: "singleton", portraitImage: null, portraitAltText: "Portrait placeholder for the Sahasara chairperson", name: "Chairperson Placeholder", designation: "Chairperson", qualification: "Qualification placeholder", biography: "Provides strategic oversight and long-term guidance for the institution.", displayOrder: 1, isVisible: true },
-        { aboutLeadershipId: "singleton", portraitImage: null, portraitAltText: "Portrait placeholder for the Sahasara academic director", name: "Academic Director Placeholder", designation: "Academic Director", qualification: "Qualification placeholder", biography: "Supports academic direction, curriculum planning, and a strong learning culture.", displayOrder: 2, isVisible: true },
-        { aboutLeadershipId: "singleton", portraitImage: null, portraitAltText: "Portrait placeholder for the Sahasara director", name: "Director Placeholder", designation: "Director", qualification: "Qualification placeholder", biography: "Helps connect institutional priorities with a welcoming student experience.", displayOrder: 3, isVisible: true },
-        { aboutLeadershipId: "singleton", portraitImage: null, portraitAltText: "Portrait placeholder for the Sahasara dean", name: "Dean Placeholder", designation: "Dean", qualification: "Qualification placeholder", biography: "Coordinates student support and keeps care, discipline, and progress at the center.", displayOrder: 4, isVisible: true },
+        { aboutLeadershipId: "singleton", portraitImage: null, portraitAltText: "Portrait placeholder for the Sahsrah chairperson", name: "Chairperson Placeholder", designation: "Chairperson", qualification: "Qualification placeholder", biography: "Provides strategic oversight and long-term guidance for the institution.", displayOrder: 1, isVisible: true },
+        { aboutLeadershipId: "singleton", portraitImage: null, portraitAltText: "Portrait placeholder for the Sahsrah academic director", name: "Academic Director Placeholder", designation: "Academic Director", qualification: "Qualification placeholder", biography: "Supports academic direction, curriculum planning, and a strong learning culture.", displayOrder: 2, isVisible: true },
+        { aboutLeadershipId: "singleton", portraitImage: null, portraitAltText: "Portrait placeholder for the Sahsrah director", name: "Director Placeholder", designation: "Director", qualification: "Qualification placeholder", biography: "Helps connect institutional priorities with a welcoming student experience.", displayOrder: 3, isVisible: true },
+        { aboutLeadershipId: "singleton", portraitImage: null, portraitAltText: "Portrait placeholder for the Sahsrah dean", name: "Dean Placeholder", designation: "Dean", qualification: "Qualification placeholder", biography: "Coordinates student support and keeps care, discipline, and progress at the center.", displayOrder: 4, isVisible: true },
       ],
     });
   }
@@ -563,7 +581,7 @@ export async function initializeDatabase() {
       data: [
         { aboutFaqId: "singleton", question: "Which programs are available for the 2026–27 academic year?", answer: "Admissions are open for MPC, BiPC, IIT-JEE, and NEET integrated programs. Our counselors can help you compare the right path for your student.", displayOrder: 1, isVisible: true },
         { aboutFaqId: "singleton", question: "Can we visit the campus before applying?", answer: "Yes. Contact our admissions team to arrange a campus visit and learn more about classrooms, laboratories, student support, and daily routines.", displayOrder: 2, isVisible: true },
-        { aboutFaqId: "singleton", question: "How does Sahasara support students who need extra guidance?", answer: "Students receive regular practice, feedback, subject guidance, and personal mentorship so they can identify gaps early and keep moving forward.", displayOrder: 3, isVisible: true },
+        { aboutFaqId: "singleton", question: "How does Sahsrah support students who need extra guidance?", answer: "Students receive regular practice, feedback, subject guidance, and personal mentorship so they can identify gaps early and keep moving forward.", displayOrder: 3, isVisible: true },
         { aboutFaqId: "singleton", question: "What should we bring for the admission discussion?", answer: "Start with your questions and the student’s latest academic details. Our counselor will explain eligibility, the application steps, and the documents needed for enrollment.", displayOrder: 4, isVisible: true },
         { aboutFaqId: "singleton", question: "Are hostel facilities available?", answer: "Safe hostel facilities are available for students who need residential support. Please contact admissions for current availability, routines, and visit arrangements.", displayOrder: 5, isVisible: true },
         { aboutFaqId: "singleton", question: "How can we request a prospectus?", answer: "Use the prospectus action below or contact admissions. The team will share the latest program details and guide you through the next step.", displayOrder: 6, isVisible: true },
@@ -576,7 +594,7 @@ export async function initializeDatabase() {
     update: {},
     create: {
       id: "singleton",
-      heading: "Begin Your Journey Towards Success with Sahasara Junior College",
+      heading: "Begin Your Journey Towards Success with Sahsrah Junior College",
       supportingText: "Admissions for 2026–27 are now open. Limited seats are available for MPC, BiPC, IIT-JEE, and NEET integrated programs.",
       applyButtonLabel: "Apply Now",
       applyButtonHref: "/#contact",

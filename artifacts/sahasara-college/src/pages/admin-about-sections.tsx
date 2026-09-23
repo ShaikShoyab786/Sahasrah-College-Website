@@ -62,7 +62,7 @@ const faqDefaults: AboutFaqInput = {
 };
 
 const ctaDefaults: AboutAdmissionCtaInput = {
-  heading: 'Begin Your Journey Towards Success with Sahasara Junior College',
+  heading: 'Begin Your Journey Towards Success with Sahsrah Junior College',
   supportingText: 'Admissions for 2026–27 are now open. Limited seats are available for MPC, BiPC, IIT-JEE, and NEET integrated programs.',
   applyButtonLabel: 'Apply Now',
   applyButtonHref: '/#contact',

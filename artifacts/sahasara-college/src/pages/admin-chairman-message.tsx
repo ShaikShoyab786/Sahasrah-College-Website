@@ -16,7 +16,7 @@ const emptyForm: AboutChairmanMessageInput = {
   eyebrow: "CHAIRMAN'S MESSAGE",
   heading: 'Education is the foundation of every meaningful future.',
   message: '',
-  signatureName: 'Sahasara Leadership',
+  signatureName: 'Sahsrah Leadership',
   role: 'Chairman',
   portraitImage: null,
   portraitAltText: '',

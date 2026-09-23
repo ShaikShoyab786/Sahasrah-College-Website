@@ -14,14 +14,14 @@ import { EditorCard, EditorFrame, EditorSkeleton, ImageField, LoadError, SaveSta
 
 const emptyForm: AboutLeadershipInput = {
   heading: 'Our Leadership',
-  description: 'Meet the people who help Sahasara stay focused on thoughtful teaching, student care, and meaningful progress.',
+  description: 'Meet the people who help Sahsrah stay focused on thoughtful teaching, student care, and meaningful progress.',
   isVisible: true,
   sortOrder: 6,
   members: [
-    { portraitImage: null, portraitAltText: 'Portrait placeholder for the Sahasara chairperson', name: 'Chairperson Placeholder', designation: 'Chairperson', qualification: 'Qualification placeholder', biography: '', socialUrl: null, displayOrder: 1, isVisible: true },
-    { portraitImage: null, portraitAltText: 'Portrait placeholder for the Sahasara academic director', name: 'Academic Director Placeholder', designation: 'Academic Director', qualification: 'Qualification placeholder', biography: '', socialUrl: null, displayOrder: 2, isVisible: true },
-    { portraitImage: null, portraitAltText: 'Portrait placeholder for the Sahasara director', name: 'Director Placeholder', designation: 'Director', qualification: 'Qualification placeholder', biography: '', socialUrl: null, displayOrder: 3, isVisible: true },
-    { portraitImage: null, portraitAltText: 'Portrait placeholder for the Sahasara dean', name: 'Dean Placeholder', designation: 'Dean', qualification: 'Qualification placeholder', biography: '', socialUrl: null, displayOrder: 4, isVisible: true },
+    { portraitImage: null, portraitAltText: 'Portrait placeholder for the Sahsrah chairperson', name: 'Chairperson Placeholder', designation: 'Chairperson', qualification: 'Qualification placeholder', biography: '', socialUrl: null, displayOrder: 1, isVisible: true },
+    { portraitImage: null, portraitAltText: 'Portrait placeholder for the Sahsrah academic director', name: 'Academic Director Placeholder', designation: 'Academic Director', qualification: 'Qualification placeholder', biography: '', socialUrl: null, displayOrder: 2, isVisible: true },
+    { portraitImage: null, portraitAltText: 'Portrait placeholder for the Sahsrah director', name: 'Director Placeholder', designation: 'Director', qualification: 'Qualification placeholder', biography: '', socialUrl: null, displayOrder: 3, isVisible: true },
+    { portraitImage: null, portraitAltText: 'Portrait placeholder for the Sahsrah dean', name: 'Dean Placeholder', designation: 'Dean', qualification: 'Qualification placeholder', biography: '', socialUrl: null, displayOrder: 4, isVisible: true },
   ],
 };
 
@@ -80,7 +80,7 @@ export default function AdminLeadership() {
   };
   const addMember = () => {
     if (form.members.length >= 20) return;
-    setForm((current) => ({ ...current, members: [...current.members, { portraitImage: null, portraitAltText: 'Portrait placeholder for a Sahasara leader', name: 'New leader', designation: 'Designation', qualification: 'Qualification', biography: '', socialUrl: null, displayOrder: current.members.length + 1, isVisible: true }] }));
+    setForm((current) => ({ ...current, members: [...current.members, { portraitImage: null, portraitAltText: 'Portrait placeholder for a Sahsrah leader', name: 'New leader', designation: 'Designation', qualification: 'Qualification', biography: '', socialUrl: null, displayOrder: current.members.length + 1, isVisible: true }] }));
   };
   const removeMember = (index: number) => {
     if (form.members.length <= 1) return;

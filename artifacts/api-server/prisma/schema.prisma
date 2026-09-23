@@ -53,7 +53,7 @@ model HomepageHero {
   secondaryButtonLabel   String
   secondaryButtonUrl     String
   heroImageUrl           String?
-  heroImageAltText       String  @default("Sahasara Junior College students learning together")
+  heroImageAltText       String  @default("Sahsrah Junior College students learning together")
   isPublished             Boolean @default(true)
   updatedAt              DateTime @updatedAt
 }

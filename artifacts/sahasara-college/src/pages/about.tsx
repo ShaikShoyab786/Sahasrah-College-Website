@@ -26,6 +26,7 @@ import {
 import { SectionEyebrow } from '@/components/section-eyebrow';
 import { PublicFooter } from '@/components/public-footer';
 import { PublicHeader } from '@/components/public-header';
+import { createPublicThemeStyle, DEFAULT_ACCENT_COLOR, DEFAULT_PRIMARY_COLOR } from '@/lib/public-theme';
 
 type PublicSettings = {
   collegeName: string;
@@ -40,14 +41,14 @@ type PublicSettings = {
 };
 
 const fallbackSettings: PublicSettings = {
-  collegeName: 'Sahasara Junior College',
+  collegeName: 'Sahsrah Junior College',
   tagline: 'Your College Tagline',
   logoUrl: null,
-  email: 'admissions@sahasara.edu',
+  email: 'admissions@sahsrah.edu',
   phone: '+91 40 2458 0176',
   address: '18 Vidya Marg, Hyderabad, Telangana 500034',
-  primaryColor: '#102846',
-  accentColor: '#D6AD59',
+  primaryColor: DEFAULT_PRIMARY_COLOR,
+  accentColor: DEFAULT_ACCENT_COLOR,
   footerText: 'A public junior college for curious minds and purposeful lives.',
 };
 
@@ -64,15 +65,15 @@ export default function About() {
   const faqQuery = useGetAboutFaq();
   const admissionCtaQuery = useGetAboutAdmissionCta();
   const settings = settingsQuery.data ?? fallbackSettings;
-  const primaryColor = settings.primaryColor || '#102846';
-  const accentColor = settings.accentColor || '#D6AD59';
+  const primaryColor = settings.primaryColor || DEFAULT_PRIMARY_COLOR;
+  const accentColor = settings.accentColor || DEFAULT_ACCENT_COLOR;
 
   if (settingsQuery.isLoading || heroQuery.isLoading || storyQuery.isLoading || chairmanQuery.isLoading || principlesQuery.isLoading || parentChoiceQuery.isLoading || leadershipQuery.isLoading || campusQuery.isLoading || achievementsQuery.isLoading || faqQuery.isLoading || admissionCtaQuery.isLoading) {
     return <AboutSkeleton />;
   }
 
   return (
-    <div className="paper-grain overflow-hidden bg-[hsl(var(--background))]" style={{ '--site-primary': primaryColor, '--site-accent': accentColor } as React.CSSProperties}>
+    <div className="paper-grain overflow-hidden bg-[hsl(var(--background))]" style={createPublicThemeStyle(primaryColor, accentColor)}>
       <PublicHeader settings={settings} activePage="about" />
       <main>
         {heroQuery.data?.isVisible && <AboutHeroSection content={heroQuery.data} />}
@@ -111,7 +112,7 @@ function AboutHeroSection({ content }: { content: AboutHero }) {
         </div>
         <div className="relative mx-auto w-full max-w-xl pb-8 lg:pb-0">
             <div className="about-hero-image aspect-[.86] overflow-hidden rounded-[2rem] border border-white/15 bg-white/10 shadow-2xl shadow-black/30">
-            <MediaOrFallback src={content.mainImageUrl} alt={content.mainImageAltText} label="Sahasara learning together" dark />
+            <MediaOrFallback src={content.mainImageUrl} alt={content.mainImageAltText} label="Sahsrah learning together" dark />
           </div>
           <div className="absolute -bottom-1 left-4 right-4 rounded-2xl border border-[hsl(var(--primary)/.2)] bg-[hsl(var(--background))] p-5 text-[hsl(var(--primary))] shadow-2xl sm:left-10 sm:right-10 sm:p-6">
             <div className="flex items-start justify-between gap-4">
@@ -158,7 +159,7 @@ function OurStorySection({ content }: { content: AboutStory }) {
           {content.buttonLabel && <a href={content.buttonHref || '#our-story'} className="story-reveal story-reveal-button group mt-8 inline-flex items-center rounded-full bg-[hsl(var(--primary))] px-5 py-3.5 text-sm font-bold text-[hsl(var(--primary-foreground))] shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg" data-testid="link-about-story">{content.buttonLabel}<ArrowRight size={17} className="ml-2 transition-transform duration-300 group-hover:translate-x-1" /></a>}
         </div>
         <StoryCollage content={content} hasEntered={hasEntered} />
-        <div id="our-story-timeline" className="relative" aria-label="Sahasara story timeline">
+        <div id="our-story-timeline" className="relative" aria-label="Sahsrah story timeline">
           <div className="story-timeline-list">
             {timeline.map((item, index) => <article key={item.id} className="story-timeline-item relative" style={{ '--story-delay': `${index * 820}ms` } as React.CSSProperties}>
               <span className="story-timeline-marker h-[21px] w-[21px] rounded-full border-[5px] border-[hsl(var(--background))] bg-[hsl(var(--accent))] shadow-[0_0_0_1px_hsl(var(--accent)/.35)]" aria-hidden="true" />
@@ -193,7 +194,7 @@ function ChairmanMessageSection({ content }: { content: AboutChairmanMessage }) 
         <div className="relative mx-auto w-full max-w-md pl-5 pt-5">
           <div className="absolute inset-0 rounded-[2rem] bg-[hsl(var(--accent)/.55)]" aria-hidden="true" />
           <div className="about-chairman-image relative aspect-[.82] overflow-hidden rounded-[2rem] bg-[hsl(var(--primary))] shadow-xl">
-            <MediaOrFallback src={content.portraitImage} alt={content.portraitAltText} label="Sahasara leadership" dark />
+            <MediaOrFallback src={content.portraitImage} alt={content.portraitAltText} label="Sahsrah leadership" dark />
           </div>
         </div>
         <div className="max-w-2xl">
@@ -265,7 +266,7 @@ function WhyParentsChooseSection({ content }: { content: AboutWhyParentsChoose }
   return (
     <section ref={ref} id="why-parents-choose" className={`about-next-section about-benefits-section ${isVisible ? 'about-section-is-visible' : ''}`}>
       <div className="mx-auto max-w-7xl px-6 py-24 lg:px-10 lg:py-32">
-        <div className="mx-auto max-w-2xl text-center"><SectionEyebrow className="about-eyebrow about-eyebrow-centered">WHY SAHASARA</SectionEyebrow><h2 className="mt-5 font-display text-5xl font-semibold leading-[.96] tracking-[-.05em] text-[hsl(var(--primary))] md:text-6xl">{content.heading}</h2><p className="mx-auto mt-6 max-w-xl text-base leading-7 text-[hsl(var(--muted-foreground))]">{content.description}</p></div>
+        <div className="mx-auto max-w-2xl text-center"><SectionEyebrow className="about-eyebrow about-eyebrow-centered">WHY SAHSRAH</SectionEyebrow><h2 className="mt-5 font-display text-5xl font-semibold leading-[.96] tracking-[-.05em] text-[hsl(var(--primary))] md:text-6xl">{content.heading}</h2><p className="mx-auto mt-6 max-w-xl text-base leading-7 text-[hsl(var(--muted-foreground))]">{content.description}</p></div>
         <div className="mt-14 grid grid-cols-2 gap-x-5 gap-y-10 md:grid-cols-3 lg:grid-cols-6">
           {benefits.map((benefit, index) => {
             const Icon = benefitIcons[benefit.icon] || Sparkles;

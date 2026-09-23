@@ -7,9 +7,9 @@ type HeroCarouselProps = {
 };
 
 const fallbackGradients = [
-  'bg-[radial-gradient(circle_at_72%_22%,hsl(41_63%_59%/.38),transparent_34%),linear-gradient(135deg,hsl(216_48%_13%),hsl(214_37%_21%))]',
-  'bg-[radial-gradient(circle_at_24%_28%,hsl(166_28%_39%/.65),transparent_38%),linear-gradient(135deg,hsl(216_48%_13%),hsl(214_37%_21%))]',
-  'bg-[radial-gradient(circle_at_78%_72%,hsl(25_62%_52%/.58),transparent_34%),linear-gradient(135deg,hsl(216_48%_13%),hsl(214_37%_21%))]',
+  'bg-[radial-gradient(circle_at_72%_22%,hsl(var(--accent)/.38),transparent_34%),linear-gradient(135deg,hsl(var(--primary)),hsl(var(--primary)/.78))]',
+  'bg-[radial-gradient(circle_at_24%_28%,hsl(var(--accent)/.55),transparent_38%),linear-gradient(135deg,hsl(var(--primary)),hsl(var(--primary)/.78))]',
+  'bg-[radial-gradient(circle_at_78%_72%,hsl(var(--accent)/.48),transparent_34%),linear-gradient(135deg,hsl(var(--primary)),hsl(var(--primary)/.78))]',
 ];
 
 export function HeroCarousel({ slides }: HeroCarouselProps) {
@@ -62,7 +62,7 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
 
   return (
     <section
-      aria-label="Sahasara homepage highlights"
+      aria-label="Sahsrah homepage highlights"
       aria-roledescription="carousel"
       className="relative min-h-[100svh] overflow-hidden bg-[hsl(var(--primary))] text-white"
       onMouseEnter={() => setIsInteracting(true)}

@@ -17,9 +17,9 @@ export interface SiteSettingsInput {
   phone: string;
   /** @minLength 1 */
   address: string;
-  /** @pattern ^#[0-9A-Fa-f]{6}$ */
+  /** @pattern ^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$ */
   primaryColor: string;
-  /** @pattern ^#[0-9A-Fa-f]{6}$ */
+  /** @pattern ^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$ */
   accentColor: string;
   footerText: string;
 }

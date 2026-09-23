@@ -29,12 +29,12 @@ export const fallbackAdmissionsFaq: HomepageAdmissionsFaq = {
   id: 'fallback-admissions-faq',
   eyebrow: 'Admissions FAQ',
   heading: 'Common Questions, Clear Answers',
-  description: 'Everything you need to know about joining Sahasara Junior College.',
+  description: 'Everything you need to know about joining Sahsrah Junior College.',
   isVisible: true,
   sortOrder: 12,
   updatedAt: '2026-06-15T00:00:00.000Z',
   questions: [
-    { id: 'faq-1', question: 'Why should I choose Sahasara over other junior colleges?', answer: 'We combine focused concept learning with personal mentorship, regular feedback, and a supportive environment that helps students build confidence without losing sight of their goals.', displayOrder: 1, isVisible: true },
+    { id: 'faq-1', question: 'Why should I choose Sahsrah over other junior colleges?', answer: 'We combine focused concept learning with personal mentorship, regular feedback, and a supportive environment that helps students build confidence without losing sight of their goals.', displayOrder: 1, isVisible: true },
     { id: 'faq-2', question: 'Do you offer integrated coaching for IIT-JEE and NEET?', answer: 'Yes. Our MPC and BiPC pathways include integrated preparation, guided practice, regular tests, and subject support for ambitious IIT-JEE and NEET goals.', displayOrder: 2, isVisible: true },
     { id: 'faq-3', question: 'What is the student-to-teacher ratio?', answer: 'We keep groups focused so teachers can notice individual progress, answer questions, and give students useful feedback throughout the academic year.', displayOrder: 3, isVisible: true },
     { id: 'faq-4', question: 'Are separate hostel facilities available for boys and girls?', answer: 'Hostel support is available for eligible students. Contact the admissions office for current availability, routines, safety details, and a campus visit.', displayOrder: 4, isVisible: true },
@@ -44,7 +44,7 @@ export const fallbackAdmissionsFaq: HomepageAdmissionsFaq = {
 
 export const fallbackFinalCta: HomepageFinalCta = {
   id: 'fallback-final-cta',
-  eyebrow: 'Join Sahasara College',
+  eyebrow: 'Join Sahsrah College',
   heading: 'Seats Are Limited. Admissions Are Open.',
   supportingText: 'Give your child the advantage of personal mentorship from experienced faculty and integrated IIT-JEE and NEET preparation. Limited admission availability for the new academic year.',
   applyButtonLabel: 'Apply Now',
@@ -216,7 +216,7 @@ export function HomeFinalCta({ content }: { content: HomepageFinalCta }) {
     <section id="home-final-cta" className="home-preview-section px-6 py-20 lg:px-10 lg:py-28" aria-labelledby="home-final-cta-heading">
       <div id="contact" className="home-cta-panel relative mx-auto max-w-7xl overflow-hidden rounded-[2rem] bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] shadow-2xl">
         {content.backgroundImage && <img src={content.backgroundImage} alt={content.backgroundImageAltText} className="absolute inset-0 h-full w-full object-cover opacity-25" />}
-        {content.backgroundOverlay && <div className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--primary)/.98)] via-[hsl(var(--primary)/.92)] to-[hsl(181_58%_20%/.86)]" aria-hidden="true" />}
+        {content.backgroundOverlay && <div className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--primary)/.98)] via-[hsl(var(--primary)/.92)] to-[hsl(var(--accent)/.68)]" aria-hidden="true" />}
         <div className="home-cta-glow absolute -right-20 -top-28 h-72 w-72 rounded-full bg-[hsl(var(--accent)/.18)] blur-3xl" aria-hidden="true" />
         <div className="relative grid gap-9 p-8 md:p-12 lg:grid-cols-[1.1fr_.9fr] lg:items-center lg:p-16">
           <div>

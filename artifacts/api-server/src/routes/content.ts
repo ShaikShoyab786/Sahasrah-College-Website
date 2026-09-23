@@ -964,7 +964,7 @@ router.put("/admin/homepage-faculty", requireAdmin, async (req, res) => {
       await tx.aboutLeadership.upsert({
         where: { id: "singleton" },
         update: {},
-        create: { id: "singleton", heading: "Our Leadership", description: "Meet the people who guide learning at Sahasara.", isVisible: true, sortOrder: 6 },
+        create: { id: "singleton", heading: "Our Leadership", description: "Meet the people who guide learning at Sahsrah.", isVisible: true, sortOrder: 6 },
       });
       const orders = parsed.data.map((member) => member.displayOrder);
       await tx.aboutLeadershipMember.updateMany({

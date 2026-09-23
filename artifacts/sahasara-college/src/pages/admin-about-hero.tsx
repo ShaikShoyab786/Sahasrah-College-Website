@@ -12,7 +12,7 @@ import {
 import { Area, Field, SaveButton } from '@/components/form-fields';
 
 const emptyForm: AboutHeroInput = {
-  eyebrow: 'ABOUT SAHASARA',
+  eyebrow: 'ABOUT SAHSRAH',
   heading: 'Growing with Purpose, Learning for Tomorrow.',
   description: '',
   mainImageUrl: null,
@@ -107,9 +107,9 @@ export default function AdminAboutHero() {
   if (query.isError && !query.data) return <LoadError onRetry={() => query.refetch()} />;
 
   return (
-    <EditorFrame eyebrow="Pages / About / About Hero" title="Set the tone for the About page." description="Introduce Sahasara with a clear, welcoming first impression and editable proof points." previewHref="/about">
+    <EditorFrame eyebrow="Pages / About / About Hero" title="Set the tone for the About page." description="Introduce Sahsrah with a clear, welcoming first impression and editable proof points." previewHref="/about">
       <form onSubmit={submit} className="mt-10 space-y-6">
-        <EditorCard icon={<LayoutPanelTop size={19} />} title="Introduction" description="The first words visitors read after choosing to learn more about Sahasara.">
+        <EditorCard icon={<LayoutPanelTop size={19} />} title="Introduction" description="The first words visitors read after choosing to learn more about Sahsrah.">
           <div className="space-y-5">
             <Field id="about-hero-eyebrow" label="Eyebrow" value={form.eyebrow} onChange={(event) => setField('eyebrow', event.target.value)} required />
             <Field id="about-hero-heading" label="Heading" value={form.heading} onChange={(event) => setField('heading', event.target.value)} required />
