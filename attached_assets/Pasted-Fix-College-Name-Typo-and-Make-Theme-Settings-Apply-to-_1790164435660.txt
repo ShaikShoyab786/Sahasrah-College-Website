@@ -1,0 +1,248 @@
+Fix College Name Typo and Make Theme Settings Apply to Public Site
+Make these two project-wide fixes:
+
+Correct the college name everywhere from:
+Sahasara
+
+to:
+
+Sahasrah
+
+Fix the admin Colour Cues settings so saved theme colors actually apply to the public website.
+Do not start any new pages in this task.
+
+1. Correct the College Name Everywhere
+The correct college name is:
+
+Sahasrah Junior College
+
+Audit the entire project for the incorrect spelling:
+
+Sahasara
+
+Search case-insensitively across:
+
+Public page content
+Home page
+About page
+Contact page
+Header and navigation
+Footer
+Page titles
+Meta descriptions
+Open Graph metadata
+Admin dashboard labels
+Admin site settings defaults
+Seed data
+Backend fallback values
+Database content
+Image alt text
+Accessibility labels
+Empty states
+Toasts and success messages
+Email or notification templates, if present
+Static configuration files
+Replace user-facing occurrences with:
+
+Sahasrah
+
+Do not blindly rename internal identifiers, asset paths, API names, or database keys if changing them could break existing functionality. Only change user-facing spelling unless an internal value is clearly intended to be the college name.
+
+Existing database content
+If the incorrect spelling already exists in saved database content:
+
+Add a safe migration or backfill.
+Update existing user-facing site settings and content records.
+Preserve all unrelated custom content.
+Do not overwrite unrelated administrator changes.
+Make the migration safe to run once and safe to deploy.
+Update all default and fallback values so the typo does not return after resetting settings or creating new content.
+
+After the change, verify that no visible user-facing occurrence of Sahasara remains.
+
+2. Fix Colour Cues Theme Settings
+The admin dashboard currently allows editing:
+
+Primary colour
+Accent colour
+The settings display a success message such as:
+
+Identity saved. The public site is up to date.
+
+However, changing the colors does not visibly update the public website.
+
+Trace and fix the complete flow:
+
+Admin color input
+↓
+Save handler
+↓
+Backend/API
+↓
+Database/site settings
+↓
+Public site data fetch
+↓
+Theme application
+↓
+Rendered public components
+
+Do not fix this by changing only the success message. The selected colors must visibly affect the public website.
+
+3. Admin Color Input Requirements
+Verify the color inputs:
+
+Accept valid hex colors.
+Keep the color picker and text value synchronized.
+Support standard 3-digit and 6-digit hex values if the existing UI allows them.
+Normalize values consistently.
+Reject invalid color values with a clear validation message.
+Do not save invalid colors.
+Preserve the existing Save Identity behavior.
+Only show the success state after the values are actually persisted.
+Do not hardcode the current test colors.
+
+4. Apply Theme Colors to the Public Site
+Use the saved primary and accent colors as dynamic public theme tokens.
+
+Apply them at the public application root using CSS custom properties or the project’s existing theme provider pattern.
+
+For example, use a structure similar to:
+
+:root {
+  --site-primary: ...;
+  --site-accent: ...;
+}
+
+Use the project’s actual naming conventions if different.
+
+The public theme should update:
+
+Header and navigation accents
+Footer accents
+Primary buttons
+Secondary buttons
+Links
+Eyebrow badges
+Section accents
+Borders
+Icons
+Statistics accents
+CTA buttons
+Cards where appropriate
+Active navigation states
+Focus rings
+Hover states
+Gold/teal brand highlights
+Public page decorative gradients
+Use lighter and darker derived colors carefully for backgrounds, borders, hover states, and overlays.
+
+Do not apply the accent color blindly to body text if it would reduce readability.
+
+Preserve strong contrast for:
+
+Body text
+Headings
+Buttons
+Navigation
+Form controls
+Footer content
+5. Ensure the Theme Is Actually Reactive
+When the admin saves new colors:
+
+Update the site settings state.
+Re-apply the theme variables immediately where possible.
+Ensure the public site uses the latest saved values after navigation.
+Ensure a full refresh loads the latest saved values.
+Avoid stale cached settings.
+Avoid requiring a server restart.
+Avoid requiring a manual CSS rebuild.
+Keep the default theme as a fallback if settings are unavailable.
+If the public site and admin dashboard use separate data contexts, make sure the public-facing context reloads the updated settings after saving.
+
+If the site settings are fetched once at application startup, ensure the saved values are fetched again when the public app loads.
+
+6. Avoid Compile-Time Color Problems
+Do not construct Tailwind classes dynamically from runtime hex values, such as:
+
+className={`bg-[${primaryColor}]`}
+
+That will not work reliably with a compile-time utility framework.
+
+Use one of these approaches instead:
+
+CSS custom properties
+Inline styles for dynamic color values
+Stable CSS classes that reference theme variables
+The project’s existing theme-token system
+Preserve the current design system and avoid rewriting every component unnecessarily.
+
+7. Apply Theme Across All Public Pages
+Verify the saved theme colors affect all existing public pages, including:
+
+Home
+About
+Contact
+Any existing Results, Gallery, Facilities, or other public pages
+Shared Header
+Shared Footer
+Shared CTA components
+Shared buttons and links
+The admin interface itself may retain its stable administrative color scheme unless the existing product design specifically intends the public theme to style the admin dashboard too.
+
+Do not make the dashboard unreadable or replace its admin navigation colors accidentally.
+
+8. Shared Component and Hardcoded Color Audit
+Audit shared styles and components for hardcoded brand colors that prevent the Colour Cues settings from working.
+
+Where appropriate:
+
+Replace hardcoded primary brand colors with theme variables.
+Replace hardcoded accent colors with theme variables.
+Preserve neutral colors such as white, black, gray, slate, and semantic error colors.
+Keep gradients visually polished using the dynamic colors.
+Preserve opacity variants for backgrounds and overlays.
+Do not remove the existing visual hierarchy.
+
+9. Verification Test
+Perform a real end-to-end test:
+
+Open admin Site Settings.
+Change the primary color to an obvious test color.
+Change the accent color to a different obvious test color.
+Save the settings.
+Open or refresh the public Home page.
+Confirm the public header, buttons, accents, links, and CTA styling change.
+Navigate to the About page and confirm the theme remains applied.
+Refresh the browser and confirm the values persist.
+Navigate between public pages and confirm there is no stale theme.
+Restore the intended final colors.
+Confirm the public site updates again.
+Confirm invalid color values are rejected safely.
+Also verify:
+
+No flash of broken styling occurs.
+No runtime console errors occur.
+No layout shifts are introduced.
+No hardcoded fallback overrides the saved colors.
+Light and dark text contrast remains readable.
+Keyboard focus rings remain visible.
+10. Final Verification Checklist
+Before finishing, confirm:
+
+Sahasara has been corrected to Sahasrah everywhere user-facing.
+Existing database content has been safely updated.
+Admin defaults and fallback values use Sahasrah.
+Primary and accent colors save successfully.
+Saved colors visibly update the public site.
+Theme values persist after a full refresh.
+Theme values apply across all public pages.
+Header, Footer, buttons, links, badges, CTAs, and accents use the saved theme.
+Admin dashboard remains usable.
+Invalid color input is handled safely.
+Existing content and page layouts remain intact.
+No new pages are added in this task.
+Production build passes.
+Backend starts successfully.
+Browser console has no theme-related errors.
+Stop after completing the spelling correction and Colour Cues theme fix.
