@@ -1,0 +1,353 @@
+Fix Theme Contrast and Add Reusable Theme Presets
+The current theme colors are affecting text visibility in several public sections. Also, the admin dashboard still uses hardcoded colors instead of the selected public theme.
+
+Fix the contrast issues and upgrade the Colour Cues settings into a reusable theme preset system.
+
+Do not change page content, animations, routes, or existing section layouts.
+
+1. Fix Text Contrast Issues
+After applying the Sahasrah brand colors:
+
+Primary: #022A6C
+Accent:  #CE0B11
+
+the following text is becoming too light or invisible:
+
+Home page
+Admissions FAQ question text becomes very light on hover.
+The Live Updates eyebrow does not use the latest eyebrow styling.
+About page
+Our Story timeline years such as 20xx become invisible.
+Guiding Principles titles become difficult to read:
+Vision
+Mission
+Values
+Why Parents Choose section titles become difficult to read.
+Audit the shared theme, hover, active, and focus styles causing these problems.
+
+Required contrast behavior
+On light backgrounds:
+
+Main text should use a dark readable color.
+Headings and labels should use the primary theme color or a dark neutral.
+Accent red should be used for highlights, borders, dots, icons, and active details.
+Do not use white text on pale accent backgrounds.
+Do not reduce text opacity so much that it becomes unreadable.
+On dark backgrounds:
+
+Use white or a sufficiently light foreground color.
+Preserve readable muted text.
+Use accent colors only where contrast remains accessible.
+Do not rely on accidental inherited text colors.
+
+2. Specific Fixes
+Home Admissions FAQ
+Ensure the question text remains readable in all states:
+
+Default
+Hover
+Focus
+Expanded
+Active
+The question text should remain dark navy or another accessible dark foreground when the row background changes.
+
+Do not use a hover rule such as:
+
+color: white;
+
+unless the hover background is dark enough to support it.
+
+The expand icon may change color, but the question text must remain clearly readable.
+
+Preserve:
+
+Accordion animation
+Chevron rotation
+Keyboard behavior
+ARIA attributes
+Reduced-motion behavior
+About Our Story timeline
+Ensure timeline years such as:
+
+1992
+2005
+2012
+2023
+
+remain fully visible.
+
+Use:
+
+Strong primary or accent color
+Full opacity
+Sufficient font weight
+Clear contrast against the timeline background
+Check that no inherited hover rule, low opacity, blend mode, or background transition hides the year.
+
+Preserve the existing timeline line and node animation.
+
+About Guiding Principles
+Ensure these titles remain readable in all states:
+
+Our Vision
+Our Mission
+Our Values
+
+On white cards:
+
+Default title color should be dark primary.
+Hover title color may use the accent color.
+Do not use white text unless the card background becomes dark enough.
+Preserve card lift, icon animation, shadow, and gradient effects.
+Why Parents Choose KVR
+Ensure every feature title remains readable:
+
+Experienced Faculty
+Integrated IIT-JEE & NEET
+Concept-Based Learning
+Daily Tests & Practice
+Personalized Mentorship
+Proven Track Record
+Use a strong dark foreground by default and preserve readable hover/focus states.
+
+Do not let icon hover styles accidentally affect the text color.
+
+Live Updates eyebrow
+Update the Live Updates eyebrow so it uses the same shared eyebrow component/style as the other Home and About sections.
+
+It must include:
+
+Proper background treatment
+Accent border
+Accent dot or line
+Readable text
+Correct light-section contrast
+Responsive sizing
+Hover/focus treatment where applicable
+Audit all Home and About eyebrows so there are no remaining old plain-text or low-contrast variants.
+
+3. Add Theme Presets to Admin Dashboard
+Replace the workflow of manually entering hex values every time with reusable theme presets.
+
+Add an admin section titled:
+
+Available Themes
+
+Use selectable theme cards inspired by the attached reference image.
+
+Each card should show:
+
+Theme preview
+Theme name
+Three color swatches
+Active/selected indicator
+Short description if useful
+Selecting a theme should update the selected theme in the admin dashboard and public website after saving.
+
+Theme structure
+Each preset should define three primary design colors:
+
+primary
+accent
+surface
+
+The system may derive additional internal tokens such as:
+
+text
+text-muted
+on-primary
+on-accent
+border
+surface-soft
+
+These derived tokens should not require manual input from the administrator.
+
+Do not expose a complicated list of hex inputs as the main configuration experience.
+
+If the existing custom color inputs are retained, place them under an optional:
+
+Advanced Custom Theme
+
+area. The preset selector should be the normal/default workflow.
+
+Preset 1: Sahasrah Blue & Red
+This must be the default selected theme.
+
+Name: Sahasrah Blue & Red
+Primary: #022A6C
+Accent:  #CE0B11
+Surface: #F5F7FB
+
+Use this instead of the old unrelated green/blue default.
+
+This theme should match the official Sahasrah logo.
+
+Preset 2: Midnight Purple
+Name: Midnight Purple
+Primary: #32156B
+Accent:  #8B5CF6
+Surface: #F5F3FF
+
+Preset 3: Crimson Red
+Name: Crimson Red
+Primary: #7F1D1D
+Accent:  #EF4444
+Surface: #FFF1F2
+
+Preset 4: Emerald Green
+Name: Emerald Green
+Primary: #065F46
+Accent:  #34D399
+Surface: #ECFDF5
+
+Preset 5: Ocean Blue
+Name: Ocean Blue
+Primary: #0369A1
+Accent:  #38BDF8
+Surface: #F0F9FF
+
+Preset 6: Sunset Orange
+Name: Sunset Orange
+Primary: #C2410C
+Accent:  #FB923C
+Surface: #FFF7ED
+
+The values can be adjusted slightly if necessary for accessibility, but the Sahasrah Blue & Red preset should remain based on the official logo colors.
+
+4. Apply the Selected Theme to the Public Website
+The selected preset must apply to all public pages through shared theme tokens.
+
+Apply the theme to:
+
+Header
+Navigation
+Active navigation state
+Buttons
+Links
+Eyebrows
+Cards
+Borders
+Icons
+Statistics
+CTA sections
+Footer
+Hover states
+Focus states
+Decorative gradients
+Use CSS custom properties or the project’s existing theme provider.
+
+Avoid runtime-generated Tailwind class names such as:
+
+bg-[${primaryColor}]
+
+Use stable CSS classes that reference dynamic variables.
+
+The selected theme must persist after:
+
+Saving
+Page refresh
+Navigation
+Browser restart
+Public site reload
+Do not require a server restart or CSS rebuild after selecting a theme.
+
+5. Apply the Selected Theme to the Admin Dashboard
+The admin dashboard currently appears to use hardcoded colors.
+
+Update the admin dashboard so the selected theme also affects the dashboard itself.
+
+Apply the selected theme to:
+
+Admin sidebar
+Active navigation item
+Admin buttons
+Save buttons
+Form focus states
+Selected tabs
+Cards and panels
+Section headings
+Accent borders
+Success/status highlights where appropriate
+Theme preset selection state
+Keep the admin interface readable and professional.
+
+The dashboard should not inherit public-page decorative effects or excessive animations. Only the color system should be shared unless an existing admin style specifically requires otherwise.
+
+The admin dashboard must remain usable with every preset.
+
+6. Theme Token and Contrast Requirements
+Create semantic theme variables instead of using the three raw colors directly everywhere.
+
+For example:
+
+--theme-primary
+--theme-accent
+--theme-surface
+--theme-text
+--theme-text-muted
+--theme-on-primary
+--theme-on-accent
+--theme-border
+--theme-surface-soft
+
+Ensure:
+
+Text color is not automatically white on light accent backgrounds.
+Text color is not automatically dark on dark primary backgrounds.
+Hover states maintain contrast.
+Focus rings remain visible.
+Buttons use an appropriate foreground color.
+Eyebrows remain readable.
+Timeline years remain readable.
+FAQ questions remain readable.
+Guiding Principle titles remain readable.
+Why Parents Choose titles remain readable.
+Where possible, validate contrast when a custom theme is used.
+
+Do not allow a selected theme to break existing text, styling, animations, or card layouts.
+
+7. Preserve Existing Effects and Functionality
+After applying the theme system, preserve:
+
+Home page animations
+About page animations
+Timeline progress effect
+Count-up statistics
+Carousels
+Autoplay pause behavior
+FAQ accordion transitions
+Hover effects
+Image effects
+Reduced-motion behavior
+Responsive layouts
+Keyboard focus states
+Admin forms
+Existing saved content
+Only correct colors and contrast where needed.
+
+8. Verification Checklist
+Test every preset and confirm:
+
+Theme cards appear in the admin dashboard.
+Sahasrah Blue & Red is selected by default.
+Selecting a preset persists after saving.
+Public pages use the selected theme.
+Admin pages use the selected theme.
+Home Admissions FAQ text remains readable on hover.
+About timeline years remain visible.
+Guiding Principles titles remain visible.
+Why Parents Choose titles remain visible.
+All eyebrows use the consistent updated style.
+Live Updates eyebrow is correctly styled.
+Buttons remain readable.
+Navigation remains readable.
+Focus states remain visible.
+Existing animations are not broken.
+Existing layouts are not changed unexpectedly.
+Reduced-motion support still works.
+Mobile layouts remain stable.
+No horizontal overflow is introduced.
+Production build passes.
+Backend starts successfully.
+No browser console errors occur.
+Stop after completing the theme preset system and contrast fixes. Do not begin new pages or additional content modules yet
