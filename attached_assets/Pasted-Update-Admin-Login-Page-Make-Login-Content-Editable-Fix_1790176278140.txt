@@ -1,0 +1,306 @@
+Update Admin Login Page, Make Login Content Editable, Fix Results Eyebrow, and Add Sign-Out Confirmation
+Implement the following updates while preserving the existing authentication, dashboard functionality, public pages, and selected theme system.
+
+1. Redesign the Admin Login Page
+Update the admin login page to use the selected theme and the provided Sahasrah background image.
+
+Use the attached image showing:
+
+Sahasrah Junior College logo
+Books labeled Intermediate, IIT-JEE, NEET, and EAPCET
+Laptop and study desk
+Blue and red Sahasrah branding
+Use this image as the left-side background or visual panel of the admin login page.
+
+Do not distort the image. Use:
+
+background-size: cover
+background-position: center
+
+Add a theme-aware overlay so all text remains readable.
+
+Desktop layout
+Use a professional split-screen layout:
+
+Left side: branded image and administration message
+Right side: login form
+
+Suggested proportions:
+
+Left panel: approximately 40–45%
+Right panel: approximately 55–60%
+The layout should feel like a secure institutional administration workspace.
+
+Mobile layout
+On mobile:
+
+Keep the login form fully visible.
+Use the image as a shorter top banner or background section.
+Do not allow the image to push the form too far below the viewport.
+Preserve readable text and accessible form controls.
+Prevent horizontal overflow.
+2. Admin Login Page Content
+Use the following exact copy.
+
+Left-side content
+Top eyebrow:
+
+ACADEMIC ADMINISTRATION
+
+Main heading:
+
+Manage with
+
+Highlighted heading:
+
+clarity and purpose.
+
+Description:
+
+A secure workspace for managing Sahasrah Junior College operations, academic information, student records, and institutional updates.
+
+Bottom text:
+
+Authorized administrators only · Internal use
+
+Right-side login content
+Eyebrow:
+
+ADMIN WORKSPACE
+
+Main heading:
+
+Welcome back.
+
+Description:
+
+Sign in to access Sahasrah's administrative workspace.
+
+Email label:
+
+Official email address
+
+Password label:
+
+Password
+
+Button:
+
+Sign in →
+
+Security note:
+
+This workspace is restricted to authorized Sahasrah administrators.
+
+Preserve any existing:
+
+Back to website link
+Password visibility control
+Loading state
+Error message
+Authentication behavior
+Form validation
+Do not expose secrets, seed passwords, session values, or environment variables.
+
+3. Apply the Selected Theme to the Admin Login Page
+The admin login page must use the currently selected theme preset.
+
+Use semantic theme tokens rather than hardcoded colors.
+
+Apply the selected theme to:
+
+Left panel overlay
+Eyebrow badges
+Highlighted heading
+Login button
+Input focus borders
+Input focus rings
+Back to website link
+Security note accent
+Decorative shapes and lines
+Ensure the selected Sahasrah theme remains professional:
+
+Primary: #022A6C
+Accent:  #CE0B11
+Surface: #F5F7FB
+
+Maintain readable contrast on both sides of the login page.
+
+Do not use white text on a pale background.
+
+Do not break the theme behavior of the rest of the admin dashboard.
+
+4. Make Admin Login Content Editable
+Add an admin settings group for the login page.
+
+Use an appropriate location such as:
+
+Site Identity → Admin Login Appearance
+
+or:
+
+Admin Settings → Login Page
+
+Do not create a separate unrelated content system.
+
+Make these fields editable:
+
+Left panel
+Eyebrow text
+Main heading
+Highlighted heading
+Description
+Bottom text
+Background image
+Background image alt text
+Right panel
+Eyebrow text
+Main heading
+Description
+Email label
+Password label
+Sign-in button label
+Security note
+Back to website label
+Admin settings behavior
+Save changes through the existing settings system.
+Add validation for required text fields.
+Allow image replacement through the existing upload/media pattern.
+Preserve the current image if a new image is not uploaded.
+Provide sensible fallback content using the exact copy above.
+Make the saved content appear after refreshing the login page.
+Do not allow administrators to edit authentication logic from this content form.
+Do not expose passwords or security secrets as editable content.
+5. Admin Login Visual Quality
+Make the login page polished and professional:
+
+Refined split layout
+Strong typography hierarchy
+Controlled image overlay
+Subtle decorative shapes
+Consistent spacing
+Rounded input controls
+Strong sign-in button
+Professional hover and focus states
+Clear error and loading states
+Responsive behavior
+Reduced-motion support
+Do not add excessive animation to a login page.
+
+Use only subtle effects:
+
+Panel fade-in
+Form fade-in
+Button hover lift
+Input focus transition
+Very subtle background overlay transition
+When prefers-reduced-motion: reduce is enabled:
+
+Disable panel movement.
+Disable decorative motion.
+Preserve all content and functionality.
+6. Fix the Home Page Results Eyebrow
+In the Home page Our Results, Our Pride section, the eyebrow is currently hardcoded.
+
+Make the eyebrow admin-managed.
+
+The Home page should render the eyebrow from the Results section settings instead of using a hardcoded value.
+
+Default value:
+
+Pride of KVR
+
+If the admin changes it, the Home page should immediately use the saved value after the site settings refresh.
+
+Add or expose an admin field under:
+
+Home Page → Results
+
+Fields should include:
+
+Eyebrow text
+Section heading
+Supporting description
+View All button label
+View All button link
+Do not remove the existing result cards or their management controls.
+
+Use a safe fallback:
+
+Pride of KVR
+
+if the field is empty or unavailable.
+
+Verify that the Home Results eyebrow uses the same shared eyebrow styling as the other Home and About sections.
+
+7. Add Sign-Out Confirmation
+When an administrator clicks Sign Out, do not sign them out immediately.
+
+Show an accessible confirmation dialog:
+
+Are you sure you want to sign out?
+
+Suggested supporting text:
+
+You will need to sign in again to access the admin dashboard.
+
+Buttons:
+
+Cancel
+Sign out
+
+Behavior
+Cancel closes the dialog without signing out.
+Sign out completes the existing sign-out action.
+Clicking outside the dialog may close it if consistent with the existing dashboard behavior.
+Escape closes the dialog.
+Focus should move into the dialog when it opens.
+Focus should return to the Sign Out control when it closes.
+Enter and Space should work on both buttons.
+Do not change the existing authentication/session logic.
+Do not sign out before confirmation.
+Use the selected admin theme while preserving clear contrast.
+
+8. Preserve Existing Functionality
+Do not change:
+
+Public Home page layout
+Public About page layout
+Public theme behavior
+Existing admin routes
+Authentication logic
+Session handling
+Authorization
+Admin content models
+Existing dashboard navigation
+Existing theme presets
+Existing animations outside the requested login/dashboard refinements
+Only make the Home Results eyebrow dynamic and update the admin/login experience.
+
+9. Verification Checklist
+Before finishing, confirm:
+
+Admin login uses the provided Sahasrah background image.
+Login image is correctly cropped and not distorted.
+Login page uses the selected theme.
+Login copy exactly matches the requested content by default.
+Login content can be edited from the admin dashboard.
+Saved login content appears after refreshing the login page.
+Authentication still works correctly.
+Error and loading states remain visible.
+Home Results eyebrow is no longer hardcoded.
+Results eyebrow updates from admin settings.
+Results eyebrow has the shared professional styling.
+Sign Out opens a confirmation dialog.
+Cancel keeps the administrator signed in.
+Confirm completes the existing sign-out action.
+Keyboard and Escape behavior work in the dialog.
+Admin dashboard remains readable under the selected theme.
+Mobile login layout works correctly.
+Reduced-motion behavior works.
+No secrets are exposed.
+Production build passes.
+Backend starts successfully.
+No browser console errors occur.
+Stop after completing the admin login update, editable login settings, Results eyebrow fix, and sign-out confirmation.
+
