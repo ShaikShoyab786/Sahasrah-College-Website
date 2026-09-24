@@ -145,6 +145,18 @@ paths:
                 maxItems: 3
                 items:
                   $ref: "#/components/schemas/HomepageLiveUpdate"
+  /homepage-preview-copy:
+    get:
+      operationId: getHomepagePreviewCopy
+      tags: [public]
+      summary: Read Home preview headings
+      responses:
+        "200":
+          description: Homepage preview headings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomepagePreviewCopy"
   /homepage-statistics:
     get:
       operationId: getHomepageStatistics
@@ -840,6 +852,57 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/HomepageLiveUpdate"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/homepage-preview-copy:
+    get:
+      operationId: getAdminHomepagePreviewCopy
+      tags: [admin]
+      summary: Read Home preview headings for editing
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Homepage preview headings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomepagePreviewCopy"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateHomepagePreviewCopy
+      tags: [admin]
+      summary: Update Home preview headings
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/HomepagePreviewCopyInput"
+      responses:
+        "200":
+          description: Updated homepage preview headings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HomepagePreviewCopy"
         "400":
           description: Validation error
           content:
@@ -2654,6 +2717,52 @@ components:
           minimum: 1
           maximum: 20
       required: [title, excerpt, category, actionBadge, publishDate, imageUrl, imageAltText, detailUrl, isFeatured, isActive, displayOrder]
+    HomepagePreviewCopy:
+      type: object
+      properties:
+        liveUpdatesEyebrow:
+          type: string
+        liveUpdatesHeading:
+          type: string
+        facultyEyebrow:
+          type: string
+        facultyHeading:
+          type: string
+        galleryEyebrow:
+          type: string
+        galleryHeading:
+          type: string
+        updatedAt:
+          type: string
+          format: date-time
+      required: [liveUpdatesEyebrow, liveUpdatesHeading, facultyEyebrow, facultyHeading, galleryEyebrow, galleryHeading, updatedAt]
+    HomepagePreviewCopyInput:
+      type: object
+      properties:
+        liveUpdatesEyebrow:
+          type: string
+          minLength: 1
+          maxLength: 160
+        liveUpdatesHeading:
+          type: string
+          minLength: 1
+          maxLength: 160
+        facultyEyebrow:
+          type: string
+          minLength: 1
+          maxLength: 160
+        facultyHeading:
+          type: string
+          minLength: 1
+          maxLength: 160
+        galleryEyebrow:
+          type: string
+          minLength: 1
+          maxLength: 160
+        galleryHeading:
+          type: string
+          minLength: 1
+          maxLength: 160
     HomepageStatistic:
       type: object
       properties:

@@ -30,6 +30,7 @@ import {
   GetAdminHomepageFinalCtaResponse,
   GetAdminHomepageResultsResponse,
   GetAdminHomepageLiveUpdatesResponse,
+  GetAdminHomepagePreviewCopyResponse,
   GetAdminHomepageStatisticsResponse,
   GetAdminHomepageTestimonialsResponse,
   GetHomepageAchievementRibbonResponse,
@@ -41,6 +42,7 @@ import {
   GetHomepageAdmissionsFaqResponse,
   GetHomepageFinalCtaResponse,
   GetHomepageLiveUpdatesResponse,
+  GetHomepagePreviewCopyResponse,
   GetHomepageResultsResponse,
   GetHomepageStatisticsResponse,
   GetHomepageTestimonialsResponse,
@@ -85,6 +87,8 @@ import {
   UpdateHomepageResultsBody,
   UpdateHomepageResultsResponse,
   UpdateHomepageLiveUpdatesResponse,
+  UpdateHomepagePreviewCopyBody,
+  UpdateHomepagePreviewCopyResponse,
   UpdateHomepageStatisticsBody,
   UpdateHomepageStatisticsResponse,
   UpdateHomepageTestimonialsBody,
@@ -92,6 +96,7 @@ import {
   UpdateSiteSettingsBody,
 } from "@workspace/api-zod";
 import { prisma } from "../lib/prisma";
+import { homepagePreviewCopyDefaults } from "../lib/homepage-preview-copy-defaults";
 import { requireAdmin } from "../middlewares/auth";
 
 const router: IRouter = Router();
@@ -209,6 +214,10 @@ async function readHomepageFinalCta() {
   return prisma.homepageFinalCta.findUnique({ where: { id: "singleton" } });
 }
 
+async function readHomepagePreviewCopy() {
+  return prisma.homepagePreviewCopy.findUnique({ where: { id: "singleton" } });
+}
+
 async function readHomepageFaculty() {
   const content = await prisma.aboutLeadership.findUnique({
     where: { id: "singleton" },
@@ -318,6 +327,20 @@ router.get("/homepage-live-updates", async (req, res) => {
   } catch (error) {
     req.log.error({ err: error }, "Unable to read homepage live updates");
     res.status(500).json({ error: "Unable to load homepage live updates." });
+  }
+});
+
+router.get("/homepage-preview-copy", async (req, res) => {
+  try {
+    const content = await readHomepagePreviewCopy();
+    if (!content) {
+      res.status(500).json({ error: "Homepage preview headings are not available." });
+      return;
+    }
+    res.json(GetHomepagePreviewCopyResponse.parse(content));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read homepage preview headings");
+    res.status(500).json({ error: "Unable to load homepage preview headings." });
   }
 });
 
@@ -735,6 +758,48 @@ router.put("/admin/homepage-live-updates", requireAdmin, async (req, res) => {
   } catch (error) {
     req.log.error({ err: error }, "Unable to update homepage live updates");
     res.status(500).json({ error: "Unable to save homepage live updates." });
+  }
+});
+
+router.get("/admin/homepage-preview-copy", requireAdmin, async (req, res) => {
+  try {
+    const content = await readHomepagePreviewCopy();
+    if (!content) {
+      res.status(500).json({ error: "Homepage preview headings are not available." });
+      return;
+    }
+    res.json(GetAdminHomepagePreviewCopyResponse.parse(content));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read admin homepage preview headings");
+    res.status(500).json({ error: "Unable to load homepage preview headings." });
+  }
+});
+
+router.put("/admin/homepage-preview-copy", requireAdmin, async (req, res) => {
+  const parsed = UpdateHomepagePreviewCopyBody.safeParse(req.body);
+  if (
+    !parsed.success ||
+    Object.keys(parsed.data).length === 0 ||
+    Object.values(parsed.data).some((value) => typeof value !== "string" || !value.trim())
+  ) {
+    res.status(400).json({ error: "Provide at least one non-empty homepage preview heading field." });
+    return;
+  }
+
+  const copyPatch = Object.fromEntries(
+    Object.entries(parsed.data).map(([key, value]) => [key, value.trim()]),
+  ) as typeof parsed.data;
+
+  try {
+    const content = await prisma.homepagePreviewCopy.upsert({
+      where: { id: "singleton" },
+      update: copyPatch,
+      create: { id: "singleton", ...homepagePreviewCopyDefaults, ...copyPatch },
+    });
+    res.json(UpdateHomepagePreviewCopyResponse.parse(content));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to update homepage preview headings");
+    res.status(500).json({ error: "Unable to save homepage preview headings." });
   }
 });
 

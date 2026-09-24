@@ -1,4 +1,4 @@
-import { useGetHomepageAboutPreview, useGetHomepageAchievementRibbon, useGetHomepageAdmissionsFaq, useGetHomepageFaculty, useGetHomepageFavoriteTopics, useGetHomepageFinalCta, useGetHomepageGallery, useGetHomepageHero, useGetHomepageKnowledgeHub, useGetHomepageLiveUpdates, useGetHomepageResults, useGetHomepageStatistics, useGetHomepageTestimonials, useGetSiteSettings, type HomepageFavoriteTopics, type HomepageLiveUpdate, type HomepageStatistics } from '@workspace/api-client-react';
+import { useGetHomepageAboutPreview, useGetHomepageAchievementRibbon, useGetHomepageAdmissionsFaq, useGetHomepageFaculty, useGetHomepageFavoriteTopics, useGetHomepageFinalCta, useGetHomepageGallery, useGetHomepageHero, useGetHomepageKnowledgeHub, useGetHomepageLiveUpdates, useGetHomepagePreviewCopy, useGetHomepageResults, useGetHomepageStatistics, useGetHomepageTestimonials, useGetSiteSettings, type HomepageFavoriteTopics, type HomepageLiveUpdate, type HomepageStatistics } from '@workspace/api-client-react';
 import { HeroCarousel } from '@/components/hero-carousel';
 import { AboutPreview } from '@/components/about-preview';
 import { SiteMark } from '@/components/site-mark';
@@ -110,6 +110,14 @@ const fallbackLiveUpdates: HomepageLiveUpdate[] = [
     displayOrder: 3,
   },
 ];
+const fallbackHomepagePreviewCopy = {
+  liveUpdatesEyebrow: 'From Sahsrah',
+  liveUpdatesHeading: 'Live Updates',
+  facultyEyebrow: 'Learn From the Best',
+  facultyHeading: 'Our Expert Faculty',
+  galleryEyebrow: 'Campus Gallery',
+  galleryHeading: 'Life at KVR College',
+};
 const fallbackStatistics: HomepageStatistics = {
   id: 'fallback-home-statistics',
   eyebrow: 'THE SAHSRAH DIFFERENCE',
@@ -152,6 +160,7 @@ export default function Home() {
   const heroQuery = useGetHomepageHero();
   const aboutPreviewQuery = useGetHomepageAboutPreview();
   const liveUpdatesQuery = useGetHomepageLiveUpdates();
+  const previewCopyQuery = useGetHomepagePreviewCopy();
   const statisticsQuery = useGetHomepageStatistics();
   const favoriteTopicsQuery = useGetHomepageFavoriteTopics();
   const resultsQuery = useGetHomepageResults();
@@ -164,6 +173,7 @@ export default function Home() {
   const finalCtaQuery = useGetHomepageFinalCta();
   if (settingsQuery.isLoading || heroQuery.isLoading) return <HomeSkeleton />;
   const settings = settingsQuery.data ?? fallbackSettings;
+  const previewCopy = previewCopyQuery.data ?? fallbackHomepagePreviewCopy;
   const slides = heroQuery.data?.length === 3 ? heroQuery.data : fallbackHeroSlides;
   const primaryColor = settings.primaryColor || DEFAULT_PRIMARY_COLOR;
   const accentColor = settings.accentColor || DEFAULT_ACCENT_COLOR;
@@ -179,14 +189,14 @@ export default function Home() {
       <main>
         <HeroCarousel slides={slides} />
         {aboutPreviewQuery.data?.isVisible && <AboutPreview content={aboutPreviewQuery.data} />}
-        <HomeLiveUpdates updates={liveUpdatesQuery.data?.length ? liveUpdatesQuery.data : fallbackLiveUpdates} />
+        <HomeLiveUpdates updates={liveUpdatesQuery.data?.length ? liveUpdatesQuery.data : fallbackLiveUpdates} eyebrow={previewCopy.liveUpdatesEyebrow} heading={previewCopy.liveUpdatesHeading} />
         <HomeStatistics content={statisticsQuery.data?.isVisible ? statisticsQuery.data : fallbackStatistics} />
         <FavoriteTopics content={favoriteTopicsQuery.data?.isVisible ? favoriteTopicsQuery.data : fallbackFavoriteTopics} />
         <HomeResults content={resultsQuery.data?.isVisible ? resultsQuery.data : fallbackResults} />
         <AchievementRibbon content={ribbonQuery.data?.isVisible ? ribbonQuery.data : fallbackRibbon} />
         <HomeTestimonials content={testimonialsQuery.data?.isVisible ? testimonialsQuery.data : fallbackTestimonials} />
-        <HomeFaculty faculty={facultyQuery.data?.length ? facultyQuery.data : fallbackFaculty} />
-        <HomeGallery gallery={galleryQuery.data?.length ? galleryQuery.data : fallbackGallery} />
+        <HomeFaculty faculty={facultyQuery.data?.length ? facultyQuery.data : fallbackFaculty} eyebrow={previewCopy.facultyEyebrow} heading={previewCopy.facultyHeading} />
+        <HomeGallery gallery={galleryQuery.data?.length ? galleryQuery.data : fallbackGallery} eyebrow={previewCopy.galleryEyebrow} heading={previewCopy.galleryHeading} />
         {knowledgeHub?.isVisible && <HomeKnowledgeHub content={knowledgeHub} />}
         {admissionsFaq?.isVisible && <HomeAdmissionsFaq content={admissionsFaq} />}
         {finalCta?.isVisible && <HomeFinalCta content={finalCta} />}

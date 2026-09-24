@@ -398,6 +398,49 @@ export interface HomepageLiveUpdateInput {
   displayOrder: number;
 }
 
+export interface HomepagePreviewCopy {
+  liveUpdatesEyebrow: string;
+  liveUpdatesHeading: string;
+  facultyEyebrow: string;
+  facultyHeading: string;
+  galleryEyebrow: string;
+  galleryHeading: string;
+  updatedAt: string;
+}
+
+export interface HomepagePreviewCopyInput {
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  liveUpdatesEyebrow?: string;
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  liveUpdatesHeading?: string;
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  facultyEyebrow?: string;
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  facultyHeading?: string;
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  galleryEyebrow?: string;
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  galleryHeading?: string;
+}
+
 export interface HomepageStatistic {
   id: string;
   numericTarget: number;

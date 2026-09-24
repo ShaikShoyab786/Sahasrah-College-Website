@@ -153,6 +153,20 @@ export const GetHomepageLiveUpdatesResponse = zod.array(GetHomepageLiveUpdatesRe
 
 
 /**
+ * @summary Read Home preview headings
+ */
+export const GetHomepagePreviewCopyResponse = zod.object({
+  "liveUpdatesEyebrow": zod.string(),
+  "liveUpdatesHeading": zod.string(),
+  "facultyEyebrow": zod.string(),
+  "facultyHeading": zod.string(),
+  "galleryEyebrow": zod.string(),
+  "galleryHeading": zod.string(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
  * @summary Read visible homepage statistics
  */
 export const GetHomepageStatisticsResponse = zod.object({
@@ -1183,6 +1197,57 @@ export const UpdateHomepageLiveUpdatesResponseItem = zod.object({
   "displayOrder": zod.number().int()
 })
 export const UpdateHomepageLiveUpdatesResponse = zod.array(UpdateHomepageLiveUpdatesResponseItem)
+
+
+/**
+ * @summary Read Home preview headings for editing
+ */
+export const GetAdminHomepagePreviewCopyResponse = zod.object({
+  "liveUpdatesEyebrow": zod.string(),
+  "liveUpdatesHeading": zod.string(),
+  "facultyEyebrow": zod.string(),
+  "facultyHeading": zod.string(),
+  "galleryEyebrow": zod.string(),
+  "galleryHeading": zod.string(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Update Home preview headings
+ */
+export const updateHomepagePreviewCopyBodyLiveUpdatesEyebrowMax = 160;
+
+export const updateHomepagePreviewCopyBodyLiveUpdatesHeadingMax = 160;
+
+export const updateHomepagePreviewCopyBodyFacultyEyebrowMax = 160;
+
+export const updateHomepagePreviewCopyBodyFacultyHeadingMax = 160;
+
+export const updateHomepagePreviewCopyBodyGalleryEyebrowMax = 160;
+
+export const updateHomepagePreviewCopyBodyGalleryHeadingMax = 160;
+
+
+
+export const UpdateHomepagePreviewCopyBody = zod.object({
+  "liveUpdatesEyebrow": zod.string().min(1).max(updateHomepagePreviewCopyBodyLiveUpdatesEyebrowMax).optional(),
+  "liveUpdatesHeading": zod.string().min(1).max(updateHomepagePreviewCopyBodyLiveUpdatesHeadingMax).optional(),
+  "facultyEyebrow": zod.string().min(1).max(updateHomepagePreviewCopyBodyFacultyEyebrowMax).optional(),
+  "facultyHeading": zod.string().min(1).max(updateHomepagePreviewCopyBodyFacultyHeadingMax).optional(),
+  "galleryEyebrow": zod.string().min(1).max(updateHomepagePreviewCopyBodyGalleryEyebrowMax).optional(),
+  "galleryHeading": zod.string().min(1).max(updateHomepagePreviewCopyBodyGalleryHeadingMax).optional()
+})
+
+export const UpdateHomepagePreviewCopyResponse = zod.object({
+  "liveUpdatesEyebrow": zod.string(),
+  "liveUpdatesHeading": zod.string(),
+  "facultyEyebrow": zod.string(),
+  "facultyHeading": zod.string(),
+  "galleryEyebrow": zod.string(),
+  "galleryHeading": zod.string(),
+  "updatedAt": zod.coerce.date()
+})
 
 
 /**

@@ -83,6 +83,8 @@ export * from './homepageKnowledgeResource';
 export * from './homepageKnowledgeResourceInput';
 export * from './homepageLiveUpdate';
 export * from './homepageLiveUpdateInput';
+export * from './homepagePreviewCopy';
+export * from './homepagePreviewCopyInput';
 export * from './homepageResult';
 export * from './homepageResultInput';
 export * from './homepageResults';

@@ -165,6 +165,17 @@ model HomepageLiveUpdate {
   @@index([isActive, isFeatured, publishDate])
 }
 
+model HomepagePreviewCopy {
+  id                   String   @id @default("singleton")
+  liveUpdatesEyebrow   String   @default("From Sahsrah")
+  liveUpdatesHeading   String   @default("Live Updates")
+  facultyEyebrow       String   @default("Learn From the Best")
+  facultyHeading       String   @default("Our Expert Faculty")
+  galleryEyebrow       String   @default("Campus Gallery")
+  galleryHeading       String   @default("Life at KVR College")
+  updatedAt            DateTime @updatedAt
+}
+
 model HomepageStatistics {
   id          String               @id @default("singleton")
   eyebrow     String

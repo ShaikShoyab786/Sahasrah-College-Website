@@ -4,6 +4,7 @@ import {
   isLegacyCollapsedDefaultCourseOptions,
   parseStoredContactCourseOptions,
 } from "./contact-course-options";
+import { homepagePreviewCopyDefaults } from "./homepage-preview-copy-defaults";
 
 export const prisma = new PrismaClient();
 
@@ -60,6 +61,12 @@ export async function initializeDatabase() {
       loginSecurityNote: "This workspace is restricted to authorized Sahsrah administrators.",
       loginBackLinkLabel: "Back to website",
     },
+  });
+
+  await prisma.homepagePreviewCopy.upsert({
+    where: { id: "singleton" },
+    update: {},
+    create: { id: "singleton", ...homepagePreviewCopyDefaults },
   });
 
   const currentSettings = await prisma.siteSettings.findUnique({ where: { id: "singleton" } });

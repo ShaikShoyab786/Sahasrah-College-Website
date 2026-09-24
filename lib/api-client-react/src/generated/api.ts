@@ -69,6 +69,8 @@ import type {
   HomepageKnowledgeHubInput,
   HomepageLiveUpdate,
   HomepageLiveUpdateInput,
+  HomepagePreviewCopy,
+  HomepagePreviewCopyInput,
   HomepageResults,
   HomepageResultsInput,
   HomepageStatistics,
@@ -723,6 +725,83 @@ export function useGetHomepageLiveUpdates<TData = Awaited<ReturnType<typeof getH
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
   const queryOptions = getGetHomepageLiveUpdatesQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetHomepagePreviewCopyUrl = () => {
+
+
+
+
+  return `/api/homepage-preview-copy`
+}
+
+/**
+ * @summary Read Home preview headings
+ */
+export const getHomepagePreviewCopy = async ( options?: Parameters<typeof customFetch>[1]): Promise<HomepagePreviewCopy> => {
+
+  return customFetch<HomepagePreviewCopy>(getGetHomepagePreviewCopyUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetHomepagePreviewCopyQueryKey = () => {
+    return [
+    `/api/homepage-preview-copy`
+    ] as const;
+    }
+
+
+export const getGetHomepagePreviewCopyQueryOptions = <TData = Awaited<ReturnType<typeof getHomepagePreviewCopy>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getHomepagePreviewCopy>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetHomepagePreviewCopyQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getHomepagePreviewCopy>>> = ({ signal }) => getHomepagePreviewCopy({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getHomepagePreviewCopy>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetHomepagePreviewCopyQueryResult = NonNullable<Awaited<ReturnType<typeof getHomepagePreviewCopy>>>
+export type GetHomepagePreviewCopyQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Read Home preview headings
+ */
+
+export function useGetHomepagePreviewCopy<TData = Awaited<ReturnType<typeof getHomepagePreviewCopy>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getHomepagePreviewCopy>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetHomepagePreviewCopyQueryOptions(options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
@@ -3349,6 +3428,171 @@ export const useUpdateHomepageLiveUpdates = <TError = ErrorType<ErrorResponse>,
         TContext
       > => {
       return useMutation(getUpdateHomepageLiveUpdatesMutationOptions(options));
+    }
+
+export const getGetAdminHomepagePreviewCopyUrl = () => {
+
+
+
+
+  return `/api/admin/homepage-preview-copy`
+}
+
+/**
+ * @summary Read Home preview headings for editing
+ */
+export const getAdminHomepagePreviewCopy = async ( options?: Parameters<typeof customFetch>[1]): Promise<HomepagePreviewCopy> => {
+
+  return customFetch<HomepagePreviewCopy>(getGetAdminHomepagePreviewCopyUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAdminHomepagePreviewCopyQueryKey = () => {
+    return [
+    `/api/admin/homepage-preview-copy`
+    ] as const;
+    }
+
+
+export const getGetAdminHomepagePreviewCopyQueryOptions = <TData = Awaited<ReturnType<typeof getAdminHomepagePreviewCopy>>, TError = ErrorType<ErrorResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminHomepagePreviewCopy>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAdminHomepagePreviewCopyQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdminHomepagePreviewCopy>>> = ({ signal }) => getAdminHomepagePreviewCopy({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAdminHomepagePreviewCopy>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetAdminHomepagePreviewCopyQueryResult = NonNullable<Awaited<ReturnType<typeof getAdminHomepagePreviewCopy>>>
+export type GetAdminHomepagePreviewCopyQueryError = ErrorType<ErrorResponse>
+
+
+/**
+ * @summary Read Home preview headings for editing
+ */
+
+export function useGetAdminHomepagePreviewCopy<TData = Awaited<ReturnType<typeof getAdminHomepagePreviewCopy>>, TError = ErrorType<ErrorResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminHomepagePreviewCopy>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetAdminHomepagePreviewCopyQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getUpdateHomepagePreviewCopyUrl = () => {
+
+
+
+
+  return `/api/admin/homepage-preview-copy`
+}
+
+/**
+ * @summary Update Home preview headings
+ */
+export const updateHomepagePreviewCopy = async (homepagePreviewCopyInput: HomepagePreviewCopyInput, options?: Parameters<typeof customFetch>[1]): Promise<HomepagePreviewCopy> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<HomepagePreviewCopy>(getUpdateHomepagePreviewCopyUrl(),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(homepagePreviewCopyInput)
+  }
+);}
+
+
+
+
+
+export const getUpdateHomepagePreviewCopyMutationKey = () => ['updateHomepagePreviewCopy'] as const;
+
+export const getUpdateHomepagePreviewCopyMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateHomepagePreviewCopy>>, TError,UpdateHomepagePreviewCopyMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateHomepagePreviewCopy>>, TError,UpdateHomepagePreviewCopyMutationVariables, TContext> => {
+
+const mutationKey = getUpdateHomepagePreviewCopyMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateHomepagePreviewCopy>>, UpdateHomepagePreviewCopyMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  updateHomepagePreviewCopy(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateHomepagePreviewCopyMutationResult = NonNullable<Awaited<ReturnType<typeof updateHomepagePreviewCopy>>>
+    export type UpdateHomepagePreviewCopyMutationBody = BodyType<HomepagePreviewCopyInput>
+    export type UpdateHomepagePreviewCopyMutationError = ErrorType<ErrorResponse>
+    export type UpdateHomepagePreviewCopyMutationVariables = {data: BodyType<HomepagePreviewCopyInput>}
+
+    /**
+ * @summary Update Home preview headings
+ */
+export const useUpdateHomepagePreviewCopy = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateHomepagePreviewCopy>>, TError,UpdateHomepagePreviewCopyMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateHomepagePreviewCopy>>,
+        TError,
+        UpdateHomepagePreviewCopyMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateHomepagePreviewCopyMutationOptions(options));
     }
 
 export const getGetAdminHomepageStatisticsUrl = () => {

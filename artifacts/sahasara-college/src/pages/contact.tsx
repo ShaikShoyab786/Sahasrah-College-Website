@@ -82,10 +82,10 @@ export default function Contact() {
   };
 
   return (
-    <div className="paper-grain min-h-screen overflow-hidden bg-[hsl(var(--background))]" style={createPublicThemeStyle(primaryColor, accentColor, surfaceColor)}>
-      <PublicHeader settings={{ collegeName: publicSettings.collegeName, tagline: publicSettings.tagline, logoUrl: publicSettings.logoUrl }} activePage="contact" />
+    <div className="paper-grain min-h-screen bg-[hsl(var(--background))]" style={createPublicThemeStyle(primaryColor, accentColor, surfaceColor)}>
+      <PublicHeader settings={{ collegeName: publicSettings.collegeName, tagline: publicSettings.tagline, logoUrl: publicSettings.logoUrl }} activePage="contact" mobileFlow />
       <main>
-        <section className="relative overflow-hidden bg-[hsl(var(--primary))] px-6 pb-20 pt-36 text-white lg:px-10 lg:pb-28 lg:pt-44">
+        <section className="relative overflow-hidden bg-[hsl(var(--primary))] px-6 pb-20 pt-10 text-white sm:pt-12 lg:px-10 lg:pb-28 lg:pt-44">
           <div className="absolute -right-24 -top-24 h-80 w-80 rounded-full bg-[hsl(var(--accent)/.18)] blur-3xl" />
           <div className="relative mx-auto max-w-7xl">
             <p className="text-xs font-bold uppercase tracking-[.24em] text-[hsl(var(--accent))]">{contact.eyebrow}</p>
@@ -100,11 +100,11 @@ export default function Contact() {
               <p className="text-xs font-bold uppercase tracking-[.2em] text-[hsl(var(--accent))]">Admissions desk</p>
               <h2 className="mt-4 font-display text-3xl font-semibold leading-tight">A direct answer is one message away.</h2>
               <div className="mt-8 space-y-5 border-t border-white/15 pt-7 text-sm leading-6 text-white/75">
-                <a href={`tel:${contact.primaryPhone.replace(/[^\d+]/g, '')}`} className="flex gap-3 hover:text-white"><Phone size={18} className="mt-1 shrink-0 text-[hsl(var(--accent))]" />{contact.primaryPhone}</a>
-                <a href={`https://wa.me/${contact.whatsappNumber.replace(/\D/g, '')}`} target="_blank" rel="noreferrer" className="flex gap-3 hover:text-white"><MessageCircle size={18} className="mt-1 shrink-0 text-[hsl(var(--accent))]" />WhatsApp: {contact.whatsappNumber}</a>
-                <a href={`mailto:${contact.mainEmail}`} className="flex gap-3 hover:text-white"><Mail size={18} className="mt-1 shrink-0 text-[hsl(var(--accent))]" />{contact.mainEmail}</a>
-                <div className="flex gap-3"><MapPin size={18} className="mt-1 shrink-0 text-[hsl(var(--accent))]" /><span>{contact.address}</span></div>
-                <div className="flex gap-3"><Clock3 size={18} className="mt-1 shrink-0 text-[hsl(var(--accent))]" /><span>{contact.workingHours}</span></div>
+                <a href={`tel:${contact.primaryPhone.replace(/[^\d+]/g, '')}`} className="flex min-w-0 gap-3 hover:text-white"><Phone size={18} className="mt-1 shrink-0 text-[hsl(var(--accent))]" /><span className="min-w-0 break-words [overflow-wrap:anywhere]">{contact.primaryPhone}</span></a>
+                <a href={`https://wa.me/${contact.whatsappNumber.replace(/\D/g, '')}`} target="_blank" rel="noreferrer" className="flex min-w-0 gap-3 hover:text-white"><MessageCircle size={18} className="mt-1 shrink-0 text-[hsl(var(--accent))]" /><span className="min-w-0 break-words [overflow-wrap:anywhere]">WhatsApp: {contact.whatsappNumber}</span></a>
+                <a href={`mailto:${contact.mainEmail}`} className="flex min-w-0 gap-3 hover:text-white"><Mail size={18} className="mt-1 shrink-0 text-[hsl(var(--accent))]" /><span className="min-w-0 break-words [overflow-wrap:anywhere]">{contact.mainEmail}</span></a>
+                <div className="flex min-w-0 gap-3"><MapPin size={18} className="mt-1 shrink-0 text-[hsl(var(--accent))]" /><span className="min-w-0 break-words [overflow-wrap:anywhere]">{contact.address}</span></div>
+                <div className="flex min-w-0 gap-3"><Clock3 size={18} className="mt-1 shrink-0 text-[hsl(var(--accent))]" /><span className="min-w-0 break-words [overflow-wrap:anywhere]">{contact.workingHours}</span></div>
               </div>
             </div>
             <div className="rounded-3xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-7 md:p-9">
