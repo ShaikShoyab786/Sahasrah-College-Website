@@ -16,6 +16,16 @@ import {
 import { Area, Field, SaveButton } from '@/components/form-fields';
 import { EditorCard, EditorFrame, EditorSkeleton, LoadError, SaveStatus } from '@/pages/admin-about-hero';
 
+const defaultCourseOptions = [
+  'MPC',
+  'BiPC',
+  'MPC + IIT-JEE',
+  'BiPC + NEET',
+  'MPC + EAMCET',
+  'NEET Foundation',
+  'Other',
+];
+
 const emptyForm: ContactSettingsInput = {
   eyebrow: 'CONTACT SAHSRAH',
   heading: 'Let’s plan the right next step.',
@@ -33,7 +43,7 @@ const emptyForm: ContactSettingsInput = {
   mapLabel: 'Open the campus location in Maps',
   logoUrl: null,
   socialLinks: [],
-  courseOptions: ['MPC', 'BiPC'],
+  courseOptions: [...defaultCourseOptions],
   nameLabel: 'Student or parent name',
   phoneLabel: 'Indian mobile number',
   courseLabel: 'Course of interest',
@@ -52,6 +62,16 @@ function lines(value: string) {
   return value.split('\n').map((item) => item.trim()).filter(Boolean);
 }
 
+function courseOptionLines(value: string) {
+  const seen = new Set<string>();
+  return value.split(/\r?\n/).map((item) => item.trim()).filter((item) => {
+    const key = item.toLowerCase();
+    if (!item || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
 function links(value: string) {
   return lines(value).map((item) => {
     const [label, ...href] = item.split('|');
@@ -65,7 +85,7 @@ export function AdminContact() {
   const client = useQueryClient();
   const [form, setForm] = useState<ContactSettingsInput>(emptyForm);
   const [additionalPhonesText, setAdditionalPhonesText] = useState('');
-  const [courseOptionsText, setCourseOptionsText] = useState('MPC\nBiPC');
+  const [courseOptionsText, setCourseOptionsText] = useState(defaultCourseOptions.join('\n'));
   const [socialLinksText, setSocialLinksText] = useState('');
   const [notice, setNotice] = useState('');
   const [error, setError] = useState('');
@@ -84,7 +104,7 @@ export function AdminContact() {
     event.preventDefault();
     setNotice('');
     setError('');
-    update.mutate({ data: { ...form, additionalPhones: lines(additionalPhonesText), courseOptions: lines(courseOptionsText), socialLinks: links(socialLinksText), mapEmbedUrl: form.mapEmbedUrl || null, logoUrl: form.logoUrl || null } }, {
+    update.mutate({ data: { ...form, additionalPhones: lines(additionalPhonesText), courseOptions: courseOptionLines(courseOptionsText), socialLinks: links(socialLinksText), mapEmbedUrl: form.mapEmbedUrl || null, logoUrl: form.logoUrl || null } }, {
       onSuccess: (saved) => {
         client.setQueryData(getGetAdminContactSettingsQueryKey(), saved);
         client.invalidateQueries({ queryKey: getGetContactSettingsQueryKey() });
@@ -127,7 +147,7 @@ export function AdminContact() {
             <Field label="Course field label" value={form.courseLabel} onChange={(event) => set('courseLabel', event.target.value)} required />
             <Field label="Email field label" value={form.emailLabel} onChange={(event) => set('emailLabel', event.target.value)} required />
             <Field label="Message field label" value={form.messageLabel} onChange={(event) => set('messageLabel', event.target.value)} required />
-            <Field label="Course options" value={courseOptionsText} onChange={(event) => setCourseOptionsText(event.target.value)} hint="One per line" required />
+            <Area label="Course options" value={courseOptionsText} onChange={(event) => setCourseOptionsText(event.target.value)} hint="Enter one course option per line." rows={8} required />
             <Field label="Response-time message" value={form.responseTimeMessage} onChange={(event) => set('responseTimeMessage', event.target.value)} required />
             <div className="md:col-span-2"><Area label="Success message" value={form.successMessage} onChange={(event) => set('successMessage', event.target.value)} required /></div>
           </div>

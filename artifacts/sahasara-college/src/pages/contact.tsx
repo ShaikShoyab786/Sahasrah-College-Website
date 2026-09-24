@@ -23,7 +23,7 @@ const fallbackContact: ContactSettings = {
   mapLabel: 'Open the campus location in Maps',
   logoUrl: null,
   socialLinks: [],
-  courseOptions: ['MPC', 'BiPC'],
+  courseOptions: ['MPC', 'BiPC', 'MPC + IIT-JEE', 'BiPC + NEET', 'MPC + EAMCET', 'NEET Foundation', 'Other'],
   nameLabel: 'Student or parent name',
   phoneLabel: 'Indian mobile number',
   courseLabel: 'Course of interest',
@@ -136,7 +136,7 @@ export default function Contact() {
             </form>
           </section>
         </section>
-        {contact.mapEmbedUrl && <section className="mx-auto max-w-7xl px-6 pb-16 lg:px-10 lg:pb-24"><iframe title={contact.mapLabel} src={contact.mapEmbedUrl} className="h-72 w-full rounded-3xl border-0 grayscale md:h-96" loading="lazy" /></section>}
+        {contact.mapEmbedUrl && <section className="mx-auto max-w-7xl px-6 pb-16 lg:px-10 lg:pb-24"><iframe title={contact.mapLabel} src={contact.mapEmbedUrl} className="h-72 w-full rounded-3xl border-0 md:h-96" loading="lazy" /></section>}
       </main>
       <PublicFooter settings={{ ...publicSettings, footerText: publicSettings.footerText || 'A public junior college for curious minds and purposeful lives.' }} />
     </div>

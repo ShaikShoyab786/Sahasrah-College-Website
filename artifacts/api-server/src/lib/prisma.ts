@@ -1,4 +1,9 @@
 import { PrismaClient } from "@prisma/client";
+import {
+  DEFAULT_CONTACT_COURSE_OPTIONS,
+  isLegacyCollapsedDefaultCourseOptions,
+  parseStoredContactCourseOptions,
+} from "./contact-course-options";
 
 export const prisma = new PrismaClient();
 
@@ -96,7 +101,7 @@ export async function initializeDatabase() {
       mapLabel: "Open the campus location in Maps",
       logoUrl: null,
       socialLinks: "[]",
-      courseOptions: JSON.stringify(["MPC", "BiPC"]),
+      courseOptions: JSON.stringify(DEFAULT_CONTACT_COURSE_OPTIONS),
       nameLabel: "Student or parent name",
       phoneLabel: "Indian mobile number",
       courseLabel: "Course of interest",
@@ -118,6 +123,7 @@ export async function initializeDatabase() {
       formDescription?: string;
       submitButtonLabel?: string;
       successMessage?: string;
+      courseOptions?: string;
     } = {};
     if (contactSettings.formDescription === "Share a few details and our admissions team will continue the conversation on WhatsApp.") {
       contactCopyBackfill.formDescription = "Share a few details and our admissions team will review your enquiry.";
@@ -127,6 +133,15 @@ export async function initializeDatabase() {
     }
     if (contactSettings.successMessage === "Thanks — your enquiry has reached our admissions team on WhatsApp.") {
       contactCopyBackfill.successMessage = "Thank you. Your enquiry has been received.";
+    }
+    const savedCourseOptions = parseStoredContactCourseOptions(contactSettings.courseOptions);
+    if (!savedCourseOptions.length || isLegacyCollapsedDefaultCourseOptions(contactSettings.courseOptions)) {
+      contactCopyBackfill.courseOptions = JSON.stringify(DEFAULT_CONTACT_COURSE_OPTIONS);
+    } else {
+      const normalizedCourseOptions = JSON.stringify(savedCourseOptions);
+      if (contactSettings.courseOptions !== normalizedCourseOptions) {
+        contactCopyBackfill.courseOptions = normalizedCourseOptions;
+      }
     }
     if (Object.keys(contactCopyBackfill).length) {
       await prisma.contactSettings.update({ where: { id: "singleton" }, data: contactCopyBackfill });

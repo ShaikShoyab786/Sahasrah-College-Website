@@ -154,11 +154,6 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
             )}
             {pagesOpen && (
               <div className="mt-2 rounded-2xl bg-[hsl(var(--sidebar-accent)/.55)] p-2">
-                <Link href="/admin/pages/contact" onClick={() => setOpen(false)} className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition ${contactActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-contact"><MessageCircle size={16} /><span>Contact</span></Link>
-              </div>
-            )}
-            {pagesOpen && (
-              <div className="mt-2 rounded-2xl bg-[hsl(var(--sidebar-accent)/.55)] p-2">
                 <button type="button" onClick={() => setAboutOpen((current) => !current)} aria-expanded={aboutOpen} className={`flex w-full items-center justify-between rounded-xl px-2 py-2 text-xs font-bold transition ${aboutOpen || nestedAboutRoute ? 'text-[hsl(var(--sidebar-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.65)] hover:bg-[hsl(var(--sidebar-accent))]'}`} data-testid="button-admin-about-toggle">
                   <span className="flex items-center gap-2"><BookOpen size={15} /> About</span>
                   <ChevronDown size={14} className={`transition-transform ${aboutOpen ? 'rotate-180' : ''}`} />
@@ -177,6 +172,11 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
                      <Link href="/admin/pages/about/admission-cta" onClick={() => setOpen(false)} className={`mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5 pl-9 text-sm font-semibold transition ${admissionCtaActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-about-admission-cta"><PanelsTopLeft size={16} /><span>Admission CTA</span></Link>
                   </div>
                 )}
+              </div>
+            )}
+            {pagesOpen && (
+              <div className="mt-2 rounded-2xl bg-[hsl(var(--sidebar-accent)/.55)] p-2">
+                <Link href="/admin/pages/contact" onClick={() => setOpen(false)} className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition ${contactActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-contact"><MessageCircle size={16} /><span>Contact</span></Link>
               </div>
             )}
           </div>

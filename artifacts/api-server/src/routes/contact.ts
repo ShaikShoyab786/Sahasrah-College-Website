@@ -12,6 +12,10 @@ import {
 } from "@workspace/api-zod";
 import { prisma } from "../lib/prisma";
 import { requireAdmin } from "../middlewares/auth";
+import {
+  getContactCourseOptions,
+  normalizeContactCourseOptions,
+} from "../lib/contact-course-options";
 
 const router: IRouter = Router();
 
@@ -62,7 +66,7 @@ function toContactResponse(settings: {
     ...settings,
     additionalPhones: readJson<string[]>(settings.additionalPhones, []),
     socialLinks: readJson<ContactSocialLink[]>(settings.socialLinks, []),
-    courseOptions: readJson<string[]>(settings.courseOptions, ["MPC", "BiPC"]),
+    courseOptions: getContactCourseOptions(settings.courseOptions),
   };
 }
 
@@ -103,7 +107,7 @@ router.post("/contact-enquiries", async (req, res) => {
 
   const settings = await prisma.contactSettings.findUnique({ where: { id: "singleton" } });
   const phone = normalizeIndianMobile(parsed.data.phone);
-  const courses = settings ? readJson<string[]>(settings.courseOptions, []) : [];
+  const courses = settings ? getContactCourseOptions(settings.courseOptions) : [];
   if (!phone || !settings || !settings.isVisible || !courses.includes(parsed.data.course)) {
     res.status(400).json({ error: "Enter your name, a valid Indian mobile number, and choose a course." });
     return;
@@ -145,6 +149,11 @@ router.put("/admin/contact", requireAdmin, async (req, res) => {
     res.status(400).json({ error: "Check the Contact page settings and try again." });
     return;
   }
+  const courseOptions = normalizeContactCourseOptions(parsed.data.courseOptions);
+  if (!courseOptions.length || courseOptions.length > 20) {
+    res.status(400).json({ error: "Add between 1 and 20 unique course options." });
+    return;
+  }
   try {
     const settings = await prisma.contactSettings.upsert({
       where: { id: "singleton" },
@@ -152,14 +161,14 @@ router.put("/admin/contact", requireAdmin, async (req, res) => {
         ...parsed.data,
         additionalPhones: JSON.stringify(parsed.data.additionalPhones),
         socialLinks: JSON.stringify(parsed.data.socialLinks),
-        courseOptions: JSON.stringify(parsed.data.courseOptions),
+        courseOptions: JSON.stringify(courseOptions),
       },
       create: {
         id: "singleton",
         ...parsed.data,
         additionalPhones: JSON.stringify(parsed.data.additionalPhones),
         socialLinks: JSON.stringify(parsed.data.socialLinks),
-        courseOptions: JSON.stringify(parsed.data.courseOptions),
+        courseOptions: JSON.stringify(courseOptions),
       },
     });
     res.json(UpdateContactSettingsResponse.parse(toContactResponse(settings)));
