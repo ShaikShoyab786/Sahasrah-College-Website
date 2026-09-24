@@ -520,7 +520,7 @@ paths:
     post:
       operationId: submitContactEnquiry
       tags: [public]
-      summary: Store and deliver a Contact page enquiry through WhatsApp
+      summary: Store a Contact page enquiry for administrator review
       requestBody:
         required: true
         content:
@@ -529,7 +529,7 @@ paths:
               $ref: "#/components/schemas/ContactEnquiryInput"
       responses:
         "201":
-          description: Enquiry accepted by WhatsApp
+          description: Enquiry saved successfully
           content:
             application/json:
               schema:
@@ -540,12 +540,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
-        "503":
-          description: Enquiry was stored but WhatsApp delivery is unavailable or failed
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ContactEnquiryDeliveryError"
   /admin/site-settings:
     put:
       operationId: updateSiteSettings
@@ -685,6 +679,33 @@ paths:
                 $ref: "#/components/schemas/ErrorResponse"
         "401":
           description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteAdminContactEnquiry
+      tags: [admin]
+      summary: Delete a Contact enquiry
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Enquiry deleted
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Enquiry not found
           content:
             application/json:
               schema:
@@ -2159,25 +2180,11 @@ components:
     ContactEnquirySubmission:
       type: object
       properties:
-        accepted:
-          type: boolean
         enquiryId:
-          type: string
-        deliveryStatus:
           type: string
         message:
           type: string
-      required: [accepted, enquiryId, deliveryStatus, message]
-    ContactEnquiryDeliveryError:
-      type: object
-      properties:
-        error:
-          type: string
-        enquiryId:
-          type: string
-        deliveryStatus:
-          type: string
-      required: [error, enquiryId, deliveryStatus]
+      required: [enquiryId, message]
     ContactEnquiry:
       type: object
       properties:
@@ -2193,12 +2200,6 @@ components:
           type: ["string", "null"]
         message:
           type: ["string", "null"]
-        deliveryStatus:
-          type: string
-        deliveryError:
-          type: ["string", "null"]
-        whatsappRecipient:
-          type: ["string", "null"]
         contacted:
           type: boolean
         resolved:
@@ -2209,7 +2210,7 @@ components:
         updatedAt:
           type: string
           format: date-time
-      required: [id, name, phone, course, email, message, deliveryStatus, deliveryError, whatsappRecipient, contacted, resolved, createdAt, updatedAt]
+      required: [id, name, phone, course, email, message, contacted, resolved, createdAt, updatedAt]
     ContactEnquiryStatusInput:
       type: object
       properties:

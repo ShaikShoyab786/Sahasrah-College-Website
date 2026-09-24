@@ -15,11 +15,6 @@ export interface ContactEnquiry {
   email: string | null;
   /** @nullable */
   message: string | null;
-  deliveryStatus: string;
-  /** @nullable */
-  deliveryError: string | null;
-  /** @nullable */
-  whatsappRecipient: string | null;
   contacted: boolean;
   resolved: boolean;
   createdAt: Date;

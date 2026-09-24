@@ -11,7 +11,7 @@ const fallbackContact: ContactSettings = {
   heading: 'Let’s plan the right next step.',
   description: 'Speak with our admissions team about courses, campus visits, and a focused start for your student.',
   formHeading: 'Start a conversation',
-  formDescription: 'Share a few details and our admissions team will continue the conversation on WhatsApp.',
+  formDescription: 'Share a few details and our admissions team will review your enquiry.',
   responseTimeMessage: 'We usually respond during working hours.',
   mainEmail: 'admissions@sahsrah.edu',
   primaryPhone: '+91 40 2458 0176',
@@ -29,8 +29,8 @@ const fallbackContact: ContactSettings = {
   courseLabel: 'Course of interest',
   emailLabel: 'Email address (optional)',
   messageLabel: 'Message (optional)',
-  submitButtonLabel: 'Send enquiry on WhatsApp',
-  successMessage: 'Thanks — your enquiry has reached our admissions team on WhatsApp.',
+  submitButtonLabel: 'Send enquiry',
+  successMessage: 'Thank you. Your enquiry has been received.',
   prospectusButtonLabel: 'Request the prospectus',
   prospectusButtonHref: '/contact',
   campusVisitButtonLabel: 'Plan a campus visit',
@@ -41,7 +41,7 @@ const fallbackContact: ContactSettings = {
 
 function errorMessage(error: unknown) {
   const value = error as { body?: { error?: string }; message?: string } | undefined;
-  return value?.body?.error || value?.message || 'WhatsApp delivery failed. Please try again later.';
+  return value?.body?.error || value?.message || 'We could not save your enquiry. Please try again.';
 }
 
 export default function Contact() {
@@ -61,10 +61,6 @@ export default function Contact() {
     setSuccess('');
     submit.mutate({ data: { name: form.name.trim(), phone: form.phone.trim(), course: form.course, email: form.email.trim() || undefined, message: form.message.trim() || undefined } }, {
       onSuccess: (result) => {
-        if (!result.accepted) {
-          setError('WhatsApp delivery was not accepted. Please try again later.');
-          return;
-        }
         setSuccess(result.message || contact.successMessage);
         setForm({ name: '', phone: '', course: '', email: '', message: '' });
       },
@@ -135,8 +131,8 @@ export default function Contact() {
               <label className="block space-y-2"><span className="text-sm font-semibold">{contact.messageLabel}</span><textarea maxLength={2000} value={form.message} onChange={(event) => update('message', event.target.value)} className="min-h-32 w-full resize-y rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--background))] px-4 py-3 text-sm leading-6 outline-none focus:border-[hsl(var(--accent))] focus:ring-4 focus:ring-[hsl(var(--accent)/.15)]" /></label>
               {error && <p role="alert" className="rounded-xl border border-red-700/20 bg-red-50 px-4 py-3 text-sm leading-6 text-red-800" data-testid="text-contact-error">{error}</p>}
               {success && <p role="status" className="flex gap-2 rounded-xl border border-emerald-700/20 bg-emerald-50 px-4 py-3 text-sm leading-6 text-emerald-800" data-testid="text-contact-success"><CheckCircle2 size={18} className="mt-1 shrink-0" />{success}</p>}
-              <button type="submit" disabled={submit.isPending} className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-[hsl(var(--accent))] px-5 py-3.5 text-sm font-bold text-[hsl(var(--primary))] transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60">{submit.isPending ? 'Sending enquiry…' : contact.submitButtonLabel}<MessageCircle size={17} /></button>
-              <p className="text-xs leading-5 text-[hsl(var(--muted-foreground))]">Your enquiry is sent only to the configured primary WhatsApp number. Your email is optional and is not used for notifications.</p>
+              <button type="submit" disabled={submit.isPending} className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-[hsl(var(--accent))] px-5 py-3.5 text-sm font-bold text-[hsl(var(--primary))] transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60">{submit.isPending ? 'Saving enquiry…' : contact.submitButtonLabel}<ArrowRight size={17} /></button>
+              <p className="text-xs leading-5 text-[hsl(var(--muted-foreground))]">Your enquiry is saved securely for the admissions team to review. Your email is optional and stored with your enquiry.</p>
             </form>
           </section>
         </section>

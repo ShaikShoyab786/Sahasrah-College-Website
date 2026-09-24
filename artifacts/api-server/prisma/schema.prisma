@@ -99,7 +99,7 @@ model ContactEnquiry {
   course            String
   email             String?
   message           String?
-  deliveryStatus    String   @default("whatsapp_not_configured")
+  deliveryStatus    String   @default("stored")
   deliveryError     String?
   whatsappRecipient String?
   contacted         Boolean  @default(false)

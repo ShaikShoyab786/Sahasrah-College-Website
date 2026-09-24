@@ -44,7 +44,6 @@ export * from './aboutWhyParentsChoose';
 export * from './aboutWhyParentsChooseInput';
 export * from './authSession';
 export * from './contactEnquiry';
-export * from './contactEnquiryDeliveryError';
 export * from './contactEnquiryInput';
 export * from './contactEnquiryStatusInput';
 export * from './contactEnquirySubmission';

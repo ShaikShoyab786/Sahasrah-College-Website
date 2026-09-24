@@ -701,7 +701,7 @@ export const GetContactSettingsResponse = zod.object({
 
 
 /**
- * @summary Store and deliver a Contact page enquiry through WhatsApp
+ * @summary Store a Contact page enquiry for administrator review
  */
 export const submitContactEnquiryBodyNameMin = 2;
 export const submitContactEnquiryBodyNameMax = 120;
@@ -723,9 +723,7 @@ export const SubmitContactEnquiryBody = zod.object({
 })
 
 export const SubmitContactEnquiryResponse = zod.object({
-  "accepted": zod.boolean(),
   "enquiryId": zod.string(),
-  "deliveryStatus": zod.string(),
   "message": zod.string()
 })
 
@@ -974,9 +972,6 @@ export const GetAdminContactEnquiriesResponseItem = zod.object({
   "course": zod.string(),
   "email": zod.string().nullable(),
   "message": zod.string().nullable(),
-  "deliveryStatus": zod.string(),
-  "deliveryError": zod.string().nullable(),
-  "whatsappRecipient": zod.string().nullable(),
   "contacted": zod.boolean(),
   "resolved": zod.boolean(),
   "createdAt": zod.coerce.date(),
@@ -1004,14 +999,21 @@ export const UpdateAdminContactEnquiryResponse = zod.object({
   "course": zod.string(),
   "email": zod.string().nullable(),
   "message": zod.string().nullable(),
-  "deliveryStatus": zod.string(),
-  "deliveryError": zod.string().nullable(),
-  "whatsappRecipient": zod.string().nullable(),
   "contacted": zod.boolean(),
   "resolved": zod.boolean(),
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date()
 })
+
+
+/**
+ * @summary Delete a Contact enquiry
+ */
+export const DeleteAdminContactEnquiryParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const DeleteAdminContactEnquiryResponse = zod.void()
 
 
 /**

@@ -84,7 +84,7 @@ export async function initializeDatabase() {
       heading: "Let’s plan the right next step.",
       description: "Speak with our admissions team about courses, campus visits, and a focused start for your student.",
       formHeading: "Start a conversation",
-      formDescription: "Share a few details and our admissions team will continue the conversation on WhatsApp.",
+      formDescription: "Share a few details and our admissions team will review your enquiry.",
       responseTimeMessage: "We usually respond during working hours.",
       mainEmail: "admissions@sahsrah.edu",
       primaryPhone: "+91 40 2458 0176",
@@ -102,8 +102,8 @@ export async function initializeDatabase() {
       courseLabel: "Course of interest",
       emailLabel: "Email address (optional)",
       messageLabel: "Message (optional)",
-      submitButtonLabel: "Send enquiry on WhatsApp",
-      successMessage: "Thanks — your enquiry has reached our admissions team on WhatsApp.",
+      submitButtonLabel: "Send enquiry",
+      successMessage: "Thank you. Your enquiry has been received.",
       prospectusButtonLabel: "Request the prospectus",
       prospectusButtonHref: "/contact",
       campusVisitButtonLabel: "Plan a campus visit",
@@ -111,6 +111,27 @@ export async function initializeDatabase() {
       isVisible: true,
     },
   });
+
+  const contactSettings = await prisma.contactSettings.findUnique({ where: { id: "singleton" } });
+  if (contactSettings) {
+    const contactCopyBackfill: {
+      formDescription?: string;
+      submitButtonLabel?: string;
+      successMessage?: string;
+    } = {};
+    if (contactSettings.formDescription === "Share a few details and our admissions team will continue the conversation on WhatsApp.") {
+      contactCopyBackfill.formDescription = "Share a few details and our admissions team will review your enquiry.";
+    }
+    if (contactSettings.submitButtonLabel === "Send enquiry on WhatsApp") {
+      contactCopyBackfill.submitButtonLabel = "Send enquiry";
+    }
+    if (contactSettings.successMessage === "Thanks — your enquiry has reached our admissions team on WhatsApp.") {
+      contactCopyBackfill.successMessage = "Thank you. Your enquiry has been received.";
+    }
+    if (Object.keys(contactCopyBackfill).length) {
+      await prisma.contactSettings.update({ where: { id: "singleton" }, data: contactCopyBackfill });
+    }
+  }
 
   const heroSlides = [
     {

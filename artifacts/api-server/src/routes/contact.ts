@@ -66,64 +66,10 @@ function toContactResponse(settings: {
   };
 }
 
-function normalizeWhatsAppNumber(value: string) {
-  const digits = value.replace(/\D/g, "");
-  if (!digits) return null;
-  if (digits.startsWith("91") && digits.length === 12) return `+${digits}`;
-  if (digits.length === 10 && /^[6-9]/.test(digits)) return `+91${digits}`;
-  if (digits.length >= 10 && digits.length <= 15) return `+${digits}`;
-  return null;
-}
-
 function normalizeIndianMobile(value: string) {
   const digits = value.replace(/\D/g, "");
   const mobile = digits.startsWith("91") && digits.length === 12 ? digits.slice(2) : digits;
   return /^[6-9]\d{9}$/.test(mobile) ? `+91${mobile}` : null;
-}
-
-function enquiryMessage(input: {
-  name: string;
-  phone: string;
-  course: string;
-  email?: string | null;
-  message?: string | null;
-}) {
-  return [
-    "New website enquiry",
-    `Name: ${input.name}`,
-    `Mobile: ${input.phone}`,
-    `Course: ${input.course}`,
-    `Email: ${input.email || "Not provided"}`,
-    `Message: ${input.message || "Not provided"}`,
-  ].join("\n");
-}
-
-async function sendWhatsAppMessage(recipient: string, body: string) {
-  const accessToken = process.env.WHATSAPP_ACCESS_TOKEN?.trim();
-  const phoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID?.trim();
-  if (!accessToken || !phoneNumberId) {
-    return { status: "whatsapp_not_configured", error: "WhatsApp delivery is not configured." };
-  }
-
-  try {
-    const graphVersion = process.env.WHATSAPP_GRAPH_VERSION?.trim() || "v22.0";
-    const response = await fetch(`https://graph.facebook.com/${graphVersion}/${phoneNumberId}/messages`, {
-      method: "POST",
-      headers: { Authorization: `Bearer ${accessToken}`, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        messaging_product: "whatsapp",
-        to: recipient.replace(/\D/g, ""),
-        type: "text",
-        text: { body },
-      }),
-    });
-    if (!response.ok) {
-      return { status: "whatsapp_failed", error: "WhatsApp rejected the enquiry." };
-    }
-    return { status: "whatsapp_accepted", error: null };
-  } catch {
-    return { status: "whatsapp_failed", error: "WhatsApp could not be reached." };
-  }
 }
 
 router.get("/contact", async (req, res) => {
@@ -163,7 +109,6 @@ router.post("/contact-enquiries", async (req, res) => {
     return;
   }
 
-  const recipient = normalizeWhatsAppNumber(settings.whatsappNumber);
   const enquiry = await prisma.contactEnquiry.create({
     data: {
       name: parsed.data.name,
@@ -171,33 +116,11 @@ router.post("/contact-enquiries", async (req, res) => {
       course: parsed.data.course,
       email: parsed.data.email ?? null,
       message: parsed.data.message ?? null,
-      whatsappRecipient: recipient,
-      deliveryStatus: "pending",
     },
   });
 
-  if (!recipient) {
-    const deliveryError = "WhatsApp delivery is not configured. Please try again later.";
-    await prisma.contactEnquiry.update({ where: { id: enquiry.id }, data: { deliveryStatus: "whatsapp_not_configured", deliveryError } });
-    res.status(503).json({ error: deliveryError, enquiryId: enquiry.id, deliveryStatus: "whatsapp_not_configured" });
-    return;
-  }
-
-  const delivery = await sendWhatsAppMessage(recipient, enquiryMessage({ ...parsed.data, phone }));
-  await prisma.contactEnquiry.update({
-    where: { id: enquiry.id },
-    data: { deliveryStatus: delivery.status, deliveryError: delivery.error },
-  });
-
-  if (delivery.status !== "whatsapp_accepted") {
-    res.status(503).json({ error: delivery.error || "WhatsApp delivery failed. Please try again later.", enquiryId: enquiry.id, deliveryStatus: delivery.status });
-    return;
-  }
-
   res.status(201).json(SubmitContactEnquiryResponse.parse({
-    accepted: true,
     enquiryId: enquiry.id,
-    deliveryStatus: delivery.status,
     message: settings.successMessage,
   }));
 });
@@ -267,6 +190,16 @@ router.patch("/admin/contact-enquiries/:id", requireAdmin, async (req, res) => {
     res.json(UpdateAdminContactEnquiryResponse.parse(enquiry));
   } catch (error) {
     req.log.error({ err: error }, "Unable to update Contact enquiry");
+    res.status(404).json({ error: "That enquiry could not be found." });
+  }
+});
+
+router.delete("/admin/contact-enquiries/:id", requireAdmin, async (req, res) => {
+  try {
+    await prisma.contactEnquiry.delete({ where: { id: String(req.params.id) } });
+    res.status(204).end();
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to delete Contact enquiry");
     res.status(404).json({ error: "That enquiry could not be found." });
   }
 });

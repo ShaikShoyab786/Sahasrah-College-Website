@@ -7,8 +7,6 @@
  */
 
 export interface ContactEnquirySubmission {
-  accepted: boolean;
   enquiryId: string;
-  deliveryStatus: string;
   message: string;
 }

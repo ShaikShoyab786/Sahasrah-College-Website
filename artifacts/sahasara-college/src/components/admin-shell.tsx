@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'wouter';
-import { BookOpen, ChevronDown, FileText, Home, LayoutDashboard, LogOut, Menu, MessageCircle, PanelsTopLeft, Settings2, X } from 'lucide-react';
+import { BookOpen, ChevronDown, FileText, Gauge, Home, LayoutDashboard, LogOut, Menu, MessageCircle, PanelsTopLeft, Settings2, X } from 'lucide-react';
 import { useLogoutAdmin, getGetAdminSessionQueryKey, useGetSiteSettings } from '@workspace/api-client-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { SiteMark } from '@/components/site-mark';
@@ -23,6 +23,7 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
     settings.data?.surfaceColor || DEFAULT_SURFACE_COLOR,
   );
   const nav = [
+    { href: '/admin/dashboard', label: 'Dashboard', icon: Gauge },
     { href: '/admin', label: 'Overview', icon: LayoutDashboard },
     { href: '/admin/site-settings', label: 'Site identity', icon: Settings2 },
   ];
@@ -153,8 +154,7 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
             )}
             {pagesOpen && (
               <div className="mt-2 rounded-2xl bg-[hsl(var(--sidebar-accent)/.55)] p-2">
-                <Link href="/admin/pages/contact" onClick={() => setOpen(false)} className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition ${contactActive && !location.startsWith('/admin/pages/contact/enquiries') ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-contact"><MessageCircle size={16} /><span>Contact</span></Link>
-                <Link href="/admin/pages/contact/enquiries" onClick={() => setOpen(false)} className={`mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition ${location.startsWith('/admin/pages/contact/enquiries') ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-contact-enquiries"><MessageCircle size={16} /><span>Enquiries</span></Link>
+                <Link href="/admin/pages/contact" onClick={() => setOpen(false)} className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition ${contactActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-contact"><MessageCircle size={16} /><span>Contact</span></Link>
               </div>
             )}
             {pagesOpen && (

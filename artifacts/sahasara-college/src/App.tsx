@@ -10,6 +10,7 @@ import Contact from '@/pages/contact';
 import AdminLogin from '@/pages/admin-login';
 import AdminGuard from '@/pages/admin-guard';
 import AdminOverview from '@/pages/admin-overview';
+import AdminDashboard from '@/pages/admin-dashboard';
 import AdminSiteSettings from '@/pages/admin-site-settings';
 import AdminHomepageHero from '@/pages/admin-homepage-hero';
 import AdminHomepageAboutPreview from '@/pages/admin-homepage-about-preview';
@@ -112,7 +113,7 @@ function Router() {
         <Route path="/admin/pages/about/admission-cta">
           <AdminGuard><AdminAboutAdmissionCta /></AdminGuard>
         </Route>
-        <Route path="/admin/pages/contact/enquiries">
+        <Route path="/admin/contact-enquiries">
           <AdminGuard><AdminContactEnquiries /></AdminGuard>
         </Route>
         <Route path="/admin/pages/contact">
@@ -120,6 +121,9 @@ function Router() {
         </Route>
         <Route path="/admin">
           <AdminGuard><AdminOverview /></AdminGuard>
+        </Route>
+        <Route path="/admin/dashboard">
+          <AdminGuard><AdminDashboard /></AdminGuard>
         </Route>
         <Route path="/admin/site-settings">
           <AdminGuard><AdminSiteSettings /></AdminGuard>

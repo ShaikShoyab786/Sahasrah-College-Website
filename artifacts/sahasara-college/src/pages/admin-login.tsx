@@ -50,7 +50,7 @@ export default function AdminLogin() {
     login.mutate({ data: { email, password } }, {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: getGetAdminSessionQueryKey() });
-        setLocation('/admin');
+         setLocation('/admin/dashboard');
       },
       onError: (err) => setError((err as { error?: string })?.error || 'Those details did not work. Please try again.'),
     });

@@ -158,16 +158,8 @@ export interface ContactEnquiryInput {
 }
 
 export interface ContactEnquirySubmission {
-  accepted: boolean;
   enquiryId: string;
-  deliveryStatus: string;
   message: string;
-}
-
-export interface ContactEnquiryDeliveryError {
-  error: string;
-  enquiryId: string;
-  deliveryStatus: string;
 }
 
 export interface ContactEnquiry {
@@ -179,11 +171,6 @@ export interface ContactEnquiry {
   email: string | null;
   /** @nullable */
   message: string | null;
-  deliveryStatus: string;
-  /** @nullable */
-  deliveryError: string | null;
-  /** @nullable */
-  whatsappRecipient: string | null;
   contacted: boolean;
   resolved: boolean;
   createdAt: string;

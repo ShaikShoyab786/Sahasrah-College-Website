@@ -42,7 +42,6 @@ import type {
   AboutWhyParentsChooseInput,
   AuthSession,
   ContactEnquiry,
-  ContactEnquiryDeliveryError,
   ContactEnquiryInput,
   ContactEnquiryStatusInput,
   ContactEnquirySubmission,
@@ -2362,7 +2361,7 @@ export const getSubmitContactEnquiryUrl = () => {
 }
 
 /**
- * @summary Store and deliver a Contact page enquiry through WhatsApp
+ * @summary Store a Contact page enquiry for administrator review
  */
 export const submitContactEnquiry = async (contactEnquiryInput: ContactEnquiryInput, options?: Parameters<typeof customFetch>[1]): Promise<ContactEnquirySubmission> => {
 
@@ -2395,7 +2394,7 @@ return customFetch<ContactEnquirySubmission>(getSubmitContactEnquiryUrl(),
 
 export const getSubmitContactEnquiryMutationKey = () => ['submitContactEnquiry'] as const;
 
-export const getSubmitContactEnquiryMutationOptions = <TError = ErrorType<ErrorResponse | ContactEnquiryDeliveryError>,
+export const getSubmitContactEnquiryMutationOptions = <TError = ErrorType<ErrorResponse>,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof submitContactEnquiry>>, TError,SubmitContactEnquiryMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
 ): UseMutationOptions<Awaited<ReturnType<typeof submitContactEnquiry>>, TError,SubmitContactEnquiryMutationVariables, TContext> => {
 
@@ -2424,13 +2423,13 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
     export type SubmitContactEnquiryMutationResult = NonNullable<Awaited<ReturnType<typeof submitContactEnquiry>>>
     export type SubmitContactEnquiryMutationBody = BodyType<ContactEnquiryInput>
-    export type SubmitContactEnquiryMutationError = ErrorType<ErrorResponse | ContactEnquiryDeliveryError>
+    export type SubmitContactEnquiryMutationError = ErrorType<ErrorResponse>
     export type SubmitContactEnquiryMutationVariables = {data: BodyType<ContactEnquiryInput>}
 
     /**
- * @summary Store and deliver a Contact page enquiry through WhatsApp
+ * @summary Store a Contact page enquiry for administrator review
  */
-export const useSubmitContactEnquiry = <TError = ErrorType<ErrorResponse | ContactEnquiryDeliveryError>,
+export const useSubmitContactEnquiry = <TError = ErrorType<ErrorResponse>,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof submitContactEnquiry>>, TError,SubmitContactEnquiryMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
  ): UseMutationResult<
         Awaited<ReturnType<typeof submitContactEnquiry>>,
@@ -2858,6 +2857,80 @@ export const useUpdateAdminContactEnquiry = <TError = ErrorType<ErrorResponse>,
         TContext
       > => {
       return useMutation(getUpdateAdminContactEnquiryMutationOptions(options));
+    }
+
+export const getDeleteAdminContactEnquiryUrl = (id: string,) => {
+
+
+
+
+  return `/api/admin/contact-enquiries/${id}`
+}
+
+/**
+ * @summary Delete a Contact enquiry
+ */
+export const deleteAdminContactEnquiry = async (id: string, options?: Parameters<typeof customFetch>[1]): Promise<void> => {
+
+  return customFetch<void>(getDeleteAdminContactEnquiryUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+
+export const getDeleteAdminContactEnquiryMutationKey = () => ['deleteAdminContactEnquiry'] as const;
+
+export const getDeleteAdminContactEnquiryMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAdminContactEnquiry>>, TError,DeleteAdminContactEnquiryMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteAdminContactEnquiry>>, TError,DeleteAdminContactEnquiryMutationVariables, TContext> => {
+
+const mutationKey = getDeleteAdminContactEnquiryMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteAdminContactEnquiry>>, DeleteAdminContactEnquiryMutationVariables> = (props) => {
+          const {id} = props ?? {};
+
+          return  deleteAdminContactEnquiry(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteAdminContactEnquiryMutationResult = NonNullable<Awaited<ReturnType<typeof deleteAdminContactEnquiry>>>
+
+    export type DeleteAdminContactEnquiryMutationError = ErrorType<ErrorResponse>
+    export type DeleteAdminContactEnquiryMutationVariables = {id: string}
+
+    /**
+ * @summary Delete a Contact enquiry
+ */
+export const useDeleteAdminContactEnquiry = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAdminContactEnquiry>>, TError,DeleteAdminContactEnquiryMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof deleteAdminContactEnquiry>>,
+        TError,
+        DeleteAdminContactEnquiryMutationVariables,
+        TContext
+      > => {
+      return useMutation(getDeleteAdminContactEnquiryMutationOptions(options));
     }
 
 export const getUpdateHomepageHeroUrl = () => {
