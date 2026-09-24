@@ -1,0 +1,81 @@
+Audit Home and About Admin Content for Missing Editable Fields
+Do a completeness audit of the existing Home and About pages. Some visible section text—especially eyebrow labels and headings—still appears hardcoded and cannot be changed in the admin dashboard.
+
+The goal is to make the content that administrators are expected to manage editable and reliably connected to the public pages, without changing the visual design.
+
+Audit every completed section
+Review every section on the Home and About pages, including their previews, cards, accordions, statistics, ribbons, carousels, and final CTAs.
+
+For each section, check whether its visible editorial content is manageable in the correct admin page group.
+
+Where a field is present on the public page, make sure the corresponding admin controls exist for:
+
+Eyebrow text
+Section heading
+Supporting description or introductory text
+Button label and destination, where applicable
+Section-specific content, such as cards, FAQ items, statistics, or ribbon phrases
+Do not add an eyebrow or heading to a section that does not currently have one.
+
+Home sections to audit
+Audit all completed Home page sections, including:
+
+Hero
+About preview
+Live Updates
+Statistics
+Favorite Topics To Learn
+Our Results, Our Pride
+Achievement ribbon
+Real Stories of Success
+Our Expert Faculty
+Life at KVR College
+Knowledge Hub preview
+Admissions FAQ
+Final admission CTA
+Any other existing Home preview section
+Pay special attention to the Live Updates, Faculty, and Gallery preview eyebrow and heading fields, which have previously been missing from the admin controls.
+
+About sections to audit
+Audit all completed About page sections, including:
+
+Hero
+Our Story and timeline
+Chairman’s Message
+Guiding Principles
+Why Parents Choose KVR
+Leadership
+Campus Highlights
+Statistics
+Testimonials
+FAQ
+Final CTA
+Implementation requirements
+Reuse the existing Home and About admin settings, APIs, and data structures wherever possible.
+Add only the missing fields; do not create duplicate settings or a second content system.
+Connect each admin field to the correct public section.
+Ensure saved values persist after refresh and appear on the public page.
+Use the current public text as the initial fallback/default value so the page does not lose content.
+Preserve existing card and repeatable-item management.
+Group controls logically under Home and About; do not create one confusing, oversized form.
+Keep admin labels clear enough that it is obvious which public section each field controls.
+Do not change layout, copy, animations, theme styling, or section order unless needed to connect the data.
+Leave fixed interface labels such as generic form controls alone unless they are already intended to be content-managed.
+Report the audit
+Before finishing, provide a brief section-by-section summary showing:
+
+Which sections already had complete content controls
+Which fields were missing
+Which controls were added
+Confirmation that the saved fields appear on the correct public sections
+Verification
+Confirm that:
+
+Every existing Home and About eyebrow and heading can be edited where applicable.
+Section descriptions and CTA labels/links can be edited where applicable.
+Existing cards, FAQs, statistics, and other repeatable content remain manageable.
+Updates persist after saving and refreshing.
+No public content disappears when settings are empty.
+Existing layouts, styling, animations, and section order remain unchanged.
+The project builds and starts successfully.
+Stop after completing the Home and About content-management audit. Do not begin new pages.
