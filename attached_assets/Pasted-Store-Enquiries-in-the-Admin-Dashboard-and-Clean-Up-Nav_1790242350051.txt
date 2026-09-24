@@ -1,0 +1,68 @@
+Store Enquiries in the Admin Dashboard and Clean Up Navigation
+Make these changes to the Contact enquiry flow and admin dashboard. Do not integrate email, WhatsApp, Twilio, or any other messaging service.
+
+1. Save Contact Enquiries in the Dashboard Only
+When a visitor submits the Contact form:
+
+Validate the form using its existing rules.
+Save the enquiry in the project database.
+Do not send email.
+Do not send WhatsApp messages.
+Do not request or configure an integration.
+Show a confirmation that the enquiry was received, without implying that a message was sent elsewhere.
+Each saved enquiry should include the fields already collected by the form, such as name, mobile number, selected course, optional email, optional message, and submission time.
+
+Keep enquiries private and accessible only to authorized administrators. Preserve existing Contact form behavior and data where possible.
+
+2. Put an Enquiries Card on the Admin Dashboard Main Page
+Display an Enquiries card/widget on the main admin dashboard landing page—the page administrators see as the dashboard home.
+
+Do not put enquiries:
+
+Under Site Identity
+As a submenu under Home
+As a submenu under Contact
+On the existing Overview page
+The card should show a useful summary, such as:
+
+Total enquiries
+New/unreviewed enquiries
+A short list of the newest submissions
+Provide a clear way to view enquiry details from the dashboard card. Administrators should be able to mark enquiries as reviewed/contacted and delete them if needed. Keep access protected by existing admin authorization.
+
+3. Clean Up the Admin Navigation
+Restore the Pages navigation to a simple structure:
+
+Home
+About
+Contact
+Remove the Enquiries menu item and any Enquiries submenu entry. Enquiries should be accessed from the dashboard main page card, not from the Pages navigation.
+
+Do not change the existing Home, About, or Contact page editors.
+
+4. Preserve Existing Functionality
+Do not modify:
+
+Public page layouts or styling
+Site Identity settings
+Footer settings
+Contact page content or contact details
+Contact form validation, except as needed to save submissions
+Admin authentication or authorization
+Existing Home, About, or Contact navigation behavior
+Do not create email or WhatsApp delivery code, settings, integrations, or placeholder controls.
+
+5. Verification
+Confirm that:
+
+Contact form submissions are saved and visible to an authorized administrator.
+The visitor sees a clear confirmation after a successful save.
+No email or WhatsApp service is called or required.
+Enquiries appear on the admin dashboard main landing page.
+Enquiries do not appear under Site Identity, Overview, Home, About, or Contact menus.
+The Pages navigation contains Home, About, and Contact without an Enquiries submenu.
+Administrators can view, review, and delete enquiries.
+Existing Contact form validation still works.
+Existing public pages and admin page editors remain unchanged.
+The application builds and starts successfully.
+Stop after completing the enquiry dashboard card and navigation cleanup.
