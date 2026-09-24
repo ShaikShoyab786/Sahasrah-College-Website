@@ -16,6 +16,7 @@ const emptyForm: HomepageAboutPreviewInput = {
   heading: '',
   description: '',
   body: '',
+  calloutLabel: 'Learning with purpose',
   buttonLabel: 'Explore Our Philosophy',
   buttonHref: '/about',
   primaryImage: null,
@@ -43,6 +44,7 @@ export default function AdminHomepageAboutPreview() {
         heading: query.data.heading,
         description: query.data.description,
         body: query.data.body,
+        calloutLabel: query.data.calloutLabel,
         buttonLabel: query.data.buttonLabel,
         buttonHref: query.data.buttonHref,
         primaryImage: query.data.primaryImage,
@@ -118,6 +120,7 @@ export default function AdminHomepageAboutPreview() {
             <Field id="about-heading" label="Heading" value={form.heading} onChange={(event) => setField('heading', event.target.value)} required placeholder="Building Strong Foundations for a Brighter Future" />
             <Area id="about-description" label="Introductory description" value={form.description} onChange={(event) => setField('description', event.target.value)} required placeholder="A short introduction to the college's approach." />
             <Area id="about-body" label="Supporting paragraph" value={form.body} onChange={(event) => setField('body', event.target.value)} required placeholder="Add a little more context about the student experience." />
+            <Field id="about-callout-label" label="Image callout label" value={form.calloutLabel} onChange={(event) => setField('calloutLabel', event.target.value)} required placeholder="Learning with purpose" />
           </div>
         </section>
 

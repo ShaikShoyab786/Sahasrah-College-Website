@@ -113,10 +113,18 @@ const fallbackLiveUpdates: HomepageLiveUpdate[] = [
 const fallbackHomepagePreviewCopy = {
   liveUpdatesEyebrow: 'From Sahsrah',
   liveUpdatesHeading: 'Live Updates',
+  liveUpdatesButtonLabel: 'View all updates',
+  liveUpdatesButtonHref: '#live-updates',
   facultyEyebrow: 'Learn From the Best',
   facultyHeading: 'Our Expert Faculty',
+  facultyDescription: 'Experienced subject-matter experts who make difficult ideas clearer and ambitious goals more achievable.',
+  facultyButtonLabel: 'More Faculty',
+  facultyButtonHref: '/about#leadership',
   galleryEyebrow: 'Campus Gallery',
   galleryHeading: 'Life at KVR College',
+  galleryDescription: 'A quick look at the spaces, routines, and experiences that shape the KVR college day.',
+  galleryButtonLabel: 'View Gallery',
+  galleryButtonHref: '/about#campus-highlights',
 };
 const fallbackStatistics: HomepageStatistics = {
   id: 'fallback-home-statistics',
@@ -136,6 +144,7 @@ const fallbackStatistics: HomepageStatistics = {
 const fallbackFavoriteTopics: HomepageFavoriteTopics = {
   id: 'fallback-favorite-topics',
   eyebrow: 'Explore Our Programs',
+  buttonLabel: 'Explore curriculum',
   heading: 'Favorite Topics To Learn',
   description: 'Intermediate MPC & BiPC integrated with IIT-JEE and NEET.',
   isVisible: true,
@@ -189,14 +198,14 @@ export default function Home() {
       <main>
         <HeroCarousel slides={slides} />
         {aboutPreviewQuery.data?.isVisible && <AboutPreview content={aboutPreviewQuery.data} />}
-        <HomeLiveUpdates updates={liveUpdatesQuery.data?.length ? liveUpdatesQuery.data : fallbackLiveUpdates} eyebrow={previewCopy.liveUpdatesEyebrow} heading={previewCopy.liveUpdatesHeading} />
+        <HomeLiveUpdates updates={liveUpdatesQuery.data?.length ? liveUpdatesQuery.data : fallbackLiveUpdates} eyebrow={previewCopy.liveUpdatesEyebrow} heading={previewCopy.liveUpdatesHeading} buttonLabel={previewCopy.liveUpdatesButtonLabel} buttonHref={previewCopy.liveUpdatesButtonHref} />
         <HomeStatistics content={statisticsQuery.data?.isVisible ? statisticsQuery.data : fallbackStatistics} />
         <FavoriteTopics content={favoriteTopicsQuery.data?.isVisible ? favoriteTopicsQuery.data : fallbackFavoriteTopics} />
         <HomeResults content={resultsQuery.data?.isVisible ? resultsQuery.data : fallbackResults} />
         <AchievementRibbon content={ribbonQuery.data?.isVisible ? ribbonQuery.data : fallbackRibbon} />
         <HomeTestimonials content={testimonialsQuery.data?.isVisible ? testimonialsQuery.data : fallbackTestimonials} />
-        <HomeFaculty faculty={facultyQuery.data?.length ? facultyQuery.data : fallbackFaculty} eyebrow={previewCopy.facultyEyebrow} heading={previewCopy.facultyHeading} />
-        <HomeGallery gallery={galleryQuery.data?.length ? galleryQuery.data : fallbackGallery} eyebrow={previewCopy.galleryEyebrow} heading={previewCopy.galleryHeading} />
+        <HomeFaculty faculty={facultyQuery.data?.length ? facultyQuery.data : fallbackFaculty} eyebrow={previewCopy.facultyEyebrow} heading={previewCopy.facultyHeading} description={previewCopy.facultyDescription} buttonLabel={previewCopy.facultyButtonLabel} buttonHref={previewCopy.facultyButtonHref} />
+        <HomeGallery gallery={galleryQuery.data?.length ? galleryQuery.data : fallbackGallery} eyebrow={previewCopy.galleryEyebrow} heading={previewCopy.galleryHeading} description={previewCopy.galleryDescription} buttonLabel={previewCopy.galleryButtonLabel} buttonHref={previewCopy.galleryButtonHref} />
         {knowledgeHub?.isVisible && <HomeKnowledgeHub content={knowledgeHub} />}
         {admissionsFaq?.isVisible && <HomeAdmissionsFaq content={admissionsFaq} />}
         {finalCta?.isVisible && <HomeFinalCta content={finalCta} />}

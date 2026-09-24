@@ -12,6 +12,7 @@ import { Area, Field, SaveButton } from '@/components/form-fields';
 import { EditorCard, EditorFrame, EditorSkeleton, LoadError, SaveStatus, VisibilityToggle } from '@/pages/admin-about-hero';
 
 const emptyForm: AboutGuidingPrinciplesInput = {
+  eyebrow: 'GUIDING PRINCIPLES',
   heading: 'Our Guiding Principles',
   description: 'The principles that shape how Sahsrah teaches, supports, and prepares every student.',
   visionIcon: 'eye',
@@ -43,6 +44,7 @@ export default function AdminGuidingPrinciples() {
   useEffect(() => {
     if (query.data) {
       setForm({
+        eyebrow: query.data.eyebrow,
         heading: query.data.heading,
         description: query.data.description,
         visionIcon: query.data.visionIcon,
@@ -97,7 +99,7 @@ export default function AdminGuidingPrinciples() {
     <EditorFrame eyebrow="Pages / About / Guiding Principles" title="Make the college’s principles clear." description="Shape the vision, mission, and values families should feel throughout the Sahsrah experience." previewHref="/about#guiding-principles">
       <form onSubmit={submit} className="mt-10 space-y-6">
         <EditorCard icon={<BookOpenCheck size={19} />} title="Section introduction" description="The heading and supporting text above the three principle cards.">
-          <div className="space-y-5"><Field id="principles-heading" label="Section heading" value={form.heading} onChange={(event) => setField('heading', event.target.value)} required /><Area id="principles-description" label="Section description" value={form.description} onChange={(event) => setField('description', event.target.value)} required /></div>
+          <div className="space-y-5"><Field id="principles-eyebrow" label="Eyebrow" value={form.eyebrow} onChange={(event) => setField('eyebrow', event.target.value)} required /><Field id="principles-heading" label="Section heading" value={form.heading} onChange={(event) => setField('heading', event.target.value)} required /><Area id="principles-description" label="Section description" value={form.description} onChange={(event) => setField('description', event.target.value)} required /></div>
         </EditorCard>
         <EditorCard title="Vision and mission" description="Choose a Lucide icon name such as eye, target, star, sparkles, or shield.">
           <div className="grid gap-6 md:grid-cols-2">

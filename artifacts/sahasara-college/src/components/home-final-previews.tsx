@@ -14,6 +14,8 @@ export const fallbackKnowledgeHub: HomepageKnowledgeHub = {
   eyebrow: 'Knowledge Hub',
   heading: 'Your Digital Learning Library',
   description: 'Study materials, expert guidance, exam updates, and practical resources for JEE and NEET aspirants.',
+  buttonLabel: 'View All Resources',
+  buttonHref: '/#home-knowledge-hub',
   isVisible: true,
   sortOrder: 11,
   updatedAt: '2026-06-15T00:00:00.000Z',
@@ -30,6 +32,8 @@ export const fallbackAdmissionsFaq: HomepageAdmissionsFaq = {
   eyebrow: 'Admissions FAQ',
   heading: 'Common Questions, Clear Answers',
   description: 'Everything you need to know about joining Sahsrah Junior College.',
+  ctaLabel: 'Still have a question? Talk to admissions',
+  ctaHref: '/contact',
   isVisible: true,
   sortOrder: 12,
   updatedAt: '2026-06-15T00:00:00.000Z',
@@ -101,8 +105,8 @@ export function HomeKnowledgeHub({ content }: { content: HomepageKnowledgeHub })
         </div>
 
         <div className="mt-9 text-center">
-          <a href="/#home-knowledge-hub" className="group inline-flex items-center gap-2 rounded-full border border-[hsl(var(--primary)/.2)] bg-[hsl(var(--card))] px-5 py-3.5 text-sm font-bold text-[hsl(var(--primary))] shadow-sm transition hover:-translate-y-0.5 hover:border-[hsl(var(--accent))] hover:shadow-md focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--accent)/.28)]">
-            View All Resources <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+           <a href={content.buttonHref || '/#home-knowledge-hub'} className="group inline-flex items-center gap-2 rounded-full border border-[hsl(var(--primary)/.2)] bg-[hsl(var(--card))] px-5 py-3.5 text-sm font-bold text-[hsl(var(--primary))] shadow-sm transition hover:-translate-y-0.5 hover:border-[hsl(var(--accent))] hover:shadow-md focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--accent)/.28)]">
+             {content.buttonLabel || 'View All Resources'} <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
           </a>
         </div>
       </div>
@@ -201,7 +205,7 @@ export function HomeAdmissionsFaq({ content }: { content: HomepageAdmissionsFaq 
           })}
         </div>
         <div className="mt-8 text-center">
-          <a href="/contact" className="group inline-flex items-center gap-2 text-sm font-bold text-[hsl(var(--primary))] underline decoration-[hsl(var(--accent)/.6)] decoration-2 underline-offset-4 transition hover:text-[hsl(var(--accent-foreground))] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--accent)/.25)]">Still have a question? Talk to admissions <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" /></a>
+           <a href={content.ctaHref || '/contact'} className="group inline-flex items-center gap-2 text-sm font-bold text-[hsl(var(--primary))] underline decoration-[hsl(var(--accent)/.6)] decoration-2 underline-offset-4 transition hover:text-[hsl(var(--accent-foreground))] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--accent)/.25)]">{content.ctaLabel || 'Still have a question? Talk to admissions'} <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" /></a>
         </div>
       </div>
     </section>

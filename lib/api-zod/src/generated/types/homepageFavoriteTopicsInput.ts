@@ -12,6 +12,11 @@ export interface HomepageFavoriteTopicsInput {
   /** @minLength 1 */
   heading: string;
   description: string;
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  buttonLabel?: string;
   isVisible: boolean;
   /**
      * @minimum 1

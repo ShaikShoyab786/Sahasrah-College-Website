@@ -14,6 +14,16 @@ export interface HomepageAdmissionsFaqInput {
   heading: string;
   /** @minLength 1 */
   description: string;
+  /**
+     * @minLength 1
+     * @maxLength 240
+     */
+  ctaLabel?: string;
+  /**
+     * @minLength 1
+     * @maxLength 500
+     */
+  ctaHref?: string;
   isVisible: boolean;
   /**
      * @minimum 1

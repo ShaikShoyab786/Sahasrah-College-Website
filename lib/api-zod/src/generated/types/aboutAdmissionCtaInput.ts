@@ -7,6 +7,11 @@
  */
 
 export interface AboutAdmissionCtaInput {
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  eyebrow?: string;
   /** @minLength 1 */
   heading: string;
   /** @minLength 1 */

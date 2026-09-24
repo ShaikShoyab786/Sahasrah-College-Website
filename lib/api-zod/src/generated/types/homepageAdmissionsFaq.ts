@@ -12,6 +12,8 @@ export interface HomepageAdmissionsFaq {
   eyebrow: string;
   heading: string;
   description: string;
+  ctaLabel: string;
+  ctaHref: string;
   isVisible: boolean;
   sortOrder: number;
   updatedAt: Date;

@@ -5,10 +5,10 @@ import { SectionEyebrow } from '@/components/section-eyebrow';
 type HomeLiveUpdatesProps = {
   updates: HomepageLiveUpdate[];
   eyebrow?: string;
-  heading?: string;
+  heading?: string; buttonLabel?: string; buttonHref?: string;
 };
 
-export function HomeLiveUpdates({ updates, eyebrow = 'From Sahsrah', heading = 'Live Updates' }: HomeLiveUpdatesProps) {
+export function HomeLiveUpdates({ updates, eyebrow = 'From Sahsrah', heading = 'Live Updates', buttonLabel = 'View all updates', buttonHref = '#live-updates' }: HomeLiveUpdatesProps) {
   return (
     <section id="live-updates" className="border-b border-[hsl(var(--border))] bg-[hsl(var(--secondary)/.45)] px-6 py-20 lg:px-10 lg:py-28" aria-labelledby="live-updates-heading">
       <div className="mx-auto max-w-7xl">
@@ -17,8 +17,8 @@ export function HomeLiveUpdates({ updates, eyebrow = 'From Sahsrah', heading = '
             <SectionEyebrow className="about-eyebrow">{eyebrow}</SectionEyebrow>
             <h2 id="live-updates-heading" className="mt-4 font-display text-5xl font-semibold leading-[.98] tracking-[-.05em] text-[hsl(var(--primary))] md:text-6xl">{heading}</h2>
           </div>
-          <a href="#live-updates" className="inline-flex w-fit items-center gap-2 text-sm font-bold text-[hsl(var(--primary))] transition hover:-translate-y-0.5 hover:text-[hsl(var(--accent-foreground))]" aria-label="View all updates; the homepage shows the latest three">
-            View all updates <ArrowUpRight size={16} />
+           <a href={buttonHref} className="inline-flex w-fit items-center gap-2 text-sm font-bold text-[hsl(var(--primary))] transition hover:-translate-y-0.5 hover:text-[hsl(var(--accent-foreground))]" aria-label={`${buttonLabel}; the homepage shows the latest three`}>
+             {buttonLabel} <ArrowUpRight size={16} />
           </a>
         </div>
 

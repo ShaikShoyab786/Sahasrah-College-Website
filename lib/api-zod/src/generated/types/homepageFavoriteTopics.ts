@@ -12,6 +12,7 @@ export interface HomepageFavoriteTopics {
   eyebrow: string;
   heading: string;
   description: string;
+  buttonLabel: string;
   isVisible: boolean;
   sortOrder: number;
   updatedAt: Date;

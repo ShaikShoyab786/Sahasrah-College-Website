@@ -9,6 +9,7 @@ import type { AboutAchievementStatistic } from './aboutAchievementStatistic';
 
 export interface AboutAchievements {
   id: string;
+  eyebrow: string;
   heading: string;
   description: string;
   isVisible: boolean;

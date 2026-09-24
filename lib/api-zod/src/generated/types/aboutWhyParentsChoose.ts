@@ -9,6 +9,7 @@ import type { AboutParentChoiceBenefit } from './aboutParentChoiceBenefit';
 
 export interface AboutWhyParentsChoose {
   id: string;
+  eyebrow: string;
   heading: string;
   description: string;
   isVisible: boolean;

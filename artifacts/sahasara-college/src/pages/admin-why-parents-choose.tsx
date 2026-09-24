@@ -12,6 +12,7 @@ import { Area, Field, SaveButton } from '@/components/form-fields';
 import { EditorCard, EditorFrame, EditorSkeleton, LoadError, SaveStatus, VisibilityToggle } from '@/pages/admin-about-hero';
 
 const emptyForm: AboutWhyParentsChooseInput = {
+  eyebrow: 'WHY SAHSRAH',
   heading: 'Why Parents Choose Sahsrah',
   description: 'A focused, supportive approach that helps students build strong foundations and steady momentum.',
   isVisible: true,
@@ -37,6 +38,7 @@ export default function AdminWhyParentsChoose() {
   useEffect(() => {
     if (query.data) {
       setForm({
+        eyebrow: query.data.eyebrow,
         heading: query.data.heading,
         description: query.data.description,
         isVisible: query.data.isVisible,
@@ -83,7 +85,7 @@ export default function AdminWhyParentsChoose() {
     <EditorFrame eyebrow="Pages / About / Why Parents Choose" title="Show what support feels like." description="Keep the six family-facing reasons clear, editable, and connected to the Sahsrah experience." previewHref="/about#why-parents-choose">
       <form onSubmit={submit} className="mt-10 space-y-6">
         <EditorCard icon={<ListChecks size={19} />} title="Section introduction" description="This heading is shown above the benefits grid.">
-          <div className="space-y-5"><Field id="parents-heading" label="Section heading" value={form.heading} onChange={(event) => setField('heading', event.target.value)} required /><Area id="parents-description" label="Section description" value={form.description} onChange={(event) => setField('description', event.target.value)} required /></div>
+          <div className="space-y-5"><Field id="parents-eyebrow" label="Eyebrow" value={form.eyebrow} onChange={(event) => setField('eyebrow', event.target.value)} required /><Field id="parents-heading" label="Section heading" value={form.heading} onChange={(event) => setField('heading', event.target.value)} required /><Area id="parents-description" label="Section description" value={form.description} onChange={(event) => setForm({ ...form, description: event.target.value })} required /></div>
         </EditorCard>
         <EditorCard title="Benefit items" description="Use Lucide icon names such as users, graduation-cap, book-open, check-circle, heart-handshake, or badge-check.">
           <div className="space-y-4">{form.benefits.map((benefit, index) => <div key={`${benefit.displayOrder}-${index}`} className="rounded-xl bg-[hsl(var(--secondary))] p-5"><div className="flex items-center justify-between gap-3"><p className="text-xs font-bold uppercase tracking-[.16em] text-[hsl(var(--accent-foreground))]">Benefit {index + 1}</p><div className="flex items-center gap-3"><button type="button" onClick={() => moveBenefit(index, -1)} disabled={index === 0} className="text-xs font-bold disabled:opacity-30">Up</button><button type="button" onClick={() => moveBenefit(index, 1)} disabled={index === form.benefits.length - 1} className="text-xs font-bold disabled:opacity-30">Down</button><button type="button" onClick={() => removeBenefit(index)} disabled={form.benefits.length <= 1} className="inline-flex items-center gap-1 text-xs font-bold text-[hsl(var(--destructive))] disabled:opacity-30"><Trash2 size={14} /> Remove</button></div></div><div className="mt-4 grid gap-4 md:grid-cols-[.7fr_1fr_.25fr]"><Field id={`benefit-${index}-icon`} label="Icon name" value={benefit.icon} onChange={(event) => setBenefit(index, 'icon', event.target.value)} required /><Field id={`benefit-${index}-title`} label="Title" value={benefit.title} onChange={(event) => setBenefit(index, 'title', event.target.value)} required /><Field id={`benefit-${index}-order`} label="Order" type="number" min={1} max={20} value={benefit.displayOrder} onChange={(event) => setBenefit(index, 'displayOrder', Number(event.target.value))} required /></div><div className="mt-4"><Area id={`benefit-${index}-description`} label="Optional short description" value={benefit.description} onChange={(event) => setBenefit(index, 'description', event.target.value)} /></div><label className="mt-4 flex items-center gap-3 text-sm font-semibold"><input type="checkbox" checked={benefit.isVisible} onChange={(event) => setBenefit(index, 'isVisible', event.target.checked)} className="h-4 w-4 accent-[hsl(var(--accent))]" /> Show this benefit</label></div>)}<button type="button" onClick={addBenefit} disabled={form.benefits.length >= 20} className="inline-flex items-center gap-2 rounded-xl border border-dashed border-[hsl(var(--accent))] px-4 py-3 text-sm font-bold text-[hsl(var(--accent-foreground))] disabled:opacity-40"><Plus size={17} /> Add benefit</button></div>

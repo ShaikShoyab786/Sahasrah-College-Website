@@ -8,6 +8,7 @@
 
 export interface AboutAdmissionCta {
   id: string;
+  eyebrow: string;
   heading: string;
   supportingText: string;
   applyButtonLabel: string;

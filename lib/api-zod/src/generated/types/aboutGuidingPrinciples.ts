@@ -9,6 +9,7 @@ import type { AboutGuidingPrincipleValue } from './aboutGuidingPrincipleValue';
 
 export interface AboutGuidingPrinciples {
   id: string;
+  eyebrow: string;
   heading: string;
   description: string;
   visionIcon: string;

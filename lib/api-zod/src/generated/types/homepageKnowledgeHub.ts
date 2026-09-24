@@ -12,6 +12,8 @@ export interface HomepageKnowledgeHub {
   eyebrow: string;
   heading: string;
   description: string;
+  buttonLabel: string;
+  buttonHref: string;
   isVisible: boolean;
   sortOrder: number;
   updatedAt: Date;

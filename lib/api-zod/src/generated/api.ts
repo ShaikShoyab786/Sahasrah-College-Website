@@ -120,6 +120,7 @@ export const GetHomepageAboutPreviewResponse = zod.object({
   "heading": zod.string(),
   "description": zod.string(),
   "body": zod.string(),
+  "calloutLabel": zod.string(),
   "buttonLabel": zod.string(),
   "buttonHref": zod.string(),
   "primaryImage": zod.string().nullable(),
@@ -158,10 +159,18 @@ export const GetHomepageLiveUpdatesResponse = zod.array(GetHomepageLiveUpdatesRe
 export const GetHomepagePreviewCopyResponse = zod.object({
   "liveUpdatesEyebrow": zod.string(),
   "liveUpdatesHeading": zod.string(),
+  "liveUpdatesButtonLabel": zod.string(),
+  "liveUpdatesButtonHref": zod.string(),
   "facultyEyebrow": zod.string(),
   "facultyHeading": zod.string(),
+  "facultyDescription": zod.string(),
+  "facultyButtonLabel": zod.string(),
+  "facultyButtonHref": zod.string(),
   "galleryEyebrow": zod.string(),
   "galleryHeading": zod.string(),
+  "galleryDescription": zod.string(),
+  "galleryButtonLabel": zod.string(),
+  "galleryButtonHref": zod.string(),
   "updatedAt": zod.coerce.date()
 })
 
@@ -197,6 +206,7 @@ export const GetHomepageFavoriteTopicsResponse = zod.object({
   "eyebrow": zod.string(),
   "heading": zod.string(),
   "description": zod.string(),
+  "buttonLabel": zod.string(),
   "isVisible": zod.boolean(),
   "sortOrder": zod.number().int(),
   "updatedAt": zod.coerce.date(),
@@ -343,6 +353,8 @@ export const GetHomepageKnowledgeHubResponse = zod.object({
   "eyebrow": zod.string(),
   "heading": zod.string(),
   "description": zod.string(),
+  "buttonLabel": zod.string(),
+  "buttonHref": zod.string(),
   "isVisible": zod.boolean(),
   "sortOrder": zod.number().int(),
   "updatedAt": zod.coerce.date(),
@@ -373,6 +385,8 @@ export const GetHomepageAdmissionsFaqResponse = zod.object({
   "eyebrow": zod.string(),
   "heading": zod.string(),
   "description": zod.string(),
+  "ctaLabel": zod.string(),
+  "ctaHref": zod.string(),
   "isVisible": zod.boolean(),
   "sortOrder": zod.number().int(),
   "updatedAt": zod.coerce.date(),
@@ -504,6 +518,7 @@ export const GetAboutChairmanMessageResponse = zod.object({
  */
 export const GetAboutGuidingPrinciplesResponse = zod.object({
   "id": zod.string(),
+  "eyebrow": zod.string(),
   "heading": zod.string(),
   "description": zod.string(),
   "visionIcon": zod.string(),
@@ -531,6 +546,7 @@ export const GetAboutGuidingPrinciplesResponse = zod.object({
  */
 export const GetAboutWhyParentsChooseResponse = zod.object({
   "id": zod.string(),
+  "eyebrow": zod.string(),
   "heading": zod.string(),
   "description": zod.string(),
   "isVisible": zod.boolean(),
@@ -552,6 +568,7 @@ export const GetAboutWhyParentsChooseResponse = zod.object({
  */
 export const GetAboutLeadershipResponse = zod.object({
   "id": zod.string(),
+  "eyebrow": zod.string(),
   "heading": zod.string(),
   "description": zod.string(),
   "isVisible": zod.boolean(),
@@ -581,6 +598,7 @@ export const GetAboutLeadershipResponse = zod.object({
  */
 export const GetAboutCampusHighlightsResponse = zod.object({
   "id": zod.string(),
+  "eyebrow": zod.string(),
   "heading": zod.string(),
   "description": zod.string(),
   "isVisible": zod.boolean(),
@@ -608,6 +626,7 @@ export const GetAboutCampusHighlightsResponse = zod.object({
  */
 export const GetAboutAchievementsResponse = zod.object({
   "id": zod.string(),
+  "eyebrow": zod.string(),
   "heading": zod.string(),
   "description": zod.string(),
   "isVisible": zod.boolean(),
@@ -630,8 +649,13 @@ export const GetAboutAchievementsResponse = zod.object({
  */
 export const GetAboutFaqResponse = zod.object({
   "id": zod.string(),
+  "eyebrow": zod.string(),
   "heading": zod.string(),
   "description": zod.string(),
+  "helpEyebrow": zod.string(),
+  "helpHeadingWithCounselor": zod.string(),
+  "helpHeadingWithoutCounselor": zod.string(),
+  "helpDescription": zod.string(),
   "isVisible": zod.boolean(),
   "sortOrder": zod.number().int(),
   "updatedAt": zod.coerce.date(),
@@ -650,6 +674,7 @@ export const GetAboutFaqResponse = zod.object({
  */
 export const GetAboutAdmissionCtaResponse = zod.object({
   "id": zod.string(),
+  "eyebrow": zod.string(),
   "heading": zod.string(),
   "supportingText": zod.string(),
   "applyButtonLabel": zod.string(),
@@ -1084,6 +1109,7 @@ export const GetAdminHomepageAboutPreviewResponse = zod.object({
   "heading": zod.string(),
   "description": zod.string(),
   "body": zod.string(),
+  "calloutLabel": zod.string(),
   "buttonLabel": zod.string(),
   "buttonHref": zod.string(),
   "primaryImage": zod.string().nullable(),
@@ -1100,6 +1126,8 @@ export const GetAdminHomepageAboutPreviewResponse = zod.object({
  * @summary Update homepage About Preview settings
  */
 
+export const updateHomepageAboutPreviewBodyCalloutLabelMax = 160;
+
 
 
 export const UpdateHomepageAboutPreviewBody = zod.object({
@@ -1107,6 +1135,7 @@ export const UpdateHomepageAboutPreviewBody = zod.object({
   "heading": zod.string().min(1),
   "description": zod.string(),
   "body": zod.string(),
+  "calloutLabel": zod.string().min(1).max(updateHomepageAboutPreviewBodyCalloutLabelMax).optional(),
   "buttonLabel": zod.string(),
   "buttonHref": zod.string(),
   "primaryImage": zod.string().nullable(),
@@ -1123,6 +1152,7 @@ export const UpdateHomepageAboutPreviewResponse = zod.object({
   "heading": zod.string(),
   "description": zod.string(),
   "body": zod.string(),
+  "calloutLabel": zod.string(),
   "buttonLabel": zod.string(),
   "buttonHref": zod.string(),
   "primaryImage": zod.string().nullable(),
@@ -1205,10 +1235,18 @@ export const UpdateHomepageLiveUpdatesResponse = zod.array(UpdateHomepageLiveUpd
 export const GetAdminHomepagePreviewCopyResponse = zod.object({
   "liveUpdatesEyebrow": zod.string(),
   "liveUpdatesHeading": zod.string(),
+  "liveUpdatesButtonLabel": zod.string(),
+  "liveUpdatesButtonHref": zod.string(),
   "facultyEyebrow": zod.string(),
   "facultyHeading": zod.string(),
+  "facultyDescription": zod.string(),
+  "facultyButtonLabel": zod.string(),
+  "facultyButtonHref": zod.string(),
   "galleryEyebrow": zod.string(),
   "galleryHeading": zod.string(),
+  "galleryDescription": zod.string(),
+  "galleryButtonLabel": zod.string(),
+  "galleryButtonHref": zod.string(),
   "updatedAt": zod.coerce.date()
 })
 
@@ -1220,32 +1258,64 @@ export const updateHomepagePreviewCopyBodyLiveUpdatesEyebrowMax = 160;
 
 export const updateHomepagePreviewCopyBodyLiveUpdatesHeadingMax = 160;
 
+export const updateHomepagePreviewCopyBodyLiveUpdatesButtonLabelMax = 160;
+
+export const updateHomepagePreviewCopyBodyLiveUpdatesButtonHrefMax = 500;
+
 export const updateHomepagePreviewCopyBodyFacultyEyebrowMax = 160;
 
 export const updateHomepagePreviewCopyBodyFacultyHeadingMax = 160;
 
+export const updateHomepagePreviewCopyBodyFacultyDescriptionMax = 1000;
+
+export const updateHomepagePreviewCopyBodyFacultyButtonLabelMax = 160;
+
+export const updateHomepagePreviewCopyBodyFacultyButtonHrefMax = 500;
+
 export const updateHomepagePreviewCopyBodyGalleryEyebrowMax = 160;
 
 export const updateHomepagePreviewCopyBodyGalleryHeadingMax = 160;
+
+export const updateHomepagePreviewCopyBodyGalleryDescriptionMax = 1000;
+
+export const updateHomepagePreviewCopyBodyGalleryButtonLabelMax = 160;
+
+export const updateHomepagePreviewCopyBodyGalleryButtonHrefMax = 500;
 
 
 
 export const UpdateHomepagePreviewCopyBody = zod.object({
   "liveUpdatesEyebrow": zod.string().min(1).max(updateHomepagePreviewCopyBodyLiveUpdatesEyebrowMax).optional(),
   "liveUpdatesHeading": zod.string().min(1).max(updateHomepagePreviewCopyBodyLiveUpdatesHeadingMax).optional(),
+  "liveUpdatesButtonLabel": zod.string().min(1).max(updateHomepagePreviewCopyBodyLiveUpdatesButtonLabelMax).optional(),
+  "liveUpdatesButtonHref": zod.string().min(1).max(updateHomepagePreviewCopyBodyLiveUpdatesButtonHrefMax).optional(),
   "facultyEyebrow": zod.string().min(1).max(updateHomepagePreviewCopyBodyFacultyEyebrowMax).optional(),
   "facultyHeading": zod.string().min(1).max(updateHomepagePreviewCopyBodyFacultyHeadingMax).optional(),
+  "facultyDescription": zod.string().min(1).max(updateHomepagePreviewCopyBodyFacultyDescriptionMax).optional(),
+  "facultyButtonLabel": zod.string().min(1).max(updateHomepagePreviewCopyBodyFacultyButtonLabelMax).optional(),
+  "facultyButtonHref": zod.string().min(1).max(updateHomepagePreviewCopyBodyFacultyButtonHrefMax).optional(),
   "galleryEyebrow": zod.string().min(1).max(updateHomepagePreviewCopyBodyGalleryEyebrowMax).optional(),
-  "galleryHeading": zod.string().min(1).max(updateHomepagePreviewCopyBodyGalleryHeadingMax).optional()
+  "galleryHeading": zod.string().min(1).max(updateHomepagePreviewCopyBodyGalleryHeadingMax).optional(),
+  "galleryDescription": zod.string().min(1).max(updateHomepagePreviewCopyBodyGalleryDescriptionMax).optional(),
+  "galleryButtonLabel": zod.string().min(1).max(updateHomepagePreviewCopyBodyGalleryButtonLabelMax).optional(),
+  "galleryButtonHref": zod.string().min(1).max(updateHomepagePreviewCopyBodyGalleryButtonHrefMax).optional()
 })
 
 export const UpdateHomepagePreviewCopyResponse = zod.object({
   "liveUpdatesEyebrow": zod.string(),
   "liveUpdatesHeading": zod.string(),
+  "liveUpdatesButtonLabel": zod.string(),
+  "liveUpdatesButtonHref": zod.string(),
   "facultyEyebrow": zod.string(),
   "facultyHeading": zod.string(),
+  "facultyDescription": zod.string(),
+  "facultyButtonLabel": zod.string(),
+  "facultyButtonHref": zod.string(),
   "galleryEyebrow": zod.string(),
   "galleryHeading": zod.string(),
+  "galleryDescription": zod.string(),
+  "galleryButtonLabel": zod.string(),
+  "galleryButtonHref": zod.string(),
   "updatedAt": zod.coerce.date()
 })
 
@@ -1335,6 +1405,7 @@ export const GetAdminHomepageFavoriteTopicsResponse = zod.object({
   "eyebrow": zod.string(),
   "heading": zod.string(),
   "description": zod.string(),
+  "buttonLabel": zod.string(),
   "isVisible": zod.boolean(),
   "sortOrder": zod.number().int(),
   "updatedAt": zod.coerce.date(),
@@ -1360,6 +1431,8 @@ export const GetAdminHomepageFavoriteTopicsResponse = zod.object({
  * @summary Update homepage favorite topics
  */
 
+export const updateHomepageFavoriteTopicsBodyButtonLabelMax = 160;
+
 export const updateHomepageFavoriteTopicsBodySortOrderMax = 20;
 
 
@@ -1380,6 +1453,7 @@ export const UpdateHomepageFavoriteTopicsBody = zod.object({
   "eyebrow": zod.string(),
   "heading": zod.string().min(1),
   "description": zod.string(),
+  "buttonLabel": zod.string().min(1).max(updateHomepageFavoriteTopicsBodyButtonLabelMax).optional(),
   "isVisible": zod.boolean(),
   "sortOrder": zod.number().int().min(1).max(updateHomepageFavoriteTopicsBodySortOrderMax),
   "topics": zod.array(zod.object({
@@ -1403,6 +1477,7 @@ export const UpdateHomepageFavoriteTopicsResponse = zod.object({
   "eyebrow": zod.string(),
   "heading": zod.string(),
   "description": zod.string(),
+  "buttonLabel": zod.string(),
   "isVisible": zod.boolean(),
   "sortOrder": zod.number().int(),
   "updatedAt": zod.coerce.date(),
@@ -1811,6 +1886,8 @@ export const GetAdminHomepageKnowledgeHubResponse = zod.object({
   "eyebrow": zod.string(),
   "heading": zod.string(),
   "description": zod.string(),
+  "buttonLabel": zod.string(),
+  "buttonHref": zod.string(),
   "isVisible": zod.boolean(),
   "sortOrder": zod.number().int(),
   "updatedAt": zod.coerce.date(),
@@ -1839,6 +1916,10 @@ export const GetAdminHomepageKnowledgeHubResponse = zod.object({
 
 
 
+export const updateHomepageKnowledgeHubBodyButtonLabelMax = 160;
+
+export const updateHomepageKnowledgeHubBodyButtonHrefMax = 500;
+
 export const updateHomepageKnowledgeHubBodySortOrderMax = 20;
 
 
@@ -1859,6 +1940,8 @@ export const UpdateHomepageKnowledgeHubBody = zod.object({
   "eyebrow": zod.string().min(1),
   "heading": zod.string().min(1),
   "description": zod.string().min(1),
+  "buttonLabel": zod.string().min(1).max(updateHomepageKnowledgeHubBodyButtonLabelMax).optional(),
+  "buttonHref": zod.string().min(1).max(updateHomepageKnowledgeHubBodyButtonHrefMax).optional(),
   "isVisible": zod.boolean(),
   "sortOrder": zod.number().int().min(1).max(updateHomepageKnowledgeHubBodySortOrderMax),
   "resources": zod.array(zod.object({
@@ -1883,6 +1966,8 @@ export const UpdateHomepageKnowledgeHubResponse = zod.object({
   "eyebrow": zod.string(),
   "heading": zod.string(),
   "description": zod.string(),
+  "buttonLabel": zod.string(),
+  "buttonHref": zod.string(),
   "isVisible": zod.boolean(),
   "sortOrder": zod.number().int(),
   "updatedAt": zod.coerce.date(),
@@ -1913,6 +1998,8 @@ export const GetAdminHomepageAdmissionsFaqResponse = zod.object({
   "eyebrow": zod.string(),
   "heading": zod.string(),
   "description": zod.string(),
+  "ctaLabel": zod.string(),
+  "ctaHref": zod.string(),
   "isVisible": zod.boolean(),
   "sortOrder": zod.number().int(),
   "updatedAt": zod.coerce.date(),
@@ -1932,6 +2019,10 @@ export const GetAdminHomepageAdmissionsFaqResponse = zod.object({
 
 
 
+export const updateHomepageAdmissionsFaqBodyCtaLabelMax = 240;
+
+export const updateHomepageAdmissionsFaqBodyCtaHrefMax = 500;
+
 export const updateHomepageAdmissionsFaqBodySortOrderMax = 20;
 
 
@@ -1946,6 +2037,8 @@ export const UpdateHomepageAdmissionsFaqBody = zod.object({
   "eyebrow": zod.string().min(1),
   "heading": zod.string().min(1),
   "description": zod.string().min(1),
+  "ctaLabel": zod.string().min(1).max(updateHomepageAdmissionsFaqBodyCtaLabelMax).optional(),
+  "ctaHref": zod.string().min(1).max(updateHomepageAdmissionsFaqBodyCtaHrefMax).optional(),
   "isVisible": zod.boolean(),
   "sortOrder": zod.number().int().min(1).max(updateHomepageAdmissionsFaqBodySortOrderMax),
   "questions": zod.array(zod.object({
@@ -1961,6 +2054,8 @@ export const UpdateHomepageAdmissionsFaqResponse = zod.object({
   "eyebrow": zod.string(),
   "heading": zod.string(),
   "description": zod.string(),
+  "ctaLabel": zod.string(),
+  "ctaHref": zod.string(),
   "isVisible": zod.boolean(),
   "sortOrder": zod.number().int(),
   "updatedAt": zod.coerce.date(),
@@ -2323,6 +2418,7 @@ export const UpdateAboutChairmanMessageResponse = zod.object({
  */
 export const GetAdminAboutGuidingPrinciplesResponse = zod.object({
   "id": zod.string(),
+  "eyebrow": zod.string(),
   "heading": zod.string(),
   "description": zod.string(),
   "visionIcon": zod.string(),
@@ -2348,6 +2444,8 @@ export const GetAdminAboutGuidingPrinciplesResponse = zod.object({
 /**
  * @summary Update About page guiding principles settings
  */
+export const updateAboutGuidingPrinciplesBodyEyebrowMax = 160;
+
 
 
 
@@ -2363,6 +2461,7 @@ export const updateAboutGuidingPrinciplesBodyValuesMax = 20;
 
 
 export const UpdateAboutGuidingPrinciplesBody = zod.object({
+  "eyebrow": zod.string().min(1).max(updateAboutGuidingPrinciplesBodyEyebrowMax).optional(),
   "heading": zod.string().min(1),
   "description": zod.string(),
   "visionIcon": zod.string().min(1),
@@ -2384,6 +2483,7 @@ export const UpdateAboutGuidingPrinciplesBody = zod.object({
 
 export const UpdateAboutGuidingPrinciplesResponse = zod.object({
   "id": zod.string(),
+  "eyebrow": zod.string(),
   "heading": zod.string(),
   "description": zod.string(),
   "visionIcon": zod.string(),
@@ -2411,6 +2511,7 @@ export const UpdateAboutGuidingPrinciplesResponse = zod.object({
  */
 export const GetAdminAboutWhyParentsChooseResponse = zod.object({
   "id": zod.string(),
+  "eyebrow": zod.string(),
   "heading": zod.string(),
   "description": zod.string(),
   "isVisible": zod.boolean(),
@@ -2430,6 +2531,8 @@ export const GetAdminAboutWhyParentsChooseResponse = zod.object({
 /**
  * @summary Update About page parent-choice settings
  */
+export const updateAboutWhyParentsChooseBodyEyebrowMax = 160;
+
 
 
 
@@ -2440,6 +2543,7 @@ export const updateAboutWhyParentsChooseBodyBenefitsMax = 20;
 
 
 export const UpdateAboutWhyParentsChooseBody = zod.object({
+  "eyebrow": zod.string().min(1).max(updateAboutWhyParentsChooseBodyEyebrowMax).optional(),
   "heading": zod.string().min(1),
   "description": zod.string(),
   "isVisible": zod.boolean(),
@@ -2455,6 +2559,7 @@ export const UpdateAboutWhyParentsChooseBody = zod.object({
 
 export const UpdateAboutWhyParentsChooseResponse = zod.object({
   "id": zod.string(),
+  "eyebrow": zod.string(),
   "heading": zod.string(),
   "description": zod.string(),
   "isVisible": zod.boolean(),
@@ -2476,6 +2581,7 @@ export const UpdateAboutWhyParentsChooseResponse = zod.object({
  */
 export const GetAdminAboutLeadershipResponse = zod.object({
   "id": zod.string(),
+  "eyebrow": zod.string(),
   "heading": zod.string(),
   "description": zod.string(),
   "isVisible": zod.boolean(),
@@ -2503,6 +2609,8 @@ export const GetAdminAboutLeadershipResponse = zod.object({
 /**
  * @summary Update About page leadership settings
  */
+export const updateAboutLeadershipBodyEyebrowMax = 160;
+
 
 
 
@@ -2513,6 +2621,7 @@ export const updateAboutLeadershipBodyMembersMax = 20;
 
 
 export const UpdateAboutLeadershipBody = zod.object({
+  "eyebrow": zod.string().min(1).max(updateAboutLeadershipBodyEyebrowMax).optional(),
   "heading": zod.string().min(1),
   "description": zod.string(),
   "isVisible": zod.boolean(),
@@ -2536,6 +2645,7 @@ export const UpdateAboutLeadershipBody = zod.object({
 
 export const UpdateAboutLeadershipResponse = zod.object({
   "id": zod.string(),
+  "eyebrow": zod.string(),
   "heading": zod.string(),
   "description": zod.string(),
   "isVisible": zod.boolean(),
@@ -2565,6 +2675,7 @@ export const UpdateAboutLeadershipResponse = zod.object({
  */
 export const GetAdminAboutCampusHighlightsResponse = zod.object({
   "id": zod.string(),
+  "eyebrow": zod.string(),
   "heading": zod.string(),
   "description": zod.string(),
   "isVisible": zod.boolean(),
@@ -2590,6 +2701,8 @@ export const GetAdminAboutCampusHighlightsResponse = zod.object({
 /**
  * @summary Update campus highlights settings
  */
+export const updateAboutCampusHighlightsBodyEyebrowMax = 160;
+
 
 export const updateAboutCampusHighlightsBodySortOrderMax = 20;
 
@@ -2603,6 +2716,7 @@ export const updateAboutCampusHighlightsBodyHighlightsMax = 20;
 
 
 export const UpdateAboutCampusHighlightsBody = zod.object({
+  "eyebrow": zod.string().min(1).max(updateAboutCampusHighlightsBodyEyebrowMax).optional(),
   "heading": zod.string().min(1),
   "description": zod.string(),
   "isVisible": zod.boolean(),
@@ -2624,6 +2738,7 @@ export const UpdateAboutCampusHighlightsBody = zod.object({
 
 export const UpdateAboutCampusHighlightsResponse = zod.object({
   "id": zod.string(),
+  "eyebrow": zod.string(),
   "heading": zod.string(),
   "description": zod.string(),
   "isVisible": zod.boolean(),
@@ -2651,6 +2766,7 @@ export const UpdateAboutCampusHighlightsResponse = zod.object({
  */
 export const GetAdminAboutAchievementsResponse = zod.object({
   "id": zod.string(),
+  "eyebrow": zod.string(),
   "heading": zod.string(),
   "description": zod.string(),
   "isVisible": zod.boolean(),
@@ -2671,6 +2787,8 @@ export const GetAdminAboutAchievementsResponse = zod.object({
 /**
  * @summary Update achievement statistics settings
  */
+export const updateAboutAchievementsBodyEyebrowMax = 160;
+
 
 export const updateAboutAchievementsBodySortOrderMax = 20;
 
@@ -2687,6 +2805,7 @@ export const updateAboutAchievementsBodyStatisticsMax = 20;
 
 
 export const UpdateAboutAchievementsBody = zod.object({
+  "eyebrow": zod.string().min(1).max(updateAboutAchievementsBodyEyebrowMax).optional(),
   "heading": zod.string().min(1),
   "description": zod.string(),
   "isVisible": zod.boolean(),
@@ -2703,6 +2822,7 @@ export const UpdateAboutAchievementsBody = zod.object({
 
 export const UpdateAboutAchievementsResponse = zod.object({
   "id": zod.string(),
+  "eyebrow": zod.string(),
   "heading": zod.string(),
   "description": zod.string(),
   "isVisible": zod.boolean(),
@@ -2725,8 +2845,13 @@ export const UpdateAboutAchievementsResponse = zod.object({
  */
 export const GetAdminAboutFaqResponse = zod.object({
   "id": zod.string(),
+  "eyebrow": zod.string(),
   "heading": zod.string(),
   "description": zod.string(),
+  "helpEyebrow": zod.string(),
+  "helpHeadingWithCounselor": zod.string(),
+  "helpHeadingWithoutCounselor": zod.string(),
+  "helpDescription": zod.string(),
   "isVisible": zod.boolean(),
   "sortOrder": zod.number().int(),
   "updatedAt": zod.coerce.date(),
@@ -2743,6 +2868,16 @@ export const GetAdminAboutFaqResponse = zod.object({
 /**
  * @summary Update FAQ settings
  */
+export const updateAboutFaqBodyEyebrowMax = 160;
+
+
+export const updateAboutFaqBodyHelpEyebrowMax = 160;
+
+export const updateAboutFaqBodyHelpHeadingWithCounselorMax = 200;
+
+export const updateAboutFaqBodyHelpHeadingWithoutCounselorMax = 200;
+
+export const updateAboutFaqBodyHelpDescriptionMax = 1000;
 
 export const updateAboutFaqBodySortOrderMax = 20;
 
@@ -2755,8 +2890,13 @@ export const updateAboutFaqBodyQuestionsMax = 20;
 
 
 export const UpdateAboutFaqBody = zod.object({
+  "eyebrow": zod.string().min(1).max(updateAboutFaqBodyEyebrowMax).optional(),
   "heading": zod.string().min(1),
   "description": zod.string(),
+  "helpEyebrow": zod.string().min(1).max(updateAboutFaqBodyHelpEyebrowMax).optional(),
+  "helpHeadingWithCounselor": zod.string().min(1).max(updateAboutFaqBodyHelpHeadingWithCounselorMax).optional(),
+  "helpHeadingWithoutCounselor": zod.string().min(1).max(updateAboutFaqBodyHelpHeadingWithoutCounselorMax).optional(),
+  "helpDescription": zod.string().min(1).max(updateAboutFaqBodyHelpDescriptionMax).optional(),
   "isVisible": zod.boolean(),
   "sortOrder": zod.number().int().min(1).max(updateAboutFaqBodySortOrderMax),
   "questions": zod.array(zod.object({
@@ -2769,8 +2909,13 @@ export const UpdateAboutFaqBody = zod.object({
 
 export const UpdateAboutFaqResponse = zod.object({
   "id": zod.string(),
+  "eyebrow": zod.string(),
   "heading": zod.string(),
   "description": zod.string(),
+  "helpEyebrow": zod.string(),
+  "helpHeadingWithCounselor": zod.string(),
+  "helpHeadingWithoutCounselor": zod.string(),
+  "helpDescription": zod.string(),
   "isVisible": zod.boolean(),
   "sortOrder": zod.number().int(),
   "updatedAt": zod.coerce.date(),
@@ -2789,6 +2934,7 @@ export const UpdateAboutFaqResponse = zod.object({
  */
 export const GetAdminAboutAdmissionCtaResponse = zod.object({
   "id": zod.string(),
+  "eyebrow": zod.string(),
   "heading": zod.string(),
   "supportingText": zod.string(),
   "applyButtonLabel": zod.string(),
@@ -2812,6 +2958,8 @@ export const GetAdminAboutAdmissionCtaResponse = zod.object({
 /**
  * @summary Update admission CTA and counselor settings
  */
+export const updateAboutAdmissionCtaBodyEyebrowMax = 160;
+
 
 
 
@@ -2829,6 +2977,7 @@ export const updateAboutAdmissionCtaBodySortOrderMax = 20;
 
 
 export const UpdateAboutAdmissionCtaBody = zod.object({
+  "eyebrow": zod.string().min(1).max(updateAboutAdmissionCtaBodyEyebrowMax).optional(),
   "heading": zod.string().min(1),
   "supportingText": zod.string().min(1),
   "applyButtonLabel": zod.string().min(1),
@@ -2849,6 +2998,7 @@ export const UpdateAboutAdmissionCtaBody = zod.object({
 
 export const UpdateAboutAdmissionCtaResponse = zod.object({
   "id": zod.string(),
+  "eyebrow": zod.string(),
   "heading": zod.string(),
   "supportingText": zod.string(),
   "applyButtonLabel": zod.string(),

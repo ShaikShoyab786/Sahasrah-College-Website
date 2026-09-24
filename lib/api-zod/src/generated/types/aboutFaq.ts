@@ -9,8 +9,13 @@ import type { AboutFaqItem } from './aboutFaqItem';
 
 export interface AboutFaq {
   id: string;
+  eyebrow: string;
   heading: string;
   description: string;
+  helpEyebrow: string;
+  helpHeadingWithCounselor: string;
+  helpHeadingWithoutCounselor: string;
+  helpDescription: string;
   isVisible: boolean;
   sortOrder: number;
   updatedAt: Date;

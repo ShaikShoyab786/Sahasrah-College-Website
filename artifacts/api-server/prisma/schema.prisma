@@ -135,6 +135,7 @@ model HomepageAboutPreview {
   heading               String
   description           String
   body                  String
+  calloutLabel          String   @default("Learning with purpose")
   buttonLabel           String
   buttonHref            String
   primaryImage          String?
@@ -166,14 +167,22 @@ model HomepageLiveUpdate {
 }
 
 model HomepagePreviewCopy {
-  id                   String   @id @default("singleton")
-  liveUpdatesEyebrow   String   @default("From Sahsrah")
-  liveUpdatesHeading   String   @default("Live Updates")
-  facultyEyebrow       String   @default("Learn From the Best")
-  facultyHeading       String   @default("Our Expert Faculty")
-  galleryEyebrow       String   @default("Campus Gallery")
-  galleryHeading       String   @default("Life at KVR College")
-  updatedAt            DateTime @updatedAt
+  id                     String   @id @default("singleton")
+  liveUpdatesEyebrow     String   @default("From Sahsrah")
+  liveUpdatesHeading     String   @default("Live Updates")
+  liveUpdatesButtonLabel String   @default("View all updates")
+  liveUpdatesButtonHref  String   @default("#live-updates")
+  facultyEyebrow         String   @default("Learn From the Best")
+  facultyHeading         String   @default("Our Expert Faculty")
+  facultyDescription     String   @default("Experienced subject-matter experts who make difficult ideas clearer and ambitious goals more achievable.")
+  facultyButtonLabel     String   @default("More Faculty")
+  facultyButtonHref      String   @default("/about#leadership")
+  galleryEyebrow         String   @default("Campus Gallery")
+  galleryHeading         String   @default("Life at KVR College")
+  galleryDescription     String   @default("A quick look at the spaces, routines, and experiences that shape the KVR college day.")
+  galleryButtonLabel     String   @default("View Gallery")
+  galleryButtonHref      String   @default("/about#campus-highlights")
+  updatedAt              DateTime @updatedAt
 }
 
 model HomepageStatistics {
@@ -208,6 +217,7 @@ model HomepageFavoriteTopics {
   eyebrow     String
   heading     String
   description String
+  buttonLabel String                  @default("Explore curriculum")
   isVisible   Boolean                 @default(true)
   sortOrder   Int                     @default(5)
   updatedAt   DateTime                @updatedAt
@@ -330,6 +340,8 @@ model HomepageKnowledgeHub {
   eyebrow     String
   heading     String
   description String
+  buttonLabel String                    @default("View All Resources")
+  buttonHref  String                    @default("/#home-knowledge-hub")
   isVisible   Boolean                   @default(true)
   sortOrder   Int                       @default(11)
   updatedAt   DateTime                  @updatedAt
@@ -364,6 +376,8 @@ model HomepageAdmissionsFaq {
   eyebrow     String
   heading     String
   description String
+  ctaLabel    String                    @default("Still have a question? Talk to admissions")
+  ctaHref     String                    @default("/contact")
   isVisible   Boolean                   @default(true)
   sortOrder   Int                       @default(12)
   updatedAt   DateTime                  @updatedAt
@@ -494,6 +508,7 @@ model AboutChairmanMessage {
 
 model AboutGuidingPrinciples {
   id                String                    @id @default("singleton")
+  eyebrow           String                    @default("GUIDING PRINCIPLES")
   heading           String
   description       String
   visionIcon        String
@@ -525,6 +540,7 @@ model AboutGuidingPrincipleValue {
 
 model AboutWhyParentsChoose {
   id          String                    @id @default("singleton")
+  eyebrow     String                    @default("WHY SAHSRAH")
   heading     String
   description String
   isVisible   Boolean                   @default(true)
@@ -573,6 +589,7 @@ model AboutLeadershipMember {
 
 model AboutLeadership {
   id          String                  @id @default("singleton")
+  eyebrow     String                  @default("OUR LEADERSHIP")
   heading     String
   description String
   isVisible   Boolean                 @default(true)
@@ -583,6 +600,7 @@ model AboutLeadership {
 
 model AboutCampusHighlights {
   id          String                  @id @default("singleton")
+  eyebrow     String                  @default("CAMPUS LIFE")
   heading     String
   description String
   isVisible   Boolean                 @default(true)
@@ -614,6 +632,7 @@ model AboutCampusHighlight {
 
 model AboutAchievements {
   id          String                    @id @default("singleton")
+  eyebrow     String                    @default("OUR IMPACT")
   heading     String
   description String
   isVisible   Boolean                   @default(true)
@@ -639,13 +658,18 @@ model AboutAchievementStatistic {
 }
 
 model AboutFaq {
-  id          String         @id @default("singleton")
-  heading     String
-  description String
-  isVisible   Boolean        @default(true)
-  sortOrder   Int            @default(9)
-  updatedAt   DateTime       @updatedAt
-  questions   AboutFaqItem[]
+  id                          String         @id @default("singleton")
+  eyebrow                     String         @default("NEED TO KNOW")
+  heading                     String
+  description                 String
+  helpEyebrow                 String         @default("Admissions help")
+  helpHeadingWithCounselor    String         @default("Still Have Questions?")
+  helpHeadingWithoutCounselor String         @default("Talk with our admissions team.")
+  helpDescription             String         @default("Our admission experts are here to help you compare programs, plan a campus visit, and take the next step.")
+  isVisible                   Boolean        @default(true)
+  sortOrder                   Int            @default(9)
+  updatedAt                   DateTime       @updatedAt
+  questions                   AboutFaqItem[]
 }
 
 model AboutFaqItem {
@@ -664,6 +688,7 @@ model AboutFaqItem {
 
 model AboutAdmissionCta {
   id                    String   @id @default("singleton")
+  eyebrow               String   @default("ADMISSIONS 2026–27")
   heading               String
   supportingText        String
   applyButtonLabel      String

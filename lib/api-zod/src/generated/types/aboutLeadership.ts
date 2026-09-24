@@ -9,6 +9,7 @@ import type { AboutLeadershipMember } from './aboutLeadershipMember';
 
 export interface AboutLeadership {
   id: string;
+  eyebrow: string;
   heading: string;
   description: string;
   isVisible: boolean;

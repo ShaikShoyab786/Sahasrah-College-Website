@@ -9,6 +9,7 @@ import type { AboutCampusHighlight } from './aboutCampusHighlight';
 
 export interface AboutCampusHighlights {
   id: string;
+  eyebrow: string;
   heading: string;
   description: string;
   isVisible: boolean;

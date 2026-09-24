@@ -50,7 +50,7 @@ export function AboutPreview({ content }: AboutPreviewProps) {
           </div>
           <div className="about-preview-reveal about-preview-callout absolute bottom-10 left-8 hidden items-center gap-3 rounded-full border border-white/20 bg-[hsl(var(--primary)/.86)] px-4 py-3 text-xs font-bold text-white shadow-lg backdrop-blur-md sm:flex">
             <BookOpen size={16} className="text-[hsl(var(--accent))]" />
-            <span>Learning with purpose</span>
+            <span>{content.calloutLabel || 'Learning with purpose'}</span>
           </div>
         </div>
 

@@ -12,6 +12,7 @@ export interface HomepageAboutPreview {
   heading: string;
   description: string;
   body: string;
+  calloutLabel: string;
   buttonLabel: string;
   buttonHref: string;
   /** @nullable */

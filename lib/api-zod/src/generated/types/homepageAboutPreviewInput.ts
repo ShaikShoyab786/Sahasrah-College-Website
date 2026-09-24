@@ -12,6 +12,11 @@ export interface HomepageAboutPreviewInput {
   heading: string;
   description: string;
   body: string;
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  calloutLabel?: string;
   buttonLabel: string;
   buttonHref: string;
   /** @nullable */

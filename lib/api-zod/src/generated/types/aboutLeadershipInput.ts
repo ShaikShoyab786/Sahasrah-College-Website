@@ -8,6 +8,11 @@
 import type { AboutLeadershipMemberInput } from './aboutLeadershipMemberInput';
 
 export interface AboutLeadershipInput {
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  eyebrow?: string;
   /** @minLength 1 */
   heading: string;
   description: string;

@@ -14,6 +14,16 @@ export interface HomepageKnowledgeHubInput {
   heading: string;
   /** @minLength 1 */
   description: string;
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  buttonLabel?: string;
+  /**
+     * @minLength 1
+     * @maxLength 500
+     */
+  buttonHref?: string;
   isVisible: boolean;
   /**
      * @minimum 1

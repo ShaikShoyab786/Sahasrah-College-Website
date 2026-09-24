@@ -8,6 +8,11 @@
 import type { AboutParentChoiceBenefitInput } from './aboutParentChoiceBenefitInput';
 
 export interface AboutWhyParentsChooseInput {
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  eyebrow?: string;
   /** @minLength 1 */
   heading: string;
   description: string;

@@ -325,6 +325,7 @@ export interface HomepageAboutPreview {
   heading: string;
   description: string;
   body: string;
+  calloutLabel: string;
   buttonLabel: string;
   buttonHref: string;
   /** @nullable */
@@ -344,6 +345,11 @@ export interface HomepageAboutPreviewInput {
   heading: string;
   description: string;
   body: string;
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  calloutLabel?: string;
   buttonLabel: string;
   buttonHref: string;
   /** @nullable */
@@ -401,10 +407,18 @@ export interface HomepageLiveUpdateInput {
 export interface HomepagePreviewCopy {
   liveUpdatesEyebrow: string;
   liveUpdatesHeading: string;
+  liveUpdatesButtonLabel: string;
+  liveUpdatesButtonHref: string;
   facultyEyebrow: string;
   facultyHeading: string;
+  facultyDescription: string;
+  facultyButtonLabel: string;
+  facultyButtonHref: string;
   galleryEyebrow: string;
   galleryHeading: string;
+  galleryDescription: string;
+  galleryButtonLabel: string;
+  galleryButtonHref: string;
   updatedAt: string;
 }
 
@@ -423,12 +437,37 @@ export interface HomepagePreviewCopyInput {
      * @minLength 1
      * @maxLength 160
      */
+  liveUpdatesButtonLabel?: string;
+  /**
+     * @minLength 1
+     * @maxLength 500
+     */
+  liveUpdatesButtonHref?: string;
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
   facultyEyebrow?: string;
   /**
      * @minLength 1
      * @maxLength 160
      */
   facultyHeading?: string;
+  /**
+     * @minLength 1
+     * @maxLength 1000
+     */
+  facultyDescription?: string;
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  facultyButtonLabel?: string;
+  /**
+     * @minLength 1
+     * @maxLength 500
+     */
+  facultyButtonHref?: string;
   /**
      * @minLength 1
      * @maxLength 160
@@ -439,6 +478,21 @@ export interface HomepagePreviewCopyInput {
      * @maxLength 160
      */
   galleryHeading?: string;
+  /**
+     * @minLength 1
+     * @maxLength 1000
+     */
+  galleryDescription?: string;
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  galleryButtonLabel?: string;
+  /**
+     * @minLength 1
+     * @maxLength 500
+     */
+  galleryButtonHref?: string;
 }
 
 export interface HomepageStatistic {
@@ -553,6 +607,7 @@ export interface HomepageFavoriteTopics {
   eyebrow: string;
   heading: string;
   description: string;
+  buttonLabel: string;
   isVisible: boolean;
   sortOrder: number;
   updatedAt: string;
@@ -564,6 +619,11 @@ export interface HomepageFavoriteTopicsInput {
   /** @minLength 1 */
   heading: string;
   description: string;
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  buttonLabel?: string;
   isVisible: boolean;
   /**
      * @minimum 1
@@ -853,6 +913,8 @@ export interface HomepageKnowledgeHub {
   eyebrow: string;
   heading: string;
   description: string;
+  buttonLabel: string;
+  buttonHref: string;
   isVisible: boolean;
   sortOrder: number;
   updatedAt: string;
@@ -866,6 +928,16 @@ export interface HomepageKnowledgeHubInput {
   heading: string;
   /** @minLength 1 */
   description: string;
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  buttonLabel?: string;
+  /**
+     * @minLength 1
+     * @maxLength 500
+     */
+  buttonHref?: string;
   isVisible: boolean;
   /**
      * @minimum 1
@@ -905,6 +977,8 @@ export interface HomepageAdmissionsFaq {
   eyebrow: string;
   heading: string;
   description: string;
+  ctaLabel: string;
+  ctaHref: string;
   isVisible: boolean;
   sortOrder: number;
   updatedAt: string;
@@ -918,6 +992,16 @@ export interface HomepageAdmissionsFaqInput {
   heading: string;
   /** @minLength 1 */
   description: string;
+  /**
+     * @minLength 1
+     * @maxLength 240
+     */
+  ctaLabel?: string;
+  /**
+     * @minLength 1
+     * @maxLength 500
+     */
+  ctaHref?: string;
   isVisible: boolean;
   /**
      * @minimum 1
@@ -1269,6 +1353,7 @@ export interface AboutGuidingPrincipleValueInput {
 
 export interface AboutGuidingPrinciples {
   id: string;
+  eyebrow: string;
   heading: string;
   description: string;
   visionIcon: string;
@@ -1286,6 +1371,11 @@ export interface AboutGuidingPrinciples {
 }
 
 export interface AboutGuidingPrinciplesInput {
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  eyebrow?: string;
   /** @minLength 1 */
   heading: string;
   description: string;
@@ -1337,6 +1427,7 @@ export interface AboutParentChoiceBenefitInput {
 
 export interface AboutWhyParentsChoose {
   id: string;
+  eyebrow: string;
   heading: string;
   description: string;
   isVisible: boolean;
@@ -1346,6 +1437,11 @@ export interface AboutWhyParentsChoose {
 }
 
 export interface AboutWhyParentsChooseInput {
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  eyebrow?: string;
   /** @minLength 1 */
   heading: string;
   description: string;
@@ -1409,6 +1505,7 @@ export interface AboutLeadershipMemberInput {
 
 export interface AboutLeadership {
   id: string;
+  eyebrow: string;
   heading: string;
   description: string;
   isVisible: boolean;
@@ -1418,6 +1515,11 @@ export interface AboutLeadership {
 }
 
 export interface AboutLeadershipInput {
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  eyebrow?: string;
   /** @minLength 1 */
   heading: string;
   description: string;
@@ -1478,6 +1580,7 @@ export interface AboutCampusHighlightInput {
 
 export interface AboutCampusHighlights {
   id: string;
+  eyebrow: string;
   heading: string;
   description: string;
   isVisible: boolean;
@@ -1487,6 +1590,11 @@ export interface AboutCampusHighlights {
 }
 
 export interface AboutCampusHighlightsInput {
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  eyebrow?: string;
   /** @minLength 1 */
   heading: string;
   description: string;
@@ -1536,6 +1644,7 @@ export interface AboutAchievementStatisticInput {
 
 export interface AboutAchievements {
   id: string;
+  eyebrow: string;
   heading: string;
   description: string;
   isVisible: boolean;
@@ -1545,6 +1654,11 @@ export interface AboutAchievements {
 }
 
 export interface AboutAchievementsInput {
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  eyebrow?: string;
   /** @minLength 1 */
   heading: string;
   description: string;
@@ -1584,8 +1698,13 @@ export interface AboutFaqItemInput {
 
 export interface AboutFaq {
   id: string;
+  eyebrow: string;
   heading: string;
   description: string;
+  helpEyebrow: string;
+  helpHeadingWithCounselor: string;
+  helpHeadingWithoutCounselor: string;
+  helpDescription: string;
   isVisible: boolean;
   sortOrder: number;
   updatedAt: string;
@@ -1593,9 +1712,34 @@ export interface AboutFaq {
 }
 
 export interface AboutFaqInput {
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  eyebrow?: string;
   /** @minLength 1 */
   heading: string;
   description: string;
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  helpEyebrow?: string;
+  /**
+     * @minLength 1
+     * @maxLength 200
+     */
+  helpHeadingWithCounselor?: string;
+  /**
+     * @minLength 1
+     * @maxLength 200
+     */
+  helpHeadingWithoutCounselor?: string;
+  /**
+     * @minLength 1
+     * @maxLength 1000
+     */
+  helpDescription?: string;
   isVisible: boolean;
   /**
      * @minimum 1
@@ -1611,6 +1755,7 @@ export interface AboutFaqInput {
 
 export interface AboutAdmissionCta {
   id: string;
+  eyebrow: string;
   heading: string;
   supportingText: string;
   applyButtonLabel: string;
@@ -1632,6 +1777,11 @@ export interface AboutAdmissionCta {
 }
 
 export interface AboutAdmissionCtaInput {
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  eyebrow?: string;
   /** @minLength 1 */
   heading: string;
   /** @minLength 1 */

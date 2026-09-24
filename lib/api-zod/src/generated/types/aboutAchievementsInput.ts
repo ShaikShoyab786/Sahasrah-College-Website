@@ -8,6 +8,11 @@
 import type { AboutAchievementStatisticInput } from './aboutAchievementStatisticInput';
 
 export interface AboutAchievementsInput {
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  eyebrow?: string;
   /** @minLength 1 */
   heading: string;
   description: string;

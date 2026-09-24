@@ -8,9 +8,34 @@
 import type { AboutFaqItemInput } from './aboutFaqItemInput';
 
 export interface AboutFaqInput {
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  eyebrow?: string;
   /** @minLength 1 */
   heading: string;
   description: string;
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  helpEyebrow?: string;
+  /**
+     * @minLength 1
+     * @maxLength 200
+     */
+  helpHeadingWithCounselor?: string;
+  /**
+     * @minLength 1
+     * @maxLength 200
+     */
+  helpHeadingWithoutCounselor?: string;
+  /**
+     * @minLength 1
+     * @maxLength 1000
+     */
+  helpDescription?: string;
   isVisible: boolean;
   /**
      * @minimum 1

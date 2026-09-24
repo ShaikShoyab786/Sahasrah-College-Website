@@ -9,9 +9,17 @@
 export interface HomepagePreviewCopy {
   liveUpdatesEyebrow: string;
   liveUpdatesHeading: string;
+  liveUpdatesButtonLabel: string;
+  liveUpdatesButtonHref: string;
   facultyEyebrow: string;
   facultyHeading: string;
+  facultyDescription: string;
+  facultyButtonLabel: string;
+  facultyButtonHref: string;
   galleryEyebrow: string;
   galleryHeading: string;
+  galleryDescription: string;
+  galleryButtonLabel: string;
+  galleryButtonHref: string;
   updatedAt: Date;
 }

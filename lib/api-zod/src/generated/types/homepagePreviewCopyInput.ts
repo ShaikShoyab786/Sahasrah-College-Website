@@ -21,12 +21,37 @@ export interface HomepagePreviewCopyInput {
      * @minLength 1
      * @maxLength 160
      */
+  liveUpdatesButtonLabel?: string;
+  /**
+     * @minLength 1
+     * @maxLength 500
+     */
+  liveUpdatesButtonHref?: string;
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
   facultyEyebrow?: string;
   /**
      * @minLength 1
      * @maxLength 160
      */
   facultyHeading?: string;
+  /**
+     * @minLength 1
+     * @maxLength 1000
+     */
+  facultyDescription?: string;
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  facultyButtonLabel?: string;
+  /**
+     * @minLength 1
+     * @maxLength 500
+     */
+  facultyButtonHref?: string;
   /**
      * @minLength 1
      * @maxLength 160
@@ -37,4 +62,19 @@ export interface HomepagePreviewCopyInput {
      * @maxLength 160
      */
   galleryHeading?: string;
+  /**
+     * @minLength 1
+     * @maxLength 1000
+     */
+  galleryDescription?: string;
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  galleryButtonLabel?: string;
+  /**
+     * @minLength 1
+     * @maxLength 500
+     */
+  galleryButtonHref?: string;
 }

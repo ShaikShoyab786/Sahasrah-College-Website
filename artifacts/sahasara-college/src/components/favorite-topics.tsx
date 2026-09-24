@@ -58,7 +58,7 @@ export function FavoriteTopics({ content }: FavoriteTopicsProps) {
     <section id="favorite-topics" className="overflow-hidden border-t border-[hsl(var(--border))] bg-[hsl(var(--background))] px-6 py-20 lg:px-10 lg:py-28" aria-labelledby="favorite-topics-heading">
       <div className="mx-auto max-w-7xl">
         <div className="mx-auto max-w-2xl text-center">
-          <SectionEyebrow className="about-eyebrow about-eyebrow-centered">Explore Our Programs</SectionEyebrow>
+          <SectionEyebrow className="about-eyebrow about-eyebrow-centered">{content.eyebrow || 'Explore Our Programs'}</SectionEyebrow>
           <h2 id="favorite-topics-heading" className="mt-5 font-display text-5xl font-semibold leading-[.98] tracking-[-.05em] text-[hsl(var(--primary))] md:text-6xl">{content.heading}</h2>
           <p className="mx-auto mt-5 max-w-xl text-base leading-7 text-[hsl(var(--muted-foreground))]">{content.description}</p>
         </div>
@@ -69,7 +69,7 @@ export function FavoriteTopics({ content }: FavoriteTopicsProps) {
             setSelectedIndex(step ? Math.min(topics.length - 1, Math.round(event.currentTarget.scrollLeft / step)) : 0);
           }}>
             <div className="flex gap-4 touch-pan-y">
-              {topics.map((topic, index) => <TopicCard key={topic.id} topic={topic} index={index} />)}
+              {topics.map((topic, index) => <TopicCard key={topic.id} topic={topic} index={index} buttonLabel={content.buttonLabel || 'Explore curriculum'} />)}
             </div>
           </div>
           <div className="mt-7 flex items-center justify-between gap-4">
@@ -87,7 +87,7 @@ export function FavoriteTopics({ content }: FavoriteTopicsProps) {
   );
 }
 
-function TopicCard({ topic, index }: { topic: HomepageFavoriteTopics['topics'][number]; index: number }) {
+function TopicCard({ topic, index, buttonLabel }: { topic: HomepageFavoriteTopics['topics'][number]; index: number; buttonLabel: string }) {
   const Icon = topicIcons[topic.icon ?? ''] ?? BookOpen;
   return (
     <div data-topic-slide className="min-w-0 flex-[0_0_88%] snap-start sm:flex-[0_0_56%] lg:flex-[0_0_31%]">
@@ -104,7 +104,7 @@ function TopicCard({ topic, index }: { topic: HomepageFavoriteTopics['topics'][n
           <ul className="mt-5 space-y-2.5 text-xs font-semibold text-[hsl(var(--foreground))]">
             {[topic.featureOne, topic.featureTwo, topic.featureThree].map((feature) => <li key={feature} className="flex items-start gap-2"><span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-[hsl(var(--accent))]" /> {feature}</li>)}
           </ul>
-          <a href={topic.curriculumUrl} className="mt-auto inline-flex items-center gap-2 pt-7 text-sm font-bold text-[hsl(var(--primary))] transition group-hover:gap-3 group-hover:text-[hsl(var(--accent-foreground))]" data-testid={`link-topic-curriculum-${index + 1}`}>Explore curriculum <ArrowRight size={16} /></a>
+           <a href={topic.curriculumUrl} className="mt-auto inline-flex items-center gap-2 pt-7 text-sm font-bold text-[hsl(var(--primary))] transition group-hover:gap-3 group-hover:text-[hsl(var(--accent-foreground))]" data-testid={`link-topic-curriculum-${index + 1}`}>{buttonLabel} <ArrowRight size={16} /></a>
         </div>
       </article>
     </div>

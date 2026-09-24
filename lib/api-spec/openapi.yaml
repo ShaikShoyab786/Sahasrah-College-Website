@@ -2579,6 +2579,8 @@ components:
           type: string
         body:
           type: string
+        calloutLabel:
+          type: string
         buttonLabel:
           type: string
         buttonHref:
@@ -2604,6 +2606,7 @@ components:
         - heading
         - description
         - body
+        - calloutLabel
         - buttonLabel
         - buttonHref
         - primaryImage
@@ -2625,6 +2628,10 @@ components:
           type: string
         body:
           type: string
+        calloutLabel:
+          type: string
+          minLength: 1
+          maxLength: 160
         buttonLabel:
           type: string
         buttonHref:
@@ -2724,18 +2731,34 @@ components:
           type: string
         liveUpdatesHeading:
           type: string
+        liveUpdatesButtonLabel:
+          type: string
+        liveUpdatesButtonHref:
+          type: string
         facultyEyebrow:
           type: string
         facultyHeading:
+          type: string
+        facultyDescription:
+          type: string
+        facultyButtonLabel:
+          type: string
+        facultyButtonHref:
           type: string
         galleryEyebrow:
           type: string
         galleryHeading:
           type: string
+        galleryDescription:
+          type: string
+        galleryButtonLabel:
+          type: string
+        galleryButtonHref:
+          type: string
         updatedAt:
           type: string
           format: date-time
-      required: [liveUpdatesEyebrow, liveUpdatesHeading, facultyEyebrow, facultyHeading, galleryEyebrow, galleryHeading, updatedAt]
+      required: [liveUpdatesEyebrow, liveUpdatesHeading, liveUpdatesButtonLabel, liveUpdatesButtonHref, facultyEyebrow, facultyHeading, facultyDescription, facultyButtonLabel, facultyButtonHref, galleryEyebrow, galleryHeading, galleryDescription, galleryButtonLabel, galleryButtonHref, updatedAt]
     HomepagePreviewCopyInput:
       type: object
       properties:
@@ -2747,6 +2770,14 @@ components:
           type: string
           minLength: 1
           maxLength: 160
+        liveUpdatesButtonLabel:
+          type: string
+          minLength: 1
+          maxLength: 160
+        liveUpdatesButtonHref:
+          type: string
+          minLength: 1
+          maxLength: 500
         facultyEyebrow:
           type: string
           minLength: 1
@@ -2755,6 +2786,18 @@ components:
           type: string
           minLength: 1
           maxLength: 160
+        facultyDescription:
+          type: string
+          minLength: 1
+          maxLength: 1000
+        facultyButtonLabel:
+          type: string
+          minLength: 1
+          maxLength: 160
+        facultyButtonHref:
+          type: string
+          minLength: 1
+          maxLength: 500
         galleryEyebrow:
           type: string
           minLength: 1
@@ -2763,6 +2806,18 @@ components:
           type: string
           minLength: 1
           maxLength: 160
+        galleryDescription:
+          type: string
+          minLength: 1
+          maxLength: 1000
+        galleryButtonLabel:
+          type: string
+          minLength: 1
+          maxLength: 160
+        galleryButtonHref:
+          type: string
+          minLength: 1
+          maxLength: 500
     HomepageStatistic:
       type: object
       properties:
@@ -2928,6 +2983,8 @@ components:
           type: string
         description:
           type: string
+        buttonLabel:
+          type: string
         isVisible:
           type: boolean
         sortOrder:
@@ -2939,7 +2996,7 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/HomepageFavoriteTopic"
-      required: [id, eyebrow, heading, description, isVisible, sortOrder, updatedAt, topics]
+      required: [id, eyebrow, heading, description, buttonLabel, isVisible, sortOrder, updatedAt, topics]
     HomepageFavoriteTopicsInput:
       type: object
       properties:
@@ -2950,6 +3007,10 @@ components:
           minLength: 1
         description:
           type: string
+        buttonLabel:
+          type: string
+          minLength: 1
+          maxLength: 160
         isVisible:
           type: boolean
         sortOrder:
@@ -3344,6 +3405,10 @@ components:
           type: string
         description:
           type: string
+        buttonLabel:
+          type: string
+        buttonHref:
+          type: string
         isVisible:
           type: boolean
         sortOrder:
@@ -3355,7 +3420,7 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/HomepageKnowledgeResource"
-      required: [id, eyebrow, heading, description, isVisible, sortOrder, updatedAt, resources]
+      required: [id, eyebrow, heading, description, buttonLabel, buttonHref, isVisible, sortOrder, updatedAt, resources]
     HomepageKnowledgeHubInput:
       type: object
       properties:
@@ -3368,6 +3433,14 @@ components:
         description:
           type: string
           minLength: 1
+        buttonLabel:
+          type: string
+          minLength: 1
+          maxLength: 160
+        buttonHref:
+          type: string
+          minLength: 1
+          maxLength: 500
         isVisible:
           type: boolean
         sortOrder:
@@ -3422,6 +3495,10 @@ components:
           type: string
         description:
           type: string
+        ctaLabel:
+          type: string
+        ctaHref:
+          type: string
         isVisible:
           type: boolean
         sortOrder:
@@ -3433,7 +3510,7 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/HomepageAdmissionsFaqItem"
-      required: [id, eyebrow, heading, description, isVisible, sortOrder, updatedAt, questions]
+      required: [id, eyebrow, heading, description, ctaLabel, ctaHref, isVisible, sortOrder, updatedAt, questions]
     HomepageAdmissionsFaqInput:
       type: object
       properties:
@@ -3446,6 +3523,14 @@ components:
         description:
           type: string
           minLength: 1
+        ctaLabel:
+          type: string
+          minLength: 1
+          maxLength: 240
+        ctaHref:
+          type: string
+          minLength: 1
+          maxLength: 500
         isVisible:
           type: boolean
         sortOrder:
@@ -4102,6 +4187,8 @@ components:
       properties:
         id:
           type: string
+        eyebrow:
+          type: string
         heading:
           type: string
         description:
@@ -4135,6 +4222,7 @@ components:
             $ref: "#/components/schemas/AboutGuidingPrincipleValue"
       required:
         - id
+        - eyebrow
         - heading
         - description
         - visionIcon
@@ -4152,6 +4240,10 @@ components:
     AboutGuidingPrinciplesInput:
       type: object
       properties:
+        eyebrow:
+          type: string
+          minLength: 1
+          maxLength: 160
         heading:
           type: string
           minLength: 1
@@ -4253,6 +4345,8 @@ components:
       properties:
         id:
           type: string
+        eyebrow:
+          type: string
         heading:
           type: string
         description:
@@ -4270,6 +4364,7 @@ components:
             $ref: "#/components/schemas/AboutParentChoiceBenefit"
       required:
         - id
+        - eyebrow
         - heading
         - description
         - isVisible
@@ -4279,6 +4374,10 @@ components:
     AboutWhyParentsChooseInput:
       type: object
       properties:
+        eyebrow:
+          type: string
+          minLength: 1
+          maxLength: 160
         heading:
           type: string
           minLength: 1
@@ -4394,6 +4493,8 @@ components:
       properties:
         id:
           type: string
+        eyebrow:
+          type: string
         heading:
           type: string
         description:
@@ -4411,6 +4512,7 @@ components:
             $ref: "#/components/schemas/AboutLeadershipMember"
       required:
         - id
+        - eyebrow
         - heading
         - description
         - isVisible
@@ -4420,6 +4522,10 @@ components:
     AboutLeadershipInput:
       type: object
       properties:
+        eyebrow:
+          type: string
+          minLength: 1
+          maxLength: 160
         heading:
           type: string
           minLength: 1
@@ -4505,6 +4611,8 @@ components:
       properties:
         id:
           type: string
+        eyebrow:
+          type: string
         heading:
           type: string
         description:
@@ -4520,10 +4628,14 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/AboutCampusHighlight"
-      required: [id, heading, description, isVisible, sortOrder, updatedAt, highlights]
+      required: [id, eyebrow, heading, description, isVisible, sortOrder, updatedAt, highlights]
     AboutCampusHighlightsInput:
       type: object
       properties:
+        eyebrow:
+          type: string
+          minLength: 1
+          maxLength: 160
         heading:
           type: string
           minLength: 1
@@ -4587,6 +4699,8 @@ components:
       properties:
         id:
           type: string
+        eyebrow:
+          type: string
         heading:
           type: string
         description:
@@ -4602,10 +4716,14 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/AboutAchievementStatistic"
-      required: [id, heading, description, isVisible, sortOrder, updatedAt, statistics]
+      required: [id, eyebrow, heading, description, isVisible, sortOrder, updatedAt, statistics]
     AboutAchievementsInput:
       type: object
       properties:
+        eyebrow:
+          type: string
+          minLength: 1
+          maxLength: 160
         heading:
           type: string
           minLength: 1
@@ -4659,9 +4777,19 @@ components:
       properties:
         id:
           type: string
+        eyebrow:
+          type: string
         heading:
           type: string
         description:
+          type: string
+        helpEyebrow:
+          type: string
+        helpHeadingWithCounselor:
+          type: string
+        helpHeadingWithoutCounselor:
+          type: string
+        helpDescription:
           type: string
         isVisible:
           type: boolean
@@ -4674,15 +4802,35 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/AboutFaqItem"
-      required: [id, heading, description, isVisible, sortOrder, updatedAt, questions]
+      required: [id, eyebrow, heading, description, helpEyebrow, helpHeadingWithCounselor, helpHeadingWithoutCounselor, helpDescription, isVisible, sortOrder, updatedAt, questions]
     AboutFaqInput:
       type: object
       properties:
+        eyebrow:
+          type: string
+          minLength: 1
+          maxLength: 160
         heading:
           type: string
           minLength: 1
         description:
           type: string
+        helpEyebrow:
+          type: string
+          minLength: 1
+          maxLength: 160
+        helpHeadingWithCounselor:
+          type: string
+          minLength: 1
+          maxLength: 200
+        helpHeadingWithoutCounselor:
+          type: string
+          minLength: 1
+          maxLength: 200
+        helpDescription:
+          type: string
+          minLength: 1
+          maxLength: 1000
         isVisible:
           type: boolean
         sortOrder:
@@ -4700,6 +4848,8 @@ components:
       type: object
       properties:
         id:
+          type: string
+        eyebrow:
           type: string
         heading:
           type: string
@@ -4736,10 +4886,14 @@ components:
         updatedAt:
           type: string
           format: date-time
-      required: [id, heading, supportingText, applyButtonLabel, applyButtonHref, campusVisitButtonLabel, campusVisitButtonHref, prospectusButtonLabel, prospectusButtonHref, backgroundImage, backgroundImageAltText, counselorButtonLabel, counselorButtonHref, admissionPhone, workingHours, isVisible, sortOrder, updatedAt]
+      required: [id, eyebrow, heading, supportingText, applyButtonLabel, applyButtonHref, campusVisitButtonLabel, campusVisitButtonHref, prospectusButtonLabel, prospectusButtonHref, backgroundImage, backgroundImageAltText, counselorButtonLabel, counselorButtonHref, admissionPhone, workingHours, isVisible, sortOrder, updatedAt]
     AboutAdmissionCtaInput:
       type: object
       properties:
+        eyebrow:
+          type: string
+          minLength: 1
+          maxLength: 160
         heading:
           type: string
           minLength: 1
