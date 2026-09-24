@@ -1,0 +1,59 @@
+Refine Contact Course Options, Admin Menu Order, and Map Colors
+Make only the following updates. Preserve the existing Contact page, enquiry storage, form validation, and working map URL configuration.
+
+1. Fix the Contact Course Options Field
+The Course options setting is currently a single-line input. Change it to a multiline textarea with enough height to edit multiple options.
+
+Add helper text:
+
+Enter one course option per line.
+Use these defaults, with each option on its own line:
+
+MPC
+BiPC
+MPC + IIT-JEE
+BiPC + NEET
+MPC + EAMCET
+NEET Foundation
+Other
+Ensure:
+
+Each non-empty line appears as a separate option in the public Contact form dropdown.
+Whitespace is trimmed.
+Empty lines and duplicate options are ignored.
+Existing saved values are preserved and parsed safely if they are currently stored on one line.
+Course selection remains required and existing validation continues to work.
+2. Set the Admin Pages Menu Order
+Display the Pages menu in this exact order:
+
+Home
+About
+Contact
+Do not add Enquiries to the Pages menu or nest it beneath any page. Preserve existing page navigation behavior.
+
+3. Restore the Map’s Color Display
+The Contact page’s map is currently displayed in grayscale. Investigate the cause without changing the working map URL field, its admin setting, or the map location.
+
+Check for:
+
+A grayscale() CSS filter on the map iframe or its containers
+Opacity, blend mode, overlays, or other CSS rules making the map appear monochrome
+Map styling or parameters in the currently configured URL that force a grayscale style
+Remove unintended grayscale styling. Preserve the existing working map configuration and location.
+
+If the configured Google Maps embed itself explicitly applies a grayscale style, use a color map rendering for the same location while keeping the existing admin workflow intact. Do not ask the administrator to re-enter the URL or introduce an API key just to restore standard map colors.
+
+If the map’s appearance cannot be changed without replacing the configured URL or adding an external API, leave the working map intact and report the specific limitation rather than breaking the embed.
+
+Preserve and Verify
+Do not change other Contact settings, the public map URL input, the Contact page layout, enquiry storage, or unrelated admin pages.
+
+Confirm that:
+
+Course options can be edited on separate lines and appear as separate dropdown choices.
+Existing course values are preserved.
+The Pages menu order is Home, About, Contact.
+The working map URL and location remain intact.
+No unintended CSS filter or overlay makes the map grayscale.
+The app builds and starts successfully.
+Stop after these updates.
