@@ -1,0 +1,62 @@
+Fix Contact Page Mobile Overlap and Add Missing Home Preview Settings
+Make these targeted fixes without redesigning the site or changing already-working content.
+
+1. Fix the Mobile Contact Page Overlap
+The Contact page is overlapping on mobile, as shown in the screenshot. The header branding/navigation and Contact page eyebrow are crowded or overlapping near the top.
+
+Inspect the shared mobile header and Contact page hero spacing. Fix the underlying layout rather than hiding elements or adding arbitrary offsets.
+
+At mobile widths:
+
+Keep the logo and college name within the header without awkward wrapping or collision.
+Keep the Admissions button and hamburger menu separate and easy to tap.
+Ensure the mobile menu opens and closes as it does currently.
+Position the Contact hero below the full header, including when the header is sticky or fixed.
+Keep the Contact eyebrow, heading, and description clear of the navigation.
+Prevent overlap between the eyebrow and heading.
+Preserve the desktop layout and existing Contact page content.
+Prevent horizontal page overflow.
+Test at narrow mobile widths as well as standard phone sizes. Preserve visible focus states and touch-friendly controls.
+
+2. Make the Live Updates Preview Heading Editable
+The Home page Live Updates preview currently has editable update cards, but its eyebrow and heading are hardcoded or missing from admin controls.
+
+Add persistent admin fields for:
+
+Eyebrow text
+Section heading
+Display the saved values on the Home page. Use the existing Home page content-management patterns and provide sensible defaults if no values are saved. Keep the existing update-card management and layout intact.
+
+3. Make Faculty Preview Heading Editable
+In the Home page Our Expert Faculty preview, add admin fields for:
+
+Eyebrow text
+Section heading
+Render the saved values publicly, with sensible defaults. Preserve existing faculty-card management, links, layout, and styling.
+
+4. Make Gallery Preview Heading Editable
+In the Home page Life at KVR College gallery preview, add admin fields for:
+
+Eyebrow text
+Section heading
+Render the saved values publicly, with sensible defaults. Preserve existing gallery-card management, links, layout, and styling.
+
+5. Preserve Existing Management
+The Home page sections through the About preview are already manageable. Statistics and Favorite Topics are also working correctly.
+
+Do not change those admin controls or their public content. Do not remove or duplicate existing settings. Reuse the current Home page data structure and APIs wherever possible.
+
+Verification
+Confirm that:
+
+The Contact page header, eyebrow, and hero no longer overlap on mobile.
+The mobile logo, Admissions button, and menu button remain usable.
+Desktop header and Contact layout remain intact.
+Live Updates eyebrow and heading can be edited and persist after refresh.
+Faculty preview eyebrow and heading can be edited and persist after refresh.
+Gallery preview eyebrow and heading can be edited and persist after refresh.
+Updated values appear on the public Home page.
+Statistics, Favorite Topics, and sections through the About preview remain unchanged.
+Mobile layouts have no horizontal overflow.
+The app builds and starts successfully.
+Stop after these fixes.
