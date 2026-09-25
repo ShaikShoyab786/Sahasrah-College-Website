@@ -510,6 +510,24 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+  /callback-popup-settings:
+    get:
+      operationId: getCallbackPopupSettings
+      tags: [public]
+      summary: Read the public callback popup content and availability
+      responses:
+        "200":
+          description: Callback popup settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CallbackPopupSettings"
+        "404":
+          description: Callback popup settings are unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
   /contact:
     get:
       operationId: getContactSettings
@@ -2036,6 +2054,41 @@ components:
         - authenticated
         - email
         - displayName
+    CallbackPopupSettings:
+      type: object
+      properties:
+        callbackPopupEnabled:
+          type: boolean
+        callbackPopupDelaySeconds:
+          type: integer
+          minimum: 5
+          maximum: 10
+        callbackPopupEyebrow:
+          type: string
+        callbackPopupHeading:
+          type: string
+        callbackPopupDescription:
+          type: string
+        callbackPopupNameLabel:
+          type: string
+        callbackPopupPhoneLabel:
+          type: string
+        callbackPopupCourseLabel:
+          type: string
+        callbackPopupEmailLabel:
+          type: string
+        callbackPopupMessageLabel:
+          type: string
+        callbackPopupSubmitButtonLabel:
+          type: string
+        callbackPopupSuccessMessage:
+          type: string
+        courseOptions:
+          type: array
+          minItems: 1
+          items:
+            type: string
+      required: [callbackPopupEnabled, callbackPopupDelaySeconds, callbackPopupEyebrow, callbackPopupHeading, callbackPopupDescription, callbackPopupNameLabel, callbackPopupPhoneLabel, callbackPopupCourseLabel, callbackPopupEmailLabel, callbackPopupMessageLabel, callbackPopupSubmitButtonLabel, callbackPopupSuccessMessage, courseOptions]
     ContactSettings:
       type: object
       properties:
@@ -2105,12 +2158,38 @@ components:
           type: string
         campusVisitButtonHref:
           type: string
+        callbackPopupEnabled:
+          type: boolean
+        callbackPopupDelaySeconds:
+          type: integer
+          minimum: 5
+          maximum: 10
+        callbackPopupEyebrow:
+          type: string
+        callbackPopupHeading:
+          type: string
+        callbackPopupDescription:
+          type: string
+        callbackPopupNameLabel:
+          type: string
+        callbackPopupPhoneLabel:
+          type: string
+        callbackPopupCourseLabel:
+          type: string
+        callbackPopupEmailLabel:
+          type: string
+        callbackPopupMessageLabel:
+          type: string
+        callbackPopupSubmitButtonLabel:
+          type: string
+        callbackPopupSuccessMessage:
+          type: string
         isVisible:
           type: boolean
         updatedAt:
           type: string
           format: date-time
-      required: [id, eyebrow, heading, description, formHeading, formDescription, responseTimeMessage, mainEmail, primaryPhone, additionalPhones, whatsappNumber, address, workingHours, mapEmbedUrl, mapLabel, logoUrl, socialLinks, courseOptions, nameLabel, phoneLabel, courseLabel, emailLabel, messageLabel, submitButtonLabel, successMessage, prospectusButtonLabel, prospectusButtonHref, campusVisitButtonLabel, campusVisitButtonHref, isVisible, updatedAt]
+      required: [id, eyebrow, heading, description, formHeading, formDescription, responseTimeMessage, mainEmail, primaryPhone, additionalPhones, whatsappNumber, address, workingHours, mapEmbedUrl, mapLabel, logoUrl, socialLinks, courseOptions, nameLabel, phoneLabel, courseLabel, emailLabel, messageLabel, submitButtonLabel, successMessage, prospectusButtonLabel, prospectusButtonHref, campusVisitButtonLabel, campusVisitButtonHref, callbackPopupEnabled, callbackPopupDelaySeconds, callbackPopupEyebrow, callbackPopupHeading, callbackPopupDescription, callbackPopupNameLabel, callbackPopupPhoneLabel, callbackPopupCourseLabel, callbackPopupEmailLabel, callbackPopupMessageLabel, callbackPopupSubmitButtonLabel, callbackPopupSuccessMessage, isVisible, updatedAt]
     ContactSettingsInput:
       type: object
       properties:
@@ -2198,9 +2277,44 @@ components:
         campusVisitButtonHref:
           type: string
           minLength: 1
+        callbackPopupEnabled:
+          type: boolean
+        callbackPopupDelaySeconds:
+          type: integer
+          minimum: 5
+          maximum: 10
+        callbackPopupEyebrow:
+          type: string
+          minLength: 1
+        callbackPopupHeading:
+          type: string
+          minLength: 1
+        callbackPopupDescription:
+          type: string
+        callbackPopupNameLabel:
+          type: string
+          minLength: 1
+        callbackPopupPhoneLabel:
+          type: string
+          minLength: 1
+        callbackPopupCourseLabel:
+          type: string
+          minLength: 1
+        callbackPopupEmailLabel:
+          type: string
+          minLength: 1
+        callbackPopupMessageLabel:
+          type: string
+          minLength: 1
+        callbackPopupSubmitButtonLabel:
+          type: string
+          minLength: 1
+        callbackPopupSuccessMessage:
+          type: string
+          minLength: 1
         isVisible:
           type: boolean
-      required: [eyebrow, heading, description, formHeading, formDescription, responseTimeMessage, mainEmail, primaryPhone, additionalPhones, whatsappNumber, address, workingHours, mapEmbedUrl, mapLabel, logoUrl, socialLinks, courseOptions, nameLabel, phoneLabel, courseLabel, emailLabel, messageLabel, submitButtonLabel, successMessage, prospectusButtonLabel, prospectusButtonHref, campusVisitButtonLabel, campusVisitButtonHref, isVisible]
+      required: [eyebrow, heading, description, formHeading, formDescription, responseTimeMessage, mainEmail, primaryPhone, additionalPhones, whatsappNumber, address, workingHours, mapEmbedUrl, mapLabel, logoUrl, socialLinks, courseOptions, nameLabel, phoneLabel, courseLabel, emailLabel, messageLabel, submitButtonLabel, successMessage, prospectusButtonLabel, prospectusButtonHref, campusVisitButtonLabel, campusVisitButtonHref, callbackPopupEnabled, callbackPopupDelaySeconds, callbackPopupEyebrow, callbackPopupHeading, callbackPopupDescription, callbackPopupNameLabel, callbackPopupPhoneLabel, callbackPopupCourseLabel, callbackPopupEmailLabel, callbackPopupMessageLabel, callbackPopupSubmitButtonLabel, callbackPopupSuccessMessage, isVisible]
     ContactSocialLink:
       type: object
       properties:
@@ -2233,13 +2347,16 @@ components:
         course:
           type: string
           minLength: 1
+        source:
+          type: string
+          enum: [contact-form, callback-request]
         email:
           type: ["string", "null"]
           format: email
         message:
           type: ["string", "null"]
           maxLength: 2000
-      required: [name, phone, course]
+      required: [name, phone]
     ContactEnquirySubmission:
       type: object
       properties:
@@ -2258,7 +2375,10 @@ components:
         phone:
           type: string
         course:
+          type: ["string", "null"]
+        source:
           type: string
+          enum: [contact-form, callback-request]
         email:
           type: ["string", "null"]
         message:
@@ -2273,7 +2393,7 @@ components:
         updatedAt:
           type: string
           format: date-time
-      required: [id, name, phone, course, email, message, contacted, resolved, createdAt, updatedAt]
+      required: [id, name, phone, course, source, email, message, contacted, resolved, createdAt, updatedAt]
     ContactEnquiryStatusInput:
       type: object
       properties:

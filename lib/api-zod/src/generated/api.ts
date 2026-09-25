@@ -698,8 +698,37 @@ export const GetAboutAdmissionCtaResponse = zod.object({
 
 
 /**
+ * @summary Read the public callback popup content and availability
+ */
+export const getCallbackPopupSettingsResponseCallbackPopupDelaySecondsMin = 5;
+export const getCallbackPopupSettingsResponseCallbackPopupDelaySecondsMax = 10;
+
+
+
+
+export const GetCallbackPopupSettingsResponse = zod.object({
+  "callbackPopupEnabled": zod.boolean(),
+  "callbackPopupDelaySeconds": zod.number().int().min(getCallbackPopupSettingsResponseCallbackPopupDelaySecondsMin).max(getCallbackPopupSettingsResponseCallbackPopupDelaySecondsMax),
+  "callbackPopupEyebrow": zod.string(),
+  "callbackPopupHeading": zod.string(),
+  "callbackPopupDescription": zod.string(),
+  "callbackPopupNameLabel": zod.string(),
+  "callbackPopupPhoneLabel": zod.string(),
+  "callbackPopupCourseLabel": zod.string(),
+  "callbackPopupEmailLabel": zod.string(),
+  "callbackPopupMessageLabel": zod.string(),
+  "callbackPopupSubmitButtonLabel": zod.string(),
+  "callbackPopupSuccessMessage": zod.string(),
+  "courseOptions": zod.array(zod.string()).min(1)
+})
+
+
+/**
  * @summary Read the published Contact page settings
  */
+
+export const getContactSettingsResponseCallbackPopupDelaySecondsMin = 5;
+export const getContactSettingsResponseCallbackPopupDelaySecondsMax = 10;
 
 
 
@@ -736,6 +765,18 @@ export const GetContactSettingsResponse = zod.object({
   "prospectusButtonHref": zod.string(),
   "campusVisitButtonLabel": zod.string(),
   "campusVisitButtonHref": zod.string(),
+  "callbackPopupEnabled": zod.boolean(),
+  "callbackPopupDelaySeconds": zod.number().int().min(getContactSettingsResponseCallbackPopupDelaySecondsMin).max(getContactSettingsResponseCallbackPopupDelaySecondsMax),
+  "callbackPopupEyebrow": zod.string(),
+  "callbackPopupHeading": zod.string(),
+  "callbackPopupDescription": zod.string(),
+  "callbackPopupNameLabel": zod.string(),
+  "callbackPopupPhoneLabel": zod.string(),
+  "callbackPopupCourseLabel": zod.string(),
+  "callbackPopupEmailLabel": zod.string(),
+  "callbackPopupMessageLabel": zod.string(),
+  "callbackPopupSubmitButtonLabel": zod.string(),
+  "callbackPopupSuccessMessage": zod.string(),
   "isVisible": zod.boolean(),
   "updatedAt": zod.coerce.date()
 })
@@ -758,7 +799,8 @@ export const submitContactEnquiryBodyMessageMax = 2000;
 export const SubmitContactEnquiryBody = zod.object({
   "name": zod.string().min(submitContactEnquiryBodyNameMin).max(submitContactEnquiryBodyNameMax),
   "phone": zod.string().min(submitContactEnquiryBodyPhoneMin).max(submitContactEnquiryBodyPhoneMax),
-  "course": zod.string().min(1),
+  "course": zod.string().min(1).optional(),
+  "source": zod.enum(['contact-form', 'callback-request']).optional(),
   "email": zod.string().email().nullish(),
   "message": zod.string().max(submitContactEnquiryBodyMessageMax).nullish()
 })
@@ -867,6 +909,9 @@ export const UpdateSiteSettingsResponse = zod.object({
  * @summary Read Contact page settings
  */
 
+export const getAdminContactSettingsResponseCallbackPopupDelaySecondsMin = 5;
+export const getAdminContactSettingsResponseCallbackPopupDelaySecondsMax = 10;
+
 
 
 export const GetAdminContactSettingsResponse = zod.object({
@@ -902,6 +947,18 @@ export const GetAdminContactSettingsResponse = zod.object({
   "prospectusButtonHref": zod.string(),
   "campusVisitButtonLabel": zod.string(),
   "campusVisitButtonHref": zod.string(),
+  "callbackPopupEnabled": zod.boolean(),
+  "callbackPopupDelaySeconds": zod.number().int().min(getAdminContactSettingsResponseCallbackPopupDelaySecondsMin).max(getAdminContactSettingsResponseCallbackPopupDelaySecondsMax),
+  "callbackPopupEyebrow": zod.string(),
+  "callbackPopupHeading": zod.string(),
+  "callbackPopupDescription": zod.string(),
+  "callbackPopupNameLabel": zod.string(),
+  "callbackPopupPhoneLabel": zod.string(),
+  "callbackPopupCourseLabel": zod.string(),
+  "callbackPopupEmailLabel": zod.string(),
+  "callbackPopupMessageLabel": zod.string(),
+  "callbackPopupSubmitButtonLabel": zod.string(),
+  "callbackPopupSuccessMessage": zod.string(),
   "isVisible": zod.boolean(),
   "updatedAt": zod.coerce.date()
 })
@@ -923,6 +980,18 @@ export const GetAdminContactSettingsResponse = zod.object({
 export const updateContactSettingsBodyCourseOptionsMax = 20;
 
 
+
+
+
+
+
+
+
+
+
+
+export const updateContactSettingsBodyCallbackPopupDelaySecondsMin = 5;
+export const updateContactSettingsBodyCallbackPopupDelaySecondsMax = 10;
 
 
 
@@ -967,9 +1036,24 @@ export const UpdateContactSettingsBody = zod.object({
   "prospectusButtonHref": zod.string().min(1),
   "campusVisitButtonLabel": zod.string().min(1),
   "campusVisitButtonHref": zod.string().min(1),
+  "callbackPopupEnabled": zod.boolean(),
+  "callbackPopupDelaySeconds": zod.number().int().min(updateContactSettingsBodyCallbackPopupDelaySecondsMin).max(updateContactSettingsBodyCallbackPopupDelaySecondsMax),
+  "callbackPopupEyebrow": zod.string().min(1),
+  "callbackPopupHeading": zod.string().min(1),
+  "callbackPopupDescription": zod.string(),
+  "callbackPopupNameLabel": zod.string().min(1),
+  "callbackPopupPhoneLabel": zod.string().min(1),
+  "callbackPopupCourseLabel": zod.string().min(1),
+  "callbackPopupEmailLabel": zod.string().min(1),
+  "callbackPopupMessageLabel": zod.string().min(1),
+  "callbackPopupSubmitButtonLabel": zod.string().min(1),
+  "callbackPopupSuccessMessage": zod.string().min(1),
   "isVisible": zod.boolean()
 })
 
+
+export const updateContactSettingsResponseCallbackPopupDelaySecondsMin = 5;
+export const updateContactSettingsResponseCallbackPopupDelaySecondsMax = 10;
 
 
 
@@ -1006,6 +1090,18 @@ export const UpdateContactSettingsResponse = zod.object({
   "prospectusButtonHref": zod.string(),
   "campusVisitButtonLabel": zod.string(),
   "campusVisitButtonHref": zod.string(),
+  "callbackPopupEnabled": zod.boolean(),
+  "callbackPopupDelaySeconds": zod.number().int().min(updateContactSettingsResponseCallbackPopupDelaySecondsMin).max(updateContactSettingsResponseCallbackPopupDelaySecondsMax),
+  "callbackPopupEyebrow": zod.string(),
+  "callbackPopupHeading": zod.string(),
+  "callbackPopupDescription": zod.string(),
+  "callbackPopupNameLabel": zod.string(),
+  "callbackPopupPhoneLabel": zod.string(),
+  "callbackPopupCourseLabel": zod.string(),
+  "callbackPopupEmailLabel": zod.string(),
+  "callbackPopupMessageLabel": zod.string(),
+  "callbackPopupSubmitButtonLabel": zod.string(),
+  "callbackPopupSuccessMessage": zod.string(),
   "isVisible": zod.boolean(),
   "updatedAt": zod.coerce.date()
 })
@@ -1018,7 +1114,8 @@ export const GetAdminContactEnquiriesResponseItem = zod.object({
   "id": zod.string(),
   "name": zod.string(),
   "phone": zod.string(),
-  "course": zod.string(),
+  "course": zod.string().nullable(),
+  "source": zod.enum(['contact-form', 'callback-request']),
   "email": zod.string().nullable(),
   "message": zod.string().nullable(),
   "contacted": zod.boolean(),
@@ -1045,7 +1142,8 @@ export const UpdateAdminContactEnquiryResponse = zod.object({
   "id": zod.string(),
   "name": zod.string(),
   "phone": zod.string(),
-  "course": zod.string(),
+  "course": zod.string().nullable(),
+  "source": zod.enum(['contact-form', 'callback-request']),
   "email": zod.string().nullable(),
   "message": zod.string().nullable(),
   "contacted": zod.boolean(),

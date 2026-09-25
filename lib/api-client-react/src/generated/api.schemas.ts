@@ -29,6 +29,27 @@ export interface AuthSession {
   displayName: string;
 }
 
+export interface CallbackPopupSettings {
+  callbackPopupEnabled: boolean;
+  /**
+     * @minimum 5
+     * @maximum 10
+     */
+  callbackPopupDelaySeconds: number;
+  callbackPopupEyebrow: string;
+  callbackPopupHeading: string;
+  callbackPopupDescription: string;
+  callbackPopupNameLabel: string;
+  callbackPopupPhoneLabel: string;
+  callbackPopupCourseLabel: string;
+  callbackPopupEmailLabel: string;
+  callbackPopupMessageLabel: string;
+  callbackPopupSubmitButtonLabel: string;
+  callbackPopupSuccessMessage: string;
+  /** @minItems 1 */
+  courseOptions: string[];
+}
+
 export interface ContactSocialLink {
   label: string;
   href: string;
@@ -67,6 +88,22 @@ export interface ContactSettings {
   prospectusButtonHref: string;
   campusVisitButtonLabel: string;
   campusVisitButtonHref: string;
+  callbackPopupEnabled: boolean;
+  /**
+     * @minimum 5
+     * @maximum 10
+     */
+  callbackPopupDelaySeconds: number;
+  callbackPopupEyebrow: string;
+  callbackPopupHeading: string;
+  callbackPopupDescription: string;
+  callbackPopupNameLabel: string;
+  callbackPopupPhoneLabel: string;
+  callbackPopupCourseLabel: string;
+  callbackPopupEmailLabel: string;
+  callbackPopupMessageLabel: string;
+  callbackPopupSubmitButtonLabel: string;
+  callbackPopupSuccessMessage: string;
   isVisible: boolean;
   updatedAt: string;
 }
@@ -132,8 +169,41 @@ export interface ContactSettingsInput {
   campusVisitButtonLabel: string;
   /** @minLength 1 */
   campusVisitButtonHref: string;
+  callbackPopupEnabled: boolean;
+  /**
+     * @minimum 5
+     * @maximum 10
+     */
+  callbackPopupDelaySeconds: number;
+  /** @minLength 1 */
+  callbackPopupEyebrow: string;
+  /** @minLength 1 */
+  callbackPopupHeading: string;
+  callbackPopupDescription: string;
+  /** @minLength 1 */
+  callbackPopupNameLabel: string;
+  /** @minLength 1 */
+  callbackPopupPhoneLabel: string;
+  /** @minLength 1 */
+  callbackPopupCourseLabel: string;
+  /** @minLength 1 */
+  callbackPopupEmailLabel: string;
+  /** @minLength 1 */
+  callbackPopupMessageLabel: string;
+  /** @minLength 1 */
+  callbackPopupSubmitButtonLabel: string;
+  /** @minLength 1 */
+  callbackPopupSuccessMessage: string;
   isVisible: boolean;
 }
+
+export type ContactEnquiryInputSource = typeof ContactEnquiryInputSource[keyof typeof ContactEnquiryInputSource];
+
+
+export const ContactEnquiryInputSource = {
+  'contact-form': 'contact-form',
+  'callback-request': 'callback-request',
+} as const;
 
 export interface ContactEnquiryInput {
   /**
@@ -147,7 +217,8 @@ export interface ContactEnquiryInput {
      */
   phone: string;
   /** @minLength 1 */
-  course: string;
+  course?: string;
+  source?: ContactEnquiryInputSource;
   /** @nullable */
   email?: string | null;
   /**
@@ -162,11 +233,21 @@ export interface ContactEnquirySubmission {
   message: string;
 }
 
+export type ContactEnquirySource = typeof ContactEnquirySource[keyof typeof ContactEnquirySource];
+
+
+export const ContactEnquirySource = {
+  'contact-form': 'contact-form',
+  'callback-request': 'callback-request',
+} as const;
+
 export interface ContactEnquiry {
   id: string;
   name: string;
   phone: string;
-  course: string;
+  /** @nullable */
+  course: string | null;
+  source: ContactEnquirySource;
   /** @nullable */
   email: string | null;
   /** @nullable */

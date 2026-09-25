@@ -5,6 +5,7 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
+import type { ContactEnquiryInputSource } from './contactEnquiryInputSource';
 
 export interface ContactEnquiryInput {
   /**
@@ -18,7 +19,8 @@ export interface ContactEnquiryInput {
      */
   phone: string;
   /** @minLength 1 */
-  course: string;
+  course?: string;
+  source?: ContactEnquiryInputSource;
   /** @nullable */
   email?: string | null;
   /**

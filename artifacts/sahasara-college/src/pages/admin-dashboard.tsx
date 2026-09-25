@@ -93,7 +93,7 @@ export default function AdminDashboard() {
                     <h3 className="font-display text-xl font-semibold text-[hsl(var(--primary))]">{item.name}</h3>
                     <span className={`rounded-full px-2.5 py-1 text-xs font-bold ${item.contacted ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-900'}`}>{item.contacted ? 'Reviewed' : 'New'}</span>
                   </div>
-                  <p className="mt-1 text-xs text-[hsl(var(--muted-foreground))]">{new Date(item.createdAt).toLocaleString()} · {item.course}</p>
+                  <p className="mt-1 text-xs text-[hsl(var(--muted-foreground))]">{new Date(item.createdAt).toLocaleString()} · {item.course || 'Course not specified'} · {item.source === 'callback-request' ? 'Callback Request' : 'Contact Form'}</p>
                   <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm">
                     <a href={`tel:${item.phone}`} className="inline-flex items-center gap-2 font-semibold text-[hsl(var(--primary))]"><Phone size={15} />{item.phone}</a>
                     {item.email && <a href={`mailto:${item.email}`} className="inline-flex items-center gap-2 text-[hsl(var(--muted-foreground))]"><Mail size={15} />{item.email}</a>}

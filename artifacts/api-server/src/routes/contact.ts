@@ -2,6 +2,7 @@ import { Router, type IRouter } from "express";
 import {
   GetAdminContactEnquiriesResponse,
   GetAdminContactSettingsResponse,
+  GetCallbackPopupSettingsResponse,
   GetContactSettingsResponse,
   SubmitContactEnquiryBody,
   SubmitContactEnquiryResponse,
@@ -59,6 +60,18 @@ function toContactResponse(settings: {
   prospectusButtonHref: string;
   campusVisitButtonLabel: string;
   campusVisitButtonHref: string;
+  callbackPopupEnabled: boolean;
+  callbackPopupDelaySeconds: number;
+  callbackPopupEyebrow: string;
+  callbackPopupHeading: string;
+  callbackPopupDescription: string;
+  callbackPopupNameLabel: string;
+  callbackPopupPhoneLabel: string;
+  callbackPopupCourseLabel: string;
+  callbackPopupEmailLabel: string;
+  callbackPopupMessageLabel: string;
+  callbackPopupSubmitButtonLabel: string;
+  callbackPopupSuccessMessage: string;
   isVisible: boolean;
   updatedAt: Date;
 }) {
@@ -90,26 +103,63 @@ router.get("/contact", async (req, res) => {
   }
 });
 
+router.get("/callback-popup-settings", async (req, res) => {
+  try {
+    const settings = await prisma.contactSettings.findUnique({ where: { id: "singleton" } });
+    if (!settings) {
+      res.status(404).json({ error: "Callback popup settings are not available." });
+      return;
+    }
+    res.json(GetCallbackPopupSettingsResponse.parse({
+      callbackPopupEnabled: settings.callbackPopupEnabled,
+      callbackPopupDelaySeconds: settings.callbackPopupDelaySeconds,
+      callbackPopupEyebrow: settings.callbackPopupEyebrow,
+      callbackPopupHeading: settings.callbackPopupHeading,
+      callbackPopupDescription: settings.callbackPopupDescription,
+      callbackPopupNameLabel: settings.callbackPopupNameLabel,
+      callbackPopupPhoneLabel: settings.callbackPopupPhoneLabel,
+      callbackPopupCourseLabel: settings.callbackPopupCourseLabel,
+      callbackPopupEmailLabel: settings.callbackPopupEmailLabel,
+      callbackPopupMessageLabel: settings.callbackPopupMessageLabel,
+      callbackPopupSubmitButtonLabel: settings.callbackPopupSubmitButtonLabel,
+      callbackPopupSuccessMessage: settings.callbackPopupSuccessMessage,
+      courseOptions: getContactCourseOptions(settings.courseOptions),
+    }));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read callback popup settings");
+    res.status(500).json({ error: "Unable to load callback popup settings." });
+  }
+});
+
 router.post("/contact-enquiries", async (req, res) => {
+  const isCallbackRequest = req.body?.source === "callback-request";
+  const validationMessage = isCallbackRequest
+    ? "Enter your name and a valid Indian mobile number."
+    : "Enter your name, a valid Indian mobile number, and choose a course.";
   const raw = {
     ...req.body,
     name: typeof req.body?.name === "string" ? req.body.name.trim() : req.body?.name,
     phone: typeof req.body?.phone === "string" ? req.body.phone.replace(/\D/g, "") : req.body?.phone,
-    course: typeof req.body?.course === "string" ? req.body.course.trim() : req.body?.course,
+    course: typeof req.body?.course === "string" ? req.body.course.trim() || undefined : req.body?.course,
     email: typeof req.body?.email === "string" ? req.body.email.trim() || undefined : req.body?.email,
     message: typeof req.body?.message === "string" ? req.body.message.trim() || undefined : req.body?.message,
   };
   const parsed = SubmitContactEnquiryBody.safeParse(raw);
   if (!parsed.success) {
-    res.status(400).json({ error: "Enter your name, a valid Indian mobile number, and choose a course." });
+    res.status(400).json({ error: validationMessage });
     return;
   }
 
   const settings = await prisma.contactSettings.findUnique({ where: { id: "singleton" } });
   const phone = normalizeIndianMobile(parsed.data.phone);
   const courses = settings ? getContactCourseOptions(settings.courseOptions) : [];
-  if (!phone || !settings || !settings.isVisible || !courses.includes(parsed.data.course)) {
-    res.status(400).json({ error: "Enter your name, a valid Indian mobile number, and choose a course." });
+  const source = parsed.data.source ?? "contact-form";
+  const course = parsed.data.course ?? null;
+  const pageIsUnavailable = isCallbackRequest
+    ? !settings?.callbackPopupEnabled
+    : !settings?.isVisible || !course;
+  if (!phone || !settings || pageIsUnavailable || (course !== null && !courses.includes(course))) {
+    res.status(400).json({ error: validationMessage });
     return;
   }
 
@@ -117,7 +167,8 @@ router.post("/contact-enquiries", async (req, res) => {
     data: {
       name: parsed.data.name,
       phone,
-      course: parsed.data.course,
+      course,
+      source,
       email: parsed.data.email ?? null,
       message: parsed.data.message ?? null,
     },
@@ -125,7 +176,7 @@ router.post("/contact-enquiries", async (req, res) => {
 
   res.status(201).json(SubmitContactEnquiryResponse.parse({
     enquiryId: enquiry.id,
-    message: settings.successMessage,
+    message: isCallbackRequest ? settings.callbackPopupSuccessMessage : settings.successMessage,
   }));
 });
 

@@ -5,12 +5,15 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
+import type { ContactEnquirySource } from './contactEnquirySource';
 
 export interface ContactEnquiry {
   id: string;
   name: string;
   phone: string;
-  course: string;
+  /** @nullable */
+  course: string | null;
+  source: ContactEnquirySource;
   /** @nullable */
   email: string | null;
   /** @nullable */

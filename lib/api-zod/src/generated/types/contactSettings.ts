@@ -40,6 +40,22 @@ export interface ContactSettings {
   prospectusButtonHref: string;
   campusVisitButtonLabel: string;
   campusVisitButtonHref: string;
+  callbackPopupEnabled: boolean;
+  /**
+     * @minimum 5
+     * @maximum 10
+     */
+  callbackPopupDelaySeconds: number;
+  callbackPopupEyebrow: string;
+  callbackPopupHeading: string;
+  callbackPopupDescription: string;
+  callbackPopupNameLabel: string;
+  callbackPopupPhoneLabel: string;
+  callbackPopupCourseLabel: string;
+  callbackPopupEmailLabel: string;
+  callbackPopupMessageLabel: string;
+  callbackPopupSubmitButtonLabel: string;
+  callbackPopupSuccessMessage: string;
   isVisible: boolean;
   updatedAt: Date;
 }

@@ -41,6 +41,7 @@ import type {
   AboutWhyParentsChoose,
   AboutWhyParentsChooseInput,
   AuthSession,
+  CallbackPopupSettings,
   ContactEnquiry,
   ContactEnquiryInput,
   ContactEnquiryStatusInput,
@@ -2342,6 +2343,83 @@ export function useGetAboutAdmissionCta<TData = Awaited<ReturnType<typeof getAbo
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
   const queryOptions = getGetAboutAdmissionCtaQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetCallbackPopupSettingsUrl = () => {
+
+
+
+
+  return `/api/callback-popup-settings`
+}
+
+/**
+ * @summary Read the public callback popup content and availability
+ */
+export const getCallbackPopupSettings = async ( options?: Parameters<typeof customFetch>[1]): Promise<CallbackPopupSettings> => {
+
+  return customFetch<CallbackPopupSettings>(getGetCallbackPopupSettingsUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetCallbackPopupSettingsQueryKey = () => {
+    return [
+    `/api/callback-popup-settings`
+    ] as const;
+    }
+
+
+export const getGetCallbackPopupSettingsQueryOptions = <TData = Awaited<ReturnType<typeof getCallbackPopupSettings>>, TError = ErrorType<ErrorResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getCallbackPopupSettings>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetCallbackPopupSettingsQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCallbackPopupSettings>>> = ({ signal }) => getCallbackPopupSettings({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getCallbackPopupSettings>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetCallbackPopupSettingsQueryResult = NonNullable<Awaited<ReturnType<typeof getCallbackPopupSettings>>>
+export type GetCallbackPopupSettingsQueryError = ErrorType<ErrorResponse>
+
+
+/**
+ * @summary Read the public callback popup content and availability
+ */
+
+export function useGetCallbackPopupSettings<TData = Awaited<ReturnType<typeof getCallbackPopupSettings>>, TError = ErrorType<ErrorResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getCallbackPopupSettings>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetCallbackPopupSettingsQueryOptions(options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 

@@ -61,5 +61,30 @@ export interface ContactSettingsInput {
   campusVisitButtonLabel: string;
   /** @minLength 1 */
   campusVisitButtonHref: string;
+  callbackPopupEnabled: boolean;
+  /**
+     * @minimum 5
+     * @maximum 10
+     */
+  callbackPopupDelaySeconds: number;
+  /** @minLength 1 */
+  callbackPopupEyebrow: string;
+  /** @minLength 1 */
+  callbackPopupHeading: string;
+  callbackPopupDescription: string;
+  /** @minLength 1 */
+  callbackPopupNameLabel: string;
+  /** @minLength 1 */
+  callbackPopupPhoneLabel: string;
+  /** @minLength 1 */
+  callbackPopupCourseLabel: string;
+  /** @minLength 1 */
+  callbackPopupEmailLabel: string;
+  /** @minLength 1 */
+  callbackPopupMessageLabel: string;
+  /** @minLength 1 */
+  callbackPopupSubmitButtonLabel: string;
+  /** @minLength 1 */
+  callbackPopupSuccessMessage: string;
   isVisible: boolean;
 }

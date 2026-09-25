@@ -90,6 +90,18 @@ model ContactSettings {
   prospectusButtonHref     String
   campusVisitButtonLabel   String
   campusVisitButtonHref    String
+  callbackPopupEnabled     Boolean  @default(true)
+  callbackPopupDelaySeconds Int     @default(7)
+  callbackPopupEyebrow     String   @default("A QUICK CALLBACK")
+  callbackPopupHeading     String   @default("Would you like us to call you?")
+  callbackPopupDescription String   @default("Share your details and our admissions team will get in touch.")
+  callbackPopupNameLabel   String   @default("Student or parent name")
+  callbackPopupPhoneLabel  String   @default("Indian mobile number")
+  callbackPopupCourseLabel String   @default("Course of interest (optional)")
+  callbackPopupEmailLabel  String   @default("Email address (optional)")
+  callbackPopupMessageLabel String  @default("What would you like to know? (optional)")
+  callbackPopupSubmitButtonLabel String @default("Request a callback")
+  callbackPopupSuccessMessage String @default("Thank you. Our admissions team will call you soon.")
   isVisible                Boolean  @default(true)
   updatedAt                DateTime @updatedAt
 }
@@ -98,7 +110,8 @@ model ContactEnquiry {
   id                String   @id @default(cuid())
   name              String
   phone             String
-  course            String
+  course            String?
+  source            String   @default("contact-form")
   email             String?
   message           String?
   deliveryStatus    String   @default("stored")
