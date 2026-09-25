@@ -1,0 +1,79 @@
+Add a Manageable Callback Request Popup
+Add a delayed callback request popup to the public site and manage its content from the existing admin Contact page.
+
+Admin location
+Add a settings group beneath the existing Contact CTAs:
+
+Pages → Contact → Callback Request Popup
+Do not create a new admin menu or Enquiries submenu. Keep the existing dashboard navigation and enquiry-card placement unchanged.
+
+Admin settings
+Allow an administrator to manage:
+
+Enable/disable the popup
+Display delay in seconds, defaulting to 7 seconds; allow a sensible range of 5–10 seconds
+Eyebrow text
+Heading
+Supporting description
+Name field label
+Mobile field label
+Optional course field label and choices
+Submit button label
+Success message
+Use suitable default copy, such as:
+
+Eyebrow: Admissions Open
+Heading: Request a Call Back
+Description: Share your details and our admissions team will contact you during working hours.
+Name: Student / Parent Name
+Mobile: Phone Number
+Course: Interested Course (optional)
+Button: Request Callback
+Avoid promising a callback within a specific time unless the college can reliably meet that commitment.
+
+Public popup behavior
+Show the popup after the configured delay.
+Show it once per browser session, not on every route change.
+Include a visible close button.
+Do not show it on admin pages or the admin login page.
+Keep the popup responsive and keyboard accessible.
+Trap focus while open if appropriate, support Escape to close, and return focus sensibly when it closes.
+Respect prefers-reduced-motion.
+Follow the selected site theme for colors, borders, buttons, and focus states.
+Keep the form short and visually consistent with the site.
+Callback form
+Collect:
+
+Name — required
+Mobile number — required and validated
+Course — optional
+On submit, save the request to the existing Enquiries system with its source marked as:
+
+Callback Request
+Do not send email, WhatsApp, SMS, or any other automatic notification. The administrator will follow up manually from the dashboard.
+
+Show the configured success message only after the enquiry has been saved successfully. If saving fails, show a clear error and do not claim it was received.
+
+Dashboard enquiries
+Keep Contact Form and Callback Request submissions in the existing Enquiries dashboard area. Clearly label each record by source so administrators can distinguish full Contact page enquiries from callback requests.
+
+Do not create a duplicate enquiry database or move Enquiries into the Contact page menu.
+
+Preserve existing functionality
+Do not change the existing Contact page form, Contact CTAs, Footer, Site Identity, or enquiry management behavior. Reuse the existing Contact settings, theme system, and enquiry storage wherever possible.
+
+Verify
+Confirm that:
+
+Callback popup settings appear under Pages → Contact, beneath Contact CTAs.
+Settings save and persist after refresh.
+The popup follows the selected site theme.
+The delay is configurable within the chosen range.
+The popup appears only once per browser session.
+Required name and mobile validation work; course remains optional.
+Submissions appear in the existing dashboard Enquiries area with source Callback Request.
+No email, WhatsApp, or SMS integration is requested or called.
+Existing Contact page submissions continue to work.
+Mobile, keyboard, and reduced-motion behavior work correctly.
+The application builds and starts successfully.
+Stop after completing the callback popup and its Contact admin settings.
