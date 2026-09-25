@@ -122,7 +122,7 @@ function PublicVisitIntro({ onStart, onFinish }: { onStart: () => void; onFinish
     const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
     const minimumTimer = window.setTimeout(
       () => setMinimumDurationComplete(true),
-      reducedMotion ? 650 : 1_000,
+      reducedMotion ? 650 : 2_700,
     );
     const maximumTimer = window.setTimeout(() => {
       if (finished.current) return;

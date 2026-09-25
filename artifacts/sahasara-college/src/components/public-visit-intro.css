@@ -99,7 +99,7 @@
   height: 100%;
   border-radius: inherit;
   background: hsl(var(--accent));
-  animation: public-intro-sweep 1.25s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  animation: public-intro-sweep 2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
 }
 
 @keyframes public-intro-arrive {
@@ -118,7 +118,7 @@
     transform: translateX(-115%);
   }
   to {
-    transform: translateX(315%);
+    transform: translateX(195%);
   }
 }
 
