@@ -1,0 +1,77 @@
+Add a Theme-Aware First-Visit Loading Intro
+Add a polished branded loading intro that appears when someone first visits the public website.
+
+Do not modify existing page content or layouts. Do not show this intro in the admin dashboard or login page.
+
+Loading intro design
+Show a full-screen overlay with:
+
+The existing Sahasrah logo centered inside a circular badge.
+The one-line quotation directly beneath it:
+Best place to learn
+A thin animated line beneath the quotation that moves smoothly from left to right.
+Use the existing site logo from Site Identity. Preserve its aspect ratio; do not stretch or crop it. Use a clean circle background that provides good contrast for the logo.
+
+Follow the currently selected theme automatically:
+
+Use the selected theme’s primary color for suitable brand elements.
+Use its accent color for the animated line and small highlights.
+Use a surface/background color with readable text.
+Do not hardcode Sahasrah colors into the loader.
+Ensure the logo remains clear with every available theme preset.
+Keep the visual effect refined and professional. Avoid excessive spinning, flashing, or bouncing.
+
+When it appears
+Show it on the first public-site entry per browser tab session.
+Do not show it again during client-side navigation in the same session.
+Use sessionStorage or the project’s equivalent session-scoped approach.
+Do not show it on admin routes or the admin login page.
+Do not block or delay access to the site if initial data loading fails.
+Hide it once the public app has mounted and its initial content is ready, after a brief minimum display time so the animation can be seen.
+Include a safe timeout so the overlay cannot remain stuck indefinitely.
+Do not show a fake percentage or imply actual load progress; the line is decorative animation only.
+Site Settings controls
+Add an Intro Loading Screen group to the existing Site Settings tab. Do not add a separate admin menu.
+
+Allow an authorized administrator to:
+
+Enable or disable the intro
+Edit the quotation text, defaulting to Best place to learn
+Preview the logo and intro appearance using the current theme
+Use the Site Identity logo automatically; do not create a duplicate logo field. Keep theme colors linked to the selected theme rather than adding separate loader color inputs.
+
+Validate the quotation as a single line with a sensible maximum length. Save settings through the existing settings system and preserve defaults if the saved settings are empty.
+
+Accessibility and responsive behavior
+Respect prefers-reduced-motion: reduce: disable the moving line and entrance motion, and show the intro briefly without animation.
+Mark the animated line as decorative for screen readers.
+Ensure the loading message is announced accessibly if appropriate.
+Prevent scrolling or focus from escaping behind an active overlay, and restore page behavior when it closes.
+Keep the logo and quote centered and readable on mobile.
+Do not cause horizontal overflow.
+Preserve existing functionality
+Do not change:
+
+Public page content or section order
+Admin dashboard navigation
+Existing Site Identity fields
+Existing theme presets or theme behavior
+Authentication
+Enquiry handling
+Contact, Home, or About page layouts
+Verification
+Confirm that:
+
+The intro appears on first public-site entry.
+It does not reappear on every route change in the same session.
+It does not appear in the admin dashboard or login page.
+The logo is centered, contained, and undistorted.
+The quote and animated line appear beneath the logo.
+The intro follows each selected theme preset.
+The Site Settings controls save and persist.
+The admin preview reflects the current logo and theme.
+Reduced-motion behavior works.
+A slow or failed settings fetch cannot leave the intro stuck.
+Existing public and admin functionality remains unchanged.
+The project builds and starts successfully.
+Stop after completing the intro loading effect and its Site Settings controls.
