@@ -5,3 +5,4 @@
 - [Shared About preview records](shared-about-preview-records.md) — Home Faculty and Gallery reuse About records; hide removals and store Home headings independently.
 - [Public theme and content backfill](public-theme-and-content-backfill.md) — resolve saved colours into public HSL tokens and backfill persisted user-facing copy idempotently.
 - [Admin theme boundary](admin-theme-boundary.md) — keep admin semantic contrast tokens separate from the public theme root and prefer configured branding assets in admin chrome.
+- [Theme in portaled dialogs](portaled-dialog-theme.md) — apply the active public theme directly to portal content outside the themed page root.
