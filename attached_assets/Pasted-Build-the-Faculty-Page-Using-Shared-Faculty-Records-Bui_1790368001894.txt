@@ -1,0 +1,118 @@
+Build the Faculty Page Using Shared Faculty Records
+Build the full Faculty page and connect it to the existing Home page faculty preview. Follow the shared-library approach used for Gallery: faculty members should be managed once and reused in both places.
+
+Use the attached images as visual direction for the faculty grid and biography card.
+
+1. Admin navigation
+Set the Pages menu order to:
+
+Home
+About
+Faculty
+Gallery
+Contact
+Add Faculty immediately after About. Do not add Faculty as a subsection of Home or About.
+
+2. One shared faculty collection
+Use one faculty collection as the source of truth for the Home preview and full Faculty page.
+
+Each faculty profile should support:
+
+Name
+Photo and alt text
+Role/title
+Subject or specialization
+Qualification
+Years of experience
+Biography
+Optional social profile links
+Active/published status
+Display order
+Show in Home preview option and preview order
+The full Faculty page should display all active profiles. The Home preview should show the selected featured profiles from the same collection.
+
+Reuse the existing faculty preview records and image paths. Do not upload duplicate photos or create separate Home-only faculty records. If existing About leadership data contains the same people, reuse the records where appropriate; do not merge people who have different roles just to share a data source.
+
+3. Full public Faculty page
+Create the public page at:
+
+/faculty
+Use an editable hero with defaults such as:
+
+Eyebrow: Mentors & Guides
+Heading: Our Expert Faculty
+Description: Learn from the best minds in education. Our faculty members bring decades of experience guiding students toward success.
+Style the faculty page to match the reference:
+
+Professional theme-aware hero
+Responsive faculty-card grid
+Clear image cropping
+Dark, readable image overlay behind card text
+Consistent card sizing and spacing
+No horizontal overflow
+4. Faculty profile card interactions
+The card/image click must open an accessible biography dialog—not navigate to a social link.
+
+The dialog should display the selected member’s:
+
+Photo
+Name
+Role
+Subject
+Qualification
+Experience
+Biography
+Dialog behavior:
+
+Close button
+Escape key closes it
+Focus moves into the dialog and returns to the profile card when closed
+Responsive layout on mobile
+Theme-aware styling and readable contrast
+Provide social links as separate, clearly labeled buttons or icons on the card or biography dialog. Only clicking a social control should open that external profile. Do not make the entire card or photo link to LinkedIn or another social URL. Open external links safely in a new tab.
+
+5. Improve the Home faculty preview
+Keep the existing Home section copy editable through Home settings. Source its faculty cards from the shared faculty collection.
+
+Improve card styling and interaction:
+
+On hover, gently scale the image and lift the card.
+Make the name and role respond with a subtle color or emphasis transition.
+Maintain a readable overlay so text stays visible over every photo.
+Apply equivalent focus styling for keyboard users.
+Keep movement restrained and avoid layout shifts.
+Ensure cards remain readable on touch devices without relying on hover.
+Keep or add a More Faculty button linking to /faculty.
+
+In the Home faculty settings, provide a Manage Faculty button that takes administrators to Faculty management. Do not add duplicate photo/profile editors to Home settings.
+
+6. Admin Faculty management
+Under Pages → Faculty, allow administrators to:
+
+Add, edit, delete, and reorder faculty profiles
+Upload a profile photo once
+Edit all profile fields listed above
+Enable or disable a profile
+Mark profiles for the Home preview and set their preview order
+Edit the Faculty page eyebrow, heading, and description
+Use existing upload, validation, authorization, and data patterns. Preserve existing faculty content. Confirm before deleting a profile.
+
+7. Preserve existing functionality
+Do not change the Gallery shared-library behavior, About page layout, Home section order, theme presets, or unrelated page content. Use the selected theme tokens rather than hardcoded colors.
+
+8. Verification
+Confirm that:
+
+Pages navigation order is Home, About, Faculty, Gallery, Contact.
+Faculty profiles are uploaded and managed once.
+Home preview and /faculty use the same faculty records.
+Existing preview photos are reused without duplicate uploads.
+Home preview selection and ordering are manageable.
+Clicking a card opens its biography.
+Social links work only when their dedicated controls are clicked.
+Hover, focus, and mobile card states remain readable and polished.
+Admin edits persist and appear in the correct public locations.
+Responsive layouts, keyboard access, and reduced-motion behavior work.
+Existing Home, About, and Gallery behavior remains intact.
+The project builds and starts successfully.
+Stop after completing the shared Faculty management, full Faculty page, and Home preview connection.
