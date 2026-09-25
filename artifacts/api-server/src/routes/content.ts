@@ -23,7 +23,6 @@ import {
   GetAdminHomepageAboutPreviewResponse,
   GetAdminHomepageFavoriteTopicsResponse,
   GetAdminHomepageAchievementRibbonResponse,
-  GetAdminHomepageFacultyResponse,
   GetAdminHomepageKnowledgeHubResponse,
   GetAdminHomepageAdmissionsFaqResponse,
   GetAdminHomepageFinalCtaResponse,
@@ -34,7 +33,6 @@ import {
   GetAdminHomepageTestimonialsResponse,
   GetHomepageAchievementRibbonResponse,
   GetHomepageAboutPreviewResponse,
-  GetHomepageFacultyResponse,
   GetHomepageFavoriteTopicsResponse,
   GetHomepageKnowledgeHubResponse,
   GetHomepageAdmissionsFaqResponse,
@@ -71,8 +69,6 @@ import {
   UpdateHomepageFavoriteTopicsResponse,
   UpdateHomepageAchievementRibbonBody,
   UpdateHomepageAchievementRibbonResponse,
-  UpdateHomepageFacultyBody,
-  UpdateHomepageFacultyResponse,
   UpdateHomepageKnowledgeHubBody,
   UpdateHomepageKnowledgeHubResponse,
   UpdateHomepageAdmissionsFaqBody,
@@ -212,25 +208,6 @@ async function readHomepageFinalCta() {
 
 async function readHomepagePreviewCopy() {
   return prisma.homepagePreviewCopy.findUnique({ where: { id: "singleton" } });
-}
-
-async function readHomepageFaculty() {
-  const content = await prisma.aboutLeadership.findUnique({
-    where: { id: "singleton" },
-    include: { members: { orderBy: { displayOrder: "asc" } } },
-  });
-  return content?.members.map((member) => ({
-    id: member.id,
-    imageUrl: member.portraitImage,
-    imageAltText: member.portraitAltText,
-    name: member.name,
-    role: member.designation,
-    subject: member.subject || member.qualification || "Academic guidance",
-    experience: member.experience || "Experienced educator",
-    profileUrl: member.homepageProfileUrl || member.socialUrl,
-    displayOrder: member.displayOrder,
-    isActive: member.isVisible && member.homepageActive,
-  })) ?? [];
 }
 
 function hasUniqueDisplayOrders(items: Array<{ displayOrder: number }>) {
@@ -405,16 +382,6 @@ router.get("/homepage-testimonials", async (req, res) => {
   } catch (error) {
     req.log.error({ err: error }, "Unable to read homepage testimonials");
     res.status(500).json({ error: "Unable to load homepage testimonials." });
-  }
-});
-
-router.get("/homepage-faculty", async (req, res) => {
-  try {
-    const faculty = (await readHomepageFaculty()).filter((member) => member.isActive);
-    res.json(GetHomepageFacultyResponse.parse(faculty));
-  } catch (error) {
-    req.log.error({ err: error }, "Unable to read homepage faculty");
-    res.status(500).json({ error: "Unable to load homepage faculty." });
   }
 });
 
@@ -973,72 +940,6 @@ router.put("/admin/homepage-testimonials", requireAdmin, async (req, res) => {
   } catch (error) {
     req.log.error({ err: error }, "Unable to update homepage testimonials");
     res.status(500).json({ error: "Unable to save homepage testimonials." });
-  }
-});
-
-router.get("/admin/homepage-faculty", requireAdmin, async (req, res) => {
-  try {
-    res.json(GetAdminHomepageFacultyResponse.parse(await readHomepageFaculty()));
-  } catch (error) {
-    req.log.error({ err: error }, "Unable to read admin homepage faculty");
-    res.status(500).json({ error: "Unable to load homepage faculty." });
-  }
-});
-
-router.put("/admin/homepage-faculty", requireAdmin, async (req, res) => {
-  const parsed = UpdateHomepageFacultyBody.safeParse(req.body);
-  if (!parsed.success || !hasUniqueDisplayOrders(parsed.data) || parsed.data.some((member) => !isValidImageReference(member.imageUrl))) {
-    res.status(400).json({ error: "Check faculty fields, image references, and unique display orders." });
-    return;
-  }
-  try {
-    await prisma.$transaction(async (tx) => {
-      await tx.aboutLeadership.upsert({
-        where: { id: "singleton" },
-        update: {},
-        create: { id: "singleton", heading: "Our Leadership", description: "Meet the people who guide learning at Sahsrah.", isVisible: true, sortOrder: 6 },
-      });
-      const orders = parsed.data.map((member) => member.displayOrder);
-      await tx.aboutLeadershipMember.updateMany({
-        where: { aboutLeadershipId: "singleton", displayOrder: { notIn: orders } },
-        data: { homepageActive: false },
-      });
-      for (const member of parsed.data) {
-        await tx.aboutLeadershipMember.upsert({
-          where: { aboutLeadershipId_displayOrder: { aboutLeadershipId: "singleton", displayOrder: member.displayOrder } },
-          update: {
-            portraitImage: member.imageUrl,
-            portraitAltText: member.imageAltText,
-            name: member.name,
-            designation: member.role,
-            subject: member.subject,
-            experience: member.experience,
-            homepageProfileUrl: member.profileUrl,
-            homepageActive: member.isActive,
-          },
-          create: {
-            aboutLeadershipId: "singleton",
-            portraitImage: member.imageUrl,
-            portraitAltText: member.imageAltText,
-            name: member.name,
-            designation: member.role,
-            qualification: member.subject,
-            biography: member.experience || "",
-            socialUrl: member.profileUrl,
-            subject: member.subject,
-            experience: member.experience,
-            homepageProfileUrl: member.profileUrl,
-            homepageActive: member.isActive,
-            displayOrder: member.displayOrder,
-            isVisible: true,
-          },
-        });
-      }
-    });
-    res.json(UpdateHomepageFacultyResponse.parse(await readHomepageFaculty()));
-  } catch (error) {
-    req.log.error({ err: error }, "Unable to update homepage faculty");
-    res.status(500).json({ error: "Unable to save homepage faculty." });
   }
 });
 

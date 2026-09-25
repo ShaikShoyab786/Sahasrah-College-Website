@@ -251,7 +251,7 @@ paths:
     get:
       operationId: getHomepageFaculty
       tags: [public]
-      summary: Read active homepage faculty preview
+      summary: Read selected active profiles from the shared faculty collection
       responses:
         "200":
           description: Homepage faculty preview
@@ -261,6 +261,18 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/HomepageFacultyMember"
+  /faculty:
+    get:
+      operationId: getFacultyPage
+      tags: [public]
+      summary: Read active faculty profiles and Faculty page copy
+      responses:
+        "200":
+          description: Faculty page settings and active profiles
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FacultyPage"
   /homepage-gallery:
     get:
       operationId: getHomepageGallery
@@ -1199,32 +1211,31 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
-  /admin/homepage-faculty:
+  /admin/faculty:
     get:
-      operationId: getAdminHomepageFaculty
+      operationId: getAdminFaculty
       tags: [admin]
-      summary: Read homepage faculty preview for editing
+      summary: Read Faculty page settings and the shared faculty collection
       security:
         - cookieAuth: []
       responses:
         "200":
-          description: Homepage faculty preview
+          description: Faculty settings and all profiles
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/HomepageFacultyMember"
+                $ref: "#/components/schemas/AdminFacultyCollection"
         "401":
           description: Not authenticated
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+  /admin/faculty/settings:
     put:
-      operationId: updateHomepageFaculty
+      operationId: updateAdminFacultySettings
       tags: [admin]
-      summary: Update homepage faculty preview
+      summary: Update Faculty page hero copy
       security:
         - cookieAuth: []
       requestBody:
@@ -1232,20 +1243,14 @@ paths:
         content:
           application/json:
             schema:
-              type: array
-              minItems: 1
-              maxItems: 20
-              items:
-                $ref: "#/components/schemas/HomepageFacultyMemberInput"
+              $ref: "#/components/schemas/FacultyPageSettingsInput"
       responses:
         "200":
-          description: Updated homepage faculty preview
+          description: Updated Faculty page hero copy
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/HomepageFacultyMember"
+                $ref: "#/components/schemas/FacultyPageSettings"
         "400":
           description: Validation error
           content:
@@ -1254,6 +1259,141 @@ paths:
                 $ref: "#/components/schemas/ErrorResponse"
         "401":
           description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/faculty/members:
+    post:
+      operationId: createAdminFacultyMember
+      tags: [admin]
+      summary: Add a profile to the shared faculty collection
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FacultyMemberInput"
+      responses:
+        "201":
+          description: Created faculty profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminFacultyMember"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/faculty/members/order:
+    put:
+      operationId: updateAdminFacultyOrder
+      tags: [admin]
+      summary: Update full-page and Home preview profile order
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FacultyOrderInput"
+      responses:
+        "200":
+          description: Updated faculty profile order
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AdminFacultyMember"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/faculty/members/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    put:
+      operationId: updateAdminFacultyMember
+      tags: [admin]
+      summary: Update a faculty profile
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FacultyMemberInput"
+      responses:
+        "200":
+          description: Updated faculty profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminFacultyMember"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Faculty profile not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteAdminFacultyMember
+      tags: [admin]
+      summary: Delete a faculty profile
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Deleted faculty profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeletedFacultyMember"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Faculty profile not found
           content:
             application/json:
               schema:
@@ -3899,16 +4039,106 @@ components:
           type: string
         subject:
           type: string
+        qualification:
+          type: string
         experience:
-          type: ["string", "null"]
-        profileUrl:
-          type: ["string", "null"]
+          type: string
+        biography:
+          type: string
+        socialLinks:
+          type: array
+          items:
+            $ref: "#/components/schemas/FacultySocialLink"
         displayOrder:
           type: integer
         isActive:
           type: boolean
-      required: [id, imageUrl, imageAltText, name, role, subject, experience, profileUrl, displayOrder, isActive]
-    HomepageFacultyMemberInput:
+      required: [id, imageUrl, imageAltText, name, role, subject, qualification, experience, biography, socialLinks, displayOrder, isActive]
+    FacultySocialLink:
+      type: object
+      properties:
+        label:
+          type: string
+          minLength: 1
+          maxLength: 48
+        href:
+          type: string
+          format: uri
+          maxLength: 500
+      required: [label, href]
+    FacultyPageSettings:
+      type: object
+      properties:
+        eyebrow:
+          type: string
+          minLength: 1
+          maxLength: 100
+        heading:
+          type: string
+          minLength: 1
+          maxLength: 180
+        description:
+          type: string
+          minLength: 1
+          maxLength: 1200
+      required: [eyebrow, heading, description]
+    FacultyPageSettingsInput:
+      $ref: "#/components/schemas/FacultyPageSettings"
+    FacultyPage:
+      type: object
+      properties:
+        settings:
+          $ref: "#/components/schemas/FacultyPageSettings"
+        members:
+          type: array
+          items:
+            $ref: "#/components/schemas/HomepageFacultyMember"
+      required: [settings, members]
+    AdminFacultyMember:
+      type: object
+      properties:
+        id:
+          type: string
+        imageUrl:
+          type: ["string", "null"]
+        imageAltText:
+          type: string
+        name:
+          type: string
+        role:
+          type: string
+        subject:
+          type: string
+        qualification:
+          type: string
+        experience:
+          type: string
+        biography:
+          type: string
+        socialLinks:
+          type: array
+          items:
+            $ref: "#/components/schemas/FacultySocialLink"
+        displayOrder:
+          type: integer
+        isActive:
+          type: boolean
+        showInHomePreview:
+          type: boolean
+        homePreviewOrder:
+          type: integer
+      required: [id, imageUrl, imageAltText, name, role, subject, qualification, experience, biography, socialLinks, displayOrder, isActive, showInHomePreview, homePreviewOrder]
+    AdminFacultyCollection:
+      type: object
+      properties:
+        settings:
+          $ref: "#/components/schemas/FacultyPageSettings"
+        members:
+          type: array
+          items:
+            $ref: "#/components/schemas/AdminFacultyMember"
+      required: [settings, members]
+    FacultyMemberInput:
       type: object
       properties:
         imageUrl:
@@ -3916,26 +4146,72 @@ components:
         imageAltText:
           type: string
           minLength: 1
+          maxLength: 300
         name:
           type: string
           minLength: 1
+          maxLength: 160
         role:
           type: string
           minLength: 1
+          maxLength: 160
         subject:
           type: string
-          minLength: 1
+          maxLength: 160
+        qualification:
+          type: string
+          maxLength: 240
         experience:
-          type: ["string", "null"]
-        profileUrl:
-          type: ["string", "null"]
+          type: string
+          maxLength: 160
+        biography:
+          type: string
+          maxLength: 5000
+        socialLinks:
+          type: array
+          maxItems: 10
+          items:
+            $ref: "#/components/schemas/FacultySocialLink"
         displayOrder:
           type: integer
           minimum: 1
-          maximum: 20
+          maximum: 1000
         isActive:
           type: boolean
-      required: [imageUrl, imageAltText, name, role, subject, experience, profileUrl, displayOrder, isActive]
+        showInHomePreview:
+          type: boolean
+        homePreviewOrder:
+          type: integer
+          minimum: 1
+          maximum: 1000
+      required: [imageUrl, imageAltText, name, role, subject, qualification, experience, biography, socialLinks, displayOrder, isActive, showInHomePreview, homePreviewOrder]
+    FacultyOrderInput:
+      type: object
+      properties:
+        items:
+          type: array
+          maxItems: 100
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              displayOrder:
+                type: integer
+                minimum: 1
+                maximum: 1000
+              homePreviewOrder:
+                type: integer
+                minimum: 1
+                maximum: 1000
+            required: [id, displayOrder, homePreviewOrder]
+      required: [items]
+    DeletedFacultyMember:
+      type: object
+      properties:
+        id:
+          type: string
+      required: [id]
     HomepageGalleryItem:
       type: object
       properties:

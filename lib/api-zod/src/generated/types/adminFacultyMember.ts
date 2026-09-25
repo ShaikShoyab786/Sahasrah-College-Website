@@ -5,26 +5,22 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
+import type { FacultySocialLink } from './facultySocialLink';
 
-export interface HomepageFacultyMemberInput {
+export interface AdminFacultyMember {
+  id: string;
   /** @nullable */
   imageUrl: string | null;
-  /** @minLength 1 */
   imageAltText: string;
-  /** @minLength 1 */
   name: string;
-  /** @minLength 1 */
   role: string;
-  /** @minLength 1 */
   subject: string;
-  /** @nullable */
-  experience: string | null;
-  /** @nullable */
-  profileUrl: string | null;
-  /**
-     * @minimum 1
-     * @maximum 20
-     */
+  qualification: string;
+  experience: string;
+  biography: string;
+  socialLinks: FacultySocialLink[];
   displayOrder: number;
   isActive: boolean;
+  showInHomePreview: boolean;
+  homePreviewOrder: number;
 }

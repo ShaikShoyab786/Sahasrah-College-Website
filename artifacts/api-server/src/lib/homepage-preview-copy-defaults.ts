@@ -7,7 +7,7 @@ export const homepagePreviewCopyDefaults = {
   facultyHeading: "Our Expert Faculty",
   facultyDescription: "Experienced subject-matter experts who make difficult ideas clearer and ambitious goals more achievable.",
   facultyButtonLabel: "More Faculty",
-  facultyButtonHref: "/about#leadership",
+  facultyButtonHref: "/faculty",
   galleryEyebrow: "Campus Gallery",
   galleryHeading: "Life at Sahasrah College",
   galleryDescription: "A quick look at the spaces, routines, and experiences that shape the Sahasrah college day.",

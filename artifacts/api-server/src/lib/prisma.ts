@@ -85,7 +85,12 @@ export async function initializeDatabase() {
     create: { id: "singleton", ...homepagePreviewCopyDefaults },
   });
   const existingHomepageCopy = await prisma.homepagePreviewCopy.findUnique({ where: { id: "singleton" } });
-  const galleryCopyBackfill: { galleryHeading?: string; galleryDescription?: string; galleryButtonHref?: string } = {};
+  const galleryCopyBackfill: {
+    galleryHeading?: string;
+    galleryDescription?: string;
+    galleryButtonHref?: string;
+    facultyButtonHref?: string;
+  } = {};
   if (
     existingHomepageCopy?.galleryHeading === "Life at KVR College" ||
     existingHomepageCopy?.galleryHeading === "Life at Sahsrah College"
@@ -102,6 +107,9 @@ export async function initializeDatabase() {
   if (existingHomepageCopy?.galleryButtonHref === "/about#campus-highlights") {
     galleryCopyBackfill.galleryButtonHref = "/gallery";
   }
+  if (existingHomepageCopy?.facultyButtonHref === "/about#leadership") {
+    galleryCopyBackfill.facultyButtonHref = "/faculty";
+  }
   if (Object.keys(galleryCopyBackfill).length > 0) {
     await prisma.homepagePreviewCopy.update({
       where: { id: "singleton" },
@@ -117,6 +125,18 @@ export async function initializeDatabase() {
       eyebrow: "CAMPUS LIFE",
       heading: "Life at Sahasrah College",
       description: "Explore the spaces, people, and experiences that make life at Sahasrah College memorable.",
+    },
+  });
+
+  await prisma.facultyPageSettings.upsert({
+    where: { id: "singleton" },
+    update: {},
+    create: {
+      id: "singleton",
+      eyebrow: "Mentors & Guides",
+      heading: "Our Expert Faculty",
+      description:
+        "Learn from the best minds in education. Our faculty members bring decades of experience guiding students toward success.",
     },
   });
 
@@ -684,6 +704,49 @@ export async function initializeDatabase() {
       ],
     });
   }
+
+  await prisma.$transaction(async (tx) => {
+    const imported = await tx.facultyImportState.findUnique({ where: { id: "singleton" } });
+    if (imported) return;
+
+    const sourceMembers = await tx.aboutLeadershipMember.findMany({
+      where: { aboutLeadershipId: "singleton" },
+      orderBy: [{ displayOrder: "asc" }, { id: "asc" }],
+    });
+    if (sourceMembers.length) {
+      await tx.facultyMember.createMany({
+        data: sourceMembers.map((member) => {
+          const socialLinks = [
+            ...(member.socialUrl?.startsWith("https://") || member.socialUrl?.startsWith("http://")
+              ? [{ label: "Social profile", href: member.socialUrl }]
+              : []),
+            ...(member.homepageProfileUrl?.startsWith("https://") || member.homepageProfileUrl?.startsWith("http://")
+              ? [{ label: "Profile", href: member.homepageProfileUrl }]
+              : []),
+          ].filter((link, index, links) => links.findIndex((candidate) => candidate.href === link.href) === index);
+
+          return {
+            sourceAboutLeadershipMemberId: member.id,
+            imageUrl: member.portraitImage,
+            imageAltText: member.portraitAltText || `${member.name} portrait`,
+            name: member.name,
+            role: member.designation,
+            subject: member.subject || member.qualification || "Academic guidance",
+            qualification: member.qualification,
+            experience: member.experience || "Experienced educator",
+            biography: member.biography,
+            socialLinks,
+            isActive: member.isVisible,
+            displayOrder: member.displayOrder,
+            showInHomePreview: member.homepageActive,
+            homePreviewOrder: member.displayOrder,
+          };
+        }),
+        skipDuplicates: true,
+      });
+    }
+    await tx.facultyImportState.create({ data: { id: "singleton" } });
+  });
 
   await prisma.aboutCampusHighlights.upsert({
     where: { id: "singleton" },

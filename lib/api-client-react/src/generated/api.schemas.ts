@@ -1150,6 +1150,16 @@ export interface HomepageFinalCtaInput {
   sortOrder: number;
 }
 
+export interface FacultySocialLink {
+  /**
+     * @minLength 1
+     * @maxLength 48
+     */
+  label: string;
+  /** @maxLength 500 */
+  href: string;
+}
+
 export interface HomepageFacultyMember {
   id: string;
   /** @nullable */
@@ -1158,35 +1168,125 @@ export interface HomepageFacultyMember {
   name: string;
   role: string;
   subject: string;
-  /** @nullable */
-  experience: string | null;
-  /** @nullable */
-  profileUrl: string | null;
+  qualification: string;
+  experience: string;
+  biography: string;
+  socialLinks: FacultySocialLink[];
   displayOrder: number;
   isActive: boolean;
 }
 
-export interface HomepageFacultyMemberInput {
+export interface FacultyPageSettings {
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  eyebrow: string;
+  /**
+     * @minLength 1
+     * @maxLength 180
+     */
+  heading: string;
+  /**
+     * @minLength 1
+     * @maxLength 1200
+     */
+  description: string;
+}
+
+export type FacultyPageSettingsInput = FacultyPageSettings;
+
+export interface FacultyPage {
+  settings: FacultyPageSettings;
+  members: HomepageFacultyMember[];
+}
+
+export interface AdminFacultyMember {
+  id: string;
   /** @nullable */
   imageUrl: string | null;
-  /** @minLength 1 */
   imageAltText: string;
-  /** @minLength 1 */
   name: string;
-  /** @minLength 1 */
   role: string;
-  /** @minLength 1 */
   subject: string;
+  qualification: string;
+  experience: string;
+  biography: string;
+  socialLinks: FacultySocialLink[];
+  displayOrder: number;
+  isActive: boolean;
+  showInHomePreview: boolean;
+  homePreviewOrder: number;
+}
+
+export interface AdminFacultyCollection {
+  settings: FacultyPageSettings;
+  members: AdminFacultyMember[];
+}
+
+export interface FacultyMemberInput {
   /** @nullable */
-  experience: string | null;
-  /** @nullable */
-  profileUrl: string | null;
+  imageUrl: string | null;
+  /**
+     * @minLength 1
+     * @maxLength 300
+     */
+  imageAltText: string;
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  name: string;
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  role: string;
+  /** @maxLength 160 */
+  subject: string;
+  /** @maxLength 240 */
+  qualification: string;
+  /** @maxLength 160 */
+  experience: string;
+  /** @maxLength 5000 */
+  biography: string;
+  /** @maxItems 10 */
+  socialLinks: FacultySocialLink[];
   /**
      * @minimum 1
-     * @maximum 20
+     * @maximum 1000
      */
   displayOrder: number;
   isActive: boolean;
+  showInHomePreview: boolean;
+  /**
+     * @minimum 1
+     * @maximum 1000
+     */
+  homePreviewOrder: number;
+}
+
+export type FacultyOrderInputItemsItem = {
+  id: string;
+  /**
+     * @minimum 1
+     * @maximum 1000
+     */
+  displayOrder: number;
+  /**
+     * @minimum 1
+     * @maximum 1000
+     */
+  homePreviewOrder: number;
+};
+
+export interface FacultyOrderInput {
+  /** @maxItems 100 */
+  items: FacultyOrderInputItemsItem[];
+}
+
+export interface DeletedFacultyMember {
+  id: string;
 }
 
 export interface HomepageGalleryItem {

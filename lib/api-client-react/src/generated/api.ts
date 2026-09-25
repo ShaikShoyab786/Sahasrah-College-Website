@@ -40,6 +40,8 @@ import type {
   AboutStoryInput,
   AboutWhyParentsChoose,
   AboutWhyParentsChooseInput,
+  AdminFacultyCollection,
+  AdminFacultyMember,
   AuthSession,
   CallbackPopupSettings,
   ContactEnquiry,
@@ -48,7 +50,12 @@ import type {
   ContactEnquirySubmission,
   ContactSettings,
   ContactSettingsInput,
+  DeletedFacultyMember,
   ErrorResponse,
+  FacultyMemberInput,
+  FacultyOrderInput,
+  FacultyPage,
+  FacultyPageSettings,
   GalleryCollection,
   GalleryItem,
   GalleryItemInput,
@@ -63,7 +70,6 @@ import type {
   HomepageAdmissionsFaq,
   HomepageAdmissionsFaqInput,
   HomepageFacultyMember,
-  HomepageFacultyMemberInput,
   HomepageFavoriteTopics,
   HomepageFavoriteTopicsInput,
   HomepageFinalCta,
@@ -1214,7 +1220,7 @@ export const getGetHomepageFacultyUrl = () => {
 }
 
 /**
- * @summary Read active homepage faculty preview
+ * @summary Read selected active profiles from the shared faculty collection
  */
 export const getHomepageFaculty = async ( options?: Parameters<typeof customFetch>[1]): Promise<HomepageFacultyMember[]> => {
 
@@ -1261,7 +1267,7 @@ export type GetHomepageFacultyQueryError = ErrorType<unknown>
 
 
 /**
- * @summary Read active homepage faculty preview
+ * @summary Read selected active profiles from the shared faculty collection
  */
 
 export function useGetHomepageFaculty<TData = Awaited<ReturnType<typeof getHomepageFaculty>>, TError = ErrorType<unknown>>(
@@ -1270,6 +1276,83 @@ export function useGetHomepageFaculty<TData = Awaited<ReturnType<typeof getHomep
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
   const queryOptions = getGetHomepageFacultyQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetFacultyPageUrl = () => {
+
+
+
+
+  return `/api/faculty`
+}
+
+/**
+ * @summary Read active faculty profiles and Faculty page copy
+ */
+export const getFacultyPage = async ( options?: Parameters<typeof customFetch>[1]): Promise<FacultyPage> => {
+
+  return customFetch<FacultyPage>(getGetFacultyPageUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetFacultyPageQueryKey = () => {
+    return [
+    `/api/faculty`
+    ] as const;
+    }
+
+
+export const getGetFacultyPageQueryOptions = <TData = Awaited<ReturnType<typeof getFacultyPage>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getFacultyPage>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetFacultyPageQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFacultyPage>>> = ({ signal }) => getFacultyPage({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getFacultyPage>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetFacultyPageQueryResult = NonNullable<Awaited<ReturnType<typeof getFacultyPage>>>
+export type GetFacultyPageQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Read active faculty profiles and Faculty page copy
+ */
+
+export function useGetFacultyPage<TData = Awaited<ReturnType<typeof getFacultyPage>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getFacultyPage>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetFacultyPageQueryOptions(options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
@@ -4580,20 +4663,20 @@ export const useUpdateHomepageTestimonials = <TError = ErrorType<ErrorResponse>,
       return useMutation(getUpdateHomepageTestimonialsMutationOptions(options));
     }
 
-export const getGetAdminHomepageFacultyUrl = () => {
+export const getGetAdminFacultyUrl = () => {
 
 
 
 
-  return `/api/admin/homepage-faculty`
+  return `/api/admin/faculty`
 }
 
 /**
- * @summary Read homepage faculty preview for editing
+ * @summary Read Faculty page settings and the shared faculty collection
  */
-export const getAdminHomepageFaculty = async ( options?: Parameters<typeof customFetch>[1]): Promise<HomepageFacultyMember[]> => {
+export const getAdminFaculty = async ( options?: Parameters<typeof customFetch>[1]): Promise<AdminFacultyCollection> => {
 
-  return customFetch<HomepageFacultyMember[]>(getGetAdminHomepageFacultyUrl(),
+  return customFetch<AdminFacultyCollection>(getGetAdminFacultyUrl(),
   {
     ...options,
     method: 'GET'
@@ -4606,45 +4689,45 @@ export const getAdminHomepageFaculty = async ( options?: Parameters<typeof custo
 
 
 
-export const getGetAdminHomepageFacultyQueryKey = () => {
+export const getGetAdminFacultyQueryKey = () => {
     return [
-    `/api/admin/homepage-faculty`
+    `/api/admin/faculty`
     ] as const;
     }
 
 
-export const getGetAdminHomepageFacultyQueryOptions = <TData = Awaited<ReturnType<typeof getAdminHomepageFaculty>>, TError = ErrorType<ErrorResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminHomepageFaculty>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+export const getGetAdminFacultyQueryOptions = <TData = Awaited<ReturnType<typeof getAdminFaculty>>, TError = ErrorType<ErrorResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminFaculty>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetAdminHomepageFacultyQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getGetAdminFacultyQueryKey();
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdminHomepageFaculty>>> = ({ signal }) => getAdminHomepageFaculty({ signal, ...requestOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdminFaculty>>> = ({ signal }) => getAdminFaculty({ signal, ...requestOptions });
 
 
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAdminHomepageFaculty>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAdminFaculty>>, TError, TData> & { queryKey: QueryKey }
 }
 
-export type GetAdminHomepageFacultyQueryResult = NonNullable<Awaited<ReturnType<typeof getAdminHomepageFaculty>>>
-export type GetAdminHomepageFacultyQueryError = ErrorType<ErrorResponse>
+export type GetAdminFacultyQueryResult = NonNullable<Awaited<ReturnType<typeof getAdminFaculty>>>
+export type GetAdminFacultyQueryError = ErrorType<ErrorResponse>
 
 
 /**
- * @summary Read homepage faculty preview for editing
+ * @summary Read Faculty page settings and the shared faculty collection
  */
 
-export function useGetAdminHomepageFaculty<TData = Awaited<ReturnType<typeof getAdminHomepageFaculty>>, TError = ErrorType<ErrorResponse>>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminHomepageFaculty>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+export function useGetAdminFaculty<TData = Awaited<ReturnType<typeof getAdminFaculty>>, TError = ErrorType<ErrorResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminFaculty>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
 
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
-  const queryOptions = getGetAdminHomepageFacultyQueryOptions(options)
+  const queryOptions = getGetAdminFacultyQueryOptions(options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
@@ -4657,18 +4740,18 @@ export function useGetAdminHomepageFaculty<TData = Awaited<ReturnType<typeof get
 
 
 
-export const getUpdateHomepageFacultyUrl = () => {
+export const getUpdateAdminFacultySettingsUrl = () => {
 
 
 
 
-  return `/api/admin/homepage-faculty`
+  return `/api/admin/faculty/settings`
 }
 
 /**
- * @summary Update homepage faculty preview
+ * @summary Update Faculty page hero copy
  */
-export const updateHomepageFaculty = async (homepageFacultyMemberInput: HomepageFacultyMemberInput[], options?: Parameters<typeof customFetch>[1]): Promise<HomepageFacultyMember[]> => {
+export const updateAdminFacultySettings = async (facultyPageSettings: FacultyPageSettings, options?: Parameters<typeof customFetch>[1]): Promise<FacultyPageSettings> => {
 
     const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
     if (!h) return {};
@@ -4684,12 +4767,12 @@ export const updateHomepageFaculty = async (homepageFacultyMemberInput: Homepage
     }
     return headers;
   };
-return customFetch<HomepageFacultyMember[]>(getUpdateHomepageFacultyUrl(),
+return customFetch<FacultyPageSettings>(getUpdateAdminFacultySettingsUrl(),
   {
     ...options,
     method: 'PUT',
     headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
-    body: JSON.stringify(homepageFacultyMemberInput)
+    body: JSON.stringify(facultyPageSettings)
   }
 );}
 
@@ -4697,13 +4780,13 @@ return customFetch<HomepageFacultyMember[]>(getUpdateHomepageFacultyUrl(),
 
 
 
-export const getUpdateHomepageFacultyMutationKey = () => ['updateHomepageFaculty'] as const;
+export const getUpdateAdminFacultySettingsMutationKey = () => ['updateAdminFacultySettings'] as const;
 
-export const getUpdateHomepageFacultyMutationOptions = <TError = ErrorType<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateHomepageFaculty>>, TError,UpdateHomepageFacultyMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
-): UseMutationOptions<Awaited<ReturnType<typeof updateHomepageFaculty>>, TError,UpdateHomepageFacultyMutationVariables, TContext> => {
+export const getUpdateAdminFacultySettingsMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAdminFacultySettings>>, TError,UpdateAdminFacultySettingsMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateAdminFacultySettings>>, TError,UpdateAdminFacultySettingsMutationVariables, TContext> => {
 
-const mutationKey = getUpdateHomepageFacultyMutationKey();
+const mutationKey = getUpdateAdminFacultySettingsMutationKey();
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -4713,10 +4796,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateHomepageFaculty>>, UpdateHomepageFacultyMutationVariables> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateAdminFacultySettings>>, UpdateAdminFacultySettingsMutationVariables> = (props) => {
           const {data} = props ?? {};
 
-          return  updateHomepageFaculty(data,requestOptions)
+          return  updateAdminFacultySettings(data,requestOptions)
         }
 
 
@@ -4726,23 +4809,362 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type UpdateHomepageFacultyMutationResult = NonNullable<Awaited<ReturnType<typeof updateHomepageFaculty>>>
-    export type UpdateHomepageFacultyMutationBody = BodyType<HomepageFacultyMemberInput[]>
-    export type UpdateHomepageFacultyMutationError = ErrorType<ErrorResponse>
-    export type UpdateHomepageFacultyMutationVariables = {data: BodyType<HomepageFacultyMemberInput[]>}
+    export type UpdateAdminFacultySettingsMutationResult = NonNullable<Awaited<ReturnType<typeof updateAdminFacultySettings>>>
+    export type UpdateAdminFacultySettingsMutationBody = BodyType<FacultyPageSettings>
+    export type UpdateAdminFacultySettingsMutationError = ErrorType<ErrorResponse>
+    export type UpdateAdminFacultySettingsMutationVariables = {data: BodyType<FacultyPageSettings>}
 
     /**
- * @summary Update homepage faculty preview
+ * @summary Update Faculty page hero copy
  */
-export const useUpdateHomepageFaculty = <TError = ErrorType<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateHomepageFaculty>>, TError,UpdateHomepageFacultyMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+export const useUpdateAdminFacultySettings = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAdminFacultySettings>>, TError,UpdateAdminFacultySettingsMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
  ): UseMutationResult<
-        Awaited<ReturnType<typeof updateHomepageFaculty>>,
+        Awaited<ReturnType<typeof updateAdminFacultySettings>>,
         TError,
-        UpdateHomepageFacultyMutationVariables,
+        UpdateAdminFacultySettingsMutationVariables,
         TContext
       > => {
-      return useMutation(getUpdateHomepageFacultyMutationOptions(options));
+      return useMutation(getUpdateAdminFacultySettingsMutationOptions(options));
+    }
+
+export const getCreateAdminFacultyMemberUrl = () => {
+
+
+
+
+  return `/api/admin/faculty/members`
+}
+
+/**
+ * @summary Add a profile to the shared faculty collection
+ */
+export const createAdminFacultyMember = async (facultyMemberInput: FacultyMemberInput, options?: Parameters<typeof customFetch>[1]): Promise<AdminFacultyMember> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<AdminFacultyMember>(getCreateAdminFacultyMemberUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(facultyMemberInput)
+  }
+);}
+
+
+
+
+
+export const getCreateAdminFacultyMemberMutationKey = () => ['createAdminFacultyMember'] as const;
+
+export const getCreateAdminFacultyMemberMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createAdminFacultyMember>>, TError,CreateAdminFacultyMemberMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createAdminFacultyMember>>, TError,CreateAdminFacultyMemberMutationVariables, TContext> => {
+
+const mutationKey = getCreateAdminFacultyMemberMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createAdminFacultyMember>>, CreateAdminFacultyMemberMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  createAdminFacultyMember(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateAdminFacultyMemberMutationResult = NonNullable<Awaited<ReturnType<typeof createAdminFacultyMember>>>
+    export type CreateAdminFacultyMemberMutationBody = BodyType<FacultyMemberInput>
+    export type CreateAdminFacultyMemberMutationError = ErrorType<ErrorResponse>
+    export type CreateAdminFacultyMemberMutationVariables = {data: BodyType<FacultyMemberInput>}
+
+    /**
+ * @summary Add a profile to the shared faculty collection
+ */
+export const useCreateAdminFacultyMember = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createAdminFacultyMember>>, TError,CreateAdminFacultyMemberMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createAdminFacultyMember>>,
+        TError,
+        CreateAdminFacultyMemberMutationVariables,
+        TContext
+      > => {
+      return useMutation(getCreateAdminFacultyMemberMutationOptions(options));
+    }
+
+export const getUpdateAdminFacultyOrderUrl = () => {
+
+
+
+
+  return `/api/admin/faculty/members/order`
+}
+
+/**
+ * @summary Update full-page and Home preview profile order
+ */
+export const updateAdminFacultyOrder = async (facultyOrderInput: FacultyOrderInput, options?: Parameters<typeof customFetch>[1]): Promise<AdminFacultyMember[]> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<AdminFacultyMember[]>(getUpdateAdminFacultyOrderUrl(),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(facultyOrderInput)
+  }
+);}
+
+
+
+
+
+export const getUpdateAdminFacultyOrderMutationKey = () => ['updateAdminFacultyOrder'] as const;
+
+export const getUpdateAdminFacultyOrderMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAdminFacultyOrder>>, TError,UpdateAdminFacultyOrderMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateAdminFacultyOrder>>, TError,UpdateAdminFacultyOrderMutationVariables, TContext> => {
+
+const mutationKey = getUpdateAdminFacultyOrderMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateAdminFacultyOrder>>, UpdateAdminFacultyOrderMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  updateAdminFacultyOrder(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateAdminFacultyOrderMutationResult = NonNullable<Awaited<ReturnType<typeof updateAdminFacultyOrder>>>
+    export type UpdateAdminFacultyOrderMutationBody = BodyType<FacultyOrderInput>
+    export type UpdateAdminFacultyOrderMutationError = ErrorType<ErrorResponse>
+    export type UpdateAdminFacultyOrderMutationVariables = {data: BodyType<FacultyOrderInput>}
+
+    /**
+ * @summary Update full-page and Home preview profile order
+ */
+export const useUpdateAdminFacultyOrder = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAdminFacultyOrder>>, TError,UpdateAdminFacultyOrderMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateAdminFacultyOrder>>,
+        TError,
+        UpdateAdminFacultyOrderMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateAdminFacultyOrderMutationOptions(options));
+    }
+
+export const getUpdateAdminFacultyMemberUrl = (id: string,) => {
+
+
+
+
+  return `/api/admin/faculty/members/${id}`
+}
+
+/**
+ * @summary Update a faculty profile
+ */
+export const updateAdminFacultyMember = async (id: string,
+    facultyMemberInput: FacultyMemberInput, options?: Parameters<typeof customFetch>[1]): Promise<AdminFacultyMember> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<AdminFacultyMember>(getUpdateAdminFacultyMemberUrl(id),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(facultyMemberInput)
+  }
+);}
+
+
+
+
+
+export const getUpdateAdminFacultyMemberMutationKey = () => ['updateAdminFacultyMember'] as const;
+
+export const getUpdateAdminFacultyMemberMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAdminFacultyMember>>, TError,UpdateAdminFacultyMemberMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateAdminFacultyMember>>, TError,UpdateAdminFacultyMemberMutationVariables, TContext> => {
+
+const mutationKey = getUpdateAdminFacultyMemberMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateAdminFacultyMember>>, UpdateAdminFacultyMemberMutationVariables> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  updateAdminFacultyMember(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateAdminFacultyMemberMutationResult = NonNullable<Awaited<ReturnType<typeof updateAdminFacultyMember>>>
+    export type UpdateAdminFacultyMemberMutationBody = BodyType<FacultyMemberInput>
+    export type UpdateAdminFacultyMemberMutationError = ErrorType<ErrorResponse>
+    export type UpdateAdminFacultyMemberMutationVariables = {id: string;data: BodyType<FacultyMemberInput>}
+
+    /**
+ * @summary Update a faculty profile
+ */
+export const useUpdateAdminFacultyMember = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAdminFacultyMember>>, TError,UpdateAdminFacultyMemberMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateAdminFacultyMember>>,
+        TError,
+        UpdateAdminFacultyMemberMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateAdminFacultyMemberMutationOptions(options));
+    }
+
+export const getDeleteAdminFacultyMemberUrl = (id: string,) => {
+
+
+
+
+  return `/api/admin/faculty/members/${id}`
+}
+
+/**
+ * @summary Delete a faculty profile
+ */
+export const deleteAdminFacultyMember = async (id: string, options?: Parameters<typeof customFetch>[1]): Promise<DeletedFacultyMember> => {
+
+  return customFetch<DeletedFacultyMember>(getDeleteAdminFacultyMemberUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+
+export const getDeleteAdminFacultyMemberMutationKey = () => ['deleteAdminFacultyMember'] as const;
+
+export const getDeleteAdminFacultyMemberMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAdminFacultyMember>>, TError,DeleteAdminFacultyMemberMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteAdminFacultyMember>>, TError,DeleteAdminFacultyMemberMutationVariables, TContext> => {
+
+const mutationKey = getDeleteAdminFacultyMemberMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteAdminFacultyMember>>, DeleteAdminFacultyMemberMutationVariables> = (props) => {
+          const {id} = props ?? {};
+
+          return  deleteAdminFacultyMember(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteAdminFacultyMemberMutationResult = NonNullable<Awaited<ReturnType<typeof deleteAdminFacultyMember>>>
+
+    export type DeleteAdminFacultyMemberMutationError = ErrorType<ErrorResponse>
+    export type DeleteAdminFacultyMemberMutationVariables = {id: string}
+
+    /**
+ * @summary Delete a faculty profile
+ */
+export const useDeleteAdminFacultyMember = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAdminFacultyMember>>, TError,DeleteAdminFacultyMemberMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof deleteAdminFacultyMember>>,
+        TError,
+        DeleteAdminFacultyMemberMutationVariables,
+        TContext
+      > => {
+      return useMutation(getDeleteAdminFacultyMemberMutationOptions(options));
     }
 
 export const getGetAdminGalleryUrl = () => {

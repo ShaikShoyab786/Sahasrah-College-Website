@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { ArrowRight, ChevronLeft, ChevronRight, Medal, Quote, Star, Trophy } from 'lucide-react';
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
+import { ArrowRight, ChevronLeft, ChevronRight, Quote, Star, Trophy } from 'lucide-react';
 import type {
   HomepageAchievementRibbon,
   HomepageFacultyMember,
@@ -8,6 +8,7 @@ import type {
   HomepageTestimonials,
 } from '@workspace/api-client-react';
 import { SectionEyebrow } from '@/components/section-eyebrow';
+import { FacultyProfileCard } from '@/components/faculty-profile-card';
 
 export const fallbackResults: HomepageResults = {
   id: 'fallback-results',
@@ -56,14 +57,6 @@ export const fallbackTestimonials: HomepageTestimonials = {
     { id: 'testimonial-4', rating: 5, quote: 'The mentors helped me see the path ahead, then supported me with the practice and patience to walk it.', personName: 'Nandini Shah', role: 'Alumni', courseAchievement: 'NEET · 2024', avatarImageUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=85', avatarAltText: 'Alumna from the KVR college community', accentColor: '#C26D3E', displayOrder: 4, isActive: true },
   ],
 };
-
-export const fallbackFaculty: HomepageFacultyMember[] = [
-  { id: 'faculty-1', imageUrl: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=700&q=85', imageAltText: 'KVR faculty member', name: 'Dr. Ananya Rao', role: 'Senior Faculty', subject: 'Physics', experience: '15+ years', profileUrl: null, displayOrder: 1, isActive: true },
-  { id: 'faculty-2', imageUrl: 'https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=700&q=85', imageAltText: 'KVR faculty member', name: 'Prof. Vikram Shah', role: 'Academic Mentor', subject: 'Mathematics', experience: '12+ years', profileUrl: null, displayOrder: 2, isActive: true },
-  { id: 'faculty-3', imageUrl: 'https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=700&q=85', imageAltText: 'KVR faculty member', name: 'Dr. Meera Nair', role: 'Senior Faculty', subject: 'Biology', experience: '14+ years', profileUrl: null, displayOrder: 3, isActive: true },
-  { id: 'faculty-4', imageUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=700&q=85', imageAltText: 'KVR faculty member', name: 'Prof. Arjun Menon', role: 'Subject Expert', subject: 'Chemistry', experience: '10+ years', profileUrl: null, displayOrder: 4, isActive: true },
-  { id: 'faculty-5', imageUrl: 'https://images.unsplash.com/photo-1580894732444-8ecded7900cd?auto=format&fit=crop&w=700&q=85', imageAltText: 'KVR faculty member', name: 'Ms. Kavya Iyer', role: 'Student Mentor', subject: 'English & Aptitude', experience: '8+ years', profileUrl: null, displayOrder: 5, isActive: true },
-];
 
 export const fallbackGallery: HomepageGalleryItem[] = [
   { id: 'gallery-1', imageUrl: 'https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1200&q=85', imageAltText: 'Bright KVR college classroom', title: 'Learning spaces with purpose', category: 'Campus Feature', description: 'Comfortable classrooms designed for focused daily learning.', locationLabel: 'Academic Block', displayOrder: 1, isFeatured: true, isActive: true },
@@ -196,9 +189,9 @@ function TestimonialCard({ testimonial, index }: { testimonial: HomepageTestimon
   return <article data-testimonial-slide className="home-reveal min-w-0 flex-[0_0_88%] rounded-[1.5rem] border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-7 shadow-sm transition duration-500 hover:-translate-y-1 hover:shadow-lg sm:flex-[0_0_56%] lg:flex-[0_0_calc((100%-2rem)/3)]" style={{ '--home-card-delay': `${index * 80}ms`, borderBottomColor: testimonial.accentColor || undefined } as React.CSSProperties}><div className="flex items-center justify-between gap-4"><div className="flex gap-1 text-[hsl(var(--accent))]" aria-label={`${testimonial.rating} out of 5 stars`}>{Array.from({ length: testimonial.rating }).map((_, starIndex) => <Star key={starIndex} size={15} fill="currentColor" />)}</div><Quote size={27} className="text-[hsl(var(--accent)/.5)]" /></div><p className="mt-7 min-h-[120px] text-base leading-7 text-[hsl(var(--foreground))]">“{testimonial.quote}”</p><div className="mt-7 flex items-center gap-3 border-t border-[hsl(var(--border))] pt-5"><div className="grid h-11 w-11 shrink-0 place-items-center overflow-hidden rounded-full bg-[hsl(var(--primary))] text-xs font-bold text-[hsl(var(--accent))]">{testimonial.avatarImageUrl ? <img src={testimonial.avatarImageUrl} alt={testimonial.avatarAltText} className="h-full w-full object-cover" /> : testimonial.personName.split(' ').map((word) => word[0]).join('').slice(0, 2)}</div><div><p className="text-sm font-bold text-[hsl(var(--primary))]">{testimonial.personName}</p><p className="mt-0.5 text-xs text-[hsl(var(--muted-foreground))]">{testimonial.role} · {testimonial.courseAchievement}</p></div></div></article>;
 }
 
-export function HomeFaculty({ faculty, eyebrow = 'Learn From the Best', heading = 'Our Expert Faculty', description = 'Experienced subject-matter experts who make difficult ideas clearer and ambitious goals more achievable.', buttonLabel = 'More Faculty', buttonHref = '/about#leadership' }: { faculty: HomepageFacultyMember[]; eyebrow?: string; heading?: string; description?: string; buttonLabel?: string; buttonHref?: string }) {
+export function HomeFaculty({ faculty, eyebrow = 'Learn From the Best', heading = 'Our Expert Faculty', description = 'Experienced subject-matter experts who make difficult ideas clearer and ambitious goals more achievable.', buttonLabel = 'More Faculty', buttonHref = '/faculty', themeStyle, unavailable = false }: { faculty: HomepageFacultyMember[]; eyebrow?: string; heading?: string; description?: string; buttonLabel?: string; buttonHref?: string; themeStyle?: CSSProperties; unavailable?: boolean }) {
   const members = faculty.filter((member) => member.isActive);
-  if (!members.length) return null;
+  if (!members.length && !unavailable) return null;
   return (
     <section id="home-faculty" className="overflow-hidden bg-[hsl(var(--secondary))] px-6 py-20 lg:px-10 lg:py-28" aria-labelledby="home-faculty-heading">
       <div className="mx-auto max-w-7xl">
@@ -206,15 +199,18 @@ export function HomeFaculty({ faculty, eyebrow = 'Learn From the Best', heading 
            <div className="max-w-2xl"><SectionEyebrow className="about-eyebrow">{eyebrow}</SectionEyebrow><h2 id="home-faculty-heading" className="mt-5 font-display text-5xl font-semibold leading-[.96] tracking-[-.05em] text-[hsl(var(--primary))] md:text-6xl">{heading}</h2><p className="mt-5 max-w-xl text-base leading-7 text-[hsl(var(--muted-foreground))]">{description}</p></div>
            <a href={buttonHref} className="group inline-flex w-fit items-center gap-2 rounded-full border border-[hsl(var(--primary)/.2)] bg-[hsl(var(--card))] px-5 py-3.5 text-sm font-bold text-[hsl(var(--primary))] transition hover:-translate-y-0.5 hover:border-[hsl(var(--accent))] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--accent)/.25)]">{buttonLabel} <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" /></a>
         </div>
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">{members.slice(0, 5).map((member, index) => <FacultyCard key={member.id} member={member} index={index} />)}</div>
+        {unavailable ? (
+          <p role="status" className="mt-10 rounded-2xl border border-dashed border-[hsl(var(--border))] bg-[hsl(var(--card))] px-6 py-8 text-sm leading-6 text-[hsl(var(--muted-foreground))]">
+            Faculty profiles are temporarily unavailable. Please try again shortly.
+          </p>
+        ) : (
+          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5">
+            {members.map((member, index) => <FacultyProfileCard key={member.id} member={member} index={index} themeStyle={themeStyle} />)}
+          </div>
+        )}
       </div>
     </section>
   );
-}
-
-function FacultyCard({ member, index }: { member: HomepageFacultyMember; index: number }) {
-  const card = <article className="home-reveal faculty-preview-card group relative min-h-[380px] overflow-hidden rounded-[1.5rem] bg-[hsl(var(--primary))] shadow-lg" style={{ '--home-card-delay': `${index * 80}ms` } as React.CSSProperties}><div className="absolute inset-0">{member.imageUrl ? <img src={member.imageUrl} alt={member.imageAltText} className="h-full w-full object-cover transition duration-700 group-hover:scale-105" /> : <div className="grid h-full place-items-center text-[hsl(var(--accent))]"><Medal size={44} /></div>}</div><div className="faculty-preview-overlay absolute inset-0" /><div className="absolute inset-x-0 bottom-0 p-5 text-white"><p className="text-[10px] font-bold uppercase tracking-[.16em] text-[hsl(var(--accent))]">{member.subject}</p><h3 className="mt-2 font-display text-2xl font-semibold">{member.name}</h3><p className="mt-1 text-sm font-semibold text-white/75">{member.role}</p>{member.experience && <p className="mt-4 text-xs text-white/65">{member.experience}</p>}</div></article>;
-  return member.profileUrl ? <a href={member.profileUrl} target="_blank" rel="noreferrer" className="block rounded-[1.5rem] outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--accent)/.35)]">{card}</a> : <div tabIndex={0} className="rounded-[1.5rem] outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--accent)/.35)]">{card}</div>;
 }
 
 const HOME_GALLERY_AUTOPLAY_MS = 4000;

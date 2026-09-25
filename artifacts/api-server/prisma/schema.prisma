@@ -613,6 +613,41 @@ model AboutLeadership {
   members     AboutLeadershipMember[]
 }
 
+model FacultyPageSettings {
+  id          String   @id @default("singleton")
+  eyebrow     String   @default("Mentors & Guides")
+  heading     String   @default("Our Expert Faculty")
+  description String   @default("Learn from the best minds in education. Our faculty members bring decades of experience guiding students toward success.")
+  updatedAt   DateTime @updatedAt
+}
+
+model FacultyMember {
+  id                           String   @id @default(cuid())
+  sourceAboutLeadershipMemberId String?  @unique
+  imageUrl                     String?
+  imageAltText                 String
+  name                         String
+  role                         String
+  subject                      String   @default("")
+  qualification                String   @default("")
+  experience                   String   @default("")
+  biography                    String   @default("")
+  socialLinks                  Json     @default("[]")
+  isActive                     Boolean  @default(true)
+  displayOrder                 Int      @default(1)
+  showInHomePreview            Boolean  @default(false)
+  homePreviewOrder             Int      @default(1)
+  updatedAt                    DateTime @updatedAt
+
+  @@index([isActive, displayOrder])
+  @@index([isActive, showInHomePreview, homePreviewOrder])
+}
+
+model FacultyImportState {
+  id          String   @id @default("singleton")
+  completedAt DateTime @default(now())
+}
+
 model AboutCampusHighlights {
   id          String                  @id @default("singleton")
   eyebrow     String                  @default("CAMPUS LIFE")

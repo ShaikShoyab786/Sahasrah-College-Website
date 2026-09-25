@@ -6,7 +6,7 @@ import { PublicHeader } from '@/components/public-header';
 import { HomeLiveUpdates } from '@/components/home-live-updates';
 import { HomeStatistics } from '@/components/home-statistics';
 import { FavoriteTopics } from '@/components/favorite-topics';
-import { AchievementRibbon, fallbackFaculty, fallbackRibbon, fallbackResults, fallbackTestimonials, HomeFaculty, HomeGallery, HomeResults, HomeTestimonials } from '@/components/home-previews';
+import { AchievementRibbon, fallbackRibbon, fallbackResults, fallbackTestimonials, HomeFaculty, HomeGallery, HomeResults, HomeTestimonials } from '@/components/home-previews';
 import { fallbackAdmissionsFaq, fallbackFinalCta, fallbackKnowledgeHub, HomeAdmissionsFaq, HomeFinalCta, HomeKnowledgeHub } from '@/components/home-final-previews';
 import { createPublicThemeStyle, DEFAULT_ACCENT_COLOR, DEFAULT_PRIMARY_COLOR, DEFAULT_SURFACE_COLOR } from '@/lib/public-theme';
 
@@ -119,7 +119,7 @@ const fallbackHomepagePreviewCopy = {
   facultyHeading: 'Our Expert Faculty',
   facultyDescription: 'Experienced subject-matter experts who make difficult ideas clearer and ambitious goals more achievable.',
   facultyButtonLabel: 'More Faculty',
-  facultyButtonHref: '/about#leadership',
+  facultyButtonHref: '/faculty',
   galleryEyebrow: 'Campus Gallery',
   galleryHeading: 'Life at Sahasrah College',
   galleryDescription: 'A quick look at the spaces, routines, and experiences that shape the Sahasrah college day.',
@@ -187,12 +187,13 @@ export default function Home() {
   const primaryColor = settings.primaryColor || DEFAULT_PRIMARY_COLOR;
   const accentColor = settings.accentColor || DEFAULT_ACCENT_COLOR;
   const surfaceColor = settings.surfaceColor || DEFAULT_SURFACE_COLOR;
+  const themeStyle = createPublicThemeStyle(primaryColor, accentColor, surfaceColor);
   const knowledgeHub = knowledgeHubQuery.isError ? null : (knowledgeHubQuery.data ?? fallbackKnowledgeHub);
   const admissionsFaq = admissionsFaqQuery.isError ? null : (admissionsFaqQuery.data ?? fallbackAdmissionsFaq);
   const finalCta = finalCtaQuery.isError ? null : (finalCtaQuery.data ?? { ...fallbackFinalCta, phoneNumber: settings.phone });
 
   return (
-    <div className="paper-grain overflow-hidden bg-[hsl(var(--background))]" style={createPublicThemeStyle(primaryColor, accentColor, surfaceColor)}>
+    <div className="paper-grain overflow-hidden bg-[hsl(var(--background))]" style={themeStyle}>
        <PublicHeader settings={settings} activePage="home" />
 
       <main>
@@ -204,7 +205,7 @@ export default function Home() {
         <HomeResults content={resultsQuery.data?.isVisible ? resultsQuery.data : fallbackResults} />
         <AchievementRibbon content={ribbonQuery.data?.isVisible ? ribbonQuery.data : fallbackRibbon} />
         <HomeTestimonials content={testimonialsQuery.data?.isVisible ? testimonialsQuery.data : fallbackTestimonials} />
-        <HomeFaculty faculty={facultyQuery.data?.length ? facultyQuery.data : fallbackFaculty} eyebrow={previewCopy.facultyEyebrow} heading={previewCopy.facultyHeading} description={previewCopy.facultyDescription} buttonLabel={previewCopy.facultyButtonLabel} buttonHref={previewCopy.facultyButtonHref} />
+        <HomeFaculty faculty={facultyQuery.data ?? []} eyebrow={previewCopy.facultyEyebrow} heading={previewCopy.facultyHeading} description={previewCopy.facultyDescription} buttonLabel={previewCopy.facultyButtonLabel} buttonHref="/faculty" themeStyle={themeStyle} unavailable={facultyQuery.isError} />
         <HomeGallery gallery={galleryQuery.data ?? []} eyebrow={previewCopy.galleryEyebrow} heading={previewCopy.galleryHeading} description={previewCopy.galleryDescription} buttonLabel={previewCopy.galleryButtonLabel} buttonHref={previewCopy.galleryButtonHref || '/gallery'} />
         {knowledgeHub?.isVisible && <HomeKnowledgeHub content={knowledgeHub} />}
         {admissionsFaq?.isVisible && <HomeAdmissionsFaq content={admissionsFaq} />}

@@ -5,6 +5,7 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
+import type { FacultySocialLink } from './facultySocialLink';
 
 export interface HomepageFacultyMember {
   id: string;
@@ -14,10 +15,10 @@ export interface HomepageFacultyMember {
   name: string;
   role: string;
   subject: string;
-  /** @nullable */
-  experience: string | null;
-  /** @nullable */
-  profileUrl: string | null;
+  qualification: string;
+  experience: string;
+  biography: string;
+  socialLinks: FacultySocialLink[];
   displayOrder: number;
   isActive: boolean;
 }

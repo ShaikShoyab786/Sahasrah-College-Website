@@ -312,8 +312,14 @@ export const GetHomepageTestimonialsResponse = zod.object({
 
 
 /**
- * @summary Read active homepage faculty preview
+ * @summary Read selected active profiles from the shared faculty collection
  */
+export const getHomepageFacultyResponseSocialLinksItemLabelMax = 48;
+
+export const getHomepageFacultyResponseSocialLinksItemHrefMax = 500;
+
+
+
 export const GetHomepageFacultyResponseItem = zod.object({
   "id": zod.string(),
   "imageUrl": zod.string().nullable(),
@@ -321,12 +327,58 @@ export const GetHomepageFacultyResponseItem = zod.object({
   "name": zod.string(),
   "role": zod.string(),
   "subject": zod.string(),
-  "experience": zod.string().nullable(),
-  "profileUrl": zod.string().nullable(),
+  "qualification": zod.string(),
+  "experience": zod.string(),
+  "biography": zod.string(),
+  "socialLinks": zod.array(zod.object({
+  "label": zod.string().min(1).max(getHomepageFacultyResponseSocialLinksItemLabelMax),
+  "href": zod.string().url().max(getHomepageFacultyResponseSocialLinksItemHrefMax)
+})),
   "displayOrder": zod.number().int(),
   "isActive": zod.boolean()
 })
 export const GetHomepageFacultyResponse = zod.array(GetHomepageFacultyResponseItem)
+
+
+/**
+ * @summary Read active faculty profiles and Faculty page copy
+ */
+export const getFacultyPageResponseSettingsEyebrowMax = 100;
+
+export const getFacultyPageResponseSettingsHeadingMax = 180;
+
+export const getFacultyPageResponseSettingsDescriptionMax = 1200;
+
+export const getFacultyPageResponseMembersItemSocialLinksItemLabelMax = 48;
+
+export const getFacultyPageResponseMembersItemSocialLinksItemHrefMax = 500;
+
+
+
+export const GetFacultyPageResponse = zod.object({
+  "settings": zod.object({
+  "eyebrow": zod.string().min(1).max(getFacultyPageResponseSettingsEyebrowMax),
+  "heading": zod.string().min(1).max(getFacultyPageResponseSettingsHeadingMax),
+  "description": zod.string().min(1).max(getFacultyPageResponseSettingsDescriptionMax)
+}),
+  "members": zod.array(zod.object({
+  "id": zod.string(),
+  "imageUrl": zod.string().nullable(),
+  "imageAltText": zod.string(),
+  "name": zod.string(),
+  "role": zod.string(),
+  "subject": zod.string(),
+  "qualification": zod.string(),
+  "experience": zod.string(),
+  "biography": zod.string(),
+  "socialLinks": zod.array(zod.object({
+  "label": zod.string().min(1).max(getFacultyPageResponseMembersItemSocialLinksItemLabelMax),
+  "href": zod.string().url().max(getFacultyPageResponseMembersItemSocialLinksItemHrefMax)
+})),
+  "displayOrder": zod.number().int(),
+  "isActive": zod.boolean()
+}))
+})
 
 
 /**
@@ -1901,60 +1953,291 @@ export const UpdateHomepageTestimonialsResponse = zod.object({
 
 
 /**
- * @summary Read homepage faculty preview for editing
+ * @summary Read Faculty page settings and the shared faculty collection
  */
-export const GetAdminHomepageFacultyResponseItem = zod.object({
+export const getAdminFacultyResponseSettingsEyebrowMax = 100;
+
+export const getAdminFacultyResponseSettingsHeadingMax = 180;
+
+export const getAdminFacultyResponseSettingsDescriptionMax = 1200;
+
+export const getAdminFacultyResponseMembersItemSocialLinksItemLabelMax = 48;
+
+export const getAdminFacultyResponseMembersItemSocialLinksItemHrefMax = 500;
+
+
+
+export const GetAdminFacultyResponse = zod.object({
+  "settings": zod.object({
+  "eyebrow": zod.string().min(1).max(getAdminFacultyResponseSettingsEyebrowMax),
+  "heading": zod.string().min(1).max(getAdminFacultyResponseSettingsHeadingMax),
+  "description": zod.string().min(1).max(getAdminFacultyResponseSettingsDescriptionMax)
+}),
+  "members": zod.array(zod.object({
   "id": zod.string(),
   "imageUrl": zod.string().nullable(),
   "imageAltText": zod.string(),
   "name": zod.string(),
   "role": zod.string(),
   "subject": zod.string(),
-  "experience": zod.string().nullable(),
-  "profileUrl": zod.string().nullable(),
+  "qualification": zod.string(),
+  "experience": zod.string(),
+  "biography": zod.string(),
+  "socialLinks": zod.array(zod.object({
+  "label": zod.string().min(1).max(getAdminFacultyResponseMembersItemSocialLinksItemLabelMax),
+  "href": zod.string().url().max(getAdminFacultyResponseMembersItemSocialLinksItemHrefMax)
+})),
   "displayOrder": zod.number().int(),
-  "isActive": zod.boolean()
+  "isActive": zod.boolean(),
+  "showInHomePreview": zod.boolean(),
+  "homePreviewOrder": zod.number().int()
+}))
 })
-export const GetAdminHomepageFacultyResponse = zod.array(GetAdminHomepageFacultyResponseItem)
 
 
 /**
- * @summary Update homepage faculty preview
+ * @summary Update Faculty page hero copy
  */
+export const updateAdminFacultySettingsBodyEyebrowMax = 100;
+
+export const updateAdminFacultySettingsBodyHeadingMax = 180;
+
+export const updateAdminFacultySettingsBodyDescriptionMax = 1200;
 
 
 
-
-export const updateHomepageFacultyBodyDisplayOrderMax = 20;
-
-
-
-export const UpdateHomepageFacultyBodyItem = zod.object({
-  "imageUrl": zod.string().nullable(),
-  "imageAltText": zod.string().min(1),
-  "name": zod.string().min(1),
-  "role": zod.string().min(1),
-  "subject": zod.string().min(1),
-  "experience": zod.string().nullable(),
-  "profileUrl": zod.string().nullable(),
-  "displayOrder": zod.number().int().min(1).max(updateHomepageFacultyBodyDisplayOrderMax),
-  "isActive": zod.boolean()
+export const UpdateAdminFacultySettingsBody = zod.object({
+  "eyebrow": zod.string().min(1).max(updateAdminFacultySettingsBodyEyebrowMax),
+  "heading": zod.string().min(1).max(updateAdminFacultySettingsBodyHeadingMax),
+  "description": zod.string().min(1).max(updateAdminFacultySettingsBodyDescriptionMax)
 })
-export const UpdateHomepageFacultyBody = zod.array(UpdateHomepageFacultyBodyItem).min(1).max(20)
 
-export const UpdateHomepageFacultyResponseItem = zod.object({
+export const updateAdminFacultySettingsResponseEyebrowMax = 100;
+
+export const updateAdminFacultySettingsResponseHeadingMax = 180;
+
+export const updateAdminFacultySettingsResponseDescriptionMax = 1200;
+
+
+
+export const UpdateAdminFacultySettingsResponse = zod.object({
+  "eyebrow": zod.string().min(1).max(updateAdminFacultySettingsResponseEyebrowMax),
+  "heading": zod.string().min(1).max(updateAdminFacultySettingsResponseHeadingMax),
+  "description": zod.string().min(1).max(updateAdminFacultySettingsResponseDescriptionMax)
+})
+
+
+/**
+ * @summary Add a profile to the shared faculty collection
+ */
+export const createAdminFacultyMemberBodyImageAltTextMax = 300;
+
+export const createAdminFacultyMemberBodyNameMax = 160;
+
+export const createAdminFacultyMemberBodyRoleMax = 160;
+
+export const createAdminFacultyMemberBodySubjectMax = 160;
+
+export const createAdminFacultyMemberBodyQualificationMax = 240;
+
+export const createAdminFacultyMemberBodyExperienceMax = 160;
+
+export const createAdminFacultyMemberBodyBiographyMax = 5000;
+
+export const createAdminFacultyMemberBodySocialLinksItemLabelMax = 48;
+
+export const createAdminFacultyMemberBodySocialLinksItemHrefMax = 500;
+
+export const createAdminFacultyMemberBodySocialLinksMax = 10;
+
+export const createAdminFacultyMemberBodyDisplayOrderMax = 1000;
+
+export const createAdminFacultyMemberBodyHomePreviewOrderMax = 1000;
+
+
+
+export const CreateAdminFacultyMemberBody = zod.object({
+  "imageUrl": zod.string().nullable(),
+  "imageAltText": zod.string().min(1).max(createAdminFacultyMemberBodyImageAltTextMax),
+  "name": zod.string().min(1).max(createAdminFacultyMemberBodyNameMax),
+  "role": zod.string().min(1).max(createAdminFacultyMemberBodyRoleMax),
+  "subject": zod.string().max(createAdminFacultyMemberBodySubjectMax),
+  "qualification": zod.string().max(createAdminFacultyMemberBodyQualificationMax),
+  "experience": zod.string().max(createAdminFacultyMemberBodyExperienceMax),
+  "biography": zod.string().max(createAdminFacultyMemberBodyBiographyMax),
+  "socialLinks": zod.array(zod.object({
+  "label": zod.string().min(1).max(createAdminFacultyMemberBodySocialLinksItemLabelMax),
+  "href": zod.string().url().max(createAdminFacultyMemberBodySocialLinksItemHrefMax)
+})).max(createAdminFacultyMemberBodySocialLinksMax),
+  "displayOrder": zod.number().int().min(1).max(createAdminFacultyMemberBodyDisplayOrderMax),
+  "isActive": zod.boolean(),
+  "showInHomePreview": zod.boolean(),
+  "homePreviewOrder": zod.number().int().min(1).max(createAdminFacultyMemberBodyHomePreviewOrderMax)
+})
+
+export const createAdminFacultyMemberResponseSocialLinksItemLabelMax = 48;
+
+export const createAdminFacultyMemberResponseSocialLinksItemHrefMax = 500;
+
+
+
+export const CreateAdminFacultyMemberResponse = zod.object({
   "id": zod.string(),
   "imageUrl": zod.string().nullable(),
   "imageAltText": zod.string(),
   "name": zod.string(),
   "role": zod.string(),
   "subject": zod.string(),
-  "experience": zod.string().nullable(),
-  "profileUrl": zod.string().nullable(),
+  "qualification": zod.string(),
+  "experience": zod.string(),
+  "biography": zod.string(),
+  "socialLinks": zod.array(zod.object({
+  "label": zod.string().min(1).max(createAdminFacultyMemberResponseSocialLinksItemLabelMax),
+  "href": zod.string().url().max(createAdminFacultyMemberResponseSocialLinksItemHrefMax)
+})),
   "displayOrder": zod.number().int(),
-  "isActive": zod.boolean()
+  "isActive": zod.boolean(),
+  "showInHomePreview": zod.boolean(),
+  "homePreviewOrder": zod.number().int()
 })
-export const UpdateHomepageFacultyResponse = zod.array(UpdateHomepageFacultyResponseItem)
+
+
+/**
+ * @summary Update full-page and Home preview profile order
+ */
+export const updateAdminFacultyOrderBodyItemsItemDisplayOrderMax = 1000;
+
+export const updateAdminFacultyOrderBodyItemsItemHomePreviewOrderMax = 1000;
+
+export const updateAdminFacultyOrderBodyItemsMax = 100;
+
+
+
+export const UpdateAdminFacultyOrderBody = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string(),
+  "displayOrder": zod.number().int().min(1).max(updateAdminFacultyOrderBodyItemsItemDisplayOrderMax),
+  "homePreviewOrder": zod.number().int().min(1).max(updateAdminFacultyOrderBodyItemsItemHomePreviewOrderMax)
+})).max(updateAdminFacultyOrderBodyItemsMax)
+})
+
+export const updateAdminFacultyOrderResponseSocialLinksItemLabelMax = 48;
+
+export const updateAdminFacultyOrderResponseSocialLinksItemHrefMax = 500;
+
+
+
+export const UpdateAdminFacultyOrderResponseItem = zod.object({
+  "id": zod.string(),
+  "imageUrl": zod.string().nullable(),
+  "imageAltText": zod.string(),
+  "name": zod.string(),
+  "role": zod.string(),
+  "subject": zod.string(),
+  "qualification": zod.string(),
+  "experience": zod.string(),
+  "biography": zod.string(),
+  "socialLinks": zod.array(zod.object({
+  "label": zod.string().min(1).max(updateAdminFacultyOrderResponseSocialLinksItemLabelMax),
+  "href": zod.string().url().max(updateAdminFacultyOrderResponseSocialLinksItemHrefMax)
+})),
+  "displayOrder": zod.number().int(),
+  "isActive": zod.boolean(),
+  "showInHomePreview": zod.boolean(),
+  "homePreviewOrder": zod.number().int()
+})
+export const UpdateAdminFacultyOrderResponse = zod.array(UpdateAdminFacultyOrderResponseItem)
+
+
+/**
+ * @summary Update a faculty profile
+ */
+export const UpdateAdminFacultyMemberParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const updateAdminFacultyMemberBodyImageAltTextMax = 300;
+
+export const updateAdminFacultyMemberBodyNameMax = 160;
+
+export const updateAdminFacultyMemberBodyRoleMax = 160;
+
+export const updateAdminFacultyMemberBodySubjectMax = 160;
+
+export const updateAdminFacultyMemberBodyQualificationMax = 240;
+
+export const updateAdminFacultyMemberBodyExperienceMax = 160;
+
+export const updateAdminFacultyMemberBodyBiographyMax = 5000;
+
+export const updateAdminFacultyMemberBodySocialLinksItemLabelMax = 48;
+
+export const updateAdminFacultyMemberBodySocialLinksItemHrefMax = 500;
+
+export const updateAdminFacultyMemberBodySocialLinksMax = 10;
+
+export const updateAdminFacultyMemberBodyDisplayOrderMax = 1000;
+
+export const updateAdminFacultyMemberBodyHomePreviewOrderMax = 1000;
+
+
+
+export const UpdateAdminFacultyMemberBody = zod.object({
+  "imageUrl": zod.string().nullable(),
+  "imageAltText": zod.string().min(1).max(updateAdminFacultyMemberBodyImageAltTextMax),
+  "name": zod.string().min(1).max(updateAdminFacultyMemberBodyNameMax),
+  "role": zod.string().min(1).max(updateAdminFacultyMemberBodyRoleMax),
+  "subject": zod.string().max(updateAdminFacultyMemberBodySubjectMax),
+  "qualification": zod.string().max(updateAdminFacultyMemberBodyQualificationMax),
+  "experience": zod.string().max(updateAdminFacultyMemberBodyExperienceMax),
+  "biography": zod.string().max(updateAdminFacultyMemberBodyBiographyMax),
+  "socialLinks": zod.array(zod.object({
+  "label": zod.string().min(1).max(updateAdminFacultyMemberBodySocialLinksItemLabelMax),
+  "href": zod.string().url().max(updateAdminFacultyMemberBodySocialLinksItemHrefMax)
+})).max(updateAdminFacultyMemberBodySocialLinksMax),
+  "displayOrder": zod.number().int().min(1).max(updateAdminFacultyMemberBodyDisplayOrderMax),
+  "isActive": zod.boolean(),
+  "showInHomePreview": zod.boolean(),
+  "homePreviewOrder": zod.number().int().min(1).max(updateAdminFacultyMemberBodyHomePreviewOrderMax)
+})
+
+export const updateAdminFacultyMemberResponseSocialLinksItemLabelMax = 48;
+
+export const updateAdminFacultyMemberResponseSocialLinksItemHrefMax = 500;
+
+
+
+export const UpdateAdminFacultyMemberResponse = zod.object({
+  "id": zod.string(),
+  "imageUrl": zod.string().nullable(),
+  "imageAltText": zod.string(),
+  "name": zod.string(),
+  "role": zod.string(),
+  "subject": zod.string(),
+  "qualification": zod.string(),
+  "experience": zod.string(),
+  "biography": zod.string(),
+  "socialLinks": zod.array(zod.object({
+  "label": zod.string().min(1).max(updateAdminFacultyMemberResponseSocialLinksItemLabelMax),
+  "href": zod.string().url().max(updateAdminFacultyMemberResponseSocialLinksItemHrefMax)
+})),
+  "displayOrder": zod.number().int(),
+  "isActive": zod.boolean(),
+  "showInHomePreview": zod.boolean(),
+  "homePreviewOrder": zod.number().int()
+})
+
+
+/**
+ * @summary Delete a faculty profile
+ */
+export const DeleteAdminFacultyMemberParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const DeleteAdminFacultyMemberResponse = zod.object({
+  "id": zod.string()
+})
 
 
 /**
