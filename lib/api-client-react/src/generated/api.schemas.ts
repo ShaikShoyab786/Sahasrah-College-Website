@@ -196,6 +196,8 @@ export interface SiteSettings {
   surfaceColor: string;
   themePreset: string;
   footerText: string;
+  introEnabled: boolean;
+  introQuote: string;
   loginLeftEyebrow: string;
   loginLeftHeading: string;
   loginLeftHighlightedHeading: string;
@@ -234,6 +236,13 @@ export interface SiteSettingsInput {
   /** @minLength 1 */
   themePreset: string;
   footerText: string;
+  introEnabled: boolean;
+  /**
+     * @minLength 1
+     * @maxLength 80
+     * @pattern ^(?=.*\S)[^\r\n]+$
+     */
+  introQuote: string;
   /** @minLength 1 */
   loginLeftEyebrow: string;
   /** @minLength 1 */

@@ -1,0 +1,135 @@
+.public-visit-intro {
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
+
+.public-visit-intro--screen {
+  position: fixed;
+  z-index: 10000;
+  inset: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 1.5rem;
+}
+
+.public-visit-intro--preview {
+  min-height: 17rem;
+  border: 1px solid hsl(var(--border));
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+}
+
+.public-visit-intro__ambient {
+  position: absolute;
+  width: min(72vw, 34rem);
+  aspect-ratio: 1;
+  border-radius: 9999px;
+  background: radial-gradient(circle, hsl(var(--primary) / 0.08), transparent 68%);
+  pointer-events: none;
+}
+
+.public-visit-intro__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  width: min(100%, 26rem);
+  flex-direction: column;
+  align-items: center;
+  gap: 1.4rem;
+  text-align: center;
+  animation: public-intro-arrive 480ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
+}
+
+.public-visit-intro__badge {
+  display: grid;
+  width: clamp(5.5rem, 18vw, 7rem);
+  aspect-ratio: 1;
+  flex: 0 0 auto;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid hsl(var(--primary) / 0.12);
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1.1rem 2.8rem hsl(var(--primary) / 0.14);
+  padding: 1rem;
+}
+
+.public-visit-intro__logo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+.public-visit-intro__fallback-mark {
+  color: hsl(var(--primary));
+  font-family: inherit;
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.public-visit-intro__quote {
+  max-width: calc(100vw - 3rem);
+  margin: 0;
+  color: hsl(var(--foreground));
+  font-size: clamp(1.35rem, 4vw, 2rem);
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.public-visit-intro__line {
+  width: 8rem;
+  height: 2px;
+  overflow: hidden;
+  border-radius: 9999px;
+  background: hsl(var(--accent) / 0.18);
+}
+
+.public-visit-intro__line > span {
+  display: block;
+  width: 34%;
+  height: 100%;
+  border-radius: inherit;
+  background: hsl(var(--accent));
+  animation: public-intro-sweep 1.25s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+@keyframes public-intro-arrive {
+  from {
+    opacity: 0;
+    transform: translateY(0.55rem) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes public-intro-sweep {
+  from {
+    transform: translateX(-115%);
+  }
+  to {
+    transform: translateX(315%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .public-visit-intro__content {
+    animation: none;
+  }
+
+  .public-visit-intro__line > span {
+    width: 100%;
+    animation: none;
+    transform: none;
+  }
+}

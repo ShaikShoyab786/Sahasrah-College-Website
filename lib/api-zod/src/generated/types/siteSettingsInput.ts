@@ -26,6 +26,13 @@ export interface SiteSettingsInput {
   /** @minLength 1 */
   themePreset: string;
   footerText: string;
+  introEnabled: boolean;
+  /**
+     * @minLength 1
+     * @maxLength 80
+     * @pattern ^(?=.*\S)[^\r\n]+$
+     */
+  introQuote: string;
   /** @minLength 1 */
   loginLeftEyebrow: string;
   /** @minLength 1 */

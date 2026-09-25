@@ -20,6 +20,8 @@ export interface SiteSettings {
   surfaceColor: string;
   themePreset: string;
   footerText: string;
+  introEnabled: boolean;
+  introQuote: string;
   loginLeftEyebrow: string;
   loginLeftHeading: string;
   loginLeftHighlightedHeading: string;

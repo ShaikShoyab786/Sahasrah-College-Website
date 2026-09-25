@@ -40,6 +40,8 @@ model SiteSettings {
   surfaceColor             String @default("#F5F7FB")
   themePreset              String @default("sahsrah-blue-red")
   footerText               String
+  introEnabled             Boolean @default(true)
+  introQuote               String  @default("Best place to learn")
   loginLeftEyebrow         String  @default("ACADEMIC ADMINISTRATION")
   loginLeftHeading         String  @default("Manage with")
   loginLeftHighlightedHeading String @default("clarity and purpose.")

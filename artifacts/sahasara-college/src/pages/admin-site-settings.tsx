@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Check, ImagePlus, LockKeyhole, Palette } from 'lucide-react';
+import { Check, ImagePlus, LockKeyhole, Palette, Sparkles } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { getGetSiteSettingsQueryKey, useGetSiteSettings, useUpdateSiteSettings, useUploadAdminImage } from '@workspace/api-client-react';
 import { Area, Field, SaveButton } from '@/components/form-fields';
 import { DEFAULT_ACCENT_COLOR, DEFAULT_PRIMARY_COLOR, DEFAULT_SURFACE_COLOR, normalizeHexColor, THEME_PRESETS, type ThemePresetId } from '@/lib/public-theme';
+import { PublicVisitIntroVisual } from '@/components/public-visit-intro';
+
+const DEFAULT_INTRO_QUOTE = 'Best place to learn';
 
 const loginDefaults = {
   loginLeftEyebrow: 'ACADEMIC ADMINISTRATION',
@@ -23,7 +26,7 @@ const loginDefaults = {
   loginBackLinkLabel: 'Back to website',
 };
 
-const empty = { collegeName: '', tagline: '', logoUrl: '', email: '', phone: '', address: '', primaryColor: DEFAULT_PRIMARY_COLOR, accentColor: DEFAULT_ACCENT_COLOR, surfaceColor: DEFAULT_SURFACE_COLOR, themePreset: 'sahsrah-blue-red' as ThemePresetId, footerText: '', ...loginDefaults };
+const empty = { collegeName: '', tagline: '', logoUrl: '', email: '', phone: '', address: '', primaryColor: DEFAULT_PRIMARY_COLOR, accentColor: DEFAULT_ACCENT_COLOR, surfaceColor: DEFAULT_SURFACE_COLOR, themePreset: 'sahsrah-blue-red' as ThemePresetId, footerText: '', introEnabled: true, introQuote: DEFAULT_INTRO_QUOTE, ...loginDefaults };
 
 export default function AdminSiteSettings() {
   const queryClient = useQueryClient();
@@ -33,13 +36,17 @@ export default function AdminSiteSettings() {
   const [form, setForm] = useState(empty);
   const [notice, setNotice] = useState('');
   const [error, setError] = useState('');
-   useEffect(() => { if (query.data) setForm({ collegeName: query.data.collegeName, tagline: query.data.tagline, logoUrl: query.data.logoUrl ?? '', email: query.data.email, phone: query.data.phone, address: query.data.address, primaryColor: normalizeHexColor(query.data.primaryColor) ?? DEFAULT_PRIMARY_COLOR, accentColor: normalizeHexColor(query.data.accentColor) ?? DEFAULT_ACCENT_COLOR, surfaceColor: normalizeHexColor(query.data.surfaceColor) ?? DEFAULT_SURFACE_COLOR, themePreset: (query.data.themePreset as ThemePresetId) || 'custom', footerText: query.data.footerText, loginLeftEyebrow: query.data.loginLeftEyebrow || loginDefaults.loginLeftEyebrow, loginLeftHeading: query.data.loginLeftHeading || loginDefaults.loginLeftHeading, loginLeftHighlightedHeading: query.data.loginLeftHighlightedHeading || loginDefaults.loginLeftHighlightedHeading, loginLeftDescription: query.data.loginLeftDescription || loginDefaults.loginLeftDescription, loginLeftBottomText: query.data.loginLeftBottomText || loginDefaults.loginLeftBottomText, loginBackgroundImageUrl: query.data.loginBackgroundImageUrl ?? '', loginBackgroundImageAltText: query.data.loginBackgroundImageAltText || loginDefaults.loginBackgroundImageAltText, loginRightEyebrow: query.data.loginRightEyebrow || loginDefaults.loginRightEyebrow, loginRightHeading: query.data.loginRightHeading || loginDefaults.loginRightHeading, loginRightDescription: query.data.loginRightDescription || loginDefaults.loginRightDescription, loginEmailLabel: query.data.loginEmailLabel || loginDefaults.loginEmailLabel, loginPasswordLabel: query.data.loginPasswordLabel || loginDefaults.loginPasswordLabel, loginButtonLabel: query.data.loginButtonLabel || loginDefaults.loginButtonLabel, loginSecurityNote: query.data.loginSecurityNote || loginDefaults.loginSecurityNote, loginBackLinkLabel: query.data.loginBackLinkLabel || loginDefaults.loginBackLinkLabel }); }, [query.data]);
-  const set = (key: keyof typeof empty, value: string) => setForm((current) => ({ ...current, [key]: value }));
+   useEffect(() => { if (query.data) setForm({ collegeName: query.data.collegeName, tagline: query.data.tagline, logoUrl: query.data.logoUrl ?? '', email: query.data.email, phone: query.data.phone, address: query.data.address, primaryColor: normalizeHexColor(query.data.primaryColor) ?? DEFAULT_PRIMARY_COLOR, accentColor: normalizeHexColor(query.data.accentColor) ?? DEFAULT_ACCENT_COLOR, surfaceColor: normalizeHexColor(query.data.surfaceColor) ?? DEFAULT_SURFACE_COLOR, themePreset: (query.data.themePreset as ThemePresetId) || 'custom', footerText: query.data.footerText, introEnabled: query.data.introEnabled ?? true, introQuote: query.data.introQuote?.trim() || DEFAULT_INTRO_QUOTE, loginLeftEyebrow: query.data.loginLeftEyebrow || loginDefaults.loginLeftEyebrow, loginLeftHeading: query.data.loginLeftHeading || loginDefaults.loginLeftHeading, loginLeftHighlightedHeading: query.data.loginLeftHighlightedHeading || loginDefaults.loginLeftHighlightedHeading, loginLeftDescription: query.data.loginLeftDescription || loginDefaults.loginLeftDescription, loginLeftBottomText: query.data.loginLeftBottomText || loginDefaults.loginLeftBottomText, loginBackgroundImageUrl: query.data.loginBackgroundImageUrl ?? '', loginBackgroundImageAltText: query.data.loginBackgroundImageAltText || loginDefaults.loginBackgroundImageAltText, loginRightEyebrow: query.data.loginRightEyebrow || loginDefaults.loginRightEyebrow, loginRightHeading: query.data.loginRightHeading || loginDefaults.loginRightHeading, loginRightDescription: query.data.loginRightDescription || loginDefaults.loginRightDescription, loginEmailLabel: query.data.loginEmailLabel || loginDefaults.loginEmailLabel, loginPasswordLabel: query.data.loginPasswordLabel || loginDefaults.loginPasswordLabel, loginButtonLabel: query.data.loginButtonLabel || loginDefaults.loginButtonLabel, loginSecurityNote: query.data.loginSecurityNote || loginDefaults.loginSecurityNote, loginBackLinkLabel: query.data.loginBackLinkLabel || loginDefaults.loginBackLinkLabel }); }, [query.data]);
+  const set = <K extends keyof typeof empty,>(key: K, value: (typeof empty)[K]) => setForm((current) => ({ ...current, [key]: value }));
   const submit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); setNotice(''); setError('');
     const primaryColor = normalizeHexColor(form.primaryColor);
     const accentColor = normalizeHexColor(form.accentColor);
     const surfaceColor = normalizeHexColor(form.surfaceColor);
+    if (!form.introQuote.trim() || form.introQuote.length > 80 || /[\r\n]/.test(form.introQuote)) {
+      setError('Enter a one-line quotation of 1–80 characters.');
+      return;
+    }
     if (!primaryColor || !accentColor || !surfaceColor) {
       setError('Use valid hex colours for primary, accent, and surface, such as #022A6C, #CE0B11, and #F5F7FB.');
       return;
@@ -89,8 +96,36 @@ export default function AdminSiteSettings() {
            <div className="mt-5 grid gap-5 sm:grid-cols-3"><ColorField id="primaryColor" label="Primary colour" value={form.primaryColor} onChange={(value) => { set('themePreset', 'custom'); set('primaryColor', value); }} /><ColorField id="accentColor" label="Accent colour" value={form.accentColor} onChange={(value) => { set('themePreset', 'custom'); set('accentColor', value); }} /><ColorField id="surfaceColor" label="Surface colour" value={form.surfaceColor} onChange={(value) => { set('themePreset', 'custom'); set('surfaceColor', value); }} /></div>
          </details>
        </section>
-       <section className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 md:p-8">
-         <SectionTitle icon={<LockKeyhole size={18} />} title="Admin Login Appearance" description="Control the welcome content shown before an administrator signs in. Authentication and security behavior stay unchanged." />
+        <section className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 md:p-8" data-testid="group-intro-loading-screen">
+          <SectionTitle icon={<Sparkles size={18} />} title="Intro Loading Screen" description="A theme-aware welcome shown once per browser tab session on public pages." />
+          <div className="mt-7 grid gap-6 lg:grid-cols-[.9fr_1.1fr]">
+            <div className="space-y-5">
+              <label htmlFor="introEnabled" className="flex items-start gap-3 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--background))] p-4">
+                <input id="introEnabled" type="checkbox" checked={form.introEnabled} onChange={(event) => set('introEnabled', event.target.checked)} className="mt-1 h-4 w-4 shrink-0 accent-[hsl(var(--admin-primary))]" data-testid="input-intro-enabled" />
+                <span>
+                  <span className="block text-sm font-bold text-[hsl(var(--admin-text))]">Enable intro on first public visit</span>
+                  <span className="mt-1 block text-xs leading-5 text-[hsl(var(--admin-text-muted))]">It never appears in the admin dashboard or sign-in page.</span>
+                </span>
+              </label>
+              <Field id="introQuote" label="Quotation" hint="One line · up to 80 characters." value={form.introQuote} onChange={(event) => set('introQuote', event.target.value)} required maxLength={80} pattern={"(?=.*\\S).*"} placeholder="Best place to learn" data-testid="input-intro-quote" />
+            </div>
+            <div className="space-y-3">
+              <p className="text-xs font-bold uppercase tracking-[.16em] text-[hsl(var(--admin-text-muted))]">Live preview</p>
+              <PublicVisitIntroVisual
+                preview
+                logoUrl={form.logoUrl || null}
+                collegeName={form.collegeName || 'Sahsrah Junior College'}
+                quote={form.introQuote || DEFAULT_INTRO_QUOTE}
+                primaryColor={normalizeHexColor(form.primaryColor) ?? DEFAULT_PRIMARY_COLOR}
+                accentColor={normalizeHexColor(form.accentColor) ?? DEFAULT_ACCENT_COLOR}
+                surfaceColor={normalizeHexColor(form.surfaceColor) ?? DEFAULT_SURFACE_COLOR}
+              />
+              <p className="text-xs leading-5 text-[hsl(var(--admin-text-muted))]">Uses the Site Identity logo and the current theme selection.</p>
+            </div>
+          </div>
+        </section>
+        <section className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 md:p-8">
+          <SectionTitle icon={<LockKeyhole size={18} />} title="Admin Login Appearance" description="Control the welcome content shown before an administrator signs in. Authentication and security behavior stay unchanged." />
          <div className="mt-7 space-y-8">
            <div>
              <p className="text-xs font-bold uppercase tracking-[.16em] text-[hsl(var(--accent-foreground))]">Left panel</p>
@@ -131,7 +166,7 @@ export default function AdminSiteSettings() {
            </div>
          </div>
        </section>
-      {error && <p className="rounded-xl border border-[hsl(var(--destructive)/.25)] bg-[hsl(var(--destructive)/.08)] px-4 py-3 text-sm text-[hsl(var(--destructive))]" data-testid="status-settings-error">{error}</p>}{notice && <p className="rounded-xl border border-emerald-700/20 bg-emerald-50 px-4 py-3 text-sm text-emerald-800" data-testid="status-settings-success">{notice}</p>}<div className="flex justify-end"><SaveButton pending={update.isPending} testId="button-save-settings">Save identity</SaveButton></div>
+       {error && <p className="rounded-xl border border-[hsl(var(--destructive)/.25)] bg-[hsl(var(--destructive)/.08)] px-4 py-3 text-sm text-[hsl(var(--destructive))]" data-testid="status-settings-error">{error}</p>}{notice && <p className="rounded-xl border border-emerald-700/20 bg-emerald-50 px-4 py-3 text-sm text-emerald-800" data-testid="status-settings-success">{notice}</p>}<div className="flex justify-end"><SaveButton pending={update.isPending} testId="button-save-settings">Save site settings</SaveButton></div>
     </form>
   </div>;
 }

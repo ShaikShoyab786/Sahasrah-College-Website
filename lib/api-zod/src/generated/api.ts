@@ -69,6 +69,8 @@ export const GetSiteSettingsResponse = zod.object({
   "surfaceColor": zod.string(),
   "themePreset": zod.string(),
   "footerText": zod.string(),
+  "introEnabled": zod.boolean(),
+  "introQuote": zod.string(),
   "loginLeftEyebrow": zod.string(),
   "loginLeftHeading": zod.string(),
   "loginLeftHighlightedHeading": zod.string(),
@@ -777,6 +779,10 @@ export const updateSiteSettingsBodyPrimaryColorRegExp = new RegExp('^#[0-9A-Fa-f
 export const updateSiteSettingsBodyAccentColorRegExp = new RegExp('^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$');
 export const updateSiteSettingsBodySurfaceColorRegExp = new RegExp('^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$');
 
+export const updateSiteSettingsBodyIntroQuoteMax = 80;
+
+
+export const updateSiteSettingsBodyIntroQuoteRegExp = new RegExp('^(?=.*\\S)[^\\r\\n]+$');
 
 
 
@@ -805,6 +811,8 @@ export const UpdateSiteSettingsBody = zod.object({
   "surfaceColor": zod.string().regex(updateSiteSettingsBodySurfaceColorRegExp),
   "themePreset": zod.string().min(1),
   "footerText": zod.string(),
+  "introEnabled": zod.boolean(),
+  "introQuote": zod.string().min(1).max(updateSiteSettingsBodyIntroQuoteMax).regex(updateSiteSettingsBodyIntroQuoteRegExp),
   "loginLeftEyebrow": zod.string().min(1),
   "loginLeftHeading": zod.string().min(1),
   "loginLeftHighlightedHeading": zod.string().min(1),
@@ -835,6 +843,8 @@ export const UpdateSiteSettingsResponse = zod.object({
   "surfaceColor": zod.string(),
   "themePreset": zod.string(),
   "footerText": zod.string(),
+  "introEnabled": zod.boolean(),
+  "introQuote": zod.string(),
   "loginLeftEyebrow": zod.string(),
   "loginLeftHeading": zod.string(),
   "loginLeftHighlightedHeading": zod.string(),

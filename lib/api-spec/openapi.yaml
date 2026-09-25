@@ -2309,6 +2309,10 @@ components:
           type: string
         footerText:
           type: string
+        introEnabled:
+          type: boolean
+        introQuote:
+          type: string
         loginLeftEyebrow:
           type: string
         loginLeftHeading:
@@ -2352,6 +2356,8 @@ components:
         - surfaceColor
         - themePreset
         - footerText
+        - introEnabled
+        - introQuote
         - loginLeftEyebrow
         - loginLeftHeading
         - loginLeftHighlightedHeading
@@ -2400,6 +2406,13 @@ components:
           minLength: 1
         footerText:
           type: string
+        introEnabled:
+          type: boolean
+        introQuote:
+          type: string
+          minLength: 1
+          maxLength: 80
+          pattern: '^(?=.*\S)[^\r\n]+$'
         loginLeftEyebrow:
           type: string
           minLength: 1
@@ -2456,6 +2469,8 @@ components:
         - surfaceColor
         - themePreset
         - footerText
+        - introEnabled
+        - introQuote
         - loginLeftEyebrow
         - loginLeftHeading
         - loginLeftHighlightedHeading

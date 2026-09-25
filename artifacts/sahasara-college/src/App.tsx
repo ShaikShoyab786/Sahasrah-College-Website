@@ -12,6 +12,7 @@ import AdminGuard from '@/pages/admin-guard';
 import AdminOverview from '@/pages/admin-overview';
 import AdminDashboard from '@/pages/admin-dashboard';
 import AdminSiteSettings from '@/pages/admin-site-settings';
+import { PublicVisitIntroGate } from '@/components/public-visit-intro';
 import AdminHomepageHero from '@/pages/admin-homepage-hero';
 import AdminHomepageAboutPreview from '@/pages/admin-homepage-about-preview';
 import { AdminHomepageFavoriteTopics, AdminHomepageLiveUpdates, AdminHomepageStatistics } from '@/pages/admin-homepage-content';
@@ -148,6 +149,7 @@ function App() {
       <TooltipProvider>
         <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
           <Router />
+          <PublicVisitIntroGate />
         </WouterRouter>
         <Toaster />
       </TooltipProvider>
