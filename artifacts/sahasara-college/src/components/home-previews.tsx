@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { ArrowRight, ChevronLeft, ChevronRight, Medal, Quote, Star, Trophy } from 'lucide-react';
 import type {
   HomepageAchievementRibbon,
@@ -217,14 +217,248 @@ function FacultyCard({ member, index }: { member: HomepageFacultyMember; index: 
   return member.profileUrl ? <a href={member.profileUrl} target="_blank" rel="noreferrer" className="block rounded-[1.5rem] outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--accent)/.35)]">{card}</a> : <div tabIndex={0} className="rounded-[1.5rem] outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--accent)/.35)]">{card}</div>;
 }
 
+const HOME_GALLERY_AUTOPLAY_MS = 4000;
+const HOME_GALLERY_CLONE_COUNT = 3;
+
 export function HomeGallery({ gallery, eyebrow = 'Campus Gallery', heading = 'Life at KVR College', description = 'A quick look at the spaces, routines, and experiences that shape the KVR college day.', buttonLabel = 'View Gallery', buttonHref = '/about#campus-highlights' }: { gallery: HomepageGalleryItem[]; eyebrow?: string; heading?: string; description?: string; buttonLabel?: string; buttonHref?: string }) {
-  const items = gallery.filter((item) => item.isActive && item.isFeatured).slice(0, 3);
+  const items = gallery.filter((item) => item.isActive && item.isFeatured);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const scrollSettleTimerRef = useRef<number | null>(null);
+  const wheelResumeTimerRef = useRef<number | null>(null);
+  const touchResumeTimerRef = useRef<number | null>(null);
+  const currentIndexRef = useRef(0);
+  const touchInteractionRef = useRef(false);
+  const cloneCount = items.length > 1 ? Math.min(HOME_GALLERY_CLONE_COUNT, items.length) : 0;
+  const [hoverPaused, setHoverPaused] = useState(false);
+  const [focusPaused, setFocusPaused] = useState(false);
+  const [pointerPaused, setPointerPaused] = useState(false);
+  const [touchPaused, setTouchPaused] = useState(false);
+  const [wheelPaused, setWheelPaused] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(() => (
+    typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  ));
+  const autoplayPaused = hoverPaused || focusPaused || pointerPaused || touchPaused || wheelPaused;
+
+  const getCardStep = useCallback(() => {
+    const viewport = carouselRef.current;
+    const track = viewport?.firstElementChild as HTMLElement | null;
+    const firstCard = track?.firstElementChild as HTMLElement | null;
+    if (!viewport || !track || !firstCard) return viewport?.clientWidth ?? 0;
+    const gap = Number.parseFloat(window.getComputedStyle(track).columnGap) || 0;
+    return firstCard.getBoundingClientRect().width + gap;
+  }, []);
+
+  const jumpToCard = useCallback((physicalIndex: number) => {
+    const viewport = carouselRef.current;
+    const step = getCardStep();
+    if (!viewport || !step) return;
+    const originalScrollBehavior = viewport.style.scrollBehavior;
+    viewport.style.scrollBehavior = 'auto';
+    viewport.scrollLeft = physicalIndex * step;
+    if (originalScrollBehavior) viewport.style.scrollBehavior = originalScrollBehavior;
+    else viewport.style.removeProperty('scroll-behavior');
+  }, [getCardStep]);
+
+  const move = useCallback((direction: number) => {
+    const viewport = carouselRef.current;
+    const step = getCardStep();
+    if (!viewport || !step || items.length < 2) return;
+    const nextLogicalIndex = currentIndexRef.current + direction;
+    currentIndexRef.current = (nextLogicalIndex + items.length) % items.length;
+    viewport.scrollTo({
+      left: (cloneCount + nextLogicalIndex) * step,
+      behavior: reducedMotion ? 'auto' : 'smooth',
+    });
+  }, [cloneCount, getCardStep, items.length, reducedMotion]);
+
+  useEffect(() => {
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const update = () => setReducedMotion(media.matches);
+    update();
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, []);
+
+  useEffect(() => {
+    if (items.length < 2) return;
+    currentIndexRef.current = 0;
+    const frame = window.requestAnimationFrame(() => jumpToCard(cloneCount));
+    return () => window.cancelAnimationFrame(frame);
+  }, [cloneCount, items.length, jumpToCard]);
+
+  useEffect(() => {
+    const viewport = carouselRef.current;
+    if (!viewport || items.length < 2) return;
+    const observer = new ResizeObserver(() => {
+      jumpToCard(cloneCount + currentIndexRef.current);
+    });
+    observer.observe(viewport);
+    return () => observer.disconnect();
+  }, [cloneCount, items.length, jumpToCard]);
+
+  useEffect(() => {
+    if (autoplayPaused || reducedMotion || items.length < 2) return;
+    const timer = window.setInterval(() => move(1), HOME_GALLERY_AUTOPLAY_MS);
+    return () => window.clearInterval(timer);
+  }, [autoplayPaused, items.length, move, reducedMotion]);
+
+  useEffect(() => () => {
+    if (scrollSettleTimerRef.current !== null) window.clearTimeout(scrollSettleTimerRef.current);
+    if (wheelResumeTimerRef.current !== null) window.clearTimeout(wheelResumeTimerRef.current);
+    if (touchResumeTimerRef.current !== null) window.clearTimeout(touchResumeTimerRef.current);
+  }, []);
+
+  const handleScroll = () => {
+    if (scrollSettleTimerRef.current !== null) window.clearTimeout(scrollSettleTimerRef.current);
+    scrollSettleTimerRef.current = window.setTimeout(() => {
+      const viewport = carouselRef.current;
+      const step = getCardStep();
+      if (!viewport || !step || !items.length) return;
+      const physicalIndex = Math.round(viewport.scrollLeft / step);
+      const logicalIndex = physicalIndex - cloneCount;
+      if (logicalIndex < 0 || logicalIndex >= items.length) {
+        const wrappedIndex = (logicalIndex % items.length + items.length) % items.length;
+        currentIndexRef.current = wrappedIndex;
+        jumpToCard(cloneCount + wrappedIndex);
+        return;
+      }
+      currentIndexRef.current = logicalIndex;
+    }, 140);
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    setFocusPaused(true);
+    if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      move(1);
+    } else if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      move(-1);
+    }
+  };
+
+  const pauseForWheel = () => {
+    setWheelPaused(true);
+    if (wheelResumeTimerRef.current !== null) window.clearTimeout(wheelResumeTimerRef.current);
+    wheelResumeTimerRef.current = window.setTimeout(() => {
+      wheelResumeTimerRef.current = null;
+      setWheelPaused(false);
+    }, 600);
+  };
+
+  const endTouchInteraction = () => {
+    setPointerPaused(false);
+    if (touchResumeTimerRef.current !== null) window.clearTimeout(touchResumeTimerRef.current);
+    touchResumeTimerRef.current = window.setTimeout(() => {
+      touchResumeTimerRef.current = null;
+      touchInteractionRef.current = false;
+      setTouchPaused(false);
+    }, 600);
+  };
+
+  const leadingClones = cloneCount ? items.slice(items.length - cloneCount) : [];
+  const gallerySlides = [
+    ...leadingClones.map((item, index) => ({
+      item,
+      index: items.length - cloneCount + index,
+      clone: true,
+      key: `leading-${item.id}`,
+    })),
+    ...items.map((item, index) => ({ item, index, clone: false, key: item.id })),
+    ...items.slice(0, cloneCount).map((item, index) => ({
+      item,
+      index,
+      clone: true,
+      key: `trailing-${item.id}`,
+    })),
+  ];
+
   if (!items.length) return null;
   return (
     <section id="home-gallery" className="overflow-hidden bg-[hsl(var(--background))] px-6 py-20 lg:px-10 lg:py-28" aria-labelledby="home-gallery-heading">
       <div className="mx-auto max-w-7xl">
          <div className="flex flex-col justify-between gap-7 md:flex-row md:items-end"><div className="max-w-2xl"><SectionEyebrow className="about-eyebrow">{eyebrow}</SectionEyebrow><h2 id="home-gallery-heading" className="mt-5 font-display text-5xl font-semibold leading-[.96] tracking-[-.05em] text-[hsl(var(--primary))] md:text-6xl">{heading}</h2><p className="mt-5 max-w-xl text-base leading-7 text-[hsl(var(--muted-foreground))]">{description}</p></div><a href={buttonHref} className="group inline-flex w-fit items-center gap-2 rounded-full bg-[hsl(var(--primary))] px-5 py-3.5 text-sm font-bold text-[hsl(var(--primary-foreground))] transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--accent)/.3)]">{buttonLabel} <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" /></a></div>
-        <div className="mt-12 grid gap-5 md:grid-cols-3">{items.map((item, index) => <article key={item.id} className="home-reveal group overflow-hidden rounded-[1.5rem] border border-[hsl(var(--border))] bg-[hsl(var(--card))] shadow-sm transition duration-500 hover:-translate-y-1 hover:shadow-xl focus-within:-translate-y-1" tabIndex={0} style={{ '--home-card-delay': `${index * 90}ms` } as React.CSSProperties}><div className="relative aspect-[1.35] overflow-hidden bg-[hsl(var(--primary))]">{item.imageUrl ? <img src={item.imageUrl} alt={item.imageAltText} className="h-full w-full object-cover transition duration-700 group-hover:scale-105" /> : <div className="grid h-full place-items-center text-[hsl(var(--accent))]"><Trophy size={38} /></div>}<div className="absolute inset-0 bg-gradient-to-t from-[hsl(var(--primary)/.55)] to-transparent opacity-70 transition group-hover:opacity-100" /></div><div className="p-6"><div className="flex items-center justify-between gap-3 text-[10px] font-bold uppercase tracking-[.16em] text-[hsl(var(--accent-foreground))]"><span>{item.category}</span>{item.locationLabel && <span className="text-[hsl(var(--muted-foreground))]">{item.locationLabel}</span>}</div><h3 className="mt-3 font-display text-2xl font-semibold text-[hsl(var(--primary))]">{item.title}</h3><p className="mt-3 text-sm leading-6 text-[hsl(var(--muted-foreground))]">{item.description}</p></div></article>)}</div>
+         <div
+           className="mt-12"
+           onPointerEnter={(event) => {
+             if (event.pointerType !== 'touch') setHoverPaused(true);
+           }}
+           onPointerLeave={(event) => {
+             if (event.pointerType !== 'touch') {
+               setHoverPaused(false);
+               setPointerPaused(false);
+             }
+           }}
+           onFocusCapture={() => {
+             if (!touchInteractionRef.current) setFocusPaused(true);
+           }}
+           onBlurCapture={(event) => {
+             if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setFocusPaused(false);
+           }}
+         >
+           <div
+             ref={carouselRef}
+             className="overflow-x-auto overscroll-x-contain scrollbar-none snap-x snap-mandatory"
+             role="region"
+             aria-label={heading}
+             aria-roledescription="carousel"
+             tabIndex={0}
+             data-testid="carousel-home-gallery"
+             onScroll={handleScroll}
+             onKeyDown={handleKeyDown}
+             onPointerDown={(event) => {
+               if (event.pointerType === 'touch') {
+                 touchInteractionRef.current = true;
+                 setPointerPaused(false);
+               } else {
+                 setPointerPaused(true);
+               }
+             }}
+             onPointerUp={() => setPointerPaused(false)}
+             onPointerCancel={(event) => {
+               setPointerPaused(false);
+               if (event.pointerType === 'touch') endTouchInteraction();
+             }}
+             onTouchStart={() => {
+               touchInteractionRef.current = true;
+               setPointerPaused(false);
+               setTouchPaused(true);
+             }}
+             onTouchEnd={endTouchInteraction}
+             onTouchCancel={endTouchInteraction}
+             onWheel={pauseForWheel}
+           >
+             <div className="flex gap-5">
+               {gallerySlides.map(({ item, index, clone, key }) => (
+                 <article
+                   key={key}
+                   data-home-gallery-slide=""
+                   className="home-reveal group min-w-0 flex-[0_0_88%] snap-start overflow-hidden rounded-[1.5rem] border border-[hsl(var(--border))] bg-[hsl(var(--card))] shadow-sm transition duration-500 hover:-translate-y-1 hover:shadow-xl focus-within:-translate-y-1 sm:flex-[0_0_56%] md:flex-[0_0_calc((100%-2.5rem)/3)]"
+                   tabIndex={clone ? -1 : 0}
+                   aria-hidden={clone || undefined}
+                   aria-roledescription="slide"
+                   aria-label={clone ? undefined : `${index + 1} of ${items.length}`}
+                   style={{ '--home-card-delay': `${index * 90}ms` } as React.CSSProperties}
+                 >
+                   <div className="relative aspect-[1.35] overflow-hidden bg-[hsl(var(--primary))]">
+                     {item.imageUrl
+                       ? <img src={item.imageUrl} alt={item.imageAltText} className="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
+                       : <div className="grid h-full place-items-center text-[hsl(var(--accent))]"><Trophy size={38} /></div>}
+                     <div className="absolute inset-0 bg-gradient-to-t from-[hsl(var(--primary)/.55)] to-transparent opacity-70 transition group-hover:opacity-100" />
+                   </div>
+                   <div className="p-6">
+                     <div className="flex items-center justify-between gap-3 text-[10px] font-bold uppercase tracking-[.16em] text-[hsl(var(--accent-foreground))]">
+                       <span>{item.category}</span>
+                       {item.locationLabel && <span className="text-[hsl(var(--muted-foreground))]">{item.locationLabel}</span>}
+                     </div>
+                     <h3 className="mt-3 font-display text-2xl font-semibold text-[hsl(var(--primary))]">{item.title}</h3>
+                     <p className="mt-3 text-sm leading-6 text-[hsl(var(--muted-foreground))]">{item.description}</p>
+                   </div>
+                 </article>
+               ))}
+             </div>
+           </div>
+         </div>
       </div>
     </section>
   );

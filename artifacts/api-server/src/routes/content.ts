@@ -443,8 +443,7 @@ router.get("/homepage-faculty", async (req, res) => {
 router.get("/homepage-gallery", async (req, res) => {
   try {
     const gallery = (await readHomepageGallery())
-      .filter((item) => item.isActive && item.isFeatured)
-      .slice(0, 3);
+      .filter((item) => item.isActive && item.isFeatured);
     res.json(GetHomepageGalleryResponse.parse(gallery));
   } catch (error) {
     req.log.error({ err: error }, "Unable to read homepage gallery");

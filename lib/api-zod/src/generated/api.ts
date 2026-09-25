@@ -344,7 +344,7 @@ export const GetHomepageGalleryResponseItem = zod.object({
   "isFeatured": zod.boolean(),
   "isActive": zod.boolean()
 })
-export const GetHomepageGalleryResponse = zod.array(GetHomepageGalleryResponseItem).max(3)
+export const GetHomepageGalleryResponse = zod.array(GetHomepageGalleryResponseItem)
 
 
 /**
