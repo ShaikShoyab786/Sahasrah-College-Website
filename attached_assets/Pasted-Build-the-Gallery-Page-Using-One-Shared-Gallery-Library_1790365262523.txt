@@ -1,0 +1,118 @@
+Build the Gallery Page Using One Shared Gallery Library
+Build the full Gallery page and its admin controls, reusing the existing six Home page gallery preview images. Each image must be uploaded and managed once, then shared between the Home preview and full Gallery page. Do not create duplicate image uploads or separate competing content collections.
+
+1. Admin navigation
+Add a Gallery item under Pages, immediately after About:
+
+Home
+About
+Gallery
+Contact
+Do not add Enquiries to Pages; keep it in its existing dashboard location.
+
+2. One shared gallery collection
+Create or reuse a single Gallery collection as the source of truth for gallery images. Each item should support:
+
+Image
+Alt text
+Title or caption
+Optional short description
+Category
+Active/published status
+Display order
+Show in Home preview toggle
+Home preview order
+Use these default categories:
+
+Campus
+Classrooms
+Sports
+Labs
+Library
+Achievements
+Events
+The full Gallery page should show all active items. The Home preview should show up to six active items marked Show in Home preview, in their configured order. If fewer than six are selected, show only those available—do not duplicate cards to fill the carousel.
+
+3. Reuse existing Home preview images
+The six images already uploaded for the Home preview must also appear in the Gallery page.
+
+Reuse their existing image files and paths.
+Do not upload or store duplicate copies.
+Migrate or link their existing records safely into the shared Gallery collection.
+Preserve the existing images and their content during migration.
+Verify the Home preview still displays correctly after it uses the shared records.
+Once verified, remove duplicate image editing from Home settings so the images are managed only from Gallery.
+Keep Home-specific section content—such as its eyebrow, heading, description, and button label—in Home settings. Keep the Gallery page’s own hero eyebrow, heading, and description in Gallery settings. Do not duplicate the shared image’s title, category, or description as separate Home-only content.
+
+4. Full public Gallery page
+Build the public Gallery page at the existing Gallery route, using the project’s theme and responsive design.
+
+Use the default title:
+
+Life at Sahasrah College
+Make the Gallery page eyebrow, heading, and supporting description editable from Gallery settings.
+
+Add category filters:
+
+All
+Campus
+Classrooms
+Sports
+Labs
+Library
+Achievements
+Events
+The filters should display only active images in the selected category. “All” displays all active images. If Gallery categories are made editable, keep their order and labels manageable and ensure every image’s category has a corresponding filter.
+
+Use a responsive image grid:
+
+Desktop: four columns where space allows
+Tablet: two columns
+Mobile: one or two columns as appropriate
+Add polished image hover effects and a lightbox/image viewer if appropriate. Keep images properly cropped, preserve alt text, and avoid horizontal overflow. For large galleries, use pagination or a Load More control rather than loading an unbounded number of images at once.
+
+5. Gallery admin management
+Under Pages → Gallery, allow administrators to:
+
+Add, edit, delete, and reorder gallery items
+Upload an image once
+Set its title, alt text, description, and category
+Enable or disable publication
+Mark or unmark it for the Home preview
+Reorder items in the full Gallery page and Home preview
+Add confirmation before deleting an item. Protect admin changes using the existing authorization and upload patterns.
+
+In the Home gallery preview settings, replace duplicate image upload controls with a clear note and button:
+
+Gallery images are managed in Pages → Gallery.
+Add a Manage Gallery Items button that opens the Gallery admin section.
+
+6. Home preview carousel
+Keep the Home section title:
+
+Life at Sahasrah College
+Use the shared Gallery items marked for Home preview. Preserve or fix the existing automatic scrolling so the selected images advance smoothly. Keep manual controls if present, pause autoplay on hover/focus/touch, and respect reduced-motion settings.
+
+7. Data and safety requirements
+Reuse the project’s current storage, API, and admin conventions.
+Do not create separate Home-gallery and full-Gallery image tables or upload flows.
+Return only active/published items to public pages.
+Preserve existing image files and settings.
+Make any migration safe and non-destructive.
+Preserve the current theme settings.
+Do not change other Home, About, or Contact content.
+8. Verification
+Confirm that:
+
+Existing Home preview images appear in the full Gallery without being re-uploaded.
+An image uploaded once can appear on both the Home preview and full Gallery.
+Editing its shared image details updates both places.
+Home preview selection and order are controlled from Gallery management.
+Home-specific and Gallery page headings remain independently editable.
+Category filters work, including All.
+Admin create, edit, delete, reorder, publish, and Home-preview controls persist.
+The Gallery page works on desktop, tablet, and mobile.
+The Home carousel scrolls smoothly without empty gaps, jumps, or duplicate items.
+No unrelated pages or settings are changed.
+The project builds and starts successfully.
+Stop after completing the shared Gallery library, full Gallery page, and Home preview connection.
