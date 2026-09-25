@@ -8,6 +8,22 @@ import { homepagePreviewCopyDefaults } from "./homepage-preview-copy-defaults";
 
 export const prisma = new PrismaClient();
 
+const galleryCategories = ["Campus", "Classrooms", "Sports", "Labs", "Library", "Achievements", "Events"];
+
+function getGalleryCategory(category: string | null, title: string) {
+  const normalized = category?.trim().toLowerCase();
+  const existing = galleryCategories.find((value) => value.toLowerCase() === normalized);
+  if (existing) return existing;
+  const searchable = `${category ?? ""} ${title}`.toLowerCase();
+  if (searchable.includes("classroom") || searchable.includes("class")) return "Classrooms";
+  if (searchable.includes("sport") || searchable.includes("activity")) return "Sports";
+  if (searchable.includes("lab") || searchable.includes("science")) return "Labs";
+  if (searchable.includes("library") || searchable.includes("study")) return "Library";
+  if (searchable.includes("achievement") || searchable.includes("award")) return "Achievements";
+  if (searchable.includes("event")) return "Events";
+  return "Campus";
+}
+
 async function backfillCollegeNameTypo() {
   const columns = await prisma.$queryRaw<Array<{ tableName: string; columnName: string }>>`
     SELECT table_name AS "tableName", column_name AS "columnName"
@@ -67,6 +83,41 @@ export async function initializeDatabase() {
     where: { id: "singleton" },
     update: {},
     create: { id: "singleton", ...homepagePreviewCopyDefaults },
+  });
+  const existingHomepageCopy = await prisma.homepagePreviewCopy.findUnique({ where: { id: "singleton" } });
+  const galleryCopyBackfill: { galleryHeading?: string; galleryDescription?: string; galleryButtonHref?: string } = {};
+  if (
+    existingHomepageCopy?.galleryHeading === "Life at KVR College" ||
+    existingHomepageCopy?.galleryHeading === "Life at Sahsrah College"
+  ) {
+    galleryCopyBackfill.galleryHeading = "Life at Sahasrah College";
+  }
+  if (
+    existingHomepageCopy?.galleryDescription ===
+    "A quick look at the spaces, routines, and experiences that shape the KVR college day."
+  ) {
+    galleryCopyBackfill.galleryDescription =
+      "A quick look at the spaces, routines, and experiences that shape the Sahasrah college day.";
+  }
+  if (existingHomepageCopy?.galleryButtonHref === "/about#campus-highlights") {
+    galleryCopyBackfill.galleryButtonHref = "/gallery";
+  }
+  if (Object.keys(galleryCopyBackfill).length > 0) {
+    await prisma.homepagePreviewCopy.update({
+      where: { id: "singleton" },
+      data: galleryCopyBackfill,
+    });
+  }
+
+  await prisma.galleryPageSettings.upsert({
+    where: { id: "singleton" },
+    update: {},
+    create: {
+      id: "singleton",
+      eyebrow: "CAMPUS LIFE",
+      heading: "Life at Sahasrah College",
+      description: "Explore the spaces, people, and experiences that make life at Sahasrah College memorable.",
+    },
   });
 
   const currentSettings = await prisma.siteSettings.findUnique({ where: { id: "singleton" } });
@@ -655,6 +706,37 @@ export async function initializeDatabase() {
         { aboutCampusHighlightsId: "singleton", imageUrl: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1000&q=85", imageAltText: "Student resting in a welcoming residence", icon: "house", title: "Safe Hostel Facilities", description: "A supportive residential environment with student wellbeing in mind.", displayOrder: 5, isVisible: true },
         { aboutCampusHighlightsId: "singleton", imageUrl: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=1000&q=85", imageAltText: "Students participating in outdoor sports", icon: "trophy", title: "Sports and Activity Spaces", description: "Room to move, recharge, build teamwork, and enjoy a balanced routine.", displayOrder: 6, isVisible: true },
       ],
+    });
+  }
+
+  const galleryImportState = await prisma.galleryImportState.findUnique({ where: { id: "singleton" } });
+  if (!galleryImportState) {
+    const existingCampusHighlights = await prisma.aboutCampusHighlight.findMany({
+      where: { aboutCampusHighlightsId: "singleton" },
+      orderBy: { displayOrder: "asc" },
+    });
+    await prisma.$transaction(async (tx) => {
+      await tx.galleryItem.createMany({
+        data: existingCampusHighlights.map((highlight) => ({
+          sourceAboutId: highlight.id,
+          imageUrl: highlight.imageUrl,
+          imageAltText: highlight.imageAltText,
+          title: highlight.title,
+          description: highlight.description,
+          category: getGalleryCategory(highlight.category, highlight.title),
+          locationLabel: highlight.locationLabel,
+          isPublished: highlight.isVisible,
+          displayOrder: highlight.displayOrder,
+          showInHomePreview: highlight.homepageActive && highlight.homepageFeatured,
+          homePreviewOrder: highlight.displayOrder,
+        })),
+        skipDuplicates: true,
+      });
+      await tx.galleryImportState.upsert({
+        where: { id: "singleton" },
+        update: {},
+        create: { id: "singleton" },
+      });
     });
   }
 

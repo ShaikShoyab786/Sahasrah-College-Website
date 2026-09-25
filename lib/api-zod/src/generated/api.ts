@@ -348,6 +348,35 @@ export const GetHomepageGalleryResponse = zod.array(GetHomepageGalleryResponseIt
 
 
 /**
+ * @summary Read the public Gallery page and active gallery items
+ */
+
+
+
+
+export const GetGalleryPageResponse = zod.object({
+  "settings": zod.object({
+  "eyebrow": zod.string().min(1),
+  "heading": zod.string().min(1),
+  "description": zod.string()
+}),
+  "items": zod.array(zod.object({
+  "id": zod.string(),
+  "imageUrl": zod.string().nullable(),
+  "imageAltText": zod.string(),
+  "title": zod.string(),
+  "description": zod.string().nullable(),
+  "category": zod.enum(['Campus', 'Classrooms', 'Sports', 'Labs', 'Library', 'Achievements', 'Events']),
+  "locationLabel": zod.string().nullable(),
+  "displayOrder": zod.number().int(),
+  "isPublished": zod.boolean(),
+  "showInHomePreview": zod.boolean(),
+  "homePreviewOrder": zod.number().int()
+}))
+})
+
+
+/**
  * @summary Read the visible homepage Knowledge Hub preview
  */
 export const GetHomepageKnowledgeHubResponse = zod.object({
@@ -1929,61 +1958,187 @@ export const UpdateHomepageFacultyResponse = zod.array(UpdateHomepageFacultyResp
 
 
 /**
- * @summary Read homepage gallery preview for editing
+ * @summary Read gallery settings and all gallery items for editing
  */
-export const GetAdminHomepageGalleryResponseItem = zod.object({
+
+
+
+
+export const GetAdminGalleryResponse = zod.object({
+  "settings": zod.object({
+  "eyebrow": zod.string().min(1),
+  "heading": zod.string().min(1),
+  "description": zod.string()
+}),
+  "items": zod.array(zod.object({
   "id": zod.string(),
   "imageUrl": zod.string().nullable(),
   "imageAltText": zod.string(),
   "title": zod.string(),
-  "category": zod.string(),
-  "description": zod.string(),
+  "description": zod.string().nullable(),
+  "category": zod.enum(['Campus', 'Classrooms', 'Sports', 'Labs', 'Library', 'Achievements', 'Events']),
   "locationLabel": zod.string().nullable(),
   "displayOrder": zod.number().int(),
-  "isFeatured": zod.boolean(),
-  "isActive": zod.boolean()
+  "isPublished": zod.boolean(),
+  "showInHomePreview": zod.boolean(),
+  "homePreviewOrder": zod.number().int()
+}))
 })
-export const GetAdminHomepageGalleryResponse = zod.array(GetAdminHomepageGalleryResponseItem)
 
 
 /**
- * @summary Update homepage gallery preview
+ * @summary Update Gallery page hero copy
  */
+export const updateAdminGallerySettingsBodyEyebrowMax = 120;
+
+export const updateAdminGallerySettingsBodyHeadingMax = 180;
+
+export const updateAdminGallerySettingsBodyDescriptionMax = 800;
 
 
 
-export const updateHomepageGalleryBodyDescriptionMax = 280;
-
-export const updateHomepageGalleryBodyDisplayOrderMax = 20;
-
-
-
-export const UpdateHomepageGalleryBodyItem = zod.object({
-  "imageUrl": zod.string().nullable(),
-  "imageAltText": zod.string().min(1),
-  "title": zod.string().min(1),
-  "category": zod.string().min(1),
-  "description": zod.string().min(1).max(updateHomepageGalleryBodyDescriptionMax),
-  "locationLabel": zod.string().nullable(),
-  "displayOrder": zod.number().int().min(1).max(updateHomepageGalleryBodyDisplayOrderMax),
-  "isFeatured": zod.boolean(),
-  "isActive": zod.boolean()
+export const UpdateAdminGallerySettingsBody = zod.object({
+  "eyebrow": zod.string().min(1).max(updateAdminGallerySettingsBodyEyebrowMax),
+  "heading": zod.string().min(1).max(updateAdminGallerySettingsBodyHeadingMax),
+  "description": zod.string().max(updateAdminGallerySettingsBodyDescriptionMax)
 })
-export const UpdateHomepageGalleryBody = zod.array(UpdateHomepageGalleryBodyItem).min(1).max(20)
 
-export const UpdateHomepageGalleryResponseItem = zod.object({
+
+
+
+
+export const UpdateAdminGallerySettingsResponse = zod.object({
+  "eyebrow": zod.string().min(1),
+  "heading": zod.string().min(1),
+  "description": zod.string()
+})
+
+
+/**
+ * @summary Add an item to the shared Gallery library
+ */
+export const createAdminGalleryItemBodyImageAltTextMax = 300;
+
+export const createAdminGalleryItemBodyTitleMax = 180;
+
+export const createAdminGalleryItemBodyDescriptionMax = 800;
+
+
+
+
+
+export const CreateAdminGalleryItemBody = zod.object({
+  "imageUrl": zod.string().nullable(),
+  "imageAltText": zod.string().min(1).max(createAdminGalleryItemBodyImageAltTextMax),
+  "title": zod.string().min(1).max(createAdminGalleryItemBodyTitleMax),
+  "description": zod.string().max(createAdminGalleryItemBodyDescriptionMax).nullable(),
+  "category": zod.enum(['Campus', 'Classrooms', 'Sports', 'Labs', 'Library', 'Achievements', 'Events']),
+  "locationLabel": zod.string().nullable(),
+  "displayOrder": zod.number().int().min(1),
+  "isPublished": zod.boolean(),
+  "showInHomePreview": zod.boolean(),
+  "homePreviewOrder": zod.number().int().min(1)
+})
+
+export const CreateAdminGalleryItemResponse = zod.object({
   "id": zod.string(),
   "imageUrl": zod.string().nullable(),
   "imageAltText": zod.string(),
   "title": zod.string(),
-  "category": zod.string(),
-  "description": zod.string(),
+  "description": zod.string().nullable(),
+  "category": zod.enum(['Campus', 'Classrooms', 'Sports', 'Labs', 'Library', 'Achievements', 'Events']),
   "locationLabel": zod.string().nullable(),
   "displayOrder": zod.number().int(),
-  "isFeatured": zod.boolean(),
-  "isActive": zod.boolean()
+  "isPublished": zod.boolean(),
+  "showInHomePreview": zod.boolean(),
+  "homePreviewOrder": zod.number().int()
 })
-export const UpdateHomepageGalleryResponse = zod.array(UpdateHomepageGalleryResponseItem)
+
+
+/**
+ * @summary Update full Gallery and Home preview item order
+ */
+
+
+
+
+export const UpdateAdminGalleryOrderBody = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string(),
+  "displayOrder": zod.number().int().min(1),
+  "homePreviewOrder": zod.number().int().min(1)
+}))
+})
+
+export const UpdateAdminGalleryOrderResponseItem = zod.object({
+  "id": zod.string(),
+  "imageUrl": zod.string().nullable(),
+  "imageAltText": zod.string(),
+  "title": zod.string(),
+  "description": zod.string().nullable(),
+  "category": zod.enum(['Campus', 'Classrooms', 'Sports', 'Labs', 'Library', 'Achievements', 'Events']),
+  "locationLabel": zod.string().nullable(),
+  "displayOrder": zod.number().int(),
+  "isPublished": zod.boolean(),
+  "showInHomePreview": zod.boolean(),
+  "homePreviewOrder": zod.number().int()
+})
+export const UpdateAdminGalleryOrderResponse = zod.array(UpdateAdminGalleryOrderResponseItem)
+
+
+/**
+ * @summary Update a shared Gallery item
+ */
+export const UpdateAdminGalleryItemParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const updateAdminGalleryItemBodyImageAltTextMax = 300;
+
+export const updateAdminGalleryItemBodyTitleMax = 180;
+
+export const updateAdminGalleryItemBodyDescriptionMax = 800;
+
+
+
+
+
+export const UpdateAdminGalleryItemBody = zod.object({
+  "imageUrl": zod.string().nullable(),
+  "imageAltText": zod.string().min(1).max(updateAdminGalleryItemBodyImageAltTextMax),
+  "title": zod.string().min(1).max(updateAdminGalleryItemBodyTitleMax),
+  "description": zod.string().max(updateAdminGalleryItemBodyDescriptionMax).nullable(),
+  "category": zod.enum(['Campus', 'Classrooms', 'Sports', 'Labs', 'Library', 'Achievements', 'Events']),
+  "locationLabel": zod.string().nullable(),
+  "displayOrder": zod.number().int().min(1),
+  "isPublished": zod.boolean(),
+  "showInHomePreview": zod.boolean(),
+  "homePreviewOrder": zod.number().int().min(1)
+})
+
+export const UpdateAdminGalleryItemResponse = zod.object({
+  "id": zod.string(),
+  "imageUrl": zod.string().nullable(),
+  "imageAltText": zod.string(),
+  "title": zod.string(),
+  "description": zod.string().nullable(),
+  "category": zod.enum(['Campus', 'Classrooms', 'Sports', 'Labs', 'Library', 'Achievements', 'Events']),
+  "locationLabel": zod.string().nullable(),
+  "displayOrder": zod.number().int(),
+  "isPublished": zod.boolean(),
+  "showInHomePreview": zod.boolean(),
+  "homePreviewOrder": zod.number().int()
+})
+
+
+/**
+ * @summary Delete an item from the shared Gallery library
+ */
+export const DeleteAdminGalleryItemParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const DeleteAdminGalleryItemResponse = zod.void()
 
 
 /**

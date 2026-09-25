@@ -4,7 +4,6 @@ import { useQueryClient } from '@tanstack/react-query';
 import {
   getGetAdminHomepageAchievementRibbonQueryKey,
   getGetAdminHomepageFacultyQueryKey,
-  getGetAdminHomepageGalleryQueryKey,
   getGetAdminHomepagePreviewCopyQueryKey,
   getGetAdminHomepageResultsQueryKey,
   getGetAdminHomepageTestimonialsQueryKey,
@@ -16,20 +15,17 @@ import {
   getGetHomepageTestimonialsQueryKey,
   useGetAdminHomepageAchievementRibbon,
   useGetAdminHomepageFaculty,
-  useGetAdminHomepageGallery,
   useGetAdminHomepagePreviewCopy,
   useGetAdminHomepageResults,
   useGetAdminHomepageTestimonials,
   useUpdateHomepageAchievementRibbon,
   useUpdateHomepageFaculty,
-  useUpdateHomepageGallery,
   useUpdateHomepagePreviewCopy,
   useUpdateHomepageResults,
   useUpdateHomepageTestimonials,
   useUploadAdminImage,
   type HomepageAchievementRibbonInput,
   type HomepageFacultyMemberInput,
-  type HomepageGalleryItemInput,
   type HomepageResultsInput,
   type HomepageTestimonialsInput,
 } from '@workspace/api-client-react';
@@ -70,7 +66,19 @@ const facultyDefaults: HomepageFacultyMemberInput[] = [
   { imageUrl: null, imageAltText: 'KVR faculty member', name: 'Dr. Meera Nair', role: 'Senior Faculty', subject: 'Biology', experience: '14+ years', profileUrl: null, displayOrder: 3, isActive: true },
 ];
 
-const galleryDefaults: HomepageGalleryItemInput[] = [
+type LegacyGalleryDraft = {
+  id?: string;
+  imageUrl: string | null;
+  imageAltText: string;
+  title: string;
+  category: string;
+  description: string;
+  locationLabel: string | null;
+  displayOrder: number;
+  isFeatured: boolean;
+  isActive: boolean;
+};
+const galleryDefaults: LegacyGalleryDraft[] = [
   { imageUrl: null, imageAltText: 'Bright KVR college classroom', title: 'Learning spaces with purpose', category: 'Campus Feature', description: 'Comfortable classrooms designed for focused daily learning.', locationLabel: 'Academic Block', displayOrder: 1, isFeatured: true, isActive: true },
   { imageUrl: null, imageAltText: 'Students working in a KVR science laboratory', title: 'Curiosity in practice', category: 'Labs', description: 'Practical experiences that help concepts become clearer.', locationLabel: 'Science Labs', displayOrder: 2, isFeatured: true, isActive: true },
   { imageUrl: null, imageAltText: 'Quiet KVR library and study area', title: 'Room to read and grow', category: 'Library', description: 'Calm spaces for revision, reading, and independent discovery.', locationLabel: 'Central Library', displayOrder: 3, isFeatured: true, isActive: true },
@@ -145,12 +153,12 @@ function SectionCopyFields({ kind, eyebrow, heading, description, buttonLabel, b
 
 function SharedPreviewEditor({ kind }: { kind: 'faculty' | 'gallery' }) {
   const faculty = kind === 'faculty';
-  const facultyQuery = useGetAdminHomepageFaculty(); const galleryQuery = useGetAdminHomepageGallery();
+  const facultyQuery = useGetAdminHomepageFaculty(); const galleryQuery: { data: LegacyGalleryDraft[] | null; isLoading: boolean; isError: boolean; refetch: () => Promise<void> } = { data: null, isLoading: false, isError: false, refetch: async () => undefined };
   const copyQuery = useGetAdminHomepagePreviewCopy();
-  const updateFaculty = useUpdateHomepageFaculty(); const updateGallery = useUpdateHomepageGallery();
+  const updateFaculty = useUpdateHomepageFaculty(); const updateGallery = { isPending: false, mutate: (..._args: unknown[]) => undefined };
   const copyUpdate = useUpdateHomepagePreviewCopy();
   const client = useQueryClient(); const feedback = useFeedback();
-  const [facultyForm, setFacultyForm] = useState(facultyDefaults); const [galleryForm, setGalleryForm] = useState(galleryDefaults);
+  const [facultyForm, setFacultyForm] = useState(facultyDefaults); const [galleryForm, setGalleryForm] = useState<LegacyGalleryDraft[]>(galleryDefaults);
   const [copyForm, setCopyForm] = useState({ eyebrow: '', heading: '', description: '', buttonLabel: '', buttonHref: '' });
   useEffect(() => { if (facultyQuery.data) setFacultyForm(facultyQuery.data.map(({ id: _id, ...item }) => item)); }, [facultyQuery.data]);
   useEffect(() => { if (galleryQuery.data) setGalleryForm(galleryQuery.data.map(({ id: _id, ...item }) => item)); }, [galleryQuery.data]);
@@ -158,11 +166,44 @@ function SharedPreviewEditor({ kind }: { kind: 'faculty' | 'gallery' }) {
   const loading = (faculty ? facultyQuery.isLoading : galleryQuery.isLoading) || copyQuery.isLoading;
   const failed = (faculty ? facultyQuery.isError && !facultyQuery.data : galleryQuery.isError && !galleryQuery.data) || (copyQuery.isError && !copyQuery.data);
   const saveCopy = () => { if (!copyForm.eyebrow.trim() || !copyForm.heading.trim() || !copyForm.description.trim() || !copyForm.buttonLabel.trim() || !copyForm.buttonHref.trim()) { feedback.setError('Complete the section copy and CTA fields before saving.'); return; } feedback.clear(); const data = faculty ? { facultyEyebrow: copyForm.eyebrow, facultyHeading: copyForm.heading, facultyDescription: copyForm.description, facultyButtonLabel: copyForm.buttonLabel, facultyButtonHref: copyForm.buttonHref } : { galleryEyebrow: copyForm.eyebrow, galleryHeading: copyForm.heading, galleryDescription: copyForm.description, galleryButtonLabel: copyForm.buttonLabel, galleryButtonHref: copyForm.buttonHref }; copyUpdate.mutate({ data }, { onSuccess: () => { client.invalidateQueries({ queryKey: getGetAdminHomepagePreviewCopyQueryKey() }); client.invalidateQueries({ queryKey: getGetHomepagePreviewCopyQueryKey() }); feedback.setNotice(faculty ? 'Faculty section copy saved.' : 'Gallery section copy saved.'); }, onError: () => feedback.setError(faculty ? 'We could not save the faculty section copy.' : 'We could not save the gallery section copy.') }); };
-  const submit = (event: FormEvent) => { event.preventDefault(); feedback.clear(); if (faculty) updateFaculty.mutate({ data: facultyForm }, { onSuccess: () => { client.invalidateQueries({ queryKey: getGetAdminHomepageFacultyQueryKey() }); client.invalidateQueries({ queryKey: getGetHomepageFacultyQueryKey() }); feedback.setNotice('Faculty preview saved.'); }, onError: () => feedback.setError('We could not save the faculty preview.') }); else updateGallery.mutate({ data: galleryForm }, { onSuccess: () => { client.invalidateQueries({ queryKey: getGetAdminHomepageGalleryQueryKey() }); client.invalidateQueries({ queryKey: getGetHomepageGalleryQueryKey() }); feedback.setNotice('Gallery preview saved.'); }, onError: () => feedback.setError('We could not save the gallery preview.') }); };
+  const submit = (event: FormEvent) => { event.preventDefault(); feedback.clear(); if (faculty) updateFaculty.mutate({ data: facultyForm }, { onSuccess: () => { client.invalidateQueries({ queryKey: getGetAdminHomepageFacultyQueryKey() }); client.invalidateQueries({ queryKey: getGetHomepageFacultyQueryKey() }); feedback.setNotice('Faculty preview saved.'); }, onError: () => feedback.setError('We could not save the faculty preview.') }); else updateGallery.mutate({ data: galleryForm }, { onSuccess: () => { client.invalidateQueries({ queryKey: getGetHomepageGalleryQueryKey() }); feedback.setNotice('Gallery preview saved.'); }, onError: () => feedback.setError('We could not save the gallery preview.') }); };
   if (loading) return <EditorSkeleton />; if (failed) return <LoadError onRetry={() => { if (faculty) void facultyQuery.refetch(); else void galleryQuery.refetch(); void copyQuery.refetch(); }} />;
   if (faculty) return <EditorFrame eyebrow="Pages / Home / Faculty" title="Put the right guides in view." description="The preview reuses the people already managed in About / Leadership, with Home-specific visibility and profile details." previewHref="/#home-faculty"><form onSubmit={submit} className="mt-10 space-y-6"><SectionCopyFields kind="faculty" eyebrow={copyForm.eyebrow} heading={copyForm.heading} description={copyForm.description} buttonLabel={copyForm.buttonLabel} buttonHref={copyForm.buttonHref} onEyebrowChange={(value) => setCopyForm({ ...copyForm, eyebrow: value })} onHeadingChange={(value) => setCopyForm({ ...copyForm, heading: value })} onDescriptionChange={(value) => setCopyForm({ ...copyForm, description: value })} onButtonLabelChange={(value) => setCopyForm({ ...copyForm, buttonLabel: value })} onButtonHrefChange={(value) => setCopyForm({ ...copyForm, buttonHref: value })} onSave={saveCopy} pending={copyUpdate.isPending} /><EditorCard title="Faculty preview cards" description="Changes here update the shared About leadership record without duplicating people or images."><div className="space-y-5">{facultyForm.map((item, index) => <div key={index} className="rounded-2xl bg-[hsl(var(--secondary))] p-5"><div className="flex justify-between"><p className="text-xs font-bold uppercase tracking-[.16em]">Faculty member {index + 1}</p><Actions index={index} count={facultyForm.length} onMove={(direction) => setFacultyForm(reorder(facultyForm, index, direction))} onRemove={() => setFacultyForm(facultyForm.filter((_, itemIndex) => itemIndex !== index).map((entry, itemIndex) => ({ ...entry, displayOrder: itemIndex + 1 })))} /></div><div className="mt-4 grid gap-4 md:grid-cols-2"><Field label="Name" value={item.name} onChange={(e) => setFacultyForm(facultyForm.map((entry, entryIndex) => entryIndex === index ? { ...entry, name: e.target.value } : entry))} required /><Field label="Role" value={item.role} onChange={(e) => setFacultyForm(facultyForm.map((entry, entryIndex) => entryIndex === index ? { ...entry, role: e.target.value } : entry))} required /><Field label="Subject" value={item.subject} onChange={(e) => setFacultyForm(facultyForm.map((entry, entryIndex) => entryIndex === index ? { ...entry, subject: e.target.value } : entry))} required /><Field label="Experience" value={item.experience ?? ''} onChange={(e) => setFacultyForm(facultyForm.map((entry, entryIndex) => entryIndex === index ? { ...entry, experience: e.target.value || null } : entry))} /><Field label="Image URL" value={item.imageUrl ?? ''} onChange={(e) => setFacultyForm(facultyForm.map((entry, entryIndex) => entryIndex === index ? { ...entry, imageUrl: e.target.value || null } : entry))} /><Field label="Image alt text" value={item.imageAltText} onChange={(e) => setFacultyForm(facultyForm.map((entry, entryIndex) => entryIndex === index ? { ...entry, imageAltText: e.target.value } : entry))} required /><Field label="Profile URL" value={item.profileUrl ?? ''} onChange={(e) => setFacultyForm(facultyForm.map((entry, entryIndex) => entryIndex === index ? { ...entry, profileUrl: e.target.value || null } : entry))} /></div><div className="mt-4 flex items-center justify-between gap-3"><UploadButton purpose="faculty" onUploaded={(url) => setFacultyForm(facultyForm.map((entry, entryIndex) => entryIndex === index ? { ...entry, imageUrl: url } : entry))} /><label className="flex items-center gap-2 text-sm font-semibold"><input type="checkbox" checked={item.isActive} onChange={(e) => setFacultyForm(facultyForm.map((entry, entryIndex) => entryIndex === index ? { ...entry, isActive: e.target.checked } : entry))} className="accent-[hsl(var(--accent))]" /> Show on Home</label></div></div>)}</div><button type="button" onClick={() => setFacultyForm([...facultyForm, { ...facultyDefaults[0], name: '', displayOrder: facultyForm.length + 1 }])} className="mt-5 inline-flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-bold"><Plus size={16} /> Add faculty member</button></EditorCard><SaveStatus error={feedback.error} notice={feedback.notice} /><div className="flex justify-end"><SaveButton pending={updateFaculty.isPending}>Save Faculty Preview</SaveButton></div></form></EditorFrame>;
   return <EditorFrame eyebrow="Pages / Home / Gallery" title="Choose the moments families see." description="The preview reuses the images already managed in About / Campus Highlights, with Home-specific featured and active controls." previewHref="/#home-gallery"><form onSubmit={submit} className="mt-10 space-y-6"><SectionCopyFields kind="gallery" eyebrow={copyForm.eyebrow} heading={copyForm.heading} description={copyForm.description} buttonLabel={copyForm.buttonLabel} buttonHref={copyForm.buttonHref} onEyebrowChange={(value) => setCopyForm({ ...copyForm, eyebrow: value })} onHeadingChange={(value) => setCopyForm({ ...copyForm, heading: value })} onDescriptionChange={(value) => setCopyForm({ ...copyForm, description: value })} onButtonLabelChange={(value) => setCopyForm({ ...copyForm, buttonLabel: value })} onButtonHrefChange={(value) => setCopyForm({ ...copyForm, buttonHref: value })} onSave={saveCopy} pending={copyUpdate.isPending} /><EditorCard title="Gallery preview cards" description="Feature up to three campus moments on the homepage."><div className="space-y-5">{galleryForm.map((item, index) => <div key={index} className="rounded-2xl bg-[hsl(var(--secondary))] p-5"><div className="flex justify-between"><p className="text-xs font-bold uppercase tracking-[.16em]">Gallery item {index + 1}</p><Actions index={index} count={galleryForm.length} onMove={(direction) => setGalleryForm(reorder(galleryForm, index, direction))} onRemove={() => setGalleryForm(galleryForm.filter((_, itemIndex) => itemIndex !== index).map((entry, itemIndex) => ({ ...entry, displayOrder: itemIndex + 1 })))} /></div><div className="mt-4 grid gap-4 md:grid-cols-2"><Field label="Title" value={item.title} onChange={(e) => setGalleryForm(galleryForm.map((entry, entryIndex) => entryIndex === index ? { ...entry, title: e.target.value } : entry))} required /><Field label="Category" value={item.category} onChange={(e) => setGalleryForm(galleryForm.map((entry, entryIndex) => entryIndex === index ? { ...entry, category: e.target.value } : entry))} required /><Field label="Location" value={item.locationLabel ?? ''} onChange={(e) => setGalleryForm(galleryForm.map((entry, entryIndex) => entryIndex === index ? { ...entry, locationLabel: e.target.value || null } : entry))} /><Field label="Image URL" value={item.imageUrl ?? ''} onChange={(e) => setGalleryForm(galleryForm.map((entry, entryIndex) => entryIndex === index ? { ...entry, imageUrl: e.target.value || null } : entry))} /><Field label="Image alt text" value={item.imageAltText} onChange={(e) => setGalleryForm(galleryForm.map((entry, entryIndex) => entryIndex === index ? { ...entry, imageAltText: e.target.value } : entry))} required /><Area label="Description" value={item.description} onChange={(e) => setGalleryForm(galleryForm.map((entry, entryIndex) => entryIndex === index ? { ...entry, description: e.target.value } : entry))} required /></div><div className="mt-4 flex flex-wrap items-center gap-5"><UploadButton purpose="gallery" onUploaded={(url) => setGalleryForm(galleryForm.map((entry, entryIndex) => entryIndex === index ? { ...entry, imageUrl: url } : entry))} /><label className="flex items-center gap-2 text-sm font-semibold"><input type="checkbox" checked={item.isFeatured} onChange={(e) => setGalleryForm(galleryForm.map((entry, entryIndex) => entryIndex === index ? { ...entry, isFeatured: e.target.checked } : entry))} className="accent-[hsl(var(--accent))]" /> Feature on Home</label><label className="flex items-center gap-2 text-sm font-semibold"><input type="checkbox" checked={item.isActive} onChange={(e) => setGalleryForm(galleryForm.map((entry, entryIndex) => entryIndex === index ? { ...entry, isActive: e.target.checked } : entry))} className="accent-[hsl(var(--accent))]" /> Show item</label></div></div>)}</div><button type="button" onClick={() => setGalleryForm([...galleryForm, { ...galleryDefaults[0], title: '', displayOrder: galleryForm.length + 1 }])} className="mt-5 inline-flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-bold"><Plus size={16} /> Add gallery item</button></EditorCard><SaveStatus error={feedback.error} notice={feedback.notice} /><div className="flex justify-end"><SaveButton pending={updateGallery.isPending}>Save Gallery Preview</SaveButton></div></form></EditorFrame>;
 }
 
 export function AdminHomepageFaculty() { return <SharedPreviewEditor kind="faculty" />; }
-export function AdminHomepageGallery() { return <SharedPreviewEditor kind="gallery" />; }
+export function AdminHomepageGallery() {
+  const copyQuery = useGetAdminHomepagePreviewCopy();
+  const copyUpdate = useUpdateHomepagePreviewCopy();
+  const client = useQueryClient();
+  const feedback = useFeedback();
+  const [copyForm, setCopyForm] = useState({ eyebrow: '', heading: '', description: '', buttonLabel: '', buttonHref: '' });
+  useEffect(() => {
+    if (copyQuery.data) setCopyForm({
+      eyebrow: copyQuery.data.galleryEyebrow,
+      heading: copyQuery.data.galleryHeading,
+      description: copyQuery.data.galleryDescription,
+      buttonLabel: copyQuery.data.galleryButtonLabel,
+      buttonHref: copyQuery.data.galleryButtonHref || '/gallery',
+    });
+  }, [copyQuery.data]);
+  const saveCopy = () => {
+    if (!copyForm.eyebrow.trim() || !copyForm.heading.trim() || !copyForm.description.trim() || !copyForm.buttonLabel.trim() || !copyForm.buttonHref.trim()) {
+      feedback.setError('Complete the Home Gallery copy and CTA fields before saving.');
+      return;
+    }
+    feedback.clear();
+    copyUpdate.mutate({ data: { galleryEyebrow: copyForm.eyebrow, galleryHeading: copyForm.heading, galleryDescription: copyForm.description, galleryButtonLabel: copyForm.buttonLabel, galleryButtonHref: copyForm.buttonHref } }, {
+      onSuccess: () => {
+        client.invalidateQueries({ queryKey: getGetAdminHomepagePreviewCopyQueryKey() });
+        client.invalidateQueries({ queryKey: getGetHomepagePreviewCopyQueryKey() });
+        feedback.setNotice('Home Gallery copy saved.');
+      },
+      onError: () => feedback.setError('We could not save the Home Gallery copy.'),
+    });
+  };
+  if (copyQuery.isLoading) return <EditorSkeleton />;
+  if (copyQuery.isError && !copyQuery.data) return <LoadError onRetry={() => copyQuery.refetch()} />;
+  return <EditorFrame eyebrow="Pages / Home / Gallery Preview" title="Invite families into campus life." description="Keep the Home preview copy focused. Gallery images live in one shared collection so there is only one place to review them." previewHref="/#home-gallery"><div className="mt-10 space-y-6"><SectionCopyFields kind="gallery" eyebrow={copyForm.eyebrow} heading={copyForm.heading} description={copyForm.description} buttonLabel={copyForm.buttonLabel} buttonHref={copyForm.buttonHref} onEyebrowChange={(value) => setCopyForm({ ...copyForm, eyebrow: value })} onHeadingChange={(value) => setCopyForm({ ...copyForm, heading: value })} onDescriptionChange={(value) => setCopyForm({ ...copyForm, description: value })} onButtonLabelChange={(value) => setCopyForm({ ...copyForm, buttonLabel: value })} onButtonHrefChange={(value) => setCopyForm({ ...copyForm, buttonHref: value })} onSave={saveCopy} pending={copyUpdate.isPending} /><div className="flex flex-col gap-4 rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--secondary))] p-5 sm:flex-row sm:items-center sm:justify-between"><div><p className="text-sm font-bold text-[hsl(var(--primary))]">Home preview images</p><p className="mt-1 text-sm leading-6 text-[hsl(var(--muted-foreground))]">Gallery images are managed in Pages → Gallery.</p></div><a href="/admin/pages/gallery" className="inline-flex shrink-0 items-center justify-center rounded-xl bg-[hsl(var(--primary))] px-4 py-2.5 text-sm font-bold text-[hsl(var(--primary-foreground))]" data-testid="link-manage-gallery-items">Manage Gallery Items</a></div><SaveStatus error={feedback.error} notice={feedback.notice} /></div></EditorFrame>;
+}

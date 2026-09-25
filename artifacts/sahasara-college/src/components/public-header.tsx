@@ -10,7 +10,7 @@ type PublicHeaderProps = {
     tagline: string;
     logoUrl: string | null;
   };
-  activePage?: 'home' | 'about' | 'contact';
+  activePage?: 'home' | 'about' | 'gallery' | 'contact';
   mobileFlow?: boolean;
 };
 
@@ -19,6 +19,7 @@ export function PublicHeader({ settings, activePage = 'home', mobileFlow = false
   const [menuOpen, setMenuOpen] = useState(false);
   const homeActive = activePage === 'home' || location === '/';
   const aboutActive = activePage === 'about' || location === '/about';
+  const galleryActive = activePage === 'gallery' || location === '/gallery';
   const contactActive = activePage === 'contact' || location === '/contact';
   const contactHref = '/contact';
   const linkClass = (active: boolean) => `transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))] focus-visible:ring-offset-4 focus-visible:ring-offset-transparent ${active ? 'text-[hsl(var(--accent))]' : ''}`;
@@ -33,6 +34,7 @@ export function PublicHeader({ settings, activePage = 'home', mobileFlow = false
         <nav className="hidden items-center gap-8 text-sm font-semibold text-white/90 lg:flex" aria-label="Public navigation">
           <a href="/" className={linkClass(homeActive)} aria-current={homeActive ? 'page' : undefined} data-testid="link-nav-home">Home</a>
           <a href="/about" className={linkClass(aboutActive)} aria-current={aboutActive ? 'page' : undefined} data-testid="link-nav-about">About</a>
+          <a href="/gallery" className={linkClass(galleryActive)} aria-current={galleryActive ? 'page' : undefined} data-testid="link-nav-gallery">Gallery</a>
           <a href={contactHref} className={linkClass(contactActive)} aria-current={contactActive ? 'page' : undefined} data-testid="link-nav-contact">Contact</a>
         </nav>
         <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
@@ -48,6 +50,7 @@ export function PublicHeader({ settings, activePage = 'home', mobileFlow = false
         <nav id="public-mobile-navigation" className="mx-3 mb-4 rounded-2xl border border-white/15 bg-[hsl(var(--primary)/.94)] p-3 text-sm font-semibold text-white shadow-2xl backdrop-blur-md sm:mx-4 lg:hidden" aria-label="Mobile navigation">
           <a href="/" onClick={closeMenu} className={`block rounded-xl px-4 py-3 transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))] ${homeActive ? 'text-[hsl(var(--accent))]' : ''}`} aria-current={homeActive ? 'page' : undefined} data-testid="link-mobile-nav-home">Home</a>
           <a href="/about" onClick={closeMenu} className={`mt-1 block rounded-xl px-4 py-3 transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))] ${aboutActive ? 'text-[hsl(var(--accent))]' : ''}`} aria-current={aboutActive ? 'page' : undefined} data-testid="link-mobile-nav-about">About</a>
+          <a href="/gallery" onClick={closeMenu} className={`mt-1 block rounded-xl px-4 py-3 transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))] ${galleryActive ? 'text-[hsl(var(--accent))]' : ''}`} aria-current={galleryActive ? 'page' : undefined} data-testid="link-mobile-nav-gallery">Gallery</a>
           <a href={contactHref} onClick={closeMenu} className={`mt-1 block rounded-xl px-4 py-3 transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))] ${contactActive ? 'text-[hsl(var(--accent))]' : ''}`} aria-current={contactActive ? 'page' : undefined} data-testid="link-mobile-nav-contact">Contact</a>
         </nav>
       )}

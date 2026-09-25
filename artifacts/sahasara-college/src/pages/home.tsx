@@ -6,7 +6,7 @@ import { PublicHeader } from '@/components/public-header';
 import { HomeLiveUpdates } from '@/components/home-live-updates';
 import { HomeStatistics } from '@/components/home-statistics';
 import { FavoriteTopics } from '@/components/favorite-topics';
-import { AchievementRibbon, fallbackFaculty, fallbackGallery, fallbackRibbon, fallbackResults, fallbackTestimonials, HomeFaculty, HomeGallery, HomeResults, HomeTestimonials } from '@/components/home-previews';
+import { AchievementRibbon, fallbackFaculty, fallbackRibbon, fallbackResults, fallbackTestimonials, HomeFaculty, HomeGallery, HomeResults, HomeTestimonials } from '@/components/home-previews';
 import { fallbackAdmissionsFaq, fallbackFinalCta, fallbackKnowledgeHub, HomeAdmissionsFaq, HomeFinalCta, HomeKnowledgeHub } from '@/components/home-final-previews';
 import { createPublicThemeStyle, DEFAULT_ACCENT_COLOR, DEFAULT_PRIMARY_COLOR, DEFAULT_SURFACE_COLOR } from '@/lib/public-theme';
 
@@ -121,10 +121,10 @@ const fallbackHomepagePreviewCopy = {
   facultyButtonLabel: 'More Faculty',
   facultyButtonHref: '/about#leadership',
   galleryEyebrow: 'Campus Gallery',
-  galleryHeading: 'Life at KVR College',
-  galleryDescription: 'A quick look at the spaces, routines, and experiences that shape the KVR college day.',
+  galleryHeading: 'Life at Sahasrah College',
+  galleryDescription: 'A quick look at the spaces, routines, and experiences that shape the Sahasrah college day.',
   galleryButtonLabel: 'View Gallery',
-  galleryButtonHref: '/about#campus-highlights',
+  galleryButtonHref: '/gallery',
 };
 const fallbackStatistics: HomepageStatistics = {
   id: 'fallback-home-statistics',
@@ -205,7 +205,7 @@ export default function Home() {
         <AchievementRibbon content={ribbonQuery.data?.isVisible ? ribbonQuery.data : fallbackRibbon} />
         <HomeTestimonials content={testimonialsQuery.data?.isVisible ? testimonialsQuery.data : fallbackTestimonials} />
         <HomeFaculty faculty={facultyQuery.data?.length ? facultyQuery.data : fallbackFaculty} eyebrow={previewCopy.facultyEyebrow} heading={previewCopy.facultyHeading} description={previewCopy.facultyDescription} buttonLabel={previewCopy.facultyButtonLabel} buttonHref={previewCopy.facultyButtonHref} />
-        <HomeGallery gallery={galleryQuery.data?.length ? galleryQuery.data : fallbackGallery} eyebrow={previewCopy.galleryEyebrow} heading={previewCopy.galleryHeading} description={previewCopy.galleryDescription} buttonLabel={previewCopy.galleryButtonLabel} buttonHref={previewCopy.galleryButtonHref} />
+        <HomeGallery gallery={galleryQuery.data ?? []} eyebrow={previewCopy.galleryEyebrow} heading={previewCopy.galleryHeading} description={previewCopy.galleryDescription} buttonLabel={previewCopy.galleryButtonLabel} buttonHref={previewCopy.galleryButtonHref || '/gallery'} />
         {knowledgeHub?.isVisible && <HomeKnowledgeHub content={knowledgeHub} />}
         {admissionsFaq?.isVisible && <HomeAdmissionsFaq content={admissionsFaq} />}
         {finalCta?.isVisible && <HomeFinalCta content={finalCta} />}

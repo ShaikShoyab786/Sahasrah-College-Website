@@ -9,8 +9,8 @@ export const homepagePreviewCopyDefaults = {
   facultyButtonLabel: "More Faculty",
   facultyButtonHref: "/about#leadership",
   galleryEyebrow: "Campus Gallery",
-  galleryHeading: "Life at KVR College",
-  galleryDescription: "A quick look at the spaces, routines, and experiences that shape the KVR college day.",
+  galleryHeading: "Life at Sahasrah College",
+  galleryDescription: "A quick look at the spaces, routines, and experiences that shape the Sahasrah college day.",
   galleryButtonLabel: "View Gallery",
-  galleryButtonHref: "/about#campus-highlights",
+  galleryButtonHref: "/gallery",
 };

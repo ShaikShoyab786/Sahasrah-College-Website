@@ -275,6 +275,18 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/HomepageGalleryItem"
+  /gallery:
+    get:
+      operationId: getGalleryPage
+      tags: [public]
+      summary: Read the public Gallery page and active gallery items
+      responses:
+        "200":
+          description: Gallery page content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GalleryCollection"
   /homepage-knowledge-hub:
     get:
       operationId: getHomepageKnowledgeHub
@@ -1246,32 +1258,31 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
-  /admin/homepage-gallery:
+  /admin/gallery:
     get:
-      operationId: getAdminHomepageGallery
+      operationId: getAdminGallery
       tags: [admin]
-      summary: Read homepage gallery preview for editing
+      summary: Read gallery settings and all gallery items for editing
       security:
         - cookieAuth: []
       responses:
         "200":
-          description: Homepage gallery preview
+          description: Gallery settings and items
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/HomepageGalleryItem"
+                $ref: "#/components/schemas/GalleryCollection"
         "401":
           description: Not authenticated
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+  /admin/gallery/settings:
     put:
-      operationId: updateHomepageGallery
+      operationId: updateAdminGallerySettings
       tags: [admin]
-      summary: Update homepage gallery preview
+      summary: Update Gallery page hero copy
       security:
         - cookieAuth: []
       requestBody:
@@ -1279,20 +1290,40 @@ paths:
         content:
           application/json:
             schema:
-              type: array
-              minItems: 1
-              maxItems: 20
-              items:
-                $ref: "#/components/schemas/HomepageGalleryItemInput"
+              $ref: "#/components/schemas/GalleryPageSettingsInput"
       responses:
         "200":
-          description: Updated homepage gallery preview
+          description: Updated Gallery page hero copy
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/HomepageGalleryItem"
+                $ref: "#/components/schemas/GalleryPageSettings"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/gallery/items:
+    post:
+      operationId: createAdminGalleryItem
+      tags: [admin]
+      summary: Add an item to the shared Gallery library
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GalleryItemInput"
+      responses:
+        "201":
+          description: Created Gallery item
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GalleryItem"
         "400":
           description: Validation error
           content:
@@ -1301,6 +1332,111 @@ paths:
                 $ref: "#/components/schemas/ErrorResponse"
         "401":
           description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/gallery/items/order:
+    put:
+      operationId: updateAdminGalleryOrder
+      tags: [admin]
+      summary: Update full Gallery and Home preview item order
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GalleryItemsOrderInput"
+      responses:
+        "200":
+          description: Updated ordered Gallery items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/GalleryItem"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/gallery/items/{id}:
+    put:
+      operationId: updateAdminGalleryItem
+      tags: [admin]
+      summary: Update a shared Gallery item
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GalleryItemInput"
+      responses:
+        "200":
+          description: Updated Gallery item
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GalleryItem"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Gallery item not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteAdminGalleryItem
+      tags: [admin]
+      summary: Delete an item from the shared Gallery library
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Gallery item deleted
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Gallery item not found
           content:
             application/json:
               schema:
@@ -3824,7 +3960,71 @@ components:
         isActive:
           type: boolean
       required: [id, imageUrl, imageAltText, title, category, description, locationLabel, displayOrder, isFeatured, isActive]
-    HomepageGalleryItemInput:
+    GalleryPageSettings:
+      type: object
+      properties:
+        eyebrow:
+          type: string
+          minLength: 1
+        heading:
+          type: string
+          minLength: 1
+        description:
+          type: string
+      required: [eyebrow, heading, description]
+    GalleryPageSettingsInput:
+      type: object
+      properties:
+        eyebrow:
+          type: string
+          minLength: 1
+          maxLength: 120
+        heading:
+          type: string
+          minLength: 1
+          maxLength: 180
+        description:
+          type: string
+          maxLength: 800
+      required: [eyebrow, heading, description]
+    GalleryItem:
+      type: object
+      properties:
+        id:
+          type: string
+        imageUrl:
+          type: ["string", "null"]
+        imageAltText:
+          type: string
+        title:
+          type: string
+        description:
+          type: ["string", "null"]
+        category:
+          type: string
+          enum: [Campus, Classrooms, Sports, Labs, Library, Achievements, Events]
+        locationLabel:
+          type: ["string", "null"]
+        displayOrder:
+          type: integer
+        isPublished:
+          type: boolean
+        showInHomePreview:
+          type: boolean
+        homePreviewOrder:
+          type: integer
+      required: [id, imageUrl, imageAltText, title, description, category, locationLabel, displayOrder, isPublished, showInHomePreview, homePreviewOrder]
+    GalleryCollection:
+      type: object
+      properties:
+        settings:
+          $ref: "#/components/schemas/GalleryPageSettings"
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/GalleryItem"
+      required: [settings, items]
+    GalleryItemInput:
       type: object
       properties:
         imageUrl:
@@ -3832,27 +4032,50 @@ components:
         imageAltText:
           type: string
           minLength: 1
+          maxLength: 300
         title:
           type: string
           minLength: 1
+          maxLength: 180
+        description:
+          type: ["string", "null"]
+          maxLength: 800
         category:
           type: string
-          minLength: 1
-        description:
-          type: string
-          minLength: 1
-          maxLength: 280
+          enum: [Campus, Classrooms, Sports, Labs, Library, Achievements, Events]
         locationLabel:
           type: ["string", "null"]
         displayOrder:
           type: integer
           minimum: 1
-          maximum: 20
-        isFeatured:
+        isPublished:
           type: boolean
-        isActive:
+        showInHomePreview:
           type: boolean
-      required: [imageUrl, imageAltText, title, category, description, locationLabel, displayOrder, isFeatured, isActive]
+        homePreviewOrder:
+          type: integer
+          minimum: 1
+      required: [imageUrl, imageAltText, title, description, category, locationLabel, displayOrder, isPublished, showInHomePreview, homePreviewOrder]
+    GalleryItemOrder:
+      type: object
+      properties:
+        id:
+          type: string
+        displayOrder:
+          type: integer
+          minimum: 1
+        homePreviewOrder:
+          type: integer
+          minimum: 1
+      required: [id, displayOrder, homePreviewOrder]
+    GalleryItemsOrderInput:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/GalleryItemOrder"
+      required: [items]
     AboutHeroStat:
       type: object
       properties:

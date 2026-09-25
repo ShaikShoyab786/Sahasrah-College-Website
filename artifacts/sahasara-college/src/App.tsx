@@ -7,6 +7,7 @@ import NotFound from '@/pages/not-found';
 import Home from '@/pages/home';
 import About from '@/pages/about';
 import Contact from '@/pages/contact';
+import Gallery from '@/pages/gallery';
 import AdminLogin from '@/pages/admin-login';
 import AdminGuard from '@/pages/admin-guard';
 import AdminOverview from '@/pages/admin-overview';
@@ -27,6 +28,7 @@ import AdminWhyParentsChoose from '@/pages/admin-why-parents-choose';
 import AdminLeadership from '@/pages/admin-leadership';
 import { AdminAboutAchievements, AdminAboutAdmissionCta, AdminAboutCampusHighlights, AdminAboutFaq } from '@/pages/admin-about-sections';
 import { AdminContact, AdminContactEnquiries } from '@/pages/admin-contact';
+import AdminGallery from '@/pages/admin-gallery';
 import {
   Route,
   Switch,
@@ -45,6 +47,7 @@ function Router() {
         <Route path="/" component={Home} />
         <Route path="/about" component={About} />
         <Route path="/contact" component={Contact} />
+        <Route path="/gallery" component={Gallery} />
         <Route path="/admin/login" component={AdminLogin} />
         <Route path="/admin/pages/home/hero">
           <AdminGuard><AdminHomepageHero /></AdminGuard>
@@ -120,6 +123,9 @@ function Router() {
         </Route>
         <Route path="/admin/pages/contact">
           <AdminGuard><AdminContact /></AdminGuard>
+        </Route>
+        <Route path="/admin/pages/gallery">
+          <AdminGuard><AdminGallery /></AdminGuard>
         </Route>
         <Route path="/admin">
           <AdminGuard><AdminOverview /></AdminGuard>

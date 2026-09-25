@@ -220,7 +220,7 @@ function FacultyCard({ member, index }: { member: HomepageFacultyMember; index: 
 const HOME_GALLERY_AUTOPLAY_MS = 4000;
 const HOME_GALLERY_CLONE_COUNT = 3;
 
-export function HomeGallery({ gallery, eyebrow = 'Campus Gallery', heading = 'Life at KVR College', description = 'A quick look at the spaces, routines, and experiences that shape the KVR college day.', buttonLabel = 'View Gallery', buttonHref = '/about#campus-highlights' }: { gallery: HomepageGalleryItem[]; eyebrow?: string; heading?: string; description?: string; buttonLabel?: string; buttonHref?: string }) {
+export function HomeGallery({ gallery, eyebrow = 'Campus Gallery', heading = 'Life at Sahasrah College', description = 'A quick look at the spaces, routines, and experiences that shape the Sahasrah college day.', buttonLabel = 'View Gallery', buttonHref = '/gallery' }: { gallery: HomepageGalleryItem[]; eyebrow?: string; heading?: string; description?: string; buttonLabel?: string; buttonHref?: string }) {
   const items = gallery.filter((item) => item.isActive && item.isFeatured);
   const carouselRef = useRef<HTMLDivElement>(null);
   const scrollSettleTimerRef = useRef<number | null>(null);
@@ -228,7 +228,7 @@ export function HomeGallery({ gallery, eyebrow = 'Campus Gallery', heading = 'Li
   const touchResumeTimerRef = useRef<number | null>(null);
   const currentIndexRef = useRef(0);
   const touchInteractionRef = useRef(false);
-  const cloneCount = items.length > 1 ? Math.min(HOME_GALLERY_CLONE_COUNT, items.length) : 0;
+  const cloneCount = items.length >= 6 ? Math.min(HOME_GALLERY_CLONE_COUNT, items.length) : 0;
   const [hoverPaused, setHoverPaused] = useState(false);
   const [focusPaused, setFocusPaused] = useState(false);
   const [pointerPaused, setPointerPaused] = useState(false);

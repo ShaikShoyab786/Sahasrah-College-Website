@@ -1204,29 +1204,116 @@ export interface HomepageGalleryItem {
   isActive: boolean;
 }
 
-export interface HomepageGalleryItemInput {
-  /** @nullable */
-  imageUrl: string | null;
+export interface GalleryPageSettings {
   /** @minLength 1 */
-  imageAltText: string;
+  eyebrow: string;
   /** @minLength 1 */
-  title: string;
-  /** @minLength 1 */
-  category: string;
+  heading: string;
+  description: string;
+}
+
+export interface GalleryPageSettingsInput {
   /**
      * @minLength 1
-     * @maxLength 280
+     * @maxLength 120
      */
+  eyebrow: string;
+  /**
+     * @minLength 1
+     * @maxLength 180
+     */
+  heading: string;
+  /** @maxLength 800 */
   description: string;
+}
+
+export type GalleryItemCategory = typeof GalleryItemCategory[keyof typeof GalleryItemCategory];
+
+
+export const GalleryItemCategory = {
+  Campus: 'Campus',
+  Classrooms: 'Classrooms',
+  Sports: 'Sports',
+  Labs: 'Labs',
+  Library: 'Library',
+  Achievements: 'Achievements',
+  Events: 'Events',
+} as const;
+
+export interface GalleryItem {
+  id: string;
+  /** @nullable */
+  imageUrl: string | null;
+  imageAltText: string;
+  title: string;
+  /** @nullable */
+  description: string | null;
+  category: GalleryItemCategory;
   /** @nullable */
   locationLabel: string | null;
-  /**
-     * @minimum 1
-     * @maximum 20
-     */
   displayOrder: number;
-  isFeatured: boolean;
-  isActive: boolean;
+  isPublished: boolean;
+  showInHomePreview: boolean;
+  homePreviewOrder: number;
+}
+
+export interface GalleryCollection {
+  settings: GalleryPageSettings;
+  items: GalleryItem[];
+}
+
+export type GalleryItemInputCategory = typeof GalleryItemInputCategory[keyof typeof GalleryItemInputCategory];
+
+
+export const GalleryItemInputCategory = {
+  Campus: 'Campus',
+  Classrooms: 'Classrooms',
+  Sports: 'Sports',
+  Labs: 'Labs',
+  Library: 'Library',
+  Achievements: 'Achievements',
+  Events: 'Events',
+} as const;
+
+export interface GalleryItemInput {
+  /** @nullable */
+  imageUrl: string | null;
+  /**
+     * @minLength 1
+     * @maxLength 300
+     */
+  imageAltText: string;
+  /**
+     * @minLength 1
+     * @maxLength 180
+     */
+  title: string;
+  /**
+     * @maxLength 800
+     * @nullable
+     */
+  description: string | null;
+  category: GalleryItemInputCategory;
+  /** @nullable */
+  locationLabel: string | null;
+  /** @minimum 1 */
+  displayOrder: number;
+  isPublished: boolean;
+  showInHomePreview: boolean;
+  /** @minimum 1 */
+  homePreviewOrder: number;
+}
+
+export interface GalleryItemOrder {
+  id: string;
+  /** @minimum 1 */
+  displayOrder: number;
+  /** @minimum 1 */
+  homePreviewOrder: number;
+}
+
+export interface GalleryItemsOrderInput {
+  items: GalleryItemOrder[];
 }
 
 export interface AboutHeroStat {

@@ -24,7 +24,6 @@ import {
   GetAdminHomepageFavoriteTopicsResponse,
   GetAdminHomepageAchievementRibbonResponse,
   GetAdminHomepageFacultyResponse,
-  GetAdminHomepageGalleryResponse,
   GetAdminHomepageKnowledgeHubResponse,
   GetAdminHomepageAdmissionsFaqResponse,
   GetAdminHomepageFinalCtaResponse,
@@ -37,7 +36,6 @@ import {
   GetHomepageAboutPreviewResponse,
   GetHomepageFacultyResponse,
   GetHomepageFavoriteTopicsResponse,
-  GetHomepageGalleryResponse,
   GetHomepageKnowledgeHubResponse,
   GetHomepageAdmissionsFaqResponse,
   GetHomepageFinalCtaResponse,
@@ -75,8 +73,6 @@ import {
   UpdateHomepageAchievementRibbonResponse,
   UpdateHomepageFacultyBody,
   UpdateHomepageFacultyResponse,
-  UpdateHomepageGalleryBody,
-  UpdateHomepageGalleryResponse,
   UpdateHomepageKnowledgeHubBody,
   UpdateHomepageKnowledgeHubResponse,
   UpdateHomepageAdmissionsFaqBody,
@@ -237,24 +233,6 @@ async function readHomepageFaculty() {
   })) ?? [];
 }
 
-async function readHomepageGallery() {
-  const content = await prisma.aboutCampusHighlights.findUnique({
-    where: { id: "singleton" },
-    include: { highlights: { orderBy: { displayOrder: "asc" } } },
-  });
-  return content?.highlights.map((highlight) => ({
-    id: highlight.id,
-    imageUrl: highlight.imageUrl,
-    imageAltText: highlight.imageAltText,
-    title: highlight.title,
-    category: highlight.category || "Campus Feature",
-    description: highlight.description,
-    locationLabel: highlight.locationLabel,
-    displayOrder: highlight.displayOrder,
-    isFeatured: highlight.homepageFeatured,
-    isActive: highlight.isVisible && highlight.homepageActive,
-  })) ?? [];
-}
 function hasUniqueDisplayOrders(items: Array<{ displayOrder: number }>) {
   return new Set(items.map((item) => item.displayOrder)).size === items.length;
 }
@@ -437,17 +415,6 @@ router.get("/homepage-faculty", async (req, res) => {
   } catch (error) {
     req.log.error({ err: error }, "Unable to read homepage faculty");
     res.status(500).json({ error: "Unable to load homepage faculty." });
-  }
-});
-
-router.get("/homepage-gallery", async (req, res) => {
-  try {
-    const gallery = (await readHomepageGallery())
-      .filter((item) => item.isActive && item.isFeatured);
-    res.json(GetHomepageGalleryResponse.parse(gallery));
-  } catch (error) {
-    req.log.error({ err: error }, "Unable to read homepage gallery");
-    res.status(500).json({ error: "Unable to load homepage gallery." });
   }
 });
 
@@ -1072,70 +1039,6 @@ router.put("/admin/homepage-faculty", requireAdmin, async (req, res) => {
   } catch (error) {
     req.log.error({ err: error }, "Unable to update homepage faculty");
     res.status(500).json({ error: "Unable to save homepage faculty." });
-  }
-});
-
-router.get("/admin/homepage-gallery", requireAdmin, async (req, res) => {
-  try {
-    res.json(GetAdminHomepageGalleryResponse.parse(await readHomepageGallery()));
-  } catch (error) {
-    req.log.error({ err: error }, "Unable to read admin homepage gallery");
-    res.status(500).json({ error: "Unable to load homepage gallery." });
-  }
-});
-
-router.put("/admin/homepage-gallery", requireAdmin, async (req, res) => {
-  const parsed = UpdateHomepageGalleryBody.safeParse(req.body);
-  if (!parsed.success || !hasUniqueDisplayOrders(parsed.data) || parsed.data.some((item) => !isValidImageReference(item.imageUrl))) {
-    res.status(400).json({ error: "Check gallery fields, image references, and unique display orders." });
-    return;
-  }
-  try {
-    await prisma.$transaction(async (tx) => {
-      await tx.aboutCampusHighlights.upsert({
-        where: { id: "singleton" },
-        update: {},
-        create: { id: "singleton", heading: "Our Campus Highlights", description: "Spaces that help students learn and grow.", isVisible: true, sortOrder: 7 },
-      });
-      const orders = parsed.data.map((item) => item.displayOrder);
-      await tx.aboutCampusHighlight.updateMany({
-        where: { aboutCampusHighlightsId: "singleton", displayOrder: { notIn: orders } },
-        data: { homepageActive: false },
-      });
-      for (const item of parsed.data) {
-        await tx.aboutCampusHighlight.upsert({
-          where: { aboutCampusHighlightsId_displayOrder: { aboutCampusHighlightsId: "singleton", displayOrder: item.displayOrder } },
-          update: {
-            imageUrl: item.imageUrl,
-            imageAltText: item.imageAltText,
-            title: item.title,
-            description: item.description,
-            category: item.category,
-            locationLabel: item.locationLabel,
-            homepageFeatured: item.isFeatured,
-            homepageActive: item.isActive,
-          },
-          create: {
-            aboutCampusHighlightsId: "singleton",
-            imageUrl: item.imageUrl,
-            imageAltText: item.imageAltText,
-            icon: null,
-            title: item.title,
-            description: item.description,
-            category: item.category,
-            locationLabel: item.locationLabel,
-            homepageFeatured: item.isFeatured,
-            homepageActive: item.isActive,
-            displayOrder: item.displayOrder,
-            isVisible: true,
-          },
-        });
-      }
-    });
-    res.json(UpdateHomepageGalleryResponse.parse(await readHomepageGallery()));
-  } catch (error) {
-    req.log.error({ err: error }, "Unable to update homepage gallery");
-    res.status(500).json({ error: "Unable to save homepage gallery." });
   }
 });
 

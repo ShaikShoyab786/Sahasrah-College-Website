@@ -645,6 +645,38 @@ model AboutCampusHighlight {
   @@index([aboutCampusHighlightsId])
 }
 
+model GalleryPageSettings {
+  id          String   @id @default("singleton")
+  eyebrow     String   @default("CAMPUS LIFE")
+  heading     String   @default("Life at Sahasrah College")
+  description String   @default("Explore the spaces, people, and experiences that make life at Sahasrah College memorable.")
+  updatedAt   DateTime @updatedAt
+}
+
+model GalleryImportState {
+  id         String   @id @default("singleton")
+  importedAt DateTime @default(now())
+}
+
+model GalleryItem {
+  id                  String   @id @default(cuid())
+  sourceAboutId       String?  @unique
+  imageUrl            String?
+  imageAltText        String
+  title               String
+  description         String?
+  category            String   @default("Campus")
+  locationLabel       String?
+  isPublished         Boolean  @default(true)
+  displayOrder        Int      @default(1)
+  showInHomePreview   Boolean  @default(false)
+  homePreviewOrder    Int      @default(1)
+  updatedAt           DateTime @updatedAt
+
+  @@index([isPublished, displayOrder])
+  @@index([isPublished, showInHomePreview, homePreviewOrder])
+}
+
 model AboutAchievements {
   id          String                    @id @default("singleton")
   eyebrow     String                    @default("OUR IMPACT")
