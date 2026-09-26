@@ -26,7 +26,6 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
     { href: '/admin/dashboard', label: 'Dashboard', icon: Gauge },
     { href: '/admin', label: 'Overview', icon: LayoutDashboard },
     { href: '/admin/site-settings', label: 'Site identity', icon: Settings2 },
-    { href: '/admin/results', label: 'Results', icon: Trophy },
   ];
   const heroActive = location.startsWith('/admin/pages/home/hero') || location.startsWith('/admin/homepage-hero');
   const aboutActive = location.startsWith('/admin/pages/home/about-preview');
@@ -54,6 +53,7 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
   const contactActive = location.startsWith('/admin/pages/contact');
   const galleryPageActive = location.startsWith('/admin/pages/gallery');
   const facultyPageActive = location.startsWith('/admin/pages/faculty');
+  const resultsPageActive = location.startsWith('/admin/pages/results') || location.startsWith('/admin/results');
   const nestedHomeRoute = heroActive || aboutActive || liveUpdatesActive || statisticsActive || favoriteTopicsActive || resultsActive || ribbonActive || testimonialsActive || facultyActive || galleryActive || knowledgeHubActive || admissionsFaqActive || finalCtaActive;
   const nestedAboutRoute = aboutHeroActive || aboutStoryActive || chairmanActive || principlesActive || parentChoiceActive || leadershipActive || campusHighlightsActive || achievementsActive || faqActive || admissionCtaActive;
   const [pagesOpen, setPagesOpen] = useState(false);
@@ -67,14 +67,14 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
     } else if (nestedAboutRoute) {
       setPagesOpen(true);
       setAboutOpen(true);
-    } else if (contactActive || galleryPageActive || facultyPageActive) {
+    } else if (contactActive || galleryPageActive || facultyPageActive || resultsPageActive) {
       setPagesOpen(true);
     } else {
       setPagesOpen(false);
       setHomeOpen(false);
       setAboutOpen(false);
     }
-  }, [location, contactActive, galleryPageActive, facultyPageActive, nestedAboutRoute, nestedHomeRoute]);
+  }, [location, contactActive, galleryPageActive, facultyPageActive, resultsPageActive, nestedAboutRoute, nestedHomeRoute]);
 
   useEffect(() => {
     const mobile = window.matchMedia('(max-width: 767px)');
@@ -157,11 +157,6 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
             )}
             {pagesOpen && (
               <div className="mt-2 rounded-2xl bg-[hsl(var(--sidebar-accent)/.55)] p-2">
-                <Link href="/admin/pages/faculty" onClick={() => setOpen(false)} className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition ${facultyPageActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-faculty"><GraduationCap size={16} /><span>Faculty</span></Link>
-              </div>
-            )}
-            {pagesOpen && (
-              <div className="mt-2 rounded-2xl bg-[hsl(var(--sidebar-accent)/.55)] p-2">
                 <button type="button" onClick={() => setAboutOpen((current) => !current)} aria-expanded={aboutOpen} className={`flex w-full items-center justify-between rounded-xl px-2 py-2 text-xs font-bold transition ${aboutOpen || nestedAboutRoute ? 'text-[hsl(var(--sidebar-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.65)] hover:bg-[hsl(var(--sidebar-accent))]'}`} data-testid="button-admin-about-toggle">
                   <span className="flex items-center gap-2"><BookOpen size={15} /> About</span>
                   <ChevronDown size={14} className={`transition-transform ${aboutOpen ? 'rotate-180' : ''}`} />
@@ -180,6 +175,16 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
                      <Link href="/admin/pages/about/admission-cta" onClick={() => setOpen(false)} className={`mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5 pl-9 text-sm font-semibold transition ${admissionCtaActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-about-admission-cta"><PanelsTopLeft size={16} /><span>Admission CTA</span></Link>
                   </div>
                 )}
+              </div>
+            )}
+            {pagesOpen && (
+              <div className="mt-2 rounded-2xl bg-[hsl(var(--sidebar-accent)/.55)] p-2">
+                <Link href="/admin/pages/results" onClick={() => setOpen(false)} className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition ${resultsPageActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-results"><Trophy size={16} /><span>Results</span></Link>
+              </div>
+            )}
+            {pagesOpen && (
+              <div className="mt-2 rounded-2xl bg-[hsl(var(--sidebar-accent)/.55)] p-2">
+                <Link href="/admin/pages/faculty" onClick={() => setOpen(false)} className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition ${facultyPageActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-faculty"><GraduationCap size={16} /><span>Faculty</span></Link>
               </div>
             )}
             {pagesOpen && (

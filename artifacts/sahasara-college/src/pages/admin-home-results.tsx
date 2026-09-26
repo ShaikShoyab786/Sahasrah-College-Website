@@ -61,7 +61,7 @@ export default function AdminHomeResults() {
         </EditorCard>
         <div className="flex flex-col gap-4 rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--secondary))] p-5 sm:flex-row sm:items-center sm:justify-between">
           <div><p className="text-sm font-bold text-[hsl(var(--primary))]">Manage the shared collection</p><p className="mt-1 text-xs leading-5 text-[hsl(var(--muted-foreground))]">Add records, publish outcomes, and choose Home cards from one place.</p></div>
-          <Link href="/admin/results" data-testid="link-manage-results" className="inline-flex min-h-10 items-center justify-center rounded-xl bg-[hsl(var(--primary))] px-4 text-xs font-bold text-[hsl(var(--primary-foreground))]">Manage Results</Link>
+          <Link href="/admin/pages/results" data-testid="link-manage-results" className="inline-flex min-h-10 items-center justify-center rounded-xl bg-[hsl(var(--primary))] px-4 text-xs font-bold text-[hsl(var(--primary-foreground))]">Manage Results</Link>
         </div>
         <label className="flex cursor-pointer items-start gap-4 rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5"><input type="checkbox" {...form.register('isVisible')} className="mt-1 h-5 w-5 accent-[hsl(var(--accent))]" /><span><span className="block text-sm font-bold">Show Results preview on Home</span><span className="mt-1 block text-xs leading-5 text-[hsl(var(--muted-foreground))]">This changes visibility of the copy section; it never publishes a student record.</span></span></label>
         <SaveStatus error={error} notice={notice} />

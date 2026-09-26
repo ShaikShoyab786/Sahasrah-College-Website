@@ -73,6 +73,16 @@ function StatisticsEditor() {
   </EditorCard>;
 }
 
+function getResultsSaveError(error: unknown) {
+  if (error && typeof error === 'object' && 'data' in error) {
+    const data = (error as { data?: unknown }).data;
+    if (data && typeof data === 'object' && 'error' in data && typeof data.error === 'string') {
+      return data.error;
+    }
+  }
+  return 'We could not save the Results library. Check the highlighted requirements and try again.';
+}
+
 export default function AdminResults() {
   const query = useGetAdminResultsLibrary();
   const update = useUpdateAdminResultsLibrary();
@@ -87,11 +97,11 @@ export default function AdminResults() {
   const save = form.handleSubmit((data) => {
     setNotice(''); setError('');
     const normalized: AdminResultsLibraryInput = { settings: data.settings, results: data.results.map((item, index) => ({ ...item, displayOrder: index + 1, homePreviewOrder: item.homePreviewOrder || index + 1, studentImageUrl: item.studentImageUrl || null, examName: item.examName || null, year: item.year || null, institution: item.institution || null, course: item.course || null, story: item.story || null, accentColor: item.accentColor || null })), statistics: data.statistics.map((item, index) => ({ ...item, displayOrder: index + 1, homePreviewOrder: item.homePreviewOrder || index + 1, supportingText: item.supportingText || null })) };
-    update.mutate({ data: normalized }, { onSuccess: () => { void client.invalidateQueries({ queryKey: getGetAdminResultsLibraryQueryKey() }); void client.invalidateQueries({ queryKey: getGetResultsPageQueryKey() }); void client.invalidateQueries({ queryKey: getGetHomepageResultsQueryKey() }); void client.invalidateQueries({ queryKey: getGetAdminHomepageResultsQueryKey() }); setNotice('Results library saved.'); }, onError: () => setError('We could not save the Results library. Check required fields and try again.') });
+    update.mutate({ data: normalized }, { onSuccess: () => { void client.invalidateQueries({ queryKey: getGetAdminResultsLibraryQueryKey() }); void client.invalidateQueries({ queryKey: getGetResultsPageQueryKey() }); void client.invalidateQueries({ queryKey: getGetHomepageResultsQueryKey() }); void client.invalidateQueries({ queryKey: getGetAdminHomepageResultsQueryKey() }); setNotice('Results library saved.'); }, onError: (mutationError) => setError(getResultsSaveError(mutationError)) });
   });
   if (query.isLoading) return <EditorSkeleton />;
   if (query.isError && !query.data) return <LoadError onRetry={() => query.refetch()} />;
-  return <EditorFrame eyebrow="Workspace / Results" title="One library for every outcome." description="Publish verified student achievements, curate the Home preview, and keep the public Results page grounded in the shared library." previewHref="/results"><FormProvider {...form}><form onSubmit={save} className="mt-10 space-y-6">
+  return <EditorFrame eyebrow="Pages / Results" title="One library for every outcome." description="Publish verified student achievements, curate the Home preview, and keep the public Results page grounded in the shared library." previewHref="/results"><FormProvider {...form}><form onSubmit={save} className="mt-10 space-y-6">
     <EditorCard title="Results page introduction" description="Set the copy families see above the published record."><div className="grid gap-4 md:grid-cols-2"><Field id="results-settings-eyebrow" label="Eyebrow" {...form.register('settings.eyebrow', { required: true })} /><Field id="results-settings-heading" label="Heading" {...form.register('settings.heading', { required: true })} /><div className="md:col-span-2"><Area id="results-settings-description" label="Description" {...form.register('settings.description', { required: true })} /></div><Field id="results-settings-year" label="Configured year (optional)" {...form.register('settings.configuredYear')} placeholder="2025" /><label className="flex items-center gap-3 text-sm font-semibold"><input type="checkbox" {...form.register('settings.isVisible')} className="h-4 w-4 accent-[hsl(var(--admin-focus))]" /> Show the public Results page</label></div></EditorCard>
     <ResultsEditor /><StatisticsEditor /><SaveStatus error={error} notice={notice} /><div className="flex justify-end"><SaveButton pending={update.isPending} testId="button-save-results-library">Save Results library</SaveButton></div>
   </form></FormProvider></EditorFrame>;

@@ -48,7 +48,7 @@ export const fallbackGallery: HomepageGalleryItem[] = [
 
 export function HomeResults({ content }: { content: HomepageResults }) {
   const results = content.results.filter((result) => result.isPublished && result.showInHomePreview).sort((a, b) => a.homePreviewOrder - b.homePreviewOrder);
-  if (!content.isVisible || !results.length) return null;
+  if (!content.isVisible) return null;
   return (
     <section id="home-results" className="home-preview-section overflow-hidden bg-[hsl(var(--secondary))] px-6 py-20 lg:px-10 lg:py-28" aria-labelledby="home-results-heading">
       <div className="mx-auto max-w-7xl">
@@ -60,7 +60,11 @@ export function HomeResults({ content }: { content: HomepageResults }) {
           </div>
           <a href="/results" className="group inline-flex w-fit items-center gap-2 rounded-full bg-[hsl(var(--primary))] px-5 py-3.5 text-sm font-bold text-[hsl(var(--primary-foreground))] transition hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--accent)/.3)]" data-testid="link-home-results">{content.viewAllButtonLabel} <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" /></a>
         </div>
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{results.map((result, index) => <ResultCard key={result.id} result={result} index={index} />)}</div>
+        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {results.length > 0
+            ? results.map((result, index) => <ResultCard key={result.id} result={result} index={index} />)
+            : <div className="rounded-3xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] px-6 py-10 text-center sm:col-span-2 lg:col-span-4"><p className="text-sm leading-6 text-[hsl(var(--muted-foreground))]">Student achievements will appear here once they’re published and selected for the Home preview.</p></div>}
+        </div>
       </div>
     </section>
   );

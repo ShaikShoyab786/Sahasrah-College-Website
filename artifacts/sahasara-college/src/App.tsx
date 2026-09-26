@@ -75,6 +75,9 @@ function Router() {
         <Route path="/admin/pages/home/results">
           <AdminGuard><AdminHomeResults /></AdminGuard>
         </Route>
+        <Route path="/admin/pages/results">
+          <AdminGuard><AdminResults /></AdminGuard>
+        </Route>
         <Route path="/admin/results">
           <AdminGuard><AdminResults /></AdminGuard>
         </Route>

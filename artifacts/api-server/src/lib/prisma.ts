@@ -396,7 +396,7 @@ export async function initializeDatabase() {
     update: {},
     create: {
       id: "singleton",
-      eyebrow: "Our Achievements",
+      eyebrow: "Pride of Sahasrah",
       heading: "Our Results, Our Pride",
       description: "Steady preparation, strong foundations, and focused guidance help our students turn ambition into meaningful academic achievement.",
       viewAllButtonLabel: "View All Achievements",
@@ -407,10 +407,6 @@ export async function initializeDatabase() {
   });
   await prisma.homepageResults.updateMany({
     where: { id: "singleton", eyebrow: "Pride of KVR" },
-    data: { eyebrow: "Our Achievements" },
-  });
-  await prisma.homepageResults.updateMany({
-    where: { id: "singleton", eyebrow: "Pride of Sahasrah" },
     data: { eyebrow: "Our Achievements" },
   });
   await prisma.homepageResults.updateMany({

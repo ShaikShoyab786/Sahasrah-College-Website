@@ -131,7 +131,21 @@ router.get("/admin/results", requireAdmin, async (req, res): Promise<void> => {
 router.put("/admin/results", requireAdmin, async (req, res): Promise<void> => {
   const parsed = UpdateAdminResultsLibraryBody.safeParse(req.body);
   if (!parsed.success) {
-    res.status(400).json({ error: "Check the Results settings, achievement records, and statistics." });
+    const details = parsed.error.issues.slice(0, 5).map((issue) => {
+      const path = issue.path
+        .map((part) => typeof part === "number" ? `item ${part + 1}` : String(part))
+        .join(".");
+      return `${path || "request"}: ${issue.message}`;
+    });
+    req.log.warn(
+      { validationIssues: parsed.error.issues.map(({ path, code }) => ({ path, code })) },
+      "Invalid Results library input",
+    );
+    res.status(400).json({
+      error: details.length
+        ? `Results library validation failed. ${details.join("; ")}.`
+        : "Results library validation failed. Check the settings and records.",
+    });
     return;
   }
 
@@ -140,26 +154,28 @@ router.put("/admin/results", requireAdmin, async (req, res): Promise<void> => {
   const statisticIds = statistics.flatMap((statistic) => statistic.id ? [statistic.id] : []);
   const featuredResultOrders = results.filter((result) => result.showInHomePreview).map((result) => result.homePreviewOrder);
   const featuredStatisticOrders = statistics.filter((statistic) => statistic.showInHomePreview).map((statistic) => statistic.homePreviewOrder);
-  const invalidResult =
-    new Set(resultIds).size !== resultIds.length ||
-    new Set(results.map((result) => result.displayOrder)).size !== results.length ||
-    new Set(featuredResultOrders).size !== featuredResultOrders.length ||
-    results.some((result) =>
-      !result.studentName.trim() ||
-      !result.achievement.trim() ||
-      !isValidImageReference(result.studentImageUrl) ||
-      (result.studentImageUrl !== null && !result.studentImageAltText.trim()),
-    );
-  const invalidStatistic =
-    new Set(statisticIds).size !== statisticIds.length ||
-    new Set(statistics.map((statistic) => statistic.displayOrder)).size !== statistics.length ||
-    new Set(featuredStatisticOrders).size !== featuredStatisticOrders.length ||
-    statistics.some((statistic) => !statistic.label.trim() || !statistic.value.trim());
+  const validationErrors: string[] = [];
+  if (new Set(resultIds).size !== resultIds.length) validationErrors.push("Reload before saving duplicate result records.");
+  if (new Set(results.map((result) => result.displayOrder)).size !== results.length) validationErrors.push("Each result needs a unique Results page order.");
+  if (new Set(featuredResultOrders).size !== featuredResultOrders.length) validationErrors.push("Featured results need unique Home preview orders.");
+  results.forEach((result, index) => {
+    const label = `Result ${index + 1}`;
+    if (!result.studentName.trim()) validationErrors.push(`${label}: enter a student name.`);
+    if (!result.achievement.trim()) validationErrors.push(`${label}: enter an achievement.`);
+    if (!isValidImageReference(result.studentImageUrl)) validationErrors.push(`${label}: use an HTTP(S) image URL or a stored image path.`);
+    if (result.studentImageUrl !== null && !result.studentImageAltText.trim()) validationErrors.push(`${label}: enter image alt text.`);
+  });
+  if (new Set(statisticIds).size !== statisticIds.length) validationErrors.push("Reload before saving duplicate statistics.");
+  if (new Set(statistics.map((statistic) => statistic.displayOrder)).size !== statistics.length) validationErrors.push("Each statistic needs a unique Results page order.");
+  if (new Set(featuredStatisticOrders).size !== featuredStatisticOrders.length) validationErrors.push("Featured statistics need unique Home preview orders.");
+  statistics.forEach((statistic, index) => {
+    if (!statistic.label.trim()) validationErrors.push(`Statistic ${index + 1}: enter a label.`);
+    if (!statistic.value.trim()) validationErrors.push(`Statistic ${index + 1}: enter a value.`);
+  });
 
-  if (invalidResult || invalidStatistic) {
-    res.status(400).json({
-      error: "Use unique orders, valid image URLs and alt text, and complete names, achievements, and statistic values.",
-    });
+  if (validationErrors.length > 0) {
+    req.log.warn({ validationErrors }, "Results library failed business validation");
+    res.status(400).json({ error: validationErrors.join(" ") });
     return;
   }
 
@@ -183,7 +199,7 @@ router.put("/admin/results", requireAdmin, async (req, res): Promise<void> => {
         update: {},
         create: {
           id: "singleton",
-          eyebrow: "Our Achievements",
+          eyebrow: "Pride of Sahasrah",
           heading: "Our Results, Our Pride",
           description: "Explore approved student achievements from Sahsrah Junior College.",
           viewAllButtonLabel: "View All Achievements",

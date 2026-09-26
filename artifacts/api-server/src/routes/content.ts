@@ -339,7 +339,7 @@ router.get("/homepage-results", async (req, res) => {
     }
     res.json(GetHomepageResultsResponse.parse({
       ...content,
-      eyebrow: content.eyebrow || "Our Achievements",
+      eyebrow: content.eyebrow || "Pride of Sahasrah",
       viewAllButtonLink: "/results",
       results: content.results.filter((result) => result.isPublished && result.showInHomePreview),
       statistics: content.statistics.filter((statistic) => statistic.isPublished && statistic.showInHomePreview),

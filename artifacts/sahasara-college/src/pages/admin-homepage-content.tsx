@@ -122,7 +122,7 @@ export function AdminHomepageStatistics() {
       </EditorCard>
       <div className="flex flex-col gap-4 rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5 sm:flex-row sm:items-center sm:justify-between">
         <div><p className="font-bold text-[hsl(var(--foreground))]">Shared statistics</p><p className="mt-1 text-sm text-[hsl(var(--muted-foreground))]">Add, approve, and select Home statistics from the Results library. This keeps one source for Home and Results.</p></div>
-        <Link href="/admin/results" className="inline-flex shrink-0 items-center justify-center rounded-xl bg-[hsl(var(--primary))] px-4 py-2.5 text-sm font-bold text-[hsl(var(--primary-foreground))]" data-testid="link-manage-home-statistics">Manage Results</Link>
+        <Link href="/admin/pages/results" className="inline-flex shrink-0 items-center justify-center rounded-xl bg-[hsl(var(--primary))] px-4 py-2.5 text-sm font-bold text-[hsl(var(--primary-foreground))]" data-testid="link-manage-home-statistics">Manage Results</Link>
       </div>
       <VisibilityToggle checked={form.isVisible} onChange={(value) => setForm({ ...form, isVisible: value })} label="Show Home Statistics on the public homepage" />
       <SaveStatus error={feedback.error} notice={feedback.notice} />
