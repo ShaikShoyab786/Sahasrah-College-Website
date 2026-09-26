@@ -364,16 +364,6 @@ export async function initializeDatabase() {
       sortOrder: 4,
     },
   });
-  if ((await prisma.homepageStatistic.count({ where: { homepageStatisticsId: "singleton" } })) === 0) {
-    await prisma.homepageStatistic.createMany({
-      data: [
-        { homepageStatisticsId: "singleton", numericTarget: 100, suffix: "%", icon: "badge-check", label: "Pass Percentage", displayOrder: 1, isActive: true },
-        { homepageStatisticsId: "singleton", numericTarget: 40, suffix: "+", icon: "calendar-days", label: "Years of Physics Mentorship", displayOrder: 2, isActive: true },
-        { homepageStatisticsId: "singleton", numericTarget: 25, suffix: "+", icon: "graduation-cap", label: "IIT / NIT Selections", displayOrder: 3, isActive: true },
-        { homepageStatisticsId: "singleton", numericTarget: 4, suffix: "", icon: "flask-conical", label: "Science Labs", displayOrder: 4, isActive: true },
-      ],
-    });
-  }
 
   await prisma.homepageFavoriteTopics.upsert({
     where: { id: "singleton" },
@@ -406,25 +396,43 @@ export async function initializeDatabase() {
     update: {},
     create: {
       id: "singleton",
-      eyebrow: "Pride of KVR",
+      eyebrow: "Our Achievements",
       heading: "Our Results, Our Pride",
       description: "Steady preparation, strong foundations, and focused guidance help our students turn ambition into meaningful academic achievement.",
       viewAllButtonLabel: "View All Achievements",
-      viewAllButtonLink: "/about#achievement-statistics",
+      viewAllButtonLink: "/results",
       isVisible: true,
       sortOrder: 6,
     },
   });
-  if ((await prisma.homepageResult.count({ where: { homepageResultsId: "singleton" } })) === 0) {
-    await prisma.homepageResult.createMany({
-      data: [
-        { homepageResultsId: "singleton", studentImageUrl: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=500&q=85", studentImageAltText: "KVR student portrait", studentName: "Aarav Reddy", examCourse: "MPC · IIT-JEE", score: "98.6%", achievement: "State Rank 42", resultLabel: "Top Scorer", examName: "JEE Main", year: "2025", accentColor: "#D6AD59", displayOrder: 1, isActive: true },
-        { homepageResultsId: "singleton", studentImageUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=500&q=85", studentImageAltText: "KVR student portrait", studentName: "Saanvi Rao", examCourse: "BiPC · NEET", score: "675 / 720", achievement: "Medical Seat Secured", resultLabel: "Selected", examName: "NEET", year: "2025", accentColor: "#2E8C7B", displayOrder: 2, isActive: true },
-        { homepageResultsId: "singleton", studentImageUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=500&q=85", studentImageAltText: "KVR student portrait", studentName: "Vihaan Kumar", examCourse: "MPC · EAMCET", score: "96.2%", achievement: "Engineering Pathway", resultLabel: "Outstanding", examName: "TS EAMCET", year: "2025", accentColor: "#17365D", displayOrder: 3, isActive: true },
-        { homepageResultsId: "singleton", studentImageUrl: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=500&q=85", studentImageAltText: "KVR student portrait", studentName: "Ishita Varma", examCourse: "BiPC · NEET", score: "99.1%", achievement: "District Top 10", resultLabel: "Top Scorer", examName: "Intermediate", year: "2025", accentColor: "#C26D3E", displayOrder: 4, isActive: true },
-      ],
-    });
-  }
+  await prisma.homepageResults.updateMany({
+    where: { id: "singleton", eyebrow: "Pride of KVR" },
+    data: { eyebrow: "Our Achievements" },
+  });
+  await prisma.homepageResults.updateMany({
+    where: { id: "singleton", eyebrow: "Pride of Sahasrah" },
+    data: { eyebrow: "Our Achievements" },
+  });
+  await prisma.homepageResults.updateMany({
+    where: { id: "singleton", viewAllButtonLink: "/about#achievement-statistics" },
+    data: { viewAllButtonLink: "/results" },
+  });
+  await prisma.homepageResult.updateMany({
+    where: { homepageResultsId: "singleton", studentImageAltText: "KVR student portrait" },
+    data: { studentImageAltText: "Student portrait" },
+  });
+  await prisma.resultsPageSettings.upsert({
+    where: { id: "singleton" },
+    update: {},
+    create: {
+      id: "singleton",
+      eyebrow: "Student Outcomes",
+      heading: "Results that reflect consistent effort",
+      description: "Explore approved student achievements from Sahsrah Junior College.",
+      configuredYear: null,
+      isVisible: true,
+    },
+  });
 
   await prisma.homepageAchievementRibbon.upsert({
     where: { id: "singleton" },

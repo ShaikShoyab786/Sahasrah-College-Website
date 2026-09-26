@@ -10,24 +10,6 @@ import type {
 import { SectionEyebrow } from '@/components/section-eyebrow';
 import { FacultyProfileCard } from '@/components/faculty-profile-card';
 
-export const fallbackResults: HomepageResults = {
-  id: 'fallback-results',
-  eyebrow: 'Pride of KVR',
-  heading: 'Our Results, Our Pride',
-  description: 'Steady preparation, strong foundations, and focused guidance help our students turn ambition into meaningful academic achievement.',
-  viewAllButtonLabel: 'View All Achievements',
-  viewAllButtonLink: '/about#achievement-statistics',
-  isVisible: true,
-  sortOrder: 6,
-  updatedAt: '2026-06-15T00:00:00.000Z',
-  results: [
-    { id: 'result-1', studentImageUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=500&q=85', studentImageAltText: 'KVR student portrait', studentName: 'Aarav Reddy', examCourse: 'MPC · IIT-JEE', score: '98.6%', achievement: 'State Rank 42', resultLabel: 'Top Scorer', examName: 'JEE Main', year: '2025', accentColor: '#D6AD59', displayOrder: 1, isActive: true },
-    { id: 'result-2', studentImageUrl: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=500&q=85', studentImageAltText: 'KVR student portrait', studentName: 'Saanvi Rao', examCourse: 'BiPC · NEET', score: '675 / 720', achievement: 'Medical Seat Secured', resultLabel: 'Selected', examName: 'NEET', year: '2025', accentColor: '#2E8C7B', displayOrder: 2, isActive: true },
-    { id: 'result-3', studentImageUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=500&q=85', studentImageAltText: 'KVR student portrait', studentName: 'Vihaan Kumar', examCourse: 'MPC · EAMCET', score: '96.2%', achievement: 'Engineering Pathway', resultLabel: 'Outstanding', examName: 'TS EAMCET', year: '2025', accentColor: '#17365D', displayOrder: 3, isActive: true },
-    { id: 'result-4', studentImageUrl: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=500&q=85', studentImageAltText: 'KVR student portrait', studentName: 'Ishita Varma', examCourse: 'BiPC · NEET', score: '99.1%', achievement: 'District Top 10', resultLabel: 'Top Scorer', examName: 'Intermediate', year: '2025', accentColor: '#C26D3E', displayOrder: 4, isActive: true },
-  ],
-};
-
 export const fallbackRibbon: HomepageAchievementRibbon = {
   id: 'fallback-ribbon',
   isVisible: true,
@@ -65,22 +47,20 @@ export const fallbackGallery: HomepageGalleryItem[] = [
 ];
 
 export function HomeResults({ content }: { content: HomepageResults }) {
-  const results = content.results.filter((result) => result.isActive);
-  if (!results.length) return null;
+  const results = content.results.filter((result) => result.isPublished && result.showInHomePreview).sort((a, b) => a.homePreviewOrder - b.homePreviewOrder);
+  if (!content.isVisible || !results.length) return null;
   return (
     <section id="home-results" className="home-preview-section overflow-hidden bg-[hsl(var(--secondary))] px-6 py-20 lg:px-10 lg:py-28" aria-labelledby="home-results-heading">
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end">
           <div className="max-w-2xl">
-            <SectionEyebrow className="about-eyebrow">{content.eyebrow || 'Pride of KVR'}</SectionEyebrow>
+            <SectionEyebrow className="about-eyebrow">{content.eyebrow}</SectionEyebrow>
             <h2 id="home-results-heading" className="mt-5 font-display text-5xl font-semibold leading-[.96] tracking-[-.05em] text-[hsl(var(--primary))] md:text-6xl">{content.heading}</h2>
             <p className="mt-5 max-w-xl text-base leading-7 text-[hsl(var(--muted-foreground))]">{content.description}</p>
           </div>
-          <a href={content.viewAllButtonLink || '/about#achievement-statistics'} className="group inline-flex w-fit items-center gap-2 rounded-full bg-[hsl(var(--primary))] px-5 py-3.5 text-sm font-bold text-[hsl(var(--primary-foreground))] transition hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--accent)/.3)]">{content.viewAllButtonLabel || 'View All Achievements'} <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" /></a>
+          <a href="/results" className="group inline-flex w-fit items-center gap-2 rounded-full bg-[hsl(var(--primary))] px-5 py-3.5 text-sm font-bold text-[hsl(var(--primary-foreground))] transition hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--accent)/.3)]" data-testid="link-home-results">{content.viewAllButtonLabel} <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" /></a>
         </div>
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {results.map((result, index) => <ResultCard key={result.id} result={result} index={index} />)}
-        </div>
+        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{results.map((result, index) => <ResultCard key={result.id} result={result} index={index} />)}</div>
       </div>
     </section>
   );

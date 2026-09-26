@@ -6,6 +6,7 @@
  * OpenAPI spec version: 0.1.0
  */
 import type { HomepageResult } from './homepageResult';
+import type { ResultStatistic } from './resultStatistic';
 
 export interface HomepageResults {
   id: string;
@@ -18,4 +19,5 @@ export interface HomepageResults {
   sortOrder: number;
   updatedAt: Date;
   results: HomepageResult[];
+  statistics: ResultStatistic[];
 }

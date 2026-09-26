@@ -1,50 +1,48 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { BadgeCheck, CalendarDays, FlaskConical, GraduationCap, Sparkles, type LucideIcon } from 'lucide-react';
-import type { HomepageStatistics } from '@workspace/api-client-react';
-
-const statisticIcons: Record<string, LucideIcon> = {
-  'badge-check': BadgeCheck,
-  'calendar-days': CalendarDays,
-  'flask-conical': FlaskConical,
-  'graduation-cap': GraduationCap,
-  sparkles: Sparkles,
-};
+import { useEffect, useRef, useState } from 'react';
+import { ArrowRight, BarChart3 } from 'lucide-react';
+import type { HomepageStatistics, ResultStatistic } from '@workspace/api-client-react';
 
 type HomeStatisticsProps = {
   content: HomepageStatistics;
+  statistics: ResultStatistic[];
 };
 
-export function HomeStatistics({ content }: HomeStatisticsProps) {
+export function HomeStatistics({ content, statistics }: HomeStatisticsProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const [started, setStarted] = useState(false);
-  const [values, setValues] = useState(() => content.statistics.map(() => 0));
-  const statistics = useMemo(() => content.statistics.filter((statistic) => statistic.isActive), [content.statistics]);
+  const [values, setValues] = useState<string[]>([]);
 
   useEffect(() => {
-    setValues(statistics.map(() => 0));
+    setValues(statistics.map(() => '0'));
     setStarted(false);
-  }, [content.id, content.updatedAt, statistics.length]);
+  }, [content.id, content.updatedAt, statistics]);
 
   useEffect(() => {
     const section = sectionRef.current;
-    if (!section || started) return;
+    if (!section || started || !statistics.length) return;
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const observer = new IntersectionObserver(([entry]) => {
       if (!entry.isIntersecting) return;
       setStarted(true);
       if (reducedMotion) {
-        setValues(statistics.map((statistic) => statistic.numericTarget));
+        setValues(statistics.map((statistic) => statistic.value));
         observer.disconnect();
         return;
       }
 
       const startedAt = performance.now();
-      const duration = 1500;
+      const duration = 950;
       let frame = 0;
       const tick = (now: number) => {
         const progress = Math.min(1, (now - startedAt) / duration);
         const eased = 1 - Math.pow(1 - progress, 3);
-        setValues(statistics.map((statistic) => Math.round(statistic.numericTarget * eased)));
+        setValues(statistics.map((statistic) => {
+          const match = statistic.value.match(/^(\d+(?:\.\d+)?)(.*)$/);
+          if (!match) return progress === 1 ? statistic.value : '0';
+          const number = Number(match[1]);
+          const current = number % 1 === 0 ? Math.round(number * eased) : (number * eased).toFixed(1);
+          return `${current}${match[2]}`;
+        }));
         if (progress < 1) frame = requestAnimationFrame(tick);
       };
       frame = requestAnimationFrame(tick);
@@ -65,16 +63,9 @@ export function HomeStatistics({ content }: HomeStatisticsProps) {
             <h2 id="home-statistics-heading" className="mt-4 max-w-md font-display text-4xl font-semibold leading-[.98] tracking-[-.04em] md:text-5xl">{content.heading}</h2>
             <p className="mt-5 max-w-md text-sm leading-7 text-[hsl(var(--primary-foreground)/.66)]">{content.description}</p>
           </div>
-          <div className="grid grid-cols-2 gap-x-5 gap-y-8 md:grid-cols-4 md:gap-5">
-            {statistics.map((statistic, index) => {
-              const Icon = statisticIcons[statistic.icon ?? ''] ?? Sparkles;
-              return <div key={statistic.id} className="home-statistic-item text-center" style={{ '--home-stat-delay': `${index * 110}ms` } as React.CSSProperties}>
-                <Icon size={21} className="mx-auto text-[hsl(var(--accent))] transition duration-300 group-hover:scale-110" aria-hidden="true" />
-                <p className="mt-4 font-display text-4xl font-semibold tracking-[-.04em] md:text-5xl">{values[index] ?? statistic.numericTarget}{statistic.suffix}</p>
-                <p className="mt-2 text-[10px] font-bold uppercase leading-4 tracking-[.15em] text-[hsl(var(--primary-foreground)/.54)]">{statistic.label}</p>
-              </div>;
-            })}
-          </div>
+          {statistics.length ? <div className="grid grid-cols-2 gap-x-5 gap-y-8 md:grid-cols-4 md:gap-5">
+            {statistics.map((statistic, index) => <div key={statistic.id} className="home-statistic-item text-center" data-testid={`home-statistic-${statistic.id}`}><BarChart3 size={21} className="mx-auto text-[hsl(var(--accent))]" aria-hidden="true" /><p className="mt-4 font-display text-4xl font-semibold tracking-[-.04em] md:text-5xl"><span className="sr-only">{statistic.value}</span><span aria-hidden="true">{values[index] ?? statistic.value}</span></p><p className="mt-2 text-[10px] font-bold uppercase leading-4 tracking-[.15em] text-[hsl(var(--primary-foreground)/.54)]">{statistic.label}</p>{statistic.supportingText && <p className="mt-1 text-[11px] text-[hsl(var(--primary-foreground)/.58)]">{statistic.supportingText}</p>}</div>)}
+          </div> : <div className="rounded-2xl border border-[hsl(var(--primary-foreground)/.14)] bg-[hsl(var(--primary-foreground)/.05)] px-5 py-8 text-sm leading-6 text-[hsl(var(--primary-foreground)/.65)]" data-testid="empty-home-statistics"><p>No approved outcome statistics have been selected for Home yet.</p><a href="/results" className="mt-4 inline-flex items-center gap-2 font-bold text-[hsl(var(--accent))]">View Results <ArrowRight size={15} /></a></div>}
         </div>
       </div>
     </section>

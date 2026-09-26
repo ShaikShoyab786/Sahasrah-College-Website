@@ -5,7 +5,6 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
-import type { HomepageResultInput } from './homepageResultInput';
 
 export interface HomepageResultsInput {
   /** @minLength 1 */
@@ -16,17 +15,10 @@ export interface HomepageResultsInput {
   description: string;
   /** @minLength 1 */
   viewAllButtonLabel: string;
-  /** @minLength 1 */
-  viewAllButtonLink: string;
   isVisible: boolean;
   /**
      * @minimum 1
      * @maximum 20
      */
   sortOrder: number;
-  /**
-     * @minItems 1
-     * @maxItems 20
-     */
-  results: HomepageResultInput[];
 }

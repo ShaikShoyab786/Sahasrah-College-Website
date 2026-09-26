@@ -206,7 +206,25 @@ paths:
               schema:
                 $ref: "#/components/schemas/HomepageResults"
         "404":
-          description: Results are hidden or unavailable
+          description: Homepage Results settings are unavailable
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /results:
+    get:
+      operationId: getResultsPage
+      tags: [public]
+      summary: Read published student results and statistics
+      responses:
+        "200":
+          description: Results page content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultsPageData"
+        "404":
+          description: Results page is unavailable
           content:
             application/json:
               schema:
@@ -1099,6 +1117,63 @@ paths:
                 $ref: "#/components/schemas/HomepageResults"
         "400":
           description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/results:
+    get:
+      operationId: getAdminResultsLibrary
+      tags: [admin]
+      summary: Read the shared Results library for editing
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Results settings, records, and statistics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminResultsLibrary"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    put:
+      operationId: updateAdminResultsLibrary
+      tags: [admin]
+      summary: Update Results page settings, records, and statistics
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdminResultsLibraryInput"
+      responses:
+        "200":
+          description: Updated Results library
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminResultsLibrary"
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "409":
+          description: Results library changed in another session
           content:
             application/json:
               schema:
@@ -3286,11 +3361,7 @@ components:
         updatedAt:
           type: string
           format: date-time
-        statistics:
-          type: array
-          items:
-            $ref: "#/components/schemas/HomepageStatistic"
-      required: [id, eyebrow, heading, description, isVisible, sortOrder, updatedAt, statistics]
+      required: [id, eyebrow, heading, description, isVisible, sortOrder, updatedAt]
     HomepageStatisticsInput:
       type: object
       properties:
@@ -3307,13 +3378,7 @@ components:
           type: integer
           minimum: 1
           maximum: 20
-        statistics:
-          type: array
-          minItems: 1
-          maxItems: 20
-          items:
-            $ref: "#/components/schemas/HomepageStatisticInput"
-      required: [eyebrow, heading, description, isVisible, sortOrder, statistics]
+      required: [eyebrow, heading, description, isVisible, sortOrder]
     HomepageFavoriteTopic:
       type: object
       properties:
@@ -3455,51 +3520,199 @@ components:
           type: string
         examName:
           type: ["string", "null"]
+        category:
+          $ref: "#/components/schemas/ResultCategory"
         year:
+          type: ["string", "null"]
+        institution:
+          type: ["string", "null"]
+        course:
+          type: ["string", "null"]
+        story:
           type: ["string", "null"]
         accentColor:
           type: ["string", "null"]
         displayOrder:
           type: integer
-        isActive:
+        isPublished:
           type: boolean
-      required: [id, studentImageUrl, studentImageAltText, studentName, examCourse, score, achievement, resultLabel, examName, year, accentColor, displayOrder, isActive]
+        showInHomePreview:
+          type: boolean
+        homePreviewOrder:
+          type: integer
+      required: [id, studentImageUrl, studentImageAltText, studentName, examCourse, score, achievement, resultLabel, examName, category, year, institution, course, story, accentColor, displayOrder, isPublished, showInHomePreview, homePreviewOrder]
     HomepageResultInput:
       type: object
       properties:
+        id:
+          type: string
         studentImageUrl:
           type: ["string", "null"]
         studentImageAltText:
           type: string
-          minLength: 1
         studentName:
           type: string
           minLength: 1
         examCourse:
           type: string
-          minLength: 1
         score:
           type: string
-          minLength: 1
         achievement:
           type: string
           minLength: 1
         resultLabel:
           type: string
-          minLength: 1
         examName:
           type: ["string", "null"]
+        category:
+          $ref: "#/components/schemas/ResultCategory"
         year:
+          type: ["string", "null"]
+        institution:
+          type: ["string", "null"]
+        course:
+          type: ["string", "null"]
+        story:
           type: ["string", "null"]
         accentColor:
           type: ["string", "null"]
         displayOrder:
           type: integer
           minimum: 1
-          maximum: 20
-        isActive:
+          maximum: 100
+        isPublished:
           type: boolean
-      required: [studentImageUrl, studentImageAltText, studentName, examCourse, score, achievement, resultLabel, examName, year, accentColor, displayOrder, isActive]
+        showInHomePreview:
+          type: boolean
+        homePreviewOrder:
+          type: integer
+          minimum: 1
+          maximum: 100
+      required: [studentImageUrl, studentImageAltText, studentName, examCourse, score, achievement, resultLabel, examName, category, year, institution, course, story, accentColor, displayOrder, isPublished, showInHomePreview, homePreviewOrder]
+    ResultCategory:
+      type: string
+      enum: [INTERMEDIATE, JEE_MAIN, NEET, EAMCET, OTHER]
+    ResultStatistic:
+      type: object
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        value:
+          type: string
+        supportingText:
+          type: ["string", "null"]
+        displayOrder:
+          type: integer
+        isPublished:
+          type: boolean
+        showInHomePreview:
+          type: boolean
+        homePreviewOrder:
+          type: integer
+      required: [id, label, value, supportingText, displayOrder, isPublished, showInHomePreview, homePreviewOrder]
+    ResultStatisticInput:
+      type: object
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+          minLength: 1
+        value:
+          type: string
+          minLength: 1
+        supportingText:
+          type: ["string", "null"]
+        displayOrder:
+          type: integer
+          minimum: 1
+          maximum: 20
+        isPublished:
+          type: boolean
+        showInHomePreview:
+          type: boolean
+        homePreviewOrder:
+          type: integer
+          minimum: 1
+          maximum: 20
+      required: [label, value, supportingText, displayOrder, isPublished, showInHomePreview, homePreviewOrder]
+    ResultsPageSettings:
+      type: object
+      properties:
+        eyebrow:
+          type: string
+        heading:
+          type: string
+        description:
+          type: string
+        configuredYear:
+          type: ["string", "null"]
+        isVisible:
+          type: boolean
+      required: [eyebrow, heading, description, configuredYear, isVisible]
+    ResultsPageSettingsInput:
+      type: object
+      properties:
+        eyebrow:
+          type: string
+          minLength: 1
+        heading:
+          type: string
+          minLength: 1
+        description:
+          type: string
+          minLength: 1
+        configuredYear:
+          type: ["string", "null"]
+        isVisible:
+          type: boolean
+      required: [eyebrow, heading, description, configuredYear, isVisible]
+    ResultsPageData:
+      type: object
+      properties:
+        settings:
+          $ref: "#/components/schemas/ResultsPageSettings"
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/HomepageResult"
+        statistics:
+          type: array
+          items:
+            $ref: "#/components/schemas/ResultStatistic"
+      required: [settings, results, statistics]
+    AdminResultsLibrary:
+      type: object
+      properties:
+        settings:
+          $ref: "#/components/schemas/ResultsPageSettings"
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/HomepageResult"
+        statistics:
+          type: array
+          items:
+            $ref: "#/components/schemas/ResultStatistic"
+      required: [settings, results, statistics]
+    AdminResultsLibraryInput:
+      type: object
+      properties:
+        settings:
+          $ref: "#/components/schemas/ResultsPageSettingsInput"
+        results:
+          type: array
+          maxItems: 100
+          items:
+            $ref: "#/components/schemas/HomepageResultInput"
+        statistics:
+          type: array
+          maxItems: 20
+          items:
+            $ref: "#/components/schemas/ResultStatisticInput"
+      required: [settings, results, statistics]
     HomepageResults:
       type: object
       properties:
@@ -3526,7 +3739,11 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/HomepageResult"
-      required: [id, eyebrow, heading, description, viewAllButtonLabel, viewAllButtonLink, isVisible, sortOrder, updatedAt, results]
+        statistics:
+          type: array
+          items:
+            $ref: "#/components/schemas/ResultStatistic"
+      required: [id, eyebrow, heading, description, viewAllButtonLabel, viewAllButtonLink, isVisible, sortOrder, updatedAt, results, statistics]
     HomepageResultsInput:
       type: object
       properties:
@@ -3542,22 +3759,13 @@ components:
         viewAllButtonLabel:
           type: string
           minLength: 1
-        viewAllButtonLink:
-          type: string
-          minLength: 1
         isVisible:
           type: boolean
         sortOrder:
           type: integer
           minimum: 1
           maximum: 20
-        results:
-          type: array
-          minItems: 1
-          maxItems: 20
-          items:
-            $ref: "#/components/schemas/HomepageResultInput"
-      required: [eyebrow, heading, description, viewAllButtonLabel, viewAllButtonLink, isVisible, sortOrder, results]
+      required: [eyebrow, heading, description, viewAllButtonLabel, isVisible, sortOrder]
     HomepageAchievementRibbonPhrase:
       type: object
       properties:

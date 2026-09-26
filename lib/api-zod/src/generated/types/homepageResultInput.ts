@@ -5,32 +5,43 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
+import type { ResultCategory } from './resultCategory';
 
 export interface HomepageResultInput {
+  id?: string;
   /** @nullable */
   studentImageUrl: string | null;
-  /** @minLength 1 */
   studentImageAltText: string;
   /** @minLength 1 */
   studentName: string;
-  /** @minLength 1 */
   examCourse: string;
-  /** @minLength 1 */
   score: string;
   /** @minLength 1 */
   achievement: string;
-  /** @minLength 1 */
   resultLabel: string;
   /** @nullable */
   examName: string | null;
+  category: ResultCategory;
   /** @nullable */
   year: string | null;
+  /** @nullable */
+  institution: string | null;
+  /** @nullable */
+  course: string | null;
+  /** @nullable */
+  story: string | null;
   /** @nullable */
   accentColor: string | null;
   /**
      * @minimum 1
-     * @maximum 20
+     * @maximum 100
      */
   displayOrder: number;
-  isActive: boolean;
+  isPublished: boolean;
+  showInHomePreview: boolean;
+  /**
+     * @minimum 1
+     * @maximum 100
+     */
+  homePreviewOrder: number;
 }

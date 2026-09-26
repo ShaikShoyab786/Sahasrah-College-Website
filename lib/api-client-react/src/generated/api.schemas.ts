@@ -624,7 +624,6 @@ export interface HomepageStatistics {
   isVisible: boolean;
   sortOrder: number;
   updatedAt: string;
-  statistics: HomepageStatistic[];
 }
 
 export interface HomepageStatisticsInput {
@@ -638,11 +637,6 @@ export interface HomepageStatisticsInput {
      * @maximum 20
      */
   sortOrder: number;
-  /**
-     * @minItems 1
-     * @maxItems 20
-     */
-  statistics: HomepageStatisticInput[];
 }
 
 export interface HomepageFavoriteTopic {
@@ -727,6 +721,17 @@ export interface HomepageFavoriteTopicsInput {
   topics: HomepageFavoriteTopicInput[];
 }
 
+export type ResultCategory = typeof ResultCategory[keyof typeof ResultCategory];
+
+
+export const ResultCategory = {
+  INTERMEDIATE: 'INTERMEDIATE',
+  JEE_MAIN: 'JEE_MAIN',
+  NEET: 'NEET',
+  EAMCET: 'EAMCET',
+  OTHER: 'OTHER',
+} as const;
+
 export interface HomepageResult {
   id: string;
   /** @nullable */
@@ -739,41 +744,135 @@ export interface HomepageResult {
   resultLabel: string;
   /** @nullable */
   examName: string | null;
+  category: ResultCategory;
   /** @nullable */
   year: string | null;
+  /** @nullable */
+  institution: string | null;
+  /** @nullable */
+  course: string | null;
+  /** @nullable */
+  story: string | null;
   /** @nullable */
   accentColor: string | null;
   displayOrder: number;
-  isActive: boolean;
+  isPublished: boolean;
+  showInHomePreview: boolean;
+  homePreviewOrder: number;
 }
 
 export interface HomepageResultInput {
+  id?: string;
   /** @nullable */
   studentImageUrl: string | null;
-  /** @minLength 1 */
   studentImageAltText: string;
   /** @minLength 1 */
   studentName: string;
-  /** @minLength 1 */
   examCourse: string;
-  /** @minLength 1 */
   score: string;
   /** @minLength 1 */
   achievement: string;
-  /** @minLength 1 */
   resultLabel: string;
   /** @nullable */
   examName: string | null;
+  category: ResultCategory;
   /** @nullable */
   year: string | null;
   /** @nullable */
+  institution: string | null;
+  /** @nullable */
+  course: string | null;
+  /** @nullable */
+  story: string | null;
+  /** @nullable */
   accentColor: string | null;
+  /**
+     * @minimum 1
+     * @maximum 100
+     */
+  displayOrder: number;
+  isPublished: boolean;
+  showInHomePreview: boolean;
+  /**
+     * @minimum 1
+     * @maximum 100
+     */
+  homePreviewOrder: number;
+}
+
+export interface ResultStatistic {
+  id: string;
+  label: string;
+  value: string;
+  /** @nullable */
+  supportingText: string | null;
+  displayOrder: number;
+  isPublished: boolean;
+  showInHomePreview: boolean;
+  homePreviewOrder: number;
+}
+
+export interface ResultStatisticInput {
+  id?: string;
+  /** @minLength 1 */
+  label: string;
+  /** @minLength 1 */
+  value: string;
+  /** @nullable */
+  supportingText: string | null;
   /**
      * @minimum 1
      * @maximum 20
      */
   displayOrder: number;
-  isActive: boolean;
+  isPublished: boolean;
+  showInHomePreview: boolean;
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  homePreviewOrder: number;
+}
+
+export interface ResultsPageSettings {
+  eyebrow: string;
+  heading: string;
+  description: string;
+  /** @nullable */
+  configuredYear: string | null;
+  isVisible: boolean;
+}
+
+export interface ResultsPageSettingsInput {
+  /** @minLength 1 */
+  eyebrow: string;
+  /** @minLength 1 */
+  heading: string;
+  /** @minLength 1 */
+  description: string;
+  /** @nullable */
+  configuredYear: string | null;
+  isVisible: boolean;
+}
+
+export interface ResultsPageData {
+  settings: ResultsPageSettings;
+  results: HomepageResult[];
+  statistics: ResultStatistic[];
+}
+
+export interface AdminResultsLibrary {
+  settings: ResultsPageSettings;
+  results: HomepageResult[];
+  statistics: ResultStatistic[];
+}
+
+export interface AdminResultsLibraryInput {
+  settings: ResultsPageSettingsInput;
+  /** @maxItems 100 */
+  results: HomepageResultInput[];
+  /** @maxItems 20 */
+  statistics: ResultStatisticInput[];
 }
 
 export interface HomepageResults {
@@ -787,6 +886,7 @@ export interface HomepageResults {
   sortOrder: number;
   updatedAt: string;
   results: HomepageResult[];
+  statistics: ResultStatistic[];
 }
 
 export interface HomepageResultsInput {
@@ -798,19 +898,12 @@ export interface HomepageResultsInput {
   description: string;
   /** @minLength 1 */
   viewAllButtonLabel: string;
-  /** @minLength 1 */
-  viewAllButtonLink: string;
   isVisible: boolean;
   /**
      * @minimum 1
      * @maximum 20
      */
   sortOrder: number;
-  /**
-     * @minItems 1
-     * @maxItems 20
-     */
-  results: HomepageResultInput[];
 }
 
 export interface HomepageAchievementRibbonPhrase {

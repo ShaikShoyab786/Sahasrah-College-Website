@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'wouter';
-import { BookOpen, ChevronDown, FileText, Gauge, GraduationCap, Home, Images, LayoutDashboard, LogOut, Menu, MessageCircle, PanelsTopLeft, Settings2, X } from 'lucide-react';
+import { BookOpen, ChevronDown, FileText, Gauge, GraduationCap, Home, Images, LayoutDashboard, LogOut, Menu, MessageCircle, PanelsTopLeft, Settings2, Trophy, X } from 'lucide-react';
 import { useLogoutAdmin, getGetAdminSessionQueryKey, useGetSiteSettings } from '@workspace/api-client-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { SiteMark } from '@/components/site-mark';
@@ -26,6 +26,7 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
     { href: '/admin/dashboard', label: 'Dashboard', icon: Gauge },
     { href: '/admin', label: 'Overview', icon: LayoutDashboard },
     { href: '/admin/site-settings', label: 'Site identity', icon: Settings2 },
+    { href: '/admin/results', label: 'Results', icon: Trophy },
   ];
   const heroActive = location.startsWith('/admin/pages/home/hero') || location.startsWith('/admin/homepage-hero');
   const aboutActive = location.startsWith('/admin/pages/home/about-preview');

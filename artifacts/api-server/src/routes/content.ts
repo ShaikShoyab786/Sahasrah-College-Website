@@ -154,10 +154,7 @@ async function readAboutAdmissionCta() {
 }
 
 async function readHomepageStatistics() {
-  return prisma.homepageStatistics.findUnique({
-    where: { id: "singleton" },
-    include: { statistics: { orderBy: { displayOrder: "asc" } } },
-  });
+  return prisma.homepageStatistics.findUnique({ where: { id: "singleton" } });
 }
 
 async function readHomepageFavoriteTopics() {
@@ -170,7 +167,10 @@ async function readHomepageFavoriteTopics() {
 async function readHomepageResults() {
   return prisma.homepageResults.findUnique({
     where: { id: "singleton" },
-    include: { results: { orderBy: { displayOrder: "asc" } } },
+    include: {
+      results: { orderBy: { displayOrder: "asc" } },
+      statistics: { orderBy: { displayOrder: "asc" } },
+    },
   });
 }
 
@@ -306,10 +306,7 @@ router.get("/homepage-statistics", async (req, res) => {
       res.status(404).json({ error: "Homepage statistics are not available." });
       return;
     }
-    res.json(GetHomepageStatisticsResponse.parse({
-      ...content,
-      statistics: content.statistics.filter((statistic) => statistic.isActive),
-    }));
+    res.json(GetHomepageStatisticsResponse.parse(content));
   } catch (error) {
     req.log.error({ err: error }, "Unable to read homepage statistics");
     res.status(500).json({ error: "Unable to load homepage statistics." });
@@ -336,14 +333,16 @@ router.get("/homepage-favorite-topics", async (req, res) => {
 router.get("/homepage-results", async (req, res) => {
   try {
     const content = await readHomepageResults();
-    if (!content || !content.isVisible) {
+    if (!content) {
       res.status(404).json({ error: "Homepage results are not available." });
       return;
     }
     res.json(GetHomepageResultsResponse.parse({
       ...content,
-      eyebrow: content.eyebrow || "Pride of KVR",
-      results: content.results.filter((result) => result.isActive),
+      eyebrow: content.eyebrow || "Our Achievements",
+      viewAllButtonLink: "/results",
+      results: content.results.filter((result) => result.isPublished && result.showInHomePreview),
+      statistics: content.statistics.filter((statistic) => statistic.isPublished && statistic.showInHomePreview),
     }));
   } catch (error) {
     req.log.error({ err: error }, "Unable to read homepage results");
@@ -752,22 +751,15 @@ router.get("/admin/homepage-statistics", requireAdmin, async (req, res) => {
 
 router.put("/admin/homepage-statistics", requireAdmin, async (req, res) => {
   const parsed = UpdateHomepageStatisticsBody.safeParse(req.body);
-  if (!parsed.success || !hasUniqueDisplayOrders(parsed.data.statistics)) {
-    res.status(400).json({ error: "Check statistic fields and use unique display orders." });
+  if (!parsed.success) {
+    res.status(400).json({ error: "Check the Home Statistics section copy." });
     return;
   }
   try {
-    const { statistics, ...sectionData } = parsed.data;
-    await prisma.$transaction(async (tx) => {
-      await tx.homepageStatistics.upsert({
-        where: { id: "singleton" },
-        update: sectionData,
-        create: { id: "singleton", ...sectionData },
-      });
-      await tx.homepageStatistic.deleteMany({ where: { homepageStatisticsId: "singleton" } });
-      await tx.homepageStatistic.createMany({
-        data: statistics.map((statistic) => ({ ...statistic, homepageStatisticsId: "singleton" })),
-      });
+    await prisma.homepageStatistics.upsert({
+      where: { id: "singleton" },
+      update: parsed.data,
+      create: { id: "singleton", ...parsed.data },
     });
     const content = await readHomepageStatistics();
     res.json(UpdateHomepageStatisticsResponse.parse(content));
@@ -838,23 +830,22 @@ router.get("/admin/homepage-results", requireAdmin, async (req, res) => {
 
 router.put("/admin/homepage-results", requireAdmin, async (req, res) => {
   const parsed = UpdateHomepageResultsBody.safeParse(req.body);
-  if (!parsed.success || !hasUniqueDisplayOrders(parsed.data.results) || !isValidContentLink(parsed.data.viewAllButtonLink) || parsed.data.results.some((result) => !isValidImageReference(result.studentImageUrl))) {
-    res.status(400).json({ error: "Check result fields, image references, and unique display orders." });
+  if (!parsed.success) {
+    res.status(400).json({ error: "Check the Home Results section copy." });
     return;
   }
   try {
-    const { results, ...sectionData } = parsed.data;
-    await prisma.$transaction(async (tx) => {
-      await tx.homepageResults.upsert({
-        where: { id: "singleton" },
-        update: sectionData,
-        create: { id: "singleton", ...sectionData },
-      });
-      await tx.homepageResult.deleteMany({ where: { homepageResultsId: "singleton" } });
-      await tx.homepageResult.createMany({ data: results.map((result) => ({ ...result, homepageResultsId: "singleton" })) });
+    await prisma.homepageResults.upsert({
+      where: { id: "singleton" },
+      update: { ...parsed.data, viewAllButtonLink: "/results" },
+      create: {
+        id: "singleton",
+        ...parsed.data,
+        viewAllButtonLink: "/results",
+      },
     });
     const content = await readHomepageResults();
-    res.json(UpdateHomepageResultsResponse.parse(content));
+    res.json(UpdateHomepageResultsResponse.parse({ ...content, viewAllButtonLink: "/results" }));
   } catch (error) {
     req.log.error({ err: error }, "Unable to update homepage results");
     res.status(500).json({ error: "Unable to save homepage results." });

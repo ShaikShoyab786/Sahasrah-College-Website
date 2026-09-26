@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ArrowDown, ArrowUp, BarChart3, CalendarDays, Eye, EyeOff, ImagePlus, Megaphone, Plus, Trash2 } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
+import { Link } from 'wouter';
 import {
   getGetAdminHomepageFavoriteTopicsQueryKey,
   getGetAdminHomepageLiveUpdatesQueryKey,
@@ -22,7 +23,6 @@ import {
   type HomepageFavoriteTopicInput,
   type HomepageFavoriteTopicsInput,
   type HomepageLiveUpdateInput,
-  type HomepageStatisticInput,
   type HomepageStatisticsInput,
 } from '@workspace/api-client-react';
 import { Area, Field, SaveButton } from '@/components/form-fields';
@@ -40,12 +40,6 @@ const statisticsDefaults: HomepageStatisticsInput = {
   description: 'A focused learning environment turns daily effort into outcomes students can carry forward.',
   isVisible: true,
   sortOrder: 4,
-  statistics: [
-    { numericTarget: 100, suffix: '%', icon: 'badge-check', label: 'Pass Percentage', displayOrder: 1, isActive: true },
-    { numericTarget: 40, suffix: '+', icon: 'calendar-days', label: 'Years of Physics Mentorship', displayOrder: 2, isActive: true },
-    { numericTarget: 25, suffix: '+', icon: 'graduation-cap', label: 'IIT / NIT Selections', displayOrder: 3, isActive: true },
-    { numericTarget: 4, suffix: '', icon: 'flask-conical', label: 'Science Labs', displayOrder: 4, isActive: true },
-  ],
 };
 
 const topicDefaults: HomepageFavoriteTopicsInput = {
@@ -113,12 +107,28 @@ export function AdminHomepageStatistics() {
   const update = useUpdateHomepageStatistics();
   const feedback = useSaveFeedback();
   const [form, setForm] = useState<HomepageStatisticsInput>(statisticsDefaults);
-  useEffect(() => { if (query.data) setForm({ eyebrow: query.data.eyebrow, heading: query.data.heading, description: query.data.description, isVisible: query.data.isVisible, sortOrder: query.data.sortOrder, statistics: query.data.statistics.map(({ numericTarget, suffix, icon, label, displayOrder, isActive }) => ({ numericTarget, suffix, icon, label, displayOrder, isActive })) }); }, [query.data]);
-  const setItem = (index: number, patch: Partial<HomepageStatisticInput>) => setForm((current) => ({ ...current, statistics: current.statistics.map((item, itemIndex) => itemIndex === index ? { ...item, ...patch } : item) }));
-  const submit = (event: React.FormEvent<HTMLFormElement>) => { event.preventDefault(); feedback.clear(); update.mutate({ data: form }, { onSuccess: () => { queryClient.invalidateQueries({ queryKey: getGetAdminHomepageStatisticsQueryKey() }); queryClient.invalidateQueries({ queryKey: getGetHomepageStatisticsQueryKey() }); feedback.setNotice(form.isVisible ? 'Home Statistics saved and visible.' : 'Home Statistics saved and hidden.'); }, onError: () => feedback.setError('We could not save Home Statistics. Use non-negative values and unique ordering.') }); };
+  useEffect(() => { if (query.data) setForm({ eyebrow: query.data.eyebrow, heading: query.data.heading, description: query.data.description, isVisible: query.data.isVisible, sortOrder: query.data.sortOrder }); }, [query.data]);
+  const submit = (event: React.FormEvent<HTMLFormElement>) => { event.preventDefault(); feedback.clear(); update.mutate({ data: form }, { onSuccess: () => { queryClient.invalidateQueries({ queryKey: getGetAdminHomepageStatisticsQueryKey() }); queryClient.invalidateQueries({ queryKey: getGetHomepageStatisticsQueryKey() }); feedback.setNotice(form.isVisible ? 'Home Statistics section copy saved and visible.' : 'Home Statistics section copy saved and hidden.'); }, onError: () => feedback.setError('We could not save the Home Statistics section copy.') }); };
   if (query.isLoading) return <EditorSkeleton />;
   if (query.isError && !query.data) return <LoadError onRetry={() => query.refetch()} />;
-  return <EditorFrame eyebrow="Pages / Home / Statistics" title="Show the progress behind the promise." description="Set the four proof points visitors see between current updates and program pathways." previewHref="/#home-statistics"><form onSubmit={submit} className="mt-10 space-y-6"><EditorCard icon={<BarChart3 size={19} />} title="Section introduction" description="The copy frames the numeric proof points without competing with them."><div className="space-y-5"><Field id="home-statistics-eyebrow" label="Eyebrow" value={form.eyebrow} onChange={(event) => setForm({ ...form, eyebrow: event.target.value })} required /><Field id="home-statistics-heading" label="Heading" value={form.heading} onChange={(event) => setForm({ ...form, heading: event.target.value })} required /><Area id="home-statistics-description" label="Description" value={form.description} onChange={(event) => setForm({ ...form, description: event.target.value })} required /></div></EditorCard><EditorCard title="Statistics" description="Numeric values and suffixes stay separate so the public count-up remains accurate."><div className="space-y-4">{form.statistics.map((item, index) => <div key={`${item.label}-${index}`} className="rounded-2xl bg-[hsl(var(--secondary))] p-5"><div className="flex items-start justify-between gap-3"><p className="text-xs font-bold uppercase tracking-[.16em] text-[hsl(var(--accent-foreground))]">Statistic {index + 1}</p><ListActions index={index} count={form.statistics.length} onMove={(direction) => setForm({ ...form, statistics: reorder(form.statistics, index, direction) })} onRemove={() => setForm({ ...form, statistics: form.statistics.filter((_, itemIndex) => itemIndex !== index).map((entry, itemIndex) => ({ ...entry, displayOrder: itemIndex + 1 })) })} /></div><div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4"><Field id={`home-stat-target-${index}`} label="Numeric value" type="number" min="0" value={item.numericTarget} onChange={(event) => setItem(index, { numericTarget: Number(event.target.value) })} required /><Field id={`home-stat-suffix-${index}`} label="Suffix" value={item.suffix} onChange={(event) => setItem(index, { suffix: event.target.value })} placeholder="+ or %" /><Field id={`home-stat-label-${index}`} label="Label" value={item.label} onChange={(event) => setItem(index, { label: event.target.value })} required /><Field id={`home-stat-icon-${index}`} label="Icon name" value={item.icon ?? ''} onChange={(event) => setItem(index, { icon: event.target.value || null })} hint="Lucide name" /></div><label className="mt-4 flex items-center gap-3 text-sm font-semibold"><input type="checkbox" checked={item.isActive} onChange={(event) => setItem(index, { isActive: event.target.checked })} className="h-4 w-4 accent-[hsl(var(--accent))]" /> Show statistic</label></div>)}</div><button type="button" onClick={() => setForm({ ...form, statistics: [...form.statistics, { numericTarget: 0, suffix: '+', icon: 'sparkles', label: '', displayOrder: form.statistics.length + 1, isActive: true }] })} className="mt-5 inline-flex items-center gap-2 rounded-xl border border-[hsl(var(--border))] px-4 py-2.5 text-sm font-bold text-[hsl(var(--primary))] hover:bg-[hsl(var(--background))]"><Plus size={16} /> Add statistic</button></EditorCard><VisibilityToggle checked={form.isVisible} onChange={(value) => setForm({ ...form, isVisible: value })} label="Show Home Statistics on the public homepage" /><SaveStatus error={feedback.error} notice={feedback.notice} /><div className="flex justify-end"><SaveButton pending={update.isPending}>Save Home Statistics</SaveButton></div></form></EditorFrame>;
+  return <EditorFrame eyebrow="Pages / Home / Statistics" title="Show shared student outcomes." description="Manage the Home section introduction here. Approved statistics are selected once in the shared Results library." previewHref="/#home-statistics">
+    <form onSubmit={submit} className="mt-10 space-y-6">
+      <EditorCard icon={<BarChart3 size={19} />} title="Section introduction" description="The numbers shown here come from published statistics selected for Home in the Results library.">
+        <div className="space-y-5">
+          <Field id="home-statistics-eyebrow" label="Eyebrow" value={form.eyebrow} onChange={(event) => setForm({ ...form, eyebrow: event.target.value })} required />
+          <Field id="home-statistics-heading" label="Heading" value={form.heading} onChange={(event) => setForm({ ...form, heading: event.target.value })} required />
+          <Area id="home-statistics-description" label="Description" value={form.description} onChange={(event) => setForm({ ...form, description: event.target.value })} required />
+        </div>
+      </EditorCard>
+      <div className="flex flex-col gap-4 rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5 sm:flex-row sm:items-center sm:justify-between">
+        <div><p className="font-bold text-[hsl(var(--foreground))]">Shared statistics</p><p className="mt-1 text-sm text-[hsl(var(--muted-foreground))]">Add, approve, and select Home statistics from the Results library. This keeps one source for Home and Results.</p></div>
+        <Link href="/admin/results" className="inline-flex shrink-0 items-center justify-center rounded-xl bg-[hsl(var(--primary))] px-4 py-2.5 text-sm font-bold text-[hsl(var(--primary-foreground))]" data-testid="link-manage-home-statistics">Manage Results</Link>
+      </div>
+      <VisibilityToggle checked={form.isVisible} onChange={(value) => setForm({ ...form, isVisible: value })} label="Show Home Statistics on the public homepage" />
+      <SaveStatus error={feedback.error} notice={feedback.notice} />
+      <div className="flex justify-end"><SaveButton pending={update.isPending}>Save section copy</SaveButton></div>
+    </form>
+  </EditorFrame>;
 }
 
 export function AdminHomepageFavoriteTopics() {

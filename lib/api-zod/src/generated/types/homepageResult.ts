@@ -5,6 +5,7 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
+import type { ResultCategory } from './resultCategory';
 
 export interface HomepageResult {
   id: string;
@@ -18,10 +19,19 @@ export interface HomepageResult {
   resultLabel: string;
   /** @nullable */
   examName: string | null;
+  category: ResultCategory;
   /** @nullable */
   year: string | null;
   /** @nullable */
+  institution: string | null;
+  /** @nullable */
+  course: string | null;
+  /** @nullable */
+  story: string | null;
+  /** @nullable */
   accentColor: string | null;
   displayOrder: number;
-  isActive: boolean;
+  isPublished: boolean;
+  showInHomePreview: boolean;
+  homePreviewOrder: number;
 }

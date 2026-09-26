@@ -1,4 +1,4 @@
-import { useGetHomepageAboutPreview, useGetHomepageAchievementRibbon, useGetHomepageAdmissionsFaq, useGetHomepageFaculty, useGetHomepageFavoriteTopics, useGetHomepageFinalCta, useGetHomepageGallery, useGetHomepageHero, useGetHomepageKnowledgeHub, useGetHomepageLiveUpdates, useGetHomepagePreviewCopy, useGetHomepageResults, useGetHomepageStatistics, useGetHomepageTestimonials, useGetSiteSettings, type HomepageFavoriteTopics, type HomepageLiveUpdate, type HomepageStatistics } from '@workspace/api-client-react';
+import { useGetHomepageAboutPreview, useGetHomepageAchievementRibbon, useGetHomepageAdmissionsFaq, useGetHomepageFaculty, useGetHomepageFavoriteTopics, useGetHomepageFinalCta, useGetHomepageGallery, useGetHomepageHero, useGetHomepageKnowledgeHub, useGetHomepageLiveUpdates, useGetHomepagePreviewCopy, useGetHomepageResults, useGetHomepageStatistics, useGetHomepageTestimonials, useGetSiteSettings, type HomepageFavoriteTopics, type HomepageLiveUpdate } from '@workspace/api-client-react';
 import { HeroCarousel } from '@/components/hero-carousel';
 import { AboutPreview } from '@/components/about-preview';
 import { SiteMark } from '@/components/site-mark';
@@ -6,7 +6,7 @@ import { PublicHeader } from '@/components/public-header';
 import { HomeLiveUpdates } from '@/components/home-live-updates';
 import { HomeStatistics } from '@/components/home-statistics';
 import { FavoriteTopics } from '@/components/favorite-topics';
-import { AchievementRibbon, fallbackRibbon, fallbackResults, fallbackTestimonials, HomeFaculty, HomeGallery, HomeResults, HomeTestimonials } from '@/components/home-previews';
+import { AchievementRibbon, fallbackRibbon, fallbackTestimonials, HomeFaculty, HomeGallery, HomeResults, HomeTestimonials } from '@/components/home-previews';
 import { fallbackAdmissionsFaq, fallbackFinalCta, fallbackKnowledgeHub, HomeAdmissionsFaq, HomeFinalCta, HomeKnowledgeHub } from '@/components/home-final-previews';
 import { createPublicThemeStyle, DEFAULT_ACCENT_COLOR, DEFAULT_PRIMARY_COLOR, DEFAULT_SURFACE_COLOR } from '@/lib/public-theme';
 
@@ -126,21 +126,6 @@ const fallbackHomepagePreviewCopy = {
   galleryButtonLabel: 'View Gallery',
   galleryButtonHref: '/gallery',
 };
-const fallbackStatistics: HomepageStatistics = {
-  id: 'fallback-home-statistics',
-  eyebrow: 'THE SAHSRAH DIFFERENCE',
-  heading: 'Progress you can feel.',
-  description: 'A focused learning environment turns daily effort into outcomes students can carry forward.',
-  isVisible: true,
-  sortOrder: 4,
-  updatedAt: '2026-06-15T00:00:00.000Z',
-  statistics: [
-    { id: 'fallback-stat-1', numericTarget: 100, suffix: '%', icon: 'badge-check', label: 'Pass Percentage', displayOrder: 1, isActive: true },
-    { id: 'fallback-stat-2', numericTarget: 40, suffix: '+', icon: 'calendar-days', label: 'Years of Physics Mentorship', displayOrder: 2, isActive: true },
-    { id: 'fallback-stat-3', numericTarget: 25, suffix: '+', icon: 'graduation-cap', label: 'IIT / NIT Selections', displayOrder: 3, isActive: true },
-    { id: 'fallback-stat-4', numericTarget: 4, suffix: '', icon: 'flask-conical', label: 'Science Labs', displayOrder: 4, isActive: true },
-  ],
-};
 const fallbackFavoriteTopics: HomepageFavoriteTopics = {
   id: 'fallback-favorite-topics',
   eyebrow: 'Explore Our Programs',
@@ -200,9 +185,9 @@ export default function Home() {
         <HeroCarousel slides={slides} />
         {aboutPreviewQuery.data?.isVisible && <AboutPreview content={aboutPreviewQuery.data} />}
         <HomeLiveUpdates updates={liveUpdatesQuery.data?.length ? liveUpdatesQuery.data : fallbackLiveUpdates} eyebrow={previewCopy.liveUpdatesEyebrow} heading={previewCopy.liveUpdatesHeading} buttonLabel={previewCopy.liveUpdatesButtonLabel} buttonHref={previewCopy.liveUpdatesButtonHref} />
-        <HomeStatistics content={statisticsQuery.data?.isVisible ? statisticsQuery.data : fallbackStatistics} />
+        {statisticsQuery.data?.isVisible && <HomeStatistics content={statisticsQuery.data} statistics={(resultsQuery.data?.statistics ?? []).filter((statistic) => statistic.isPublished && statistic.showInHomePreview).sort((a, b) => a.homePreviewOrder - b.homePreviewOrder)} />}
         <FavoriteTopics content={favoriteTopicsQuery.data?.isVisible ? favoriteTopicsQuery.data : fallbackFavoriteTopics} />
-        <HomeResults content={resultsQuery.data?.isVisible ? resultsQuery.data : fallbackResults} />
+         {resultsQuery.data?.isVisible && <HomeResults content={resultsQuery.data} />}
         <AchievementRibbon content={ribbonQuery.data?.isVisible ? ribbonQuery.data : fallbackRibbon} />
         <HomeTestimonials content={testimonialsQuery.data?.isVisible ? testimonialsQuery.data : fallbackTestimonials} />
         <HomeFaculty faculty={facultyQuery.data ?? []} eyebrow={previewCopy.facultyEyebrow} heading={previewCopy.facultyHeading} description={previewCopy.facultyDescription} buttonLabel={previewCopy.facultyButtonLabel} buttonHref="/faculty" themeStyle={themeStyle} unavailable={facultyQuery.isError} />

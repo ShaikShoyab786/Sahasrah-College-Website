@@ -42,6 +42,8 @@ import type {
   AboutWhyParentsChooseInput,
   AdminFacultyCollection,
   AdminFacultyMember,
+  AdminResultsLibrary,
+  AdminResultsLibraryInput,
   AuthSession,
   CallbackPopupSettings,
   ContactEnquiry,
@@ -93,6 +95,7 @@ import type {
   ImageUploadResult,
   LoginInput,
   MessageResponse,
+  ResultsPageData,
   SiteSettings,
   SiteSettingsInput
 } from './api.schemas';
@@ -1045,6 +1048,83 @@ export function useGetHomepageResults<TData = Awaited<ReturnType<typeof getHomep
  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
 
   const queryOptions = getGetHomepageResultsQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetResultsPageUrl = () => {
+
+
+
+
+  return `/api/results`
+}
+
+/**
+ * @summary Read published student results and statistics
+ */
+export const getResultsPage = async ( options?: Parameters<typeof customFetch>[1]): Promise<ResultsPageData> => {
+
+  return customFetch<ResultsPageData>(getGetResultsPageUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetResultsPageQueryKey = () => {
+    return [
+    `/api/results`
+    ] as const;
+    }
+
+
+export const getGetResultsPageQueryOptions = <TData = Awaited<ReturnType<typeof getResultsPage>>, TError = ErrorType<ErrorResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getResultsPage>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetResultsPageQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getResultsPage>>> = ({ signal }) => getResultsPage({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getResultsPage>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetResultsPageQueryResult = NonNullable<Awaited<ReturnType<typeof getResultsPage>>>
+export type GetResultsPageQueryError = ErrorType<ErrorResponse>
+
+
+/**
+ * @summary Read published student results and statistics
+ */
+
+export function useGetResultsPage<TData = Awaited<ReturnType<typeof getResultsPage>>, TError = ErrorType<ErrorResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getResultsPage>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetResultsPageQueryOptions(options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
@@ -4331,6 +4411,171 @@ export const useUpdateHomepageResults = <TError = ErrorType<ErrorResponse>,
         TContext
       > => {
       return useMutation(getUpdateHomepageResultsMutationOptions(options));
+    }
+
+export const getGetAdminResultsLibraryUrl = () => {
+
+
+
+
+  return `/api/admin/results`
+}
+
+/**
+ * @summary Read the shared Results library for editing
+ */
+export const getAdminResultsLibrary = async ( options?: Parameters<typeof customFetch>[1]): Promise<AdminResultsLibrary> => {
+
+  return customFetch<AdminResultsLibrary>(getGetAdminResultsLibraryUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAdminResultsLibraryQueryKey = () => {
+    return [
+    `/api/admin/results`
+    ] as const;
+    }
+
+
+export const getGetAdminResultsLibraryQueryOptions = <TData = Awaited<ReturnType<typeof getAdminResultsLibrary>>, TError = ErrorType<ErrorResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminResultsLibrary>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAdminResultsLibraryQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdminResultsLibrary>>> = ({ signal }) => getAdminResultsLibrary({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAdminResultsLibrary>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetAdminResultsLibraryQueryResult = NonNullable<Awaited<ReturnType<typeof getAdminResultsLibrary>>>
+export type GetAdminResultsLibraryQueryError = ErrorType<ErrorResponse>
+
+
+/**
+ * @summary Read the shared Results library for editing
+ */
+
+export function useGetAdminResultsLibrary<TData = Awaited<ReturnType<typeof getAdminResultsLibrary>>, TError = ErrorType<ErrorResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminResultsLibrary>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetAdminResultsLibraryQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getUpdateAdminResultsLibraryUrl = () => {
+
+
+
+
+  return `/api/admin/results`
+}
+
+/**
+ * @summary Update Results page settings, records, and statistics
+ */
+export const updateAdminResultsLibrary = async (adminResultsLibraryInput: AdminResultsLibraryInput, options?: Parameters<typeof customFetch>[1]): Promise<AdminResultsLibrary> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<AdminResultsLibrary>(getUpdateAdminResultsLibraryUrl(),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(adminResultsLibraryInput)
+  }
+);}
+
+
+
+
+
+export const getUpdateAdminResultsLibraryMutationKey = () => ['updateAdminResultsLibrary'] as const;
+
+export const getUpdateAdminResultsLibraryMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAdminResultsLibrary>>, TError,UpdateAdminResultsLibraryMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateAdminResultsLibrary>>, TError,UpdateAdminResultsLibraryMutationVariables, TContext> => {
+
+const mutationKey = getUpdateAdminResultsLibraryMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateAdminResultsLibrary>>, UpdateAdminResultsLibraryMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  updateAdminResultsLibrary(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateAdminResultsLibraryMutationResult = NonNullable<Awaited<ReturnType<typeof updateAdminResultsLibrary>>>
+    export type UpdateAdminResultsLibraryMutationBody = BodyType<AdminResultsLibraryInput>
+    export type UpdateAdminResultsLibraryMutationError = ErrorType<ErrorResponse>
+    export type UpdateAdminResultsLibraryMutationVariables = {data: BodyType<AdminResultsLibraryInput>}
+
+    /**
+ * @summary Update Results page settings, records, and statistics
+ */
+export const useUpdateAdminResultsLibrary = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAdminResultsLibrary>>, TError,UpdateAdminResultsLibraryMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateAdminResultsLibrary>>,
+        TError,
+        UpdateAdminResultsLibraryMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateAdminResultsLibraryMutationOptions(options));
     }
 
 export const getGetAdminHomepageAchievementRibbonUrl = () => {

@@ -5,7 +5,6 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
-import type { HomepageStatistic } from './homepageStatistic';
 
 export interface HomepageStatistics {
   id: string;
@@ -15,5 +14,4 @@ export interface HomepageStatistics {
   isVisible: boolean;
   sortOrder: number;
   updatedAt: Date;
-  statistics: HomepageStatistic[];
 }

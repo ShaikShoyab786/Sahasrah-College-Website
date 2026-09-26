@@ -267,11 +267,22 @@ model HomepageResults {
   heading           String
   description       String
   viewAllButtonLabel String           @default("View All Achievements")
-  viewAllButtonLink  String           @default("/about#achievement-statistics")
+  viewAllButtonLink  String           @default("/results")
   isVisible         Boolean           @default(true)
   sortOrder         Int               @default(6)
   updatedAt         DateTime          @updatedAt
   results           HomepageResult[]
+  statistics        HomepageResultStatistic[]
+}
+
+model ResultsPageSettings {
+  id             String   @id @default("singleton")
+  eyebrow        String
+  heading        String
+  description    String
+  configuredYear String?
+  isVisible      Boolean  @default(true)
+  updatedAt      DateTime @updatedAt
 }
 
 model HomepageResult {
@@ -285,10 +296,34 @@ model HomepageResult {
   achievement         String
   resultLabel         String
   examName            String?
+  category            String          @default("OTHER")
   year                String?
+  institution         String?
+  course              String?
+  story               String?
   accentColor         String?
   displayOrder        Int
   isActive            Boolean         @default(true)
+  isPublished         Boolean         @default(false)
+  showInHomePreview   Boolean         @default(false)
+  homePreviewOrder    Int             @default(1)
+  updatedAt           DateTime        @updatedAt
+  homepageResults     HomepageResults @relation(fields: [homepageResultsId], references: [id], onDelete: Cascade)
+
+  @@unique([homepageResultsId, displayOrder])
+  @@index([homepageResultsId])
+}
+
+model HomepageResultStatistic {
+  id                  String          @id @default(cuid())
+  homepageResultsId   String          @default("singleton")
+  label               String
+  value               String
+  supportingText      String?
+  displayOrder        Int
+  isPublished         Boolean         @default(false)
+  showInHomePreview   Boolean         @default(false)
+  homePreviewOrder    Int             @default(1)
   updatedAt           DateTime        @updatedAt
   homepageResults     HomepageResults @relation(fields: [homepageResultsId], references: [id], onDelete: Cascade)
 

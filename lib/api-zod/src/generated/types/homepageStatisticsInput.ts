@@ -5,7 +5,6 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
-import type { HomepageStatisticInput } from './homepageStatisticInput';
 
 export interface HomepageStatisticsInput {
   eyebrow: string;
@@ -18,9 +17,4 @@ export interface HomepageStatisticsInput {
      * @maximum 20
      */
   sortOrder: number;
-  /**
-     * @minItems 1
-     * @maxItems 20
-     */
-  statistics: HomepageStatisticInput[];
 }

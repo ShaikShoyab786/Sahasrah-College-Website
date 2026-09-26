@@ -10,7 +10,7 @@ type PublicHeaderProps = {
     tagline: string;
     logoUrl: string | null;
   };
-  activePage?: 'home' | 'about' | 'faculty' | 'gallery' | 'contact';
+  activePage?: 'home' | 'about' | 'faculty' | 'results' | 'gallery' | 'contact';
   mobileFlow?: boolean;
 };
 
@@ -20,6 +20,7 @@ export function PublicHeader({ settings, activePage = 'home', mobileFlow = false
   const homeActive = activePage === 'home' || location === '/';
   const aboutActive = activePage === 'about' || location === '/about';
   const facultyActive = activePage === 'faculty' || location === '/faculty';
+  const resultsActive = activePage === 'results' || location === '/results';
   const galleryActive = activePage === 'gallery' || location === '/gallery';
   const contactActive = activePage === 'contact' || location === '/contact';
   const contactHref = '/contact';
@@ -36,6 +37,7 @@ export function PublicHeader({ settings, activePage = 'home', mobileFlow = false
           <a href="/" className={linkClass(homeActive)} aria-current={homeActive ? 'page' : undefined} data-testid="link-nav-home">Home</a>
           <a href="/about" className={linkClass(aboutActive)} aria-current={aboutActive ? 'page' : undefined} data-testid="link-nav-about">About</a>
           <a href="/faculty" className={linkClass(facultyActive)} aria-current={facultyActive ? 'page' : undefined} data-testid="link-nav-faculty">Faculty</a>
+          <a href="/results" className={linkClass(resultsActive)} aria-current={resultsActive ? 'page' : undefined} data-testid="link-nav-results">Results</a>
           <a href="/gallery" className={linkClass(galleryActive)} aria-current={galleryActive ? 'page' : undefined} data-testid="link-nav-gallery">Gallery</a>
           <a href={contactHref} className={linkClass(contactActive)} aria-current={contactActive ? 'page' : undefined} data-testid="link-nav-contact">Contact</a>
         </nav>
@@ -53,6 +55,7 @@ export function PublicHeader({ settings, activePage = 'home', mobileFlow = false
           <a href="/" onClick={closeMenu} className={`block rounded-xl px-4 py-3 transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))] ${homeActive ? 'text-[hsl(var(--accent))]' : ''}`} aria-current={homeActive ? 'page' : undefined} data-testid="link-mobile-nav-home">Home</a>
           <a href="/about" onClick={closeMenu} className={`mt-1 block rounded-xl px-4 py-3 transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))] ${aboutActive ? 'text-[hsl(var(--accent))]' : ''}`} aria-current={aboutActive ? 'page' : undefined} data-testid="link-mobile-nav-about">About</a>
           <a href="/faculty" onClick={closeMenu} className={`mt-1 block rounded-xl px-4 py-3 transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))] ${facultyActive ? 'text-[hsl(var(--accent))]' : ''}`} aria-current={facultyActive ? 'page' : undefined} data-testid="link-mobile-nav-faculty">Faculty</a>
+          <a href="/results" onClick={closeMenu} className={`mt-1 block rounded-xl px-4 py-3 transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))] ${resultsActive ? 'text-[hsl(var(--accent))]' : ''}`} aria-current={resultsActive ? 'page' : undefined} data-testid="link-mobile-nav-results">Results</a>
           <a href="/gallery" onClick={closeMenu} className={`mt-1 block rounded-xl px-4 py-3 transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))] ${galleryActive ? 'text-[hsl(var(--accent))]' : ''}`} aria-current={galleryActive ? 'page' : undefined} data-testid="link-mobile-nav-gallery">Gallery</a>
           <a href={contactHref} onClick={closeMenu} className={`mt-1 block rounded-xl px-4 py-3 transition hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))] ${contactActive ? 'text-[hsl(var(--accent))]' : ''}`} aria-current={contactActive ? 'page' : undefined} data-testid="link-mobile-nav-contact">Contact</a>
         </nav>

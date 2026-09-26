@@ -9,6 +9,7 @@ import About from '@/pages/about';
 import Faculty from '@/pages/faculty';
 import Contact from '@/pages/contact';
 import Gallery from '@/pages/gallery';
+import Results from '@/pages/results';
 import AdminLogin from '@/pages/admin-login';
 import AdminGuard from '@/pages/admin-guard';
 import AdminOverview from '@/pages/admin-overview';
@@ -19,7 +20,10 @@ import { CallbackPopupGate } from '@/components/callback-popup';
 import AdminHomepageHero from '@/pages/admin-homepage-hero';
 import AdminHomepageAboutPreview from '@/pages/admin-homepage-about-preview';
 import { AdminHomepageFavoriteTopics, AdminHomepageLiveUpdates, AdminHomepageStatistics } from '@/pages/admin-homepage-content';
-import { AdminHomepageAchievementRibbon, AdminHomepageFaculty, AdminHomepageGallery, AdminHomepageResults, AdminHomepageTestimonials } from '@/pages/admin-homepage-previews';
+import AdminHomeStatistics from '@/pages/admin-home-statistics';
+import { AdminHomepageAchievementRibbon, AdminHomepageFaculty, AdminHomepageGallery, AdminHomepageTestimonials } from '@/pages/admin-homepage-previews';
+import AdminHomeResults from '@/pages/admin-home-results';
+import AdminResults from '@/pages/admin-results';
 import { AdminHomepageAdmissionsFaq, AdminHomepageFinalCta, AdminHomepageKnowledgeHub } from '@/pages/admin-homepage-final-sections';
 import AdminAboutHero from '@/pages/admin-about-hero';
 import AdminAboutStory from '@/pages/admin-about-story';
@@ -51,6 +55,7 @@ function Router() {
         <Route path="/faculty" component={Faculty} />
         <Route path="/contact" component={Contact} />
         <Route path="/gallery" component={Gallery} />
+        <Route path="/results" component={Results} />
         <Route path="/admin/login" component={AdminLogin} />
         <Route path="/admin/pages/home/hero">
           <AdminGuard><AdminHomepageHero /></AdminGuard>
@@ -62,13 +67,16 @@ function Router() {
           <AdminGuard><AdminHomepageLiveUpdates /></AdminGuard>
         </Route>
         <Route path="/admin/pages/home/statistics">
-          <AdminGuard><AdminHomepageStatistics /></AdminGuard>
+          <AdminGuard><AdminHomeStatistics /></AdminGuard>
         </Route>
         <Route path="/admin/pages/home/favorite-topics">
           <AdminGuard><AdminHomepageFavoriteTopics /></AdminGuard>
         </Route>
         <Route path="/admin/pages/home/results">
-          <AdminGuard><AdminHomepageResults /></AdminGuard>
+          <AdminGuard><AdminHomeResults /></AdminGuard>
+        </Route>
+        <Route path="/admin/results">
+          <AdminGuard><AdminResults /></AdminGuard>
         </Route>
         <Route path="/admin/pages/home/achievement-ribbon">
           <AdminGuard><AdminHomepageAchievementRibbon /></AdminGuard>

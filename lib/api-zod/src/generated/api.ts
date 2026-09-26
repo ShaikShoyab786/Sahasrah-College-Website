@@ -187,16 +187,7 @@ export const GetHomepageStatisticsResponse = zod.object({
   "description": zod.string(),
   "isVisible": zod.boolean(),
   "sortOrder": zod.number().int(),
-  "updatedAt": zod.coerce.date(),
-  "statistics": zod.array(zod.object({
-  "id": zod.string(),
-  "numericTarget": zod.number().int(),
-  "suffix": zod.string(),
-  "icon": zod.string().nullable(),
-  "label": zod.string(),
-  "displayOrder": zod.number().int(),
-  "isActive": zod.boolean()
-}))
+  "updatedAt": zod.coerce.date()
 })
 
 
@@ -253,10 +244,71 @@ export const GetHomepageResultsResponse = zod.object({
   "achievement": zod.string(),
   "resultLabel": zod.string(),
   "examName": zod.string().nullable(),
+  "category": zod.enum(['INTERMEDIATE', 'JEE_MAIN', 'NEET', 'EAMCET', 'OTHER']),
   "year": zod.string().nullable(),
+  "institution": zod.string().nullable(),
+  "course": zod.string().nullable(),
+  "story": zod.string().nullable(),
   "accentColor": zod.string().nullable(),
   "displayOrder": zod.number().int(),
-  "isActive": zod.boolean()
+  "isPublished": zod.boolean(),
+  "showInHomePreview": zod.boolean(),
+  "homePreviewOrder": zod.number().int()
+})),
+  "statistics": zod.array(zod.object({
+  "id": zod.string(),
+  "label": zod.string(),
+  "value": zod.string(),
+  "supportingText": zod.string().nullable(),
+  "displayOrder": zod.number().int(),
+  "isPublished": zod.boolean(),
+  "showInHomePreview": zod.boolean(),
+  "homePreviewOrder": zod.number().int()
+}))
+})
+
+
+/**
+ * @summary Read published student results and statistics
+ */
+export const GetResultsPageResponse = zod.object({
+  "settings": zod.object({
+  "eyebrow": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "configuredYear": zod.string().nullable(),
+  "isVisible": zod.boolean()
+}),
+  "results": zod.array(zod.object({
+  "id": zod.string(),
+  "studentImageUrl": zod.string().nullable(),
+  "studentImageAltText": zod.string(),
+  "studentName": zod.string(),
+  "examCourse": zod.string(),
+  "score": zod.string(),
+  "achievement": zod.string(),
+  "resultLabel": zod.string(),
+  "examName": zod.string().nullable(),
+  "category": zod.enum(['INTERMEDIATE', 'JEE_MAIN', 'NEET', 'EAMCET', 'OTHER']),
+  "year": zod.string().nullable(),
+  "institution": zod.string().nullable(),
+  "course": zod.string().nullable(),
+  "story": zod.string().nullable(),
+  "accentColor": zod.string().nullable(),
+  "displayOrder": zod.number().int(),
+  "isPublished": zod.boolean(),
+  "showInHomePreview": zod.boolean(),
+  "homePreviewOrder": zod.number().int()
+})),
+  "statistics": zod.array(zod.object({
+  "id": zod.string(),
+  "label": zod.string(),
+  "value": zod.string(),
+  "supportingText": zod.string().nullable(),
+  "displayOrder": zod.number().int(),
+  "isPublished": zod.boolean(),
+  "showInHomePreview": zod.boolean(),
+  "homePreviewOrder": zod.number().int()
 }))
 })
 
@@ -1519,16 +1571,7 @@ export const GetAdminHomepageStatisticsResponse = zod.object({
   "description": zod.string(),
   "isVisible": zod.boolean(),
   "sortOrder": zod.number().int(),
-  "updatedAt": zod.coerce.date(),
-  "statistics": zod.array(zod.object({
-  "id": zod.string(),
-  "numericTarget": zod.number().int(),
-  "suffix": zod.string(),
-  "icon": zod.string().nullable(),
-  "label": zod.string(),
-  "displayOrder": zod.number().int(),
-  "isActive": zod.boolean()
-}))
+  "updatedAt": zod.coerce.date()
 })
 
 
@@ -1538,16 +1581,6 @@ export const GetAdminHomepageStatisticsResponse = zod.object({
 
 export const updateHomepageStatisticsBodySortOrderMax = 20;
 
-export const updateHomepageStatisticsBodyStatisticsItemNumericTargetMin = 0;
-export const updateHomepageStatisticsBodyStatisticsItemNumericTargetMax = 1000000000;
-
-export const updateHomepageStatisticsBodyStatisticsItemSuffixMax = 8;
-
-
-export const updateHomepageStatisticsBodyStatisticsItemDisplayOrderMax = 20;
-
-export const updateHomepageStatisticsBodyStatisticsMax = 20;
-
 
 
 export const UpdateHomepageStatisticsBody = zod.object({
@@ -1555,15 +1588,7 @@ export const UpdateHomepageStatisticsBody = zod.object({
   "heading": zod.string().min(1),
   "description": zod.string(),
   "isVisible": zod.boolean(),
-  "sortOrder": zod.number().int().min(1).max(updateHomepageStatisticsBodySortOrderMax),
-  "statistics": zod.array(zod.object({
-  "numericTarget": zod.number().int().min(updateHomepageStatisticsBodyStatisticsItemNumericTargetMin).max(updateHomepageStatisticsBodyStatisticsItemNumericTargetMax),
-  "suffix": zod.string().max(updateHomepageStatisticsBodyStatisticsItemSuffixMax),
-  "icon": zod.string().nullable(),
-  "label": zod.string().min(1),
-  "displayOrder": zod.number().int().min(1).max(updateHomepageStatisticsBodyStatisticsItemDisplayOrderMax),
-  "isActive": zod.boolean()
-})).min(1).max(updateHomepageStatisticsBodyStatisticsMax)
+  "sortOrder": zod.number().int().min(1).max(updateHomepageStatisticsBodySortOrderMax)
 })
 
 export const UpdateHomepageStatisticsResponse = zod.object({
@@ -1573,16 +1598,7 @@ export const UpdateHomepageStatisticsResponse = zod.object({
   "description": zod.string(),
   "isVisible": zod.boolean(),
   "sortOrder": zod.number().int(),
-  "updatedAt": zod.coerce.date(),
-  "statistics": zod.array(zod.object({
-  "id": zod.string(),
-  "numericTarget": zod.number().int(),
-  "suffix": zod.string(),
-  "icon": zod.string().nullable(),
-  "label": zod.string(),
-  "displayOrder": zod.number().int(),
-  "isActive": zod.boolean()
-}))
+  "updatedAt": zod.coerce.date()
 })
 
 
@@ -1711,10 +1727,26 @@ export const GetAdminHomepageResultsResponse = zod.object({
   "achievement": zod.string(),
   "resultLabel": zod.string(),
   "examName": zod.string().nullable(),
+  "category": zod.enum(['INTERMEDIATE', 'JEE_MAIN', 'NEET', 'EAMCET', 'OTHER']),
   "year": zod.string().nullable(),
+  "institution": zod.string().nullable(),
+  "course": zod.string().nullable(),
+  "story": zod.string().nullable(),
   "accentColor": zod.string().nullable(),
   "displayOrder": zod.number().int(),
-  "isActive": zod.boolean()
+  "isPublished": zod.boolean(),
+  "showInHomePreview": zod.boolean(),
+  "homePreviewOrder": zod.number().int()
+})),
+  "statistics": zod.array(zod.object({
+  "id": zod.string(),
+  "label": zod.string(),
+  "value": zod.string(),
+  "supportingText": zod.string().nullable(),
+  "displayOrder": zod.number().int(),
+  "isPublished": zod.boolean(),
+  "showInHomePreview": zod.boolean(),
+  "homePreviewOrder": zod.number().int()
 }))
 })
 
@@ -1726,18 +1758,7 @@ export const GetAdminHomepageResultsResponse = zod.object({
 
 
 
-
 export const updateHomepageResultsBodySortOrderMax = 20;
-
-
-
-
-
-
-
-export const updateHomepageResultsBodyResultsItemDisplayOrderMax = 20;
-
-export const updateHomepageResultsBodyResultsMax = 20;
 
 
 
@@ -1746,23 +1767,8 @@ export const UpdateHomepageResultsBody = zod.object({
   "heading": zod.string().min(1),
   "description": zod.string().min(1),
   "viewAllButtonLabel": zod.string().min(1),
-  "viewAllButtonLink": zod.string().min(1),
   "isVisible": zod.boolean(),
-  "sortOrder": zod.number().int().min(1).max(updateHomepageResultsBodySortOrderMax),
-  "results": zod.array(zod.object({
-  "studentImageUrl": zod.string().nullable(),
-  "studentImageAltText": zod.string().min(1),
-  "studentName": zod.string().min(1),
-  "examCourse": zod.string().min(1),
-  "score": zod.string().min(1),
-  "achievement": zod.string().min(1),
-  "resultLabel": zod.string().min(1),
-  "examName": zod.string().nullable(),
-  "year": zod.string().nullable(),
-  "accentColor": zod.string().nullable(),
-  "displayOrder": zod.number().int().min(1).max(updateHomepageResultsBodyResultsItemDisplayOrderMax),
-  "isActive": zod.boolean()
-})).min(1).max(updateHomepageResultsBodyResultsMax)
+  "sortOrder": zod.number().int().min(1).max(updateHomepageResultsBodySortOrderMax)
 })
 
 export const UpdateHomepageResultsResponse = zod.object({
@@ -1785,10 +1791,178 @@ export const UpdateHomepageResultsResponse = zod.object({
   "achievement": zod.string(),
   "resultLabel": zod.string(),
   "examName": zod.string().nullable(),
+  "category": zod.enum(['INTERMEDIATE', 'JEE_MAIN', 'NEET', 'EAMCET', 'OTHER']),
   "year": zod.string().nullable(),
+  "institution": zod.string().nullable(),
+  "course": zod.string().nullable(),
+  "story": zod.string().nullable(),
   "accentColor": zod.string().nullable(),
   "displayOrder": zod.number().int(),
-  "isActive": zod.boolean()
+  "isPublished": zod.boolean(),
+  "showInHomePreview": zod.boolean(),
+  "homePreviewOrder": zod.number().int()
+})),
+  "statistics": zod.array(zod.object({
+  "id": zod.string(),
+  "label": zod.string(),
+  "value": zod.string(),
+  "supportingText": zod.string().nullable(),
+  "displayOrder": zod.number().int(),
+  "isPublished": zod.boolean(),
+  "showInHomePreview": zod.boolean(),
+  "homePreviewOrder": zod.number().int()
+}))
+})
+
+
+/**
+ * @summary Read the shared Results library for editing
+ */
+export const GetAdminResultsLibraryResponse = zod.object({
+  "settings": zod.object({
+  "eyebrow": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "configuredYear": zod.string().nullable(),
+  "isVisible": zod.boolean()
+}),
+  "results": zod.array(zod.object({
+  "id": zod.string(),
+  "studentImageUrl": zod.string().nullable(),
+  "studentImageAltText": zod.string(),
+  "studentName": zod.string(),
+  "examCourse": zod.string(),
+  "score": zod.string(),
+  "achievement": zod.string(),
+  "resultLabel": zod.string(),
+  "examName": zod.string().nullable(),
+  "category": zod.enum(['INTERMEDIATE', 'JEE_MAIN', 'NEET', 'EAMCET', 'OTHER']),
+  "year": zod.string().nullable(),
+  "institution": zod.string().nullable(),
+  "course": zod.string().nullable(),
+  "story": zod.string().nullable(),
+  "accentColor": zod.string().nullable(),
+  "displayOrder": zod.number().int(),
+  "isPublished": zod.boolean(),
+  "showInHomePreview": zod.boolean(),
+  "homePreviewOrder": zod.number().int()
+})),
+  "statistics": zod.array(zod.object({
+  "id": zod.string(),
+  "label": zod.string(),
+  "value": zod.string(),
+  "supportingText": zod.string().nullable(),
+  "displayOrder": zod.number().int(),
+  "isPublished": zod.boolean(),
+  "showInHomePreview": zod.boolean(),
+  "homePreviewOrder": zod.number().int()
+}))
+})
+
+
+/**
+ * @summary Update Results page settings, records, and statistics
+ */
+
+
+
+
+
+export const updateAdminResultsLibraryBodyResultsItemDisplayOrderMax = 100;
+
+export const updateAdminResultsLibraryBodyResultsItemHomePreviewOrderMax = 100;
+
+export const updateAdminResultsLibraryBodyResultsMax = 100;
+
+
+
+export const updateAdminResultsLibraryBodyStatisticsItemDisplayOrderMax = 20;
+
+export const updateAdminResultsLibraryBodyStatisticsItemHomePreviewOrderMax = 20;
+
+export const updateAdminResultsLibraryBodyStatisticsMax = 20;
+
+
+
+export const UpdateAdminResultsLibraryBody = zod.object({
+  "settings": zod.object({
+  "eyebrow": zod.string().min(1),
+  "heading": zod.string().min(1),
+  "description": zod.string().min(1),
+  "configuredYear": zod.string().nullable(),
+  "isVisible": zod.boolean()
+}),
+  "results": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "studentImageUrl": zod.string().nullable(),
+  "studentImageAltText": zod.string(),
+  "studentName": zod.string().min(1),
+  "examCourse": zod.string(),
+  "score": zod.string(),
+  "achievement": zod.string().min(1),
+  "resultLabel": zod.string(),
+  "examName": zod.string().nullable(),
+  "category": zod.enum(['INTERMEDIATE', 'JEE_MAIN', 'NEET', 'EAMCET', 'OTHER']),
+  "year": zod.string().nullable(),
+  "institution": zod.string().nullable(),
+  "course": zod.string().nullable(),
+  "story": zod.string().nullable(),
+  "accentColor": zod.string().nullable(),
+  "displayOrder": zod.number().int().min(1).max(updateAdminResultsLibraryBodyResultsItemDisplayOrderMax),
+  "isPublished": zod.boolean(),
+  "showInHomePreview": zod.boolean(),
+  "homePreviewOrder": zod.number().int().min(1).max(updateAdminResultsLibraryBodyResultsItemHomePreviewOrderMax)
+})).max(updateAdminResultsLibraryBodyResultsMax),
+  "statistics": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "label": zod.string().min(1),
+  "value": zod.string().min(1),
+  "supportingText": zod.string().nullable(),
+  "displayOrder": zod.number().int().min(1).max(updateAdminResultsLibraryBodyStatisticsItemDisplayOrderMax),
+  "isPublished": zod.boolean(),
+  "showInHomePreview": zod.boolean(),
+  "homePreviewOrder": zod.number().int().min(1).max(updateAdminResultsLibraryBodyStatisticsItemHomePreviewOrderMax)
+})).max(updateAdminResultsLibraryBodyStatisticsMax)
+})
+
+export const UpdateAdminResultsLibraryResponse = zod.object({
+  "settings": zod.object({
+  "eyebrow": zod.string(),
+  "heading": zod.string(),
+  "description": zod.string(),
+  "configuredYear": zod.string().nullable(),
+  "isVisible": zod.boolean()
+}),
+  "results": zod.array(zod.object({
+  "id": zod.string(),
+  "studentImageUrl": zod.string().nullable(),
+  "studentImageAltText": zod.string(),
+  "studentName": zod.string(),
+  "examCourse": zod.string(),
+  "score": zod.string(),
+  "achievement": zod.string(),
+  "resultLabel": zod.string(),
+  "examName": zod.string().nullable(),
+  "category": zod.enum(['INTERMEDIATE', 'JEE_MAIN', 'NEET', 'EAMCET', 'OTHER']),
+  "year": zod.string().nullable(),
+  "institution": zod.string().nullable(),
+  "course": zod.string().nullable(),
+  "story": zod.string().nullable(),
+  "accentColor": zod.string().nullable(),
+  "displayOrder": zod.number().int(),
+  "isPublished": zod.boolean(),
+  "showInHomePreview": zod.boolean(),
+  "homePreviewOrder": zod.number().int()
+})),
+  "statistics": zod.array(zod.object({
+  "id": zod.string(),
+  "label": zod.string(),
+  "value": zod.string(),
+  "supportingText": zod.string().nullable(),
+  "displayOrder": zod.number().int(),
+  "isPublished": zod.boolean(),
+  "showInHomePreview": zod.boolean(),
+  "homePreviewOrder": zod.number().int()
 }))
 })
 
