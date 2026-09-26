@@ -1,0 +1,107 @@
+Build the Results Page and Shared Results Library
+Use the attached screenshots as visual references:
+
+attached_assets/image_1790420847840.png — Results hero and statistics bar
+attached_assets/image_1790420963203.png — Top performers and filters
+attached_assets/image_1790421252549.png — Student success-story dialog
+Use the current Sahasrah branding, logo, and theme—not the KVR branding or example student details shown in the references.
+
+1. Shared Results library
+Create one canonical Results module that supplies content to both the full Results page and the Home page’s Results preview. Do not create separate Home-only student records, duplicate photos, or duplicate statistics.
+
+Student achievement records
+Support fields such as:
+
+Student display name
+Optional student photo and alt text
+Year
+Exam or category, such as Intermediate, JEE Main, NEET, EAMCET, or Other
+Institution or college
+Course or stream
+Key achievement, rank, marks, or score
+Optional success story or testimonial
+Published/active status
+Display order
+Show in Home preview and Home preview order
+Keep achievement values flexible. For example, support “AIR 4,” “466/470,” and “98.7 percentile” rather than forcing every result into the same rank format.
+
+Statistics
+If result statistics appear on both Home and the Results page, manage them once in the Results module and reuse them in both places. Each statistic should have an editable label, value, supporting text, display order, and published status.
+
+Do not calculate institute-wide claims such as total pass percentage from the Home featured cards. Calculate totals from individual records only if the data is complete; otherwise manage them as explicit statistics. Do not invent or publish unsupported figures.
+
+2. Results page
+Build or update the public Results page at /results with these sections:
+
+Animated hero
+Statistics bar
+“Our Top Performers” section with working filters
+Student achievement cards
+“View Complete Merit List” control
+Student success-story dialog
+The page should show all active, published results. The Home preview should show only the published records selected for Home.
+
+3. Hero animation
+Recreate the feel of the reference without making the page distracting:
+
+Animate the hero badge, heading, and description into view on initial load using a staggered fade and slight upward movement.
+Use subtle background motion only if it fits the existing theme.
+Keep the animation lightweight and avoid layout shifts.
+Respect prefers-reduced-motion; when enabled, show the content without entrance or decorative motion.
+4. Statistics count-up
+Animate numeric statistics gradually when the bar enters the viewport so users can follow the count.
+
+Preserve the configured final value, including suffixes such as + and %.
+Run the count-up once per page view, with a smooth, readable duration—not a rapid flash.
+Respect reduced-motion settings by immediately displaying the final values.
+Ensure screen readers can access the final value, not a stream of intermediate numbers.
+5. Reliable filters
+Implement working filters for All, Intermediate, JEE Main, NEET, EAMCET, and Other Exams when matching results exist.
+
+Use a consistent category value on each result record; do not rely on matching display text inconsistently.
+Selecting a filter must update the visible cards and selected-tab styling.
+“All” must restore every published result for the selected year.
+Show a useful empty state when a category has no results.
+If the library contains multiple years, provide a year selector and update the heading to match; default to the latest year. Otherwise use the year configured in Results settings.
+Keep filtering, the complete merit list, and dialog navigation in sync with the currently selected year and category.
+Make filters keyboard accessible and clearly identify the selected option.
+6. Performer cards and success-story dialog
+Cards should include the student’s photo, name, achievement, and a Read Success Story action where story content is available.
+
+Add a restrained image/card hover effect and equivalent keyboard-focus styling.
+Clicking Read Success Story opens a dialog with the student’s information and story.
+Do not navigate away from the Results page when opening a story.
+Include a close button, Escape-to-close, proper focus handling, and responsive layout.
+If there are multiple results, include working Previous/Next controls within the currently filtered result set. Disable or hide them at the ends as appropriate.
+If a record has no story, do not show a nonfunctional story button.
+The View Complete Merit List control should expand or navigate to the complete list of published results. It must not be a decorative or dead-end button.
+
+7. Admin dashboard
+Add a separate top-level admin menu option named Results, without disturbing other admin sections.
+
+From Results management, administrators should be able to:
+
+Add, edit, publish/unpublish, reorder, and delete student achievement records
+Upload or replace a student photo once
+Manage statistics
+Edit the Results page hero text
+Choose which student records appear in the Home preview and set their order
+Keep the Home preview’s heading and introductory copy under Home section settings, but let it select featured records and shared statistics from the Results library. Add a Manage Results link from the Home preview settings to Results management. Do not create duplicate result editors in Home settings.
+
+Require confirmation before deleting a record. Follow the project’s existing admin authorization, upload, persistence, and validation patterns.
+
+8. Privacy, compatibility, and verification
+Only publish student names, photos, marks, ranks, and stories that are approved for public display. Support a display name or anonymous entry where needed.
+
+Preserve the existing Home preview and unrelated pages. Do not build Courses or Knowledge Hub as part of this work.
+
+Verify that:
+
+Admin changes persist.
+Home and /results use the same achievement and statistics records.
+Home preview selection does not create duplicate records or uploads.
+Every filter updates the results correctly, including empty states.
+The story dialog and Previous/Next controls work with the active filters.
+Count-up and hero animations respect reduced-motion settings.
+The complete merit-list control works.
+The page is responsive and the project builds and starts successfully.
