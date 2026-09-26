@@ -1,21 +1,33 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowRight, BookOpen, ChevronDown, ChevronLeft, SlidersHorizontal } from 'lucide-react';
+import { ArrowRight, BookOpen } from 'lucide-react';
 import { useGetResultsPage, useGetSiteSettings, type HomepageResult, type ResultStatistic } from '@workspace/api-client-react';
 import { PublicHeader } from '@/components/public-header';
 import { DEFAULT_ACCENT_COLOR, DEFAULT_PRIMARY_COLOR, DEFAULT_SURFACE_COLOR, createPublicThemeStyle } from '@/lib/public-theme';
 import { ResultsStoryDialog } from '@/components/results-story-dialog';
+import { CompleteMeritList, TopPerformerCard } from '@/components/results-merit-list';
 
 const categories = [
-  { value: 'ALL', label: 'All results' },
+  { value: 'ALL', label: 'All' },
   { value: 'INTERMEDIATE', label: 'Intermediate' },
   { value: 'JEE_MAIN', label: 'JEE Main' },
   { value: 'NEET', label: 'NEET' },
   { value: 'EAMCET', label: 'EAMCET' },
-  { value: 'OTHER', label: 'Other' },
 ] as const;
 
-function initials(name: string) {
-  return name.split(/\s+/).filter(Boolean).map((word) => word[0]).join('').slice(0, 2).toUpperCase();
+type PublicCategory = (typeof categories)[number]['value'] | 'OTHER';
+type MeritSort = 'featured' | 'name-asc' | 'name-desc';
+
+function categoryForResult(result: HomepageResult): PublicCategory {
+  if (result.category !== 'OTHER') return result.category;
+  // Older published results may be filed under Other despite having an explicit exam name.
+  // Use that published name for public filters without changing the shared admin record.
+  const exam = result.examName?.toLowerCase() || '';
+  const name = exam || `${result.course || ''} ${result.examCourse}`.toLowerCase();
+  if (/\b(intermediate|inter)\b/.test(name)) return 'INTERMEDIATE';
+  if (/\bjee\b/.test(name)) return 'JEE_MAIN';
+  if (/\bneet\b/.test(name)) return 'NEET';
+  if (/\b(eamcet|eapcet)\b/.test(name)) return 'EAMCET';
+  return 'OTHER';
 }
 
 function CountUp({ value, id }: { value: string; id: string }) {
@@ -100,58 +112,61 @@ function StatStrip({ statistics }: { statistics: ResultStatistic[] }) {
   );
 }
 
-function ResultCard({ result, onStory }: { result: HomepageResult; onStory: () => void }) {
-  const accent = result.accentColor || DEFAULT_ACCENT_COLOR;
-  return (
-    <article data-testid={`result-card-${result.id}`} className="group flex min-h-[330px] flex-col overflow-hidden rounded-[1.35rem] border border-[hsl(var(--border))] bg-[hsl(var(--card))] shadow-[0_12px_30px_hsl(var(--primary)/.06)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_hsl(var(--primary)/.12)]">
-      <div className="flex items-center justify-between gap-4 px-5 pt-5">
-        <div className="grid h-16 w-16 shrink-0 place-items-center overflow-hidden rounded-2xl bg-[hsl(var(--primary))] font-display text-lg font-semibold text-[hsl(var(--accent))]">
-          {result.studentImageUrl ? <img src={result.studentImageUrl} alt={result.studentImageAltText} className="h-full w-full object-cover" data-testid={`img-result-${result.id}`} /> : initials(result.studentName)}
-        </div>
-        {result.resultLabel && <span className="rounded-full border px-3 py-1 text-[10px] font-bold uppercase tracking-[.14em]" style={{ borderColor: `${accent}55`, color: accent }}>{result.resultLabel}</span>}
-      </div>
-      <div className="flex flex-1 flex-col px-5 pb-5">
-        <p className="mt-6 text-[10px] font-bold uppercase tracking-[.16em] text-[hsl(var(--muted-foreground))]">{result.examCourse}</p>
-        <h2 className="mt-2 font-display text-2xl font-semibold tracking-[-.03em] text-[hsl(var(--primary))]" data-testid={`text-result-name-${result.id}`}>{result.studentName}</h2>
-        <div className="mt-auto border-t border-[hsl(var(--border))] pt-5">
-          <p className="font-display text-4xl font-semibold tracking-[-.04em]" style={{ color: accent }} data-testid={`text-result-score-${result.id}`}>{result.score}</p>
-          <p className="mt-1 text-sm font-semibold text-[hsl(var(--foreground))]">{result.achievement}</p>
-          {(result.examName || result.year) && <p className="mt-3 text-xs text-[hsl(var(--muted-foreground))]">{[result.examName, result.year].filter(Boolean).join(' · ')}</p>}
-          <button type="button" onClick={onStory} data-testid={`button-read-story-${result.id}`} className="mt-5 inline-flex items-center gap-2 text-xs font-bold text-[hsl(var(--primary))] underline decoration-[hsl(var(--accent)/.5)] underline-offset-4 transition hover:text-[hsl(var(--accent-foreground))]">
-            {result.story?.trim() ? 'Read Success Story' : 'View achievement details'} <ArrowRight size={14} />
-          </button>
-        </div>
-      </div>
-    </article>
-  );
-}
-
 export default function Results() {
   const query = useGetResultsPage();
   const settingsQuery = useGetSiteSettings();
   const [year, setYear] = useState('');
-  const [category, setCategory] = useState<(typeof categories)[number]['value']>('ALL');
+  const [category, setCategory] = useState<PublicCategory>('ALL');
+  const [search, setSearch] = useState('');
+  const [sort, setSort] = useState<MeritSort>('featured');
   const [expanded, setExpanded] = useState(false);
   const [storyId, setStoryId] = useState<string | null>(null);
   const storyScrollPosition = useRef(0);
   const storyWasOpen = useRef(false);
+  const expandTrigger = useRef<HTMLButtonElement>(null);
   const settings = settingsQuery.data ?? { collegeName: 'Sahsrah Junior College', tagline: '', logoUrl: null, primaryColor: DEFAULT_PRIMARY_COLOR, accentColor: DEFAULT_ACCENT_COLOR, surfaceColor: DEFAULT_SURFACE_COLOR };
   const themeStyle = createPublicThemeStyle(settings.primaryColor || DEFAULT_PRIMARY_COLOR, settings.accentColor || DEFAULT_ACCENT_COLOR, settings.surfaceColor || DEFAULT_SURFACE_COLOR);
   const content = query.data;
-  const years = useMemo(() => [...new Set((content?.results ?? []).map((result) => result.year).filter((value): value is string => Boolean(value)))].sort((a, b) => b.localeCompare(a)), [content?.results]);
+  const published = useMemo(() => (content?.results ?? []).filter((result) => result.isPublished), [content?.results]);
+  const years = useMemo(() => [...new Set(published.map((result) => result.year).filter((value): value is string => Boolean(value)))].sort((a, b) => b.localeCompare(a)), [published]);
   useEffect(() => {
-    if (!year && years.length) {
-      const configured = content?.settings.configuredYear;
-      setYear(configured && years.includes(configured) ? configured : years[0]);
-    }
-  }, [content?.settings.configuredYear, year, years]);
-  const availableCategories = useMemo(() => categories.filter((item) => item.value === 'ALL' || (content?.results ?? []).some((result) => result.category === item.value && (!year || result.year === year))), [content?.results, year]);
-  useEffect(() => {
-    if (!availableCategories.some((item) => item.value === category)) setCategory('ALL');
-  }, [availableCategories, category]);
-  const filtered = useMemo(() => (content?.results ?? []).filter((result) => (!year || result.year === year) && (category === 'ALL' || result.category === category)).sort((a, b) => a.displayOrder - b.displayOrder), [category, content?.results, year]);
+    if (year && !years.includes(year)) setYear('');
+  }, [year, years]);
+  const showOther = published.some((result) => categoryForResult(result) === 'OTHER');
+  const visibleCategories: { value: PublicCategory; label: string }[] = showOther
+    ? [...categories, { value: 'OTHER', label: 'Other' }]
+    : [...categories];
+  const filtered = useMemo(() => {
+    const term = search.trim().toLocaleLowerCase();
+    const matching = published.filter((result) =>
+      (category === 'ALL' || categoryForResult(result) === category) &&
+      (!year || result.year === year) &&
+      (!term || result.studentName.toLocaleLowerCase().includes(term))
+    );
+    return matching.sort((a, b) => {
+      if (sort !== 'featured') {
+        const byName = a.studentName.localeCompare(b.studentName);
+        if (byName) return sort === 'name-asc' ? byName : -byName;
+      }
+      return a.displayOrder - b.displayOrder || a.id.localeCompare(b.id);
+    });
+  }, [category, published, search, sort, year]);
+  const topPerformers = filtered.slice(0, 3);
   const storyResult = filtered.find((result) => result.id === storyId) ?? null;
   const storyIndex = storyResult ? filtered.findIndex((result) => result.id === storyResult.id) : -1;
+  const clearFilters = () => {
+    setCategory('ALL');
+    setYear('');
+    setSearch('');
+    setSort('featured');
+  };
+  const collapseList = () => {
+    setExpanded(false);
+    requestAnimationFrame(() => {
+      expandTrigger.current?.focus({ preventScroll: true });
+      expandTrigger.current?.scrollIntoView({ block: 'center', behavior: 'auto' });
+    });
+  };
   const openStory = (id: string) => {
     storyScrollPosition.current = window.scrollY;
     setStoryId(id);
@@ -179,20 +194,72 @@ export default function Results() {
         </section>
         <div className="relative z-10 -mt-8 px-6 lg:px-10"><StatStrip statistics={content.statistics.filter((stat) => stat.isPublished).sort((a, b) => a.displayOrder - b.displayOrder)} /></div>
         <section className="mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-24" aria-labelledby="published-results-heading">
-          <div className="border-b border-[hsl(var(--border))] pb-8">
+          <div className="border-b border-[hsl(var(--border))] pb-8 text-center">
             <p className="text-center text-xs font-bold uppercase tracking-[.2em] text-[hsl(var(--eyebrow-text))]">Verified outcomes</p>
             <h2 id="published-results-heading" className="mt-3 text-center font-display text-4xl font-semibold tracking-[-.04em] text-[hsl(var(--primary))] md:text-5xl">Our Top Performers</h2>
-            <div className="mt-7 flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
-              <div className="flex min-w-0 gap-2 overflow-x-auto pb-2 scrollbar-none" role="group" aria-label="Filter results by exam category">
-                {availableCategories.map((item) => <button key={item.value} type="button" aria-pressed={category === item.value} onClick={() => setCategory(item.value)} data-testid={`filter-results-${item.value.toLowerCase()}`} className={`shrink-0 rounded-full px-4 py-2.5 text-xs font-bold transition ${category === item.value ? 'bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))]' : 'border border-[hsl(var(--border))] bg-[hsl(var(--card))] text-[hsl(var(--muted-foreground))] hover:border-[hsl(var(--accent))] hover:text-[hsl(var(--primary))]'}`}>{item.label}</button>)}
-              </div>
-              <div className="flex items-center gap-3">
-                {years.length > 1 && <label className="relative"><span className="sr-only">Filter by year</span><select value={year} onChange={(event) => setYear(event.target.value)} data-testid="select-results-year" className="h-11 appearance-none rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--card))] py-2 pl-4 pr-10 text-sm font-bold text-[hsl(var(--primary))] outline-none focus:border-[hsl(var(--accent))] focus-visible:ring-4 focus-visible:ring-[hsl(var(--accent)/.2)]"><option value="">All years</option>{years.map((item) => <option key={item} value={item}>{item}</option>)}</select><ChevronDown className="pointer-events-none absolute right-3 top-3.5" size={15} /></label>}
-                <SlidersHorizontal size={17} className="text-[hsl(var(--muted-foreground))]" aria-hidden="true" />
-              </div>
+            <div className="mt-7 flex flex-wrap justify-center gap-2" role="group" aria-label="Filter results by exam category">
+              {visibleCategories.map((item) => (
+                <button
+                  key={item.value}
+                  type="button"
+                  aria-pressed={category === item.value}
+                  onClick={() => setCategory(item.value)}
+                  data-testid={`filter-results-${item.value.toLowerCase()}`}
+                  className={`rounded-full px-5 py-2.5 text-xs font-bold transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--accent)/.25)] motion-reduce:transition-none ${category === item.value ? 'bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] shadow-[0_7px_18px_hsl(var(--primary)/.16)]' : 'border border-[hsl(var(--border))] bg-[hsl(var(--card))] text-[hsl(var(--primary))] hover:border-[hsl(var(--accent)/.6)] hover:bg-[hsl(var(--accent)/.06)]'}`}
+                >
+                  {item.label}
+                </button>
+              ))}
             </div>
           </div>
-          {!filtered.length ? <div className="mt-10 rounded-[1.5rem] border border-dashed border-[hsl(var(--border))] bg-[hsl(var(--card))] px-6 py-16 text-center"><p className="font-display text-2xl font-semibold text-[hsl(var(--primary))]" data-testid="empty-results">No published results match these filters.</p><p className="mt-2 text-sm text-[hsl(var(--muted-foreground))]">Try another year or category.</p></div> : <><div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{filtered.slice(0, expanded ? undefined : 6).map((result) => <ResultCard key={result.id} result={result} onStory={() => openStory(result.id)} />)}</div>{filtered.length > 6 && <button type="button" onClick={() => setExpanded((current) => !current)} data-testid="button-complete-merit-list" className="mx-auto mt-10 flex items-center gap-2 rounded-full border border-[hsl(var(--primary)/.22)] bg-[hsl(var(--card))] px-5 py-3 text-sm font-bold text-[hsl(var(--primary))] transition hover:-translate-y-0.5 hover:border-[hsl(var(--accent))]">{expanded ? 'Show featured results' : 'View Complete Merit List'} {expanded ? <ChevronLeft size={16} /> : <ArrowRight size={16} />}</button>}</>}
+          <p className="sr-only" role="status">{filtered.length} published {filtered.length === 1 ? 'result' : 'results'} match the current filters.</p>
+          {!expanded && (search || year || sort !== 'featured') && (
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-3 text-sm text-[hsl(var(--muted-foreground))]">
+              <span>List filters are active{search && ` · Name: ${search}`}{year && ` · Year: ${year}`}{sort !== 'featured' && ' · Name order'}.</span>
+              <button type="button" onClick={clearFilters} className="font-bold text-[hsl(var(--primary))] underline underline-offset-4 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--accent)/.25)]">Clear filters</button>
+            </div>
+          )}
+          {topPerformers.length ? (
+            <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {topPerformers.map((result) => <TopPerformerCard key={result.id} result={result} onStory={() => openStory(result.id)} />)}
+            </div>
+          ) : (
+            <div className="mt-10 rounded-[1.5rem] border border-dashed border-[hsl(var(--border))] bg-[hsl(var(--card))] px-6 py-14 text-center">
+              <p className="font-display text-2xl font-semibold text-[hsl(var(--primary))]" data-testid="empty-results">No published results match these filters.</p>
+              <p className="mt-2 text-sm text-[hsl(var(--muted-foreground))]">Try another category or clear the filters.</p>
+              {published.length > 0 && <button type="button" onClick={clearFilters} className="mt-5 rounded-full border border-[hsl(var(--primary)/.2)] px-5 py-2.5 text-sm font-bold text-[hsl(var(--primary))] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--accent)/.25)]">Clear filters</button>}
+            </div>
+          )}
+          {published.length > 0 && !expanded && (
+            <button
+              ref={expandTrigger}
+              type="button"
+              onClick={() => setExpanded(true)}
+              aria-expanded={false}
+              aria-controls="complete-merit-list"
+              data-testid="button-complete-merit-list"
+              className="mx-auto mt-10 flex items-center gap-2 rounded-full bg-[hsl(var(--primary))] px-6 py-3 text-sm font-bold text-[hsl(var(--primary-foreground))] shadow-[0_10px_24px_hsl(var(--primary)/.16)] transition hover:-translate-y-0.5 hover:bg-[hsl(var(--accent))] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--accent)/.3)] motion-reduce:transition-none"
+            >
+              View Complete Merit List <ArrowRight size={16} aria-hidden="true" />
+            </button>
+          )}
+          <div id="complete-merit-list" className={expanded ? 'mt-10' : ''}>
+            {expanded && (
+              <CompleteMeritList
+                results={filtered}
+                years={years}
+                year={year}
+                search={search}
+                sort={sort}
+                onYearChange={setYear}
+                onSearchChange={setSearch}
+                onSortChange={setSort}
+                onStory={openStory}
+                onCollapse={collapseList}
+                onClearFilters={clearFilters}
+              />
+            )}
+          </div>
         </section>
       </main>
       <ResultsStoryDialog

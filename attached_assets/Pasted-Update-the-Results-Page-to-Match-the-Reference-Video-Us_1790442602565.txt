@@ -1,0 +1,27 @@
+Update the Results Page to Match the Reference Video
+Use attached_assets/Reference_video_of_results_page_1790442427402.mp4 as the reference for the Top Performers and Complete Merit List behavior. Use it for layout and interactions only; keep Sahasrah branding.
+
+Top performers and filters
+Initially display only three top-performer cards.
+Show the category filters: All, Intermediate, JEE Main, NEET, EAMCET.
+Apply the selected category to the top-performer cards and to the expanded merit list, so both views stay consistent.
+In All, select the top three using the configured result ordering. For an individual category, show up to three matching students in rank/display order.
+If fewer than three students match, show only those available. Do not fill empty slots with placeholders or duplicate records.
+Keep the filters within the Top Performers section—not above or inside the statistics bar.
+Expandable Complete Merit List
+Keep the complete list collapsed by default, with the top three performer cards visible.
+Clicking View Complete Merit List expands the full list inline beneath the top performers; it must not navigate to another page or open a dialog.
+Show all matching published students in the expanded list, not only the top three.
+Change the control to Show Less while expanded. Clicking it collapses the list back to the initial top-three view.
+Include search by student name and useful result details. Follow the video’s year and rank-sorting controls where those options are supported by the available data.
+Keep category selection, search, year selection, and sorting consistent; clearing a filter should restore the corresponding results.
+Give the expanded section a clear heading, such as Complete Merit List, and make the expand/collapse interaction keyboard accessible.
+Student details
+Preserve the student-card Read Success Story action. It must open the selected student’s biography dialog with the requested Prev Student, Back to Results, and Next Student controls. Keep those controls working within the applicable result set. Back to Results should close the dialog while preserving the current category, search, and scroll position.
+
+Keep the previous Results-page direction
+Retain the centered, animated hero; use a light white or warm-ivory statistics panel distinct from the navy hero; keep statistics count-up readable and respect reduced-motion settings. Preserve the Results library shared with the Home preview and the existing admin placement under Pages.
+
+The video also shows Our Achievements and Success Stories below the merit list. Preserve those sections if they are already part of the page or have managed content; do not show empty placeholder headings.
+
+Verify that the initial view shows only three performers, expanding reveals the full matching list, Show Less collapses it, and the filters work in both views.
