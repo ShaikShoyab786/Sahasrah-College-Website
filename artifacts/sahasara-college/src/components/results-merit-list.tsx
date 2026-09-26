@@ -101,7 +101,7 @@ export function TopPerformerCard({
           data-testid={`button-read-story-${result.id}`}
           className="mt-auto inline-flex min-h-10 max-w-full items-center justify-center gap-2 rounded-md px-2 pt-5 text-sm font-bold text-[hsl(var(--primary))] underline decoration-[hsl(var(--destructive)/.65)] underline-offset-4 transition-colors hover:text-[hsl(var(--destructive))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))] focus-visible:ring-offset-4 motion-reduce:transition-none"
         >
-          <span className="break-words">Read Success Story</span>
+          <span className="break-words">View Result Details</span>
           <ArrowRight size={15} aria-hidden="true" className="shrink-0" />
         </button>
       </div>

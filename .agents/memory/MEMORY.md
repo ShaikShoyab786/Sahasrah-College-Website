@@ -6,4 +6,4 @@
 - [Public theme and content backfill](public-theme-and-content-backfill.md) — resolve saved colours into public HSL tokens and backfill persisted user-facing copy idempotently.
 - [Admin theme boundary](admin-theme-boundary.md) — keep admin semantic contrast tokens separate from the public theme root and prefer configured branding assets in admin chrome.
 - [Theme in portaled dialogs](portaled-dialog-theme.md) — apply the active public theme directly to portal content outside the themed page root.
-- [Results story publication](results-story-publication.md) — show only approved student stories; keep the section hidden until real stories are published.
+- [Results alumni story publication](results-story-publication.md) — keep alumni stories separate from current results and never publish imported drafts without review.

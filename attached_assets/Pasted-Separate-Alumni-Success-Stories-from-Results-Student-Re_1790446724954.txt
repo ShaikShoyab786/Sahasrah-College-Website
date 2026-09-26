@@ -1,0 +1,37 @@
+Separate Alumni Success Stories from Results Student Records
+The Success Stories section is for alumni—former students who have passed out. It is separate from the current students listed in Top Performers and the Complete Merit List.
+
+Remove the incorrect student-record fields
+In the Results admin editor, remove these fields from individual student result records:
+
+Student success story
+Publish this success story
+Story carousel order
+Remove the rule that generates the Success Stories carousel from published Results student records. The Success Stories section must not use current Top Performer or merit-list students as its content source.
+
+Keep each student’s result information—such as name, photo, exam, rank, marks, course, and year—intact. If the existing performer dialog remains, keep it focused on achievement details; do not show alumni testimonials there or link it to the alumni story records.
+
+Add separate alumni stories in Results admin
+In Pages → Results, add a dedicated Alumni Success Stories management section directly after Results Statistics. Do not nest these records inside student result cards.
+
+Let administrators add, edit, reorder, publish/unpublish, and delete alumni stories. Each story can include:
+
+Alumni display name
+Optional portrait and alt text
+Passing year or batch
+Course or stream
+Current college, career, or outcome, if available
+Testimonial or story text
+Publish status
+Carousel display order
+Results page carousel
+Use the separately managed alumni stories in the Results-page Success Stories section. Keep the three-card auto-scrolling presentation and its animation. Remove the View All Stories button; do not replace it with a link to the Results page.
+
+Do not invent alumni or testimonials. If fewer than three stories are published, show only the available ones.
+
+Preserve any entered content
+If story text has already been saved in student result records, preserve it rather than silently deleting it. Move it to a separate unpublished alumni-story draft for administrator review; do not automatically label current Results students as alumni or publish those stories.
+
+Keep the CTA buttons linked to Contact, reuse the Home page’s shared footer, and preserve the existing shared Results library and Home preview. Keep Results management under Pages → Results.
+
+Verify that alumni stories can be edited independently, current Results students no longer supply carousel stories, and existing result records remain intact.

@@ -248,9 +248,6 @@ export const GetHomepageResultsResponse = zod.object({
   "year": zod.string().nullable(),
   "institution": zod.string().nullable(),
   "course": zod.string().nullable(),
-  "story": zod.string().nullable(),
-  "storyIsPublished": zod.boolean(),
-  "storyOrder": zod.number().int(),
   "accentColor": zod.string().nullable(),
   "displayOrder": zod.number().int(),
   "isPublished": zod.boolean(),
@@ -271,7 +268,7 @@ export const GetHomepageResultsResponse = zod.object({
 
 
 /**
- * @summary Read published student results and statistics
+ * @summary Read published student results, alumni stories, and statistics
  */
 export const getResultsPageResponseSettingsCtaPrimaryHrefRegExp = new RegExp('^/contact(?:[?#][^\\s]*)?$');
 export const getResultsPageResponseSettingsCtaSecondaryHrefRegExp = new RegExp('^/contact(?:[?#][^\\s]*)?$');
@@ -306,14 +303,23 @@ export const GetResultsPageResponse = zod.object({
   "year": zod.string().nullable(),
   "institution": zod.string().nullable(),
   "course": zod.string().nullable(),
-  "story": zod.string().nullable(),
-  "storyIsPublished": zod.boolean(),
-  "storyOrder": zod.number().int(),
   "accentColor": zod.string().nullable(),
   "displayOrder": zod.number().int(),
   "isPublished": zod.boolean(),
   "showInHomePreview": zod.boolean(),
   "homePreviewOrder": zod.number().int()
+})),
+  "alumniStories": zod.array(zod.object({
+  "id": zod.string(),
+  "displayName": zod.string(),
+  "portraitUrl": zod.string().nullable(),
+  "portraitAltText": zod.string().nullable(),
+  "passingYear": zod.string().nullable(),
+  "course": zod.string().nullable(),
+  "currentOutcome": zod.string().nullable(),
+  "story": zod.string(),
+  "isPublished": zod.boolean(),
+  "displayOrder": zod.number().int()
 })),
   "statistics": zod.array(zod.object({
   "id": zod.string(),
@@ -1746,9 +1752,6 @@ export const GetAdminHomepageResultsResponse = zod.object({
   "year": zod.string().nullable(),
   "institution": zod.string().nullable(),
   "course": zod.string().nullable(),
-  "story": zod.string().nullable(),
-  "storyIsPublished": zod.boolean(),
-  "storyOrder": zod.number().int(),
   "accentColor": zod.string().nullable(),
   "displayOrder": zod.number().int(),
   "isPublished": zod.boolean(),
@@ -1812,9 +1815,6 @@ export const UpdateHomepageResultsResponse = zod.object({
   "year": zod.string().nullable(),
   "institution": zod.string().nullable(),
   "course": zod.string().nullable(),
-  "story": zod.string().nullable(),
-  "storyIsPublished": zod.boolean(),
-  "storyOrder": zod.number().int(),
   "accentColor": zod.string().nullable(),
   "displayOrder": zod.number().int(),
   "isPublished": zod.boolean(),
@@ -1870,9 +1870,6 @@ export const GetAdminResultsLibraryResponse = zod.object({
   "year": zod.string().nullable(),
   "institution": zod.string().nullable(),
   "course": zod.string().nullable(),
-  "story": zod.string().nullable(),
-  "storyIsPublished": zod.boolean(),
-  "storyOrder": zod.number().int(),
   "accentColor": zod.string().nullable(),
   "displayOrder": zod.number().int(),
   "isPublished": zod.boolean(),
@@ -1904,7 +1901,6 @@ export const GetAdminResultsLibraryResponse = zod.object({
 
 export const updateAdminResultsLibraryBodySettingsCtaPrimaryHrefRegExp = new RegExp('^/contact(?:[?#][^\\s]*)?$');
 export const updateAdminResultsLibraryBodySettingsCtaSecondaryHrefRegExp = new RegExp('^/contact(?:[?#][^\\s]*)?$');
-
 
 
 export const updateAdminResultsLibraryBodyResultsItemDisplayOrderMax = 100;
@@ -1952,9 +1948,6 @@ export const UpdateAdminResultsLibraryBody = zod.object({
   "year": zod.string().nullable(),
   "institution": zod.string().nullable(),
   "course": zod.string().nullable(),
-  "story": zod.string().nullable(),
-  "storyIsPublished": zod.boolean().optional(),
-  "storyOrder": zod.number().int().min(1).optional(),
   "accentColor": zod.string().nullable(),
   "displayOrder": zod.number().int().min(1).max(updateAdminResultsLibraryBodyResultsItemDisplayOrderMax),
   "isPublished": zod.boolean(),
@@ -2006,9 +1999,6 @@ export const UpdateAdminResultsLibraryResponse = zod.object({
   "year": zod.string().nullable(),
   "institution": zod.string().nullable(),
   "course": zod.string().nullable(),
-  "story": zod.string().nullable(),
-  "storyIsPublished": zod.boolean(),
-  "storyOrder": zod.number().int(),
   "accentColor": zod.string().nullable(),
   "displayOrder": zod.number().int(),
   "isPublished": zod.boolean(),
@@ -2025,6 +2015,82 @@ export const UpdateAdminResultsLibraryResponse = zod.object({
   "showInHomePreview": zod.boolean(),
   "homePreviewOrder": zod.number().int()
 }))
+})
+
+
+/**
+ * @summary Read alumni success stories for independent editing
+ */
+export const getAdminAlumniSuccessStoriesResponseRevisionMin = 0;
+
+
+
+export const GetAdminAlumniSuccessStoriesResponse = zod.object({
+  "revision": zod.number().int().min(getAdminAlumniSuccessStoriesResponseRevisionMin),
+  "alumniStories": zod.array(zod.object({
+  "id": zod.string(),
+  "displayName": zod.string(),
+  "portraitUrl": zod.string().nullable(),
+  "portraitAltText": zod.string().nullable(),
+  "passingYear": zod.string().nullable(),
+  "course": zod.string().nullable(),
+  "currentOutcome": zod.string().nullable(),
+  "story": zod.string(),
+  "isPublished": zod.boolean(),
+  "displayOrder": zod.number().int()
+}).and(zod.object({
+  "importedFromResultId": zod.string().nullable()
+})))
+})
+
+
+/**
+ * @summary Independently replace, reorder, publish, and delete alumni stories
+ */
+export const updateAdminAlumniSuccessStoriesBodyExpectedRevisionMin = 0;
+
+export const updateAdminAlumniSuccessStoriesBodyAlumniStoriesItemDisplayOrderMax = 100;
+
+export const updateAdminAlumniSuccessStoriesBodyAlumniStoriesMax = 100;
+
+
+
+export const UpdateAdminAlumniSuccessStoriesBody = zod.object({
+  "expectedRevision": zod.number().int().min(updateAdminAlumniSuccessStoriesBodyExpectedRevisionMin),
+  "alumniStories": zod.array(zod.object({
+  "id": zod.string().optional(),
+  "displayName": zod.string(),
+  "portraitUrl": zod.string().nullable(),
+  "portraitAltText": zod.string().nullable(),
+  "passingYear": zod.string().nullable(),
+  "course": zod.string().nullable(),
+  "currentOutcome": zod.string().nullable(),
+  "story": zod.string(),
+  "isPublished": zod.boolean(),
+  "displayOrder": zod.number().int().min(1).max(updateAdminAlumniSuccessStoriesBodyAlumniStoriesItemDisplayOrderMax)
+})).max(updateAdminAlumniSuccessStoriesBodyAlumniStoriesMax)
+})
+
+export const updateAdminAlumniSuccessStoriesResponseRevisionMin = 0;
+
+
+
+export const UpdateAdminAlumniSuccessStoriesResponse = zod.object({
+  "revision": zod.number().int().min(updateAdminAlumniSuccessStoriesResponseRevisionMin),
+  "alumniStories": zod.array(zod.object({
+  "id": zod.string(),
+  "displayName": zod.string(),
+  "portraitUrl": zod.string().nullable(),
+  "portraitAltText": zod.string().nullable(),
+  "passingYear": zod.string().nullable(),
+  "course": zod.string().nullable(),
+  "currentOutcome": zod.string().nullable(),
+  "story": zod.string(),
+  "isPublished": zod.boolean(),
+  "displayOrder": zod.number().int()
+}).and(zod.object({
+  "importedFromResultId": zod.string().nullable()
+})))
 })
 
 

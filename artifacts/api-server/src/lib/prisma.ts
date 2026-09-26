@@ -10,6 +10,122 @@ export const prisma = new PrismaClient();
 
 const galleryCategories = ["Campus", "Classrooms", "Sports", "Labs", "Library", "Achievements", "Events"];
 
+async function ensureAlumniStorySchema() {
+  await prisma.$executeRawUnsafe(`
+    CREATE TABLE IF NOT EXISTS "AlumniSuccessStory" (
+      "id" TEXT NOT NULL,
+      "displayName" TEXT NOT NULL DEFAULT '',
+      "portraitUrl" TEXT,
+      "portraitAltText" TEXT,
+      "passingYear" TEXT,
+      "course" TEXT,
+      "currentOutcome" TEXT,
+      "story" TEXT NOT NULL DEFAULT '',
+      "isPublished" BOOLEAN NOT NULL DEFAULT false,
+      "displayOrder" INTEGER NOT NULL,
+      "importedFromResultId" TEXT,
+      "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      CONSTRAINT "AlumniSuccessStory_pkey" PRIMARY KEY ("id")
+    )
+  `);
+  await prisma.$executeRawUnsafe(`
+    CREATE UNIQUE INDEX IF NOT EXISTS "AlumniSuccessStory_displayOrder_key"
+    ON "AlumniSuccessStory" ("displayOrder")
+  `);
+  await prisma.$executeRawUnsafe(`
+    CREATE UNIQUE INDEX IF NOT EXISTS "AlumniSuccessStory_importedFromResultId_key"
+    ON "AlumniSuccessStory" ("importedFromResultId")
+  `);
+  await prisma.$executeRawUnsafe(`
+    CREATE INDEX IF NOT EXISTS "AlumniSuccessStory_isPublished_displayOrder_idx"
+    ON "AlumniSuccessStory" ("isPublished", "displayOrder")
+  `);
+  await prisma.$executeRawUnsafe(`
+    CREATE TABLE IF NOT EXISTS "AlumniStoryImportMarker" (
+      "sourceResultId" TEXT NOT NULL,
+      "importedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      CONSTRAINT "AlumniStoryImportMarker_pkey" PRIMARY KEY ("sourceResultId")
+    )
+  `);
+  await prisma.$executeRawUnsafe(`
+    CREATE TABLE IF NOT EXISTS "AlumniSuccessStoriesRevision" (
+      "id" TEXT NOT NULL DEFAULT 'singleton',
+      "revision" INTEGER NOT NULL DEFAULT 0,
+      "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      CONSTRAINT "AlumniSuccessStoriesRevision_pkey" PRIMARY KEY ("id")
+    )
+  `);
+  await prisma.alumniSuccessStoriesRevision.upsert({
+    where: { id: "singleton" },
+    update: {},
+    create: { id: "singleton", revision: 0 },
+  });
+}
+
+class LegacyResultStoryChangedError extends Error {}
+
+async function backfillLegacyResultStories() {
+  const legacyResults = await prisma.homepageResult.findMany({
+    where: { story: { not: null } },
+    select: { id: true },
+  });
+
+  for (const legacy of legacyResults) {
+    let completed = false;
+    for (let attempt = 0; attempt < 3 && !completed; attempt += 1) {
+      try {
+        await prisma.$transaction(async (tx) => {
+          // Serialize import ordering across concurrently starting server instances.
+          await tx.$queryRaw`SELECT 1 AS locked FROM (SELECT pg_advisory_xact_lock(74130105)) AS lock`;
+          const source = await tx.homepageResult.findUnique({
+            where: { id: legacy.id },
+            select: { story: true },
+          });
+          const storyText = source?.story;
+          if (storyText === null || storyText === undefined || storyText.length === 0) return;
+
+          const imported = await tx.alumniStoryImportMarker.createMany({
+            data: [{ sourceResultId: legacy.id }],
+            skipDuplicates: true,
+          });
+          if (imported.count > 0) {
+            const latest = await tx.alumniSuccessStory.aggregate({ _max: { displayOrder: true } });
+            await tx.alumniSuccessStory.create({
+              data: {
+                displayName: "",
+                portraitUrl: null,
+                portraitAltText: null,
+                passingYear: null,
+                course: null,
+                currentOutcome: null,
+                story: storyText,
+                isPublished: false,
+                displayOrder: (latest._max.displayOrder ?? 0) + 1,
+                importedFromResultId: legacy.id,
+              },
+            });
+            await tx.alumniSuccessStoriesRevision.update({
+              where: { id: "singleton" },
+              data: { revision: { increment: 1 } },
+            });
+          }
+
+          const cleared = await tx.homepageResult.updateMany({
+            where: { id: legacy.id, story: storyText },
+            data: { story: null, storyIsPublished: false },
+          });
+          if (cleared.count !== 1) {
+            throw new LegacyResultStoryChangedError("Legacy result story changed during import.");
+          }
+        }, { maxWait: 10_000, timeout: 30_000 });
+        completed = true;
+      } catch (error) {
+        if (!(error instanceof LegacyResultStoryChangedError) || attempt === 2) throw error;
+      }
+    }
+  }
+}
+
 function getGalleryCategory(category: string | null, title: string) {
   const normalized = category?.trim().toLowerCase();
   const existing = galleryCategories.find((value) => value.toLowerCase() === normalized);
@@ -43,6 +159,8 @@ async function backfillCollegeNameTypo() {
 
 export async function initializeDatabase() {
   await prisma.$connect();
+  await ensureAlumniStorySchema();
+  await backfillLegacyResultStories();
   await backfillCollegeNameTypo();
 
   await prisma.siteSettings.upsert({

@@ -27,10 +27,6 @@ export interface HomepageResult {
   /** @nullable */
   course: string | null;
   /** @nullable */
-  story: string | null;
-  storyIsPublished: boolean;
-  storyOrder: number;
-  /** @nullable */
   accentColor: string | null;
   displayOrder: number;
   isPublished: boolean;

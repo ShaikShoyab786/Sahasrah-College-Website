@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode } from 'react';
-import { Building2, ChevronLeft, ChevronRight, GraduationCap, Quote, Trophy } from 'lucide-react';
+import { Building2, ChevronLeft, ChevronRight, GraduationCap, Trophy } from 'lucide-react';
 import type { HomepageResult } from '@workspace/api-client-react';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
@@ -42,7 +42,6 @@ export function ResultsStoryDialog({
   onPrevious,
   onNext,
 }: ResultsStoryDialogProps) {
-  const story = result?.story?.trim();
   const course = result?.course?.trim() || result?.examCourse?.trim();
   const category = result ? categoryLabels[result.category] || result.category : '';
 
@@ -129,13 +128,6 @@ export function ResultsStoryDialog({
                   {result.achievement}
                 </p>
               </div>
-
-              {story && (
-                <blockquote className="relative mt-6 rounded-2xl border border-[hsl(var(--primary)/.1)] bg-white/80 p-5 sm:p-6" data-testid="dialog-story-content">
-                  <Quote className="absolute right-5 top-5 text-[hsl(var(--accent)/.55)]" size={24} aria-hidden="true" />
-                  <p className="pr-8 text-sm leading-7 text-[hsl(var(--foreground))]">{story}</p>
-                </blockquote>
-              )}
 
               <div className="mt-auto pt-8">
                 <div className="flex items-center justify-between gap-3 border-t border-[hsl(var(--border))] pt-5">

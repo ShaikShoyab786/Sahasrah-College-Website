@@ -29,11 +29,6 @@ export interface HomepageResultInput {
   /** @nullable */
   course: string | null;
   /** @nullable */
-  story: string | null;
-  storyIsPublished?: boolean;
-  /** @minimum 1 */
-  storyOrder?: number;
-  /** @nullable */
   accentColor: string | null;
   /**
      * @minimum 1

@@ -122,10 +122,9 @@ export default function Results() {
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState<MeritSort>('featured');
   const [expanded, setExpanded] = useState(false);
-  const [storyId, setStoryId] = useState<string | null>(null);
-  const [storySource, setStorySource] = useState<'results' | 'stories'>('results');
-  const storyScrollPosition = useRef(0);
-  const storyWasOpen = useRef(false);
+  const [selectedResultId, setSelectedResultId] = useState<string | null>(null);
+  const dialogScrollPosition = useRef(0);
+  const dialogWasOpen = useRef(false);
   const expandTrigger = useRef<HTMLButtonElement>(null);
   const settings = settingsQuery.data ?? { collegeName: 'Sahsrah Junior College', tagline: '', logoUrl: null, email: '', phone: '', footerText: '', primaryColor: DEFAULT_PRIMARY_COLOR, accentColor: DEFAULT_ACCENT_COLOR, surfaceColor: DEFAULT_SURFACE_COLOR };
   const themeStyle = createPublicThemeStyle(settings.primaryColor || DEFAULT_PRIMARY_COLOR, settings.accentColor || DEFAULT_ACCENT_COLOR, settings.surfaceColor || DEFAULT_SURFACE_COLOR);
@@ -155,13 +154,8 @@ export default function Results() {
     });
   }, [category, published, search, sort, year]);
   const topPerformers = filtered.slice(0, 3);
-  const stories = useMemo(
-    () => published.filter((result) => result.storyIsPublished && Boolean(result.story?.trim()))
-      .sort((a, b) => a.storyOrder - b.storyOrder || a.displayOrder - b.displayOrder || a.id.localeCompare(b.id)),
-    [published],
-  );
-  const dialogResults = storySource === 'stories' ? stories : filtered;
-  const storyResult = dialogResults.find((result) => result.id === storyId) ?? null;
+  const dialogResults = filtered;
+  const storyResult = dialogResults.find((result) => result.id === selectedResultId) ?? null;
   const storyIndex = storyResult ? dialogResults.findIndex((result) => result.id === storyResult.id) : -1;
   const clearFilters = () => {
     setCategory('ALL');
@@ -176,17 +170,16 @@ export default function Results() {
       expandTrigger.current?.scrollIntoView({ block: 'center', behavior: 'auto' });
     });
   };
-  const openStory = (id: string, source: 'results' | 'stories' = 'results') => {
-    storyScrollPosition.current = window.scrollY;
-    setStorySource(source);
-    setStoryId(id);
+  const openResultDetails = (id: string) => {
+    dialogScrollPosition.current = window.scrollY;
+    setSelectedResultId(id);
   };
   useEffect(() => {
-    if (storyWasOpen.current && !storyId) {
-      requestAnimationFrame(() => requestAnimationFrame(() => window.scrollTo({ top: storyScrollPosition.current, behavior: 'auto' })));
+    if (dialogWasOpen.current && !selectedResultId) {
+      requestAnimationFrame(() => requestAnimationFrame(() => window.scrollTo({ top: dialogScrollPosition.current, behavior: 'auto' })));
     }
-    storyWasOpen.current = Boolean(storyId);
-  }, [storyId]);
+    dialogWasOpen.current = Boolean(selectedResultId);
+  }, [selectedResultId]);
   if (query.isLoading) return <div className="min-h-[100dvh] animate-pulse bg-[hsl(var(--background))] p-6"><div className="mx-auto max-w-7xl space-y-6 pt-24"><div className="h-8 w-44 rounded bg-[hsl(var(--muted))]" /><div className="h-64 rounded-[2rem] bg-[hsl(var(--muted))]" /><div className="grid gap-4 md:grid-cols-3"><div className="h-64 rounded-2xl bg-[hsl(var(--muted))]" /><div className="h-64 rounded-2xl bg-[hsl(var(--muted))]" /><div className="h-64 rounded-2xl bg-[hsl(var(--muted))]" /></div></div></div>;
   if (query.isError || !content) return <div className="min-h-[100dvh] bg-[hsl(var(--background))]"><PublicHeader settings={settings} activePage="results" mobileFlow /><main className="mx-auto max-w-2xl px-6 py-24 text-center"><p className="text-xs font-bold uppercase tracking-[.2em] text-[hsl(var(--accent-foreground))]">Results library</p><h1 className="mt-4 font-display text-4xl font-semibold text-[hsl(var(--primary))]">Results are temporarily unavailable.</h1><p className="mt-4 text-sm leading-6 text-[hsl(var(--muted-foreground))]">Please try again shortly.</p><button type="button" onClick={() => query.refetch()} data-testid="button-retry-results" className="mt-7 rounded-full bg-[hsl(var(--primary))] px-5 py-3 text-sm font-bold text-[hsl(var(--primary-foreground))]">Try again</button></main></div>;
   if (!content.settings.isVisible) return <div className="min-h-[100dvh] bg-[hsl(var(--background))]"><PublicHeader settings={settings} mobileFlow /><main className="mx-auto max-w-2xl px-6 py-24 text-center"><BookOpen className="mx-auto text-[hsl(var(--accent))]" size={30} /><h1 className="mt-5 font-display text-4xl font-semibold text-[hsl(var(--primary))]">Results will be shared here soon.</h1><p className="mt-4 text-sm leading-6 text-[hsl(var(--muted-foreground))]">The Results page is being prepared by the Sahsrah team.</p></main></div>;
@@ -231,7 +224,7 @@ export default function Results() {
           )}
           {topPerformers.length ? (
             <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {topPerformers.map((result) => <TopPerformerCard key={result.id} result={result} onStory={() => openStory(result.id)} />)}
+              {topPerformers.map((result) => <TopPerformerCard key={result.id} result={result} onStory={() => openResultDetails(result.id)} />)}
             </div>
           ) : (
             <div className="mt-10 rounded-[1.5rem] border border-dashed border-[hsl(var(--border))] bg-[hsl(var(--card))] px-6 py-14 text-center">
@@ -264,14 +257,14 @@ export default function Results() {
                 onYearChange={setYear}
                 onSearchChange={setSearch}
                 onSortChange={setSort}
-                onStory={openStory}
+                onStory={openResultDetails}
                 onCollapse={collapseList}
                 onClearFilters={clearFilters}
               />
             )}
           </div>
         </section>
-        <ResultsSuccessStories stories={stories} onStory={(result) => openStory(result.id, 'stories')} />
+        <ResultsSuccessStories stories={content.alumniStories} />
         {content.settings.ctaIsVisible && (
           <ResultsContactCta
             heading={content.settings.ctaHeading}
@@ -289,9 +282,9 @@ export default function Results() {
         index={storyIndex}
         total={dialogResults.length}
         themeStyle={themeStyle}
-        onOpenChange={(open) => !open && setStoryId(null)}
-        onPrevious={() => storyIndex > 0 && setStoryId(dialogResults[storyIndex - 1].id)}
-        onNext={() => storyIndex >= 0 && storyIndex < dialogResults.length - 1 && setStoryId(dialogResults[storyIndex + 1].id)}
+        onOpenChange={(open) => !open && setSelectedResultId(null)}
+        onPrevious={() => storyIndex > 0 && setSelectedResultId(dialogResults[storyIndex - 1].id)}
+        onNext={() => storyIndex >= 0 && storyIndex < dialogResults.length - 1 && setSelectedResultId(dialogResults[storyIndex + 1].id)}
       />
     </div>
   );

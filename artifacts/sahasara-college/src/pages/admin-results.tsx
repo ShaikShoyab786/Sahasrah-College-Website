@@ -1,12 +1,13 @@
-import { useEffect, useMemo, useState, type ChangeEvent } from 'react';
+import { useEffect, useState, type ChangeEvent } from 'react';
 import { FormProvider, useFieldArray, useForm, useFormContext } from 'react-hook-form';
 import { ArrowDown, ArrowUp, ImagePlus, Plus, Trash2 } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { getGetAdminHomepageResultsQueryKey, getGetAdminResultsLibraryQueryKey, getGetHomepageResultsQueryKey, getGetResultsPageQueryKey, useGetAdminResultsLibrary, useUpdateAdminResultsLibrary, useUploadAdminImage, type AdminResultsLibraryInput, type HomepageResultInput, type ResultCategory, type ResultStatisticInput } from '@workspace/api-client-react';
-import { Area, Field, SaveButton } from '@/components/form-fields';
+import { Area, Field } from '@/components/form-fields';
 import { EditorCard, EditorFrame, EditorSkeleton, LoadError, SaveStatus } from '@/pages/admin-about-hero';
+import { AlumniStoriesEditor } from '@/components/admin-alumni-stories-editor';
 
-const emptyResult: HomepageResultInput = { studentImageUrl: null, studentImageAltText: 'Student achievement portrait', studentName: '', examCourse: '', score: '', achievement: '', resultLabel: '', examName: null, category: 'OTHER', year: null, institution: null, course: null, story: null, storyIsPublished: false, storyOrder: 1, accentColor: null, displayOrder: 1, isPublished: false, showInHomePreview: false, homePreviewOrder: 1 };
+const emptyResult: HomepageResultInput = { studentImageUrl: null, studentImageAltText: 'Student achievement portrait', studentName: '', examCourse: '', score: '', achievement: '', resultLabel: '', examName: null, category: 'OTHER', year: null, institution: null, course: null, accentColor: null, displayOrder: 1, isPublished: false, showInHomePreview: false, homePreviewOrder: 1 };
 const emptyStatistic: ResultStatisticInput = { label: '', value: '', supportingText: null, displayOrder: 1, isPublished: false, showInHomePreview: false, homePreviewOrder: 1 };
 const emptyForm: AdminResultsLibraryInput = { settings: { eyebrow: 'Student outcomes', heading: 'Results worth sharing.', description: '', configuredYear: null, isVisible: true, ctaHeading: 'Your next chapter starts here.', ctaDescription: 'Connect with our team to learn about admissions and next steps.', ctaPrimaryLabel: 'Enquire Now', ctaSecondaryLabel: 'Contact Us', ctaPrimaryHref: '/contact', ctaSecondaryHref: '/contact', ctaIsVisible: true }, results: [], statistics: [] };
 const categories: ResultCategory[] = ['INTERMEDIATE', 'JEE_MAIN', 'NEET', 'EAMCET', 'OTHER'];
@@ -43,17 +44,6 @@ function ResultFields({ index, existingId }: { index: number; existingId?: strin
     <Field id={`result-${index}-accent`} label="Accent colour" {...register(`results.${index}.accentColor`)} placeholder="#CE0B11" />
     <Field id={`result-${index}-image-url`} label="Image URL" value={image ?? ''} onChange={(event) => setValue(`results.${index}.studentImageUrl`, event.target.value || null)} />
     <Field id={`result-${index}-alt`} label="Image alt text" {...register(`results.${index}.studentImageAltText`)} />
-    <div className="space-y-4 rounded-xl border border-[hsl(var(--admin-border))] p-4 md:col-span-2">
-      <Area id={`result-${index}-story`} label="Student success story (optional)" {...register(`results.${index}.story`, { validate: (value) => !watch(`results.${index}.storyIsPublished`) || Boolean(value?.trim()) || 'Published stories need text.' })} />
-      <p className="text-xs text-[hsl(var(--admin-text-muted))]">Only results published on this page with an approved, published story appear in Success Stories.</p>
-      <div className="grid items-end gap-4 sm:grid-cols-2">
-        <label className="flex min-h-11 items-center gap-3 text-sm font-semibold">
-          <input type="checkbox" {...register(`results.${index}.storyIsPublished`)} className="h-4 w-4 accent-[hsl(var(--admin-focus))]" />
-          Publish this success story
-        </label>
-        <NumberField id={`result-${index}-story-order`} label="Story carousel order" value={watch(`results.${index}.storyOrder`) || 1} onChange={(value) => setValue(`results.${index}.storyOrder`, value)} />
-      </div>
-    </div>
     <div className="flex flex-wrap items-center gap-4 md:col-span-2"><Upload onUploaded={(url) => setValue(`results.${index}.studentImageUrl`, url)} /><span className="text-xs text-[hsl(var(--admin-text-muted))]">{existingId ? 'Saved record' : 'New record'}</span></div>
   </div>;
 }
@@ -63,7 +53,7 @@ function ResultsEditor() {
   const { fields, append, remove, move } = useFieldArray({ control, name: 'results' });
   const [confirmIndex, setConfirmIndex] = useState<number | null>(null);
   const values = watch('results');
-  return <EditorCard title={`Student results (${fields.length})`} description="Records remain in the shared library until removed. Approve and order each student's story here; new records and stories start unpublished.">
+  return <EditorCard title={`Student results (${fields.length})`} description="Verified achievement records for current and former students. These records are separate from alumni experiences; new results start unpublished.">
     {fields.length ? <div className="space-y-5">{fields.map((field, index) => { const item = values[index]; return <div key={field.id} className="rounded-2xl border border-[hsl(var(--admin-border))] bg-[hsl(var(--admin-surface))] p-5">
       <div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-[10px] font-bold uppercase tracking-[.18em] text-[hsl(var(--admin-text-muted))]">Result {index + 1}</p><h3 className="mt-2 font-display text-2xl font-semibold text-[hsl(var(--admin-text))]">{item?.studentName || 'Untitled result'}</h3></div><div className="flex items-center gap-1"><button type="button" disabled={index === 0} onClick={() => move(index, index - 1)} className="rounded-lg p-2 disabled:opacity-25" aria-label="Move result up" data-testid={`button-move-result-up-${field.id}`}><ArrowUp size={15} /></button><button type="button" disabled={index === fields.length - 1} onClick={() => move(index, index + 1)} className="rounded-lg p-2 disabled:opacity-25" aria-label="Move result down" data-testid={`button-move-result-down-${field.id}`}><ArrowDown size={15} /></button><button type="button" onClick={() => item?.id ? setConfirmIndex(index) : remove(index)} className="rounded-lg p-2 text-[hsl(var(--destructive))]" aria-label="Remove result" data-testid={`button-remove-result-${field.id}`}><Trash2 size={15} /></button></div></div>
       <ResultFields index={index} existingId={item?.id} /><div className="mt-5 grid gap-4 border-t border-[hsl(var(--admin-border))] pt-5 sm:grid-cols-2"><NumberField id={`result-${index}-order`} label="Results page order" value={item?.displayOrder || index + 1} onChange={(value) => setValue(`results.${index}.displayOrder`, value)} /><NumberField id={`result-${index}-home-order`} label="Home preview order" value={item?.homePreviewOrder || index + 1} onChange={(value) => setValue(`results.${index}.homePreviewOrder`, value)} /></div><div className="mt-4 flex flex-wrap gap-5 text-sm font-semibold"><label className="flex items-center gap-2"><input type="checkbox" {...register(`results.${index}.isPublished`)} className="h-4 w-4 accent-[hsl(var(--admin-focus))]" /> Publish on Results page</label><label className="flex items-center gap-2"><input type="checkbox" {...register(`results.${index}.showInHomePreview`)} className="h-4 w-4 accent-[hsl(var(--admin-focus))]" /> Feature on Home</label></div>
@@ -106,17 +96,25 @@ export default function AdminResults() {
   }, [form, query.data]);
   const save = form.handleSubmit((data) => {
     setNotice(''); setError('');
-    const normalized: AdminResultsLibraryInput = { settings: data.settings, results: data.results.map((item, index) => ({ ...item, displayOrder: index + 1, homePreviewOrder: item.homePreviewOrder || index + 1, studentImageUrl: item.studentImageUrl || null, examName: item.examName || null, year: item.year || null, institution: item.institution || null, course: item.course || null, story: item.story || null, storyIsPublished: item.storyIsPublished ?? false, storyOrder: item.storyOrder || index + 1, accentColor: item.accentColor || null })), statistics: data.statistics.map((item, index) => ({ ...item, displayOrder: index + 1, homePreviewOrder: item.homePreviewOrder || index + 1, supportingText: item.supportingText || null })) };
+    const normalized: AdminResultsLibraryInput = {
+      settings: data.settings,
+      results: data.results.map((item, index) => {
+        // Drop fields from older student-result payloads; legacy testimonial migration belongs in the separate alumni collection.
+        const record = Object.fromEntries(Object.entries(item).filter(([key]) => !['story', 'storyIsPublished', 'storyOrder'].includes(key))) as HomepageResultInput;
+        return { ...record, displayOrder: index + 1, homePreviewOrder: item.homePreviewOrder || index + 1, studentImageUrl: item.studentImageUrl || null, examName: item.examName || null, year: item.year || null, institution: item.institution || null, course: item.course || null, accentColor: item.accentColor || null };
+      }),
+      statistics: data.statistics.map((item, index) => ({ ...item, displayOrder: index + 1, homePreviewOrder: item.homePreviewOrder || index + 1, supportingText: item.supportingText || null })),
+    };
     update.mutate({ data: normalized }, { onSuccess: () => { void client.invalidateQueries({ queryKey: getGetAdminResultsLibraryQueryKey() }); void client.invalidateQueries({ queryKey: getGetResultsPageQueryKey() }); void client.invalidateQueries({ queryKey: getGetHomepageResultsQueryKey() }); void client.invalidateQueries({ queryKey: getGetAdminHomepageResultsQueryKey() }); setNotice('Results library saved.'); }, onError: (mutationError) => setError(getResultsSaveError(mutationError)) });
   }, () => {
     setNotice('');
-    setError('Complete the required fields. Published stories need text, and both CTA destinations must lead to /contact.');
+    setError('Complete the required fields. Both CTA destinations must lead to /contact.');
   });
   if (query.isLoading) return <EditorSkeleton />;
   if (query.isError && !query.data) return <LoadError onRetry={() => query.refetch()} />;
-  return <EditorFrame eyebrow="Pages / Results" title="One library for every outcome." description="Publish verified student achievements, curate the Home preview, and keep the public Results page grounded in the shared library." previewHref="/results"><FormProvider {...form}><form onSubmit={save} className="mt-10 space-y-6">
+  return <EditorFrame eyebrow="Pages / Results" title="One library for every outcome." description="Publish verified student achievements, curate the Home preview, and keep the public Results page grounded in the shared library." previewHref="/results"><FormProvider {...form}><div className="mt-10 space-y-6">
     <EditorCard title="Results page introduction" description="Set the copy families see above the published record."><div className="grid gap-4 md:grid-cols-2"><Field id="results-settings-eyebrow" label="Eyebrow" {...form.register('settings.eyebrow', { required: true })} /><Field id="results-settings-heading" label="Heading" {...form.register('settings.heading', { required: true })} /><div className="md:col-span-2"><Area id="results-settings-description" label="Description" {...form.register('settings.description', { required: true })} /></div><Field id="results-settings-year" label="Configured year (optional)" {...form.register('settings.configuredYear')} placeholder="2025" /><label className="flex items-center gap-3 text-sm font-semibold"><input type="checkbox" {...form.register('settings.isVisible')} className="h-4 w-4 accent-[hsl(var(--admin-focus))]" /> Show the public Results page</label></div></EditorCard>
-    <ResultsEditor /><StatisticsEditor />
+     <ResultsEditor /><StatisticsEditor /><AlumniStoriesEditor />
     <EditorCard title="Results contact call to action" description="Edit the closing invitation. Both buttons must lead to the site's Contact page; optional query strings or anchors are allowed.">
       <div className="grid gap-4 md:grid-cols-2">
         <div className="md:col-span-2"><Field id="results-cta-heading" label="CTA heading" {...form.register('settings.ctaHeading', { required: true })} /></div>
@@ -128,6 +126,6 @@ export default function AdminResults() {
         <label className="flex items-center gap-3 text-sm font-semibold md:col-span-2"><input type="checkbox" {...form.register('settings.ctaIsVisible')} className="h-4 w-4 accent-[hsl(var(--admin-focus))]" /> Show the contact call to action on Results</label>
       </div>
     </EditorCard>
-    <SaveStatus error={error} notice={notice} /><div className="flex justify-end"><SaveButton pending={update.isPending} testId="button-save-results-library">Save Results library</SaveButton></div>
-  </form></FormProvider></EditorFrame>;
+     <SaveStatus error={error} notice={notice} /><div className="flex justify-end"><button type="button" onClick={() => void save()} disabled={update.isPending} data-testid="button-save-results-library" className="inline-flex h-11 items-center justify-center rounded-xl bg-[hsl(var(--admin-primary))] px-5 text-sm font-bold text-[hsl(var(--admin-on-primary))] shadow-sm transition hover:-translate-y-0.5 hover:bg-[hsl(var(--admin-primary)/.9)] disabled:cursor-not-allowed disabled:opacity-60">{update.isPending ? 'Saving changes…' : 'Save Results library'}</button></div>
+   </div></FormProvider></EditorFrame>;
 }

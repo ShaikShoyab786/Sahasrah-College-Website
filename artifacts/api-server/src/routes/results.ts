@@ -32,10 +32,6 @@ function isValidContactDestination(value: string) {
   return /^\/contact(?:[?#][^\s]*)?$/.test(value);
 }
 
-function publicStory(result: { isPublished: boolean; storyIsPublished: boolean; story: string | null }) {
-  return result.isPublished && result.storyIsPublished ? result.story?.trim() || null : null;
-}
-
 function resultData(result: ResultPayload): Prisma.HomepageResultUncheckedCreateInput {
   return {
     homepageResultsId: "singleton",
@@ -51,9 +47,6 @@ function resultData(result: ResultPayload): Prisma.HomepageResultUncheckedCreate
     year: result.year?.trim() || null,
     institution: result.institution?.trim() || null,
     course: result.course?.trim() || null,
-    story: result.story?.trim() || null,
-    storyIsPublished: result.storyIsPublished ?? false,
-    storyOrder: result.storyOrder ?? 1,
     accentColor: result.accentColor?.trim() || null,
     displayOrder: result.displayOrder,
     isActive: result.isPublished,
@@ -97,7 +90,7 @@ async function readAdminLibrary() {
 
 router.get("/results", async (req, res): Promise<void> => {
   try {
-    const [settings, sharedResults] = await Promise.all([
+    const [settings, sharedResults, alumniStories] = await Promise.all([
       prisma.resultsPageSettings.findUnique({ where: { id: "singleton" } }),
       prisma.homepageResults.findUnique({
         where: { id: "singleton" },
@@ -105,6 +98,10 @@ router.get("/results", async (req, res): Promise<void> => {
           results: { orderBy: [{ displayOrder: "asc" }, { id: "asc" }] },
           statistics: { orderBy: [{ displayOrder: "asc" }, { id: "asc" }] },
         },
+      }),
+      prisma.alumniSuccessStory.findMany({
+        where: { isPublished: true },
+        orderBy: [{ displayOrder: "asc" }, { id: "asc" }],
       }),
     ]);
 
@@ -116,8 +113,8 @@ router.get("/results", async (req, res): Promise<void> => {
     res.json(GetResultsPageResponse.parse({
       settings,
       results: (sharedResults?.results ?? [])
-        .filter((result) => result.isPublished)
-        .map((result) => ({ ...result, story: publicStory(result) })),
+        .filter((result) => result.isPublished),
+      alumniStories,
       statistics: (sharedResults?.statistics ?? []).filter((statistic) => statistic.isPublished),
     }));
   } catch (error) {
@@ -174,7 +171,6 @@ router.put("/admin/results", requireAdmin, async (req, res): Promise<void> => {
     const label = `Result ${index + 1}`;
     if (!result.studentName.trim()) validationErrors.push(`${label}: enter a student name.`);
     if (!result.achievement.trim()) validationErrors.push(`${label}: enter an achievement.`);
-    if (result.storyIsPublished && !result.story?.trim()) validationErrors.push(`${label}: enter a student story before publishing it.`);
     if (!isValidImageReference(result.studentImageUrl)) validationErrors.push(`${label}: use an HTTP(S) image URL or a stored image path.`);
     if (result.studentImageUrl !== null && !result.studentImageAltText.trim()) validationErrors.push(`${label}: enter image alt text.`);
   });

@@ -342,11 +342,7 @@ router.get("/homepage-results", async (req, res) => {
       eyebrow: content.eyebrow || "Pride of Sahasrah",
       viewAllButtonLink: "/results",
       results: content.results
-        .filter((result) => result.isPublished && result.showInHomePreview)
-        .map((result) => ({
-          ...result,
-          story: result.isPublished && result.storyIsPublished ? result.story?.trim() || null : null,
-        })),
+        .filter((result) => result.isPublished && result.showInHomePreview),
       statistics: content.statistics.filter((statistic) => statistic.isPublished && statistic.showInHomePreview),
     }));
   } catch (error) {

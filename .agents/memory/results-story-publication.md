@@ -1,10 +1,10 @@
 ---
-name: Results story publication
-description: The publication policy for student stories on the Sahasrah Results page.
+name: Results alumni story publication
+description: The separation and publication policy for alumni stories on the Sahasrah Results page.
 ---
 
-Do not fabricate student testimonials to fill the Results Success Stories section. Keep it hidden when there are no approved, published stories, even if the page's contact CTA and footer remain visible.
+Results Success Stories are for former students, not the current students in Top Performers or the merit list. Do not fabricate alumni or testimonials. Keep the section hidden when there are no approved, published alumni stories, even if the contact CTA and footer remain visible.
 
-**Why:** The existing Results records had no story text when the section was built. Displaying invented quotes as student experiences would misrepresent real people and the college.
+**Why:** The initial implementation coupled stories to the shared Results student records. The user clarified that these represent different people and lifecycles. Even saved text on a Results record does not establish that student as an alumnus.
 
-**How to apply:** Request approved story text from the administrator or user before adding public stories. Temporary browser-only fixtures may exercise the carousel, but must never be persisted or treated as published content.
+**How to apply:** Treat legacy story text as unpublished review material without asserting alumni status. Only administrators may confirm and publish alumni profiles independently. Temporary browser-only fixtures may exercise the carousel, but must never be persisted or treated as published content.

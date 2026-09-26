@@ -5,6 +5,7 @@ import contentRouter from "./content";
 import facultyRouter from "./faculty";
 import galleryRouter from "./gallery";
 import resultsRouter from "./results";
+import alumniSuccessStoriesRouter from "./alumni-success-stories";
 import uploadsRouter from "./uploads";
 import contactRouter from "./contact";
 
@@ -16,6 +17,7 @@ router.use(contentRouter);
 router.use(facultyRouter);
 router.use(galleryRouter);
 router.use(resultsRouter);
+router.use(alumniSuccessStoriesRouter);
 router.use(contactRouter);
 router.use(uploadsRouter);
 

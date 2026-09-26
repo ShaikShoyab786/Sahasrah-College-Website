@@ -752,10 +752,6 @@ export interface HomepageResult {
   /** @nullable */
   course: string | null;
   /** @nullable */
-  story: string | null;
-  storyIsPublished: boolean;
-  storyOrder: number;
-  /** @nullable */
   accentColor: string | null;
   displayOrder: number;
   isPublished: boolean;
@@ -785,11 +781,6 @@ export interface HomepageResultInput {
   /** @nullable */
   course: string | null;
   /** @nullable */
-  story: string | null;
-  storyIsPublished?: boolean;
-  /** @minimum 1 */
-  storyOrder?: number;
-  /** @nullable */
   accentColor: string | null;
   /**
      * @minimum 1
@@ -803,6 +794,68 @@ export interface HomepageResultInput {
      * @maximum 100
      */
   homePreviewOrder: number;
+}
+
+export interface AlumniSuccessStory {
+  id: string;
+  displayName: string;
+  /** @nullable */
+  portraitUrl: string | null;
+  /** @nullable */
+  portraitAltText: string | null;
+  /** @nullable */
+  passingYear: string | null;
+  /** @nullable */
+  course: string | null;
+  /** @nullable */
+  currentOutcome: string | null;
+  story: string;
+  isPublished: boolean;
+  displayOrder: number;
+}
+
+export type AdminAlumniSuccessStory = AlumniSuccessStory & ({
+  /** @nullable */
+  importedFromResultId: string | null;
+});
+
+export interface AlumniSuccessStoryInput {
+  id?: string;
+  displayName: string;
+  /** @nullable */
+  portraitUrl: string | null;
+  /** @nullable */
+  portraitAltText: string | null;
+  /** @nullable */
+  passingYear: string | null;
+  /** @nullable */
+  course: string | null;
+  /** @nullable */
+  currentOutcome: string | null;
+  story: string;
+  isPublished: boolean;
+  /**
+     * @minimum 1
+     * @maximum 100
+     */
+  displayOrder: number;
+}
+
+export interface AlumniSuccessStories {
+  alumniStories: AlumniSuccessStory[];
+}
+
+export interface AdminAlumniSuccessStories {
+  /** @minimum 0 */
+  revision: number;
+  alumniStories: AdminAlumniSuccessStory[];
+}
+
+export interface AlumniSuccessStoriesInput {
+  /** @minimum 0 */
+  expectedRevision: number;
+  /** @maxItems 100 */
+  alumniStories: AlumniSuccessStoryInput[];
 }
 
 export interface ResultStatistic {
@@ -885,6 +938,7 @@ export interface ResultsPageSettingsInput {
 export interface ResultsPageData {
   settings: ResultsPageSettings;
   results: HomepageResult[];
+  alumniStories: AlumniSuccessStory[];
   statistics: ResultStatistic[];
 }
 

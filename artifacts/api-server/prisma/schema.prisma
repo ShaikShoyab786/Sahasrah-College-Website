@@ -323,6 +323,34 @@ model HomepageResult {
   @@index([homepageResultsId])
 }
 
+model AlumniSuccessStory {
+  id                    String   @id @default(cuid())
+  displayName           String   @default("")
+  portraitUrl           String?
+  portraitAltText       String?
+  passingYear           String?
+  course                String?
+  currentOutcome        String?
+  story                 String   @default("")
+  isPublished           Boolean  @default(false)
+  displayOrder          Int      @unique
+  importedFromResultId  String?  @unique
+  updatedAt             DateTime @updatedAt
+
+  @@index([isPublished, displayOrder])
+}
+
+model AlumniStoryImportMarker {
+  sourceResultId String   @id
+  importedAt     DateTime @default(now())
+}
+
+model AlumniSuccessStoriesRevision {
+  id        String   @id @default("singleton")
+  revision  Int      @default(0)
+  updatedAt DateTime @updatedAt
+}
+
 model HomepageResultStatistic {
   id                  String          @id @default(cuid())
   homepageResultsId   String          @default("singleton")
