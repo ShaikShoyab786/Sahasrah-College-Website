@@ -1,0 +1,42 @@
+mprove the Results Page and Student Story Dialog
+Refine the existing Results page without breaking the shared Results library or the Home “Pride of Sahasrah” preview.
+
+Reference screenshots
+Use attached_assets/image_1790439828786.png for Sahasrah’s branding, navigation, and overall visual direction. Override the left alignment shown there: center the hero content.
+Use attached_assets/image_1790440067760.png for the student biography dialog layout and navigation controls. Keep Sahasrah branding rather than copying the KVR branding.
+Use attached_assets/image_1790420963203.png for the performer cards and filters. Keep the filters with the Top Performers section—not above or overlapping the statistics bar.
+1. Center and animate the hero
+Center the eyebrow, heading, and description horizontally within the hero. Keep the text block at a comfortable readable width and vertically balanced beneath the navigation.
+
+Add refined entrance effects to the hero text—such as a staggered fade and slight upward movement for the eyebrow, heading, and description. Keep the motion subtle, avoid layout shifts, and respect reduced-motion settings. Retain Sahasrah’s existing colors and typography.
+
+2. Restyle the statistics bar
+Do not use the same deep navy background as the hero. Use a distinct, light warm-white or ivory panel with dark navy labels and restrained Sahasrah red or teal accents for the values. Add a subtle border or shadow to separate it from the hero.
+
+Show the configured statistics in a balanced row on desktop and an orderly responsive layout on smaller screens. Do not leave one statistic awkwardly stranded in a second row. Keep the slow, readable count-up effect and respect reduced-motion settings. Do not put category filters in the statistics bar.
+
+3. Complete the student biography dialog
+Clicking Read Success Story on a performer card must open that student’s biography dialog. Include:
+
+Student photo, name, and achievement
+Marks and course/stream, when available
+Institution and exam/category
+Key achievement
+Success story or testimonial, when available
+Include working Prev Student, Back to Results, and Next Student controls:
+
+Previous and Next should update the displayed student without closing the dialog.
+Navigate within the currently selected year and category.
+Disable or hide Previous/Next when there is no student in that direction.
+Back to Results closes the dialog and returns to the results list, preserving its selected filter and scroll position.
+Make the dialog responsive and keyboard accessible, with a visible close button, Escape-to-close, and sensible focus handling. Do not navigate to an external profile when opening a story.
+
+4. Preserve existing behavior
+Keep the Results filters below the Our Top Performers heading and above the cards. Keep them out of the hero and statistics bar.
+
+Preserve the shared Results library, Home featured-result selection, and Pride of Sahasrah Home preview. Keep Results under Pages in admin. The centered delete confirmation dialog and its backdrop are intentional; do not change them.
+
+Use existing approved student and statistics content. Do not invent student stories or result figures.
+
+5. Verify
+Confirm the hero is centered and animated, the statistics panel contrasts with the navy hero, filters remain in the Top Performers section, and all three dialog navigation controls work with the active filter. Check desktop and mobile layouts and confirm the Home preview and shared Results data remain intact.
