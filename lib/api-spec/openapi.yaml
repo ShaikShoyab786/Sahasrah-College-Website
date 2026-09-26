@@ -3530,6 +3530,10 @@ components:
           type: ["string", "null"]
         story:
           type: ["string", "null"]
+        storyIsPublished:
+          type: boolean
+        storyOrder:
+          type: integer
         accentColor:
           type: ["string", "null"]
         displayOrder:
@@ -3540,7 +3544,7 @@ components:
           type: boolean
         homePreviewOrder:
           type: integer
-      required: [id, studentImageUrl, studentImageAltText, studentName, examCourse, score, achievement, resultLabel, examName, category, year, institution, course, story, accentColor, displayOrder, isPublished, showInHomePreview, homePreviewOrder]
+      required: [id, studentImageUrl, studentImageAltText, studentName, examCourse, score, achievement, resultLabel, examName, category, year, institution, course, story, storyIsPublished, storyOrder, accentColor, displayOrder, isPublished, showInHomePreview, homePreviewOrder]
     HomepageResultInput:
       type: object
       properties:
@@ -3574,6 +3578,11 @@ components:
           type: ["string", "null"]
         story:
           type: ["string", "null"]
+        storyIsPublished:
+          type: boolean
+        storyOrder:
+          type: integer
+          minimum: 1
         accentColor:
           type: ["string", "null"]
         displayOrder:
@@ -3651,7 +3660,23 @@ components:
           type: ["string", "null"]
         isVisible:
           type: boolean
-      required: [eyebrow, heading, description, configuredYear, isVisible]
+        ctaHeading:
+          type: string
+        ctaDescription:
+          type: string
+        ctaPrimaryLabel:
+          type: string
+        ctaSecondaryLabel:
+          type: string
+        ctaPrimaryHref:
+          type: string
+          pattern: "^/contact(?:[?#][^\\s]*)?$"
+        ctaSecondaryHref:
+          type: string
+          pattern: "^/contact(?:[?#][^\\s]*)?$"
+        ctaIsVisible:
+          type: boolean
+      required: [eyebrow, heading, description, configuredYear, isVisible, ctaHeading, ctaDescription, ctaPrimaryLabel, ctaSecondaryLabel, ctaPrimaryHref, ctaSecondaryHref, ctaIsVisible]
     ResultsPageSettingsInput:
       type: object
       properties:
@@ -3668,7 +3693,27 @@ components:
           type: ["string", "null"]
         isVisible:
           type: boolean
-      required: [eyebrow, heading, description, configuredYear, isVisible]
+        ctaHeading:
+          type: string
+          minLength: 1
+        ctaDescription:
+          type: string
+          minLength: 1
+        ctaPrimaryLabel:
+          type: string
+          minLength: 1
+        ctaSecondaryLabel:
+          type: string
+          minLength: 1
+        ctaPrimaryHref:
+          type: string
+          pattern: "^/contact(?:[?#][^\\s]*)?$"
+        ctaSecondaryHref:
+          type: string
+          pattern: "^/contact(?:[?#][^\\s]*)?$"
+        ctaIsVisible:
+          type: boolean
+      required: [eyebrow, heading, description, configuredYear, isVisible, ctaHeading, ctaDescription, ctaPrimaryLabel, ctaSecondaryLabel, ctaPrimaryHref, ctaSecondaryHref, ctaIsVisible]
     ResultsPageData:
       type: object
       properties:

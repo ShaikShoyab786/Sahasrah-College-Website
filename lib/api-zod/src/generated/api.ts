@@ -249,6 +249,8 @@ export const GetHomepageResultsResponse = zod.object({
   "institution": zod.string().nullable(),
   "course": zod.string().nullable(),
   "story": zod.string().nullable(),
+  "storyIsPublished": zod.boolean(),
+  "storyOrder": zod.number().int(),
   "accentColor": zod.string().nullable(),
   "displayOrder": zod.number().int(),
   "isPublished": zod.boolean(),
@@ -271,13 +273,24 @@ export const GetHomepageResultsResponse = zod.object({
 /**
  * @summary Read published student results and statistics
  */
+export const getResultsPageResponseSettingsCtaPrimaryHrefRegExp = new RegExp('^/contact(?:[?#][^\\s]*)?$');
+export const getResultsPageResponseSettingsCtaSecondaryHrefRegExp = new RegExp('^/contact(?:[?#][^\\s]*)?$');
+
+
 export const GetResultsPageResponse = zod.object({
   "settings": zod.object({
   "eyebrow": zod.string(),
   "heading": zod.string(),
   "description": zod.string(),
   "configuredYear": zod.string().nullable(),
-  "isVisible": zod.boolean()
+  "isVisible": zod.boolean(),
+  "ctaHeading": zod.string(),
+  "ctaDescription": zod.string(),
+  "ctaPrimaryLabel": zod.string(),
+  "ctaSecondaryLabel": zod.string(),
+  "ctaPrimaryHref": zod.string().regex(getResultsPageResponseSettingsCtaPrimaryHrefRegExp),
+  "ctaSecondaryHref": zod.string().regex(getResultsPageResponseSettingsCtaSecondaryHrefRegExp),
+  "ctaIsVisible": zod.boolean()
 }),
   "results": zod.array(zod.object({
   "id": zod.string(),
@@ -294,6 +307,8 @@ export const GetResultsPageResponse = zod.object({
   "institution": zod.string().nullable(),
   "course": zod.string().nullable(),
   "story": zod.string().nullable(),
+  "storyIsPublished": zod.boolean(),
+  "storyOrder": zod.number().int(),
   "accentColor": zod.string().nullable(),
   "displayOrder": zod.number().int(),
   "isPublished": zod.boolean(),
@@ -1732,6 +1747,8 @@ export const GetAdminHomepageResultsResponse = zod.object({
   "institution": zod.string().nullable(),
   "course": zod.string().nullable(),
   "story": zod.string().nullable(),
+  "storyIsPublished": zod.boolean(),
+  "storyOrder": zod.number().int(),
   "accentColor": zod.string().nullable(),
   "displayOrder": zod.number().int(),
   "isPublished": zod.boolean(),
@@ -1796,6 +1813,8 @@ export const UpdateHomepageResultsResponse = zod.object({
   "institution": zod.string().nullable(),
   "course": zod.string().nullable(),
   "story": zod.string().nullable(),
+  "storyIsPublished": zod.boolean(),
+  "storyOrder": zod.number().int(),
   "accentColor": zod.string().nullable(),
   "displayOrder": zod.number().int(),
   "isPublished": zod.boolean(),
@@ -1818,13 +1837,24 @@ export const UpdateHomepageResultsResponse = zod.object({
 /**
  * @summary Read the shared Results library for editing
  */
+export const getAdminResultsLibraryResponseSettingsCtaPrimaryHrefRegExp = new RegExp('^/contact(?:[?#][^\\s]*)?$');
+export const getAdminResultsLibraryResponseSettingsCtaSecondaryHrefRegExp = new RegExp('^/contact(?:[?#][^\\s]*)?$');
+
+
 export const GetAdminResultsLibraryResponse = zod.object({
   "settings": zod.object({
   "eyebrow": zod.string(),
   "heading": zod.string(),
   "description": zod.string(),
   "configuredYear": zod.string().nullable(),
-  "isVisible": zod.boolean()
+  "isVisible": zod.boolean(),
+  "ctaHeading": zod.string(),
+  "ctaDescription": zod.string(),
+  "ctaPrimaryLabel": zod.string(),
+  "ctaSecondaryLabel": zod.string(),
+  "ctaPrimaryHref": zod.string().regex(getAdminResultsLibraryResponseSettingsCtaPrimaryHrefRegExp),
+  "ctaSecondaryHref": zod.string().regex(getAdminResultsLibraryResponseSettingsCtaSecondaryHrefRegExp),
+  "ctaIsVisible": zod.boolean()
 }),
   "results": zod.array(zod.object({
   "id": zod.string(),
@@ -1841,6 +1871,8 @@ export const GetAdminResultsLibraryResponse = zod.object({
   "institution": zod.string().nullable(),
   "course": zod.string().nullable(),
   "story": zod.string().nullable(),
+  "storyIsPublished": zod.boolean(),
+  "storyOrder": zod.number().int(),
   "accentColor": zod.string().nullable(),
   "displayOrder": zod.number().int(),
   "isPublished": zod.boolean(),
@@ -1868,6 +1900,13 @@ export const GetAdminResultsLibraryResponse = zod.object({
 
 
 
+
+
+export const updateAdminResultsLibraryBodySettingsCtaPrimaryHrefRegExp = new RegExp('^/contact(?:[?#][^\\s]*)?$');
+export const updateAdminResultsLibraryBodySettingsCtaSecondaryHrefRegExp = new RegExp('^/contact(?:[?#][^\\s]*)?$');
+
+
+
 export const updateAdminResultsLibraryBodyResultsItemDisplayOrderMax = 100;
 
 export const updateAdminResultsLibraryBodyResultsItemHomePreviewOrderMax = 100;
@@ -1890,7 +1929,14 @@ export const UpdateAdminResultsLibraryBody = zod.object({
   "heading": zod.string().min(1),
   "description": zod.string().min(1),
   "configuredYear": zod.string().nullable(),
-  "isVisible": zod.boolean()
+  "isVisible": zod.boolean(),
+  "ctaHeading": zod.string().min(1),
+  "ctaDescription": zod.string().min(1),
+  "ctaPrimaryLabel": zod.string().min(1),
+  "ctaSecondaryLabel": zod.string().min(1),
+  "ctaPrimaryHref": zod.string().regex(updateAdminResultsLibraryBodySettingsCtaPrimaryHrefRegExp),
+  "ctaSecondaryHref": zod.string().regex(updateAdminResultsLibraryBodySettingsCtaSecondaryHrefRegExp),
+  "ctaIsVisible": zod.boolean()
 }),
   "results": zod.array(zod.object({
   "id": zod.string().optional(),
@@ -1907,6 +1953,8 @@ export const UpdateAdminResultsLibraryBody = zod.object({
   "institution": zod.string().nullable(),
   "course": zod.string().nullable(),
   "story": zod.string().nullable(),
+  "storyIsPublished": zod.boolean().optional(),
+  "storyOrder": zod.number().int().min(1).optional(),
   "accentColor": zod.string().nullable(),
   "displayOrder": zod.number().int().min(1).max(updateAdminResultsLibraryBodyResultsItemDisplayOrderMax),
   "isPublished": zod.boolean(),
@@ -1925,13 +1973,24 @@ export const UpdateAdminResultsLibraryBody = zod.object({
 })).max(updateAdminResultsLibraryBodyStatisticsMax)
 })
 
+export const updateAdminResultsLibraryResponseSettingsCtaPrimaryHrefRegExp = new RegExp('^/contact(?:[?#][^\\s]*)?$');
+export const updateAdminResultsLibraryResponseSettingsCtaSecondaryHrefRegExp = new RegExp('^/contact(?:[?#][^\\s]*)?$');
+
+
 export const UpdateAdminResultsLibraryResponse = zod.object({
   "settings": zod.object({
   "eyebrow": zod.string(),
   "heading": zod.string(),
   "description": zod.string(),
   "configuredYear": zod.string().nullable(),
-  "isVisible": zod.boolean()
+  "isVisible": zod.boolean(),
+  "ctaHeading": zod.string(),
+  "ctaDescription": zod.string(),
+  "ctaPrimaryLabel": zod.string(),
+  "ctaSecondaryLabel": zod.string(),
+  "ctaPrimaryHref": zod.string().regex(updateAdminResultsLibraryResponseSettingsCtaPrimaryHrefRegExp),
+  "ctaSecondaryHref": zod.string().regex(updateAdminResultsLibraryResponseSettingsCtaSecondaryHrefRegExp),
+  "ctaIsVisible": zod.boolean()
 }),
   "results": zod.array(zod.object({
   "id": zod.string(),
@@ -1948,6 +2007,8 @@ export const UpdateAdminResultsLibraryResponse = zod.object({
   "institution": zod.string().nullable(),
   "course": zod.string().nullable(),
   "story": zod.string().nullable(),
+  "storyIsPublished": zod.boolean(),
+  "storyOrder": zod.number().int(),
   "accentColor": zod.string().nullable(),
   "displayOrder": zod.number().int(),
   "isPublished": zod.boolean(),

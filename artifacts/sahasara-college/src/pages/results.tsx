@@ -2,9 +2,11 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowRight, BookOpen } from 'lucide-react';
 import { useGetResultsPage, useGetSiteSettings, type HomepageResult, type ResultStatistic } from '@workspace/api-client-react';
 import { PublicHeader } from '@/components/public-header';
+import { PublicFooter } from '@/components/public-footer';
 import { DEFAULT_ACCENT_COLOR, DEFAULT_PRIMARY_COLOR, DEFAULT_SURFACE_COLOR, createPublicThemeStyle } from '@/lib/public-theme';
 import { ResultsStoryDialog } from '@/components/results-story-dialog';
 import { CompleteMeritList, TopPerformerCard } from '@/components/results-merit-list';
+import { ResultsContactCta, ResultsSuccessStories } from '@/components/results-bottom-sections';
 
 const categories = [
   { value: 'ALL', label: 'All' },
@@ -121,10 +123,11 @@ export default function Results() {
   const [sort, setSort] = useState<MeritSort>('featured');
   const [expanded, setExpanded] = useState(false);
   const [storyId, setStoryId] = useState<string | null>(null);
+  const [storySource, setStorySource] = useState<'results' | 'stories'>('results');
   const storyScrollPosition = useRef(0);
   const storyWasOpen = useRef(false);
   const expandTrigger = useRef<HTMLButtonElement>(null);
-  const settings = settingsQuery.data ?? { collegeName: 'Sahsrah Junior College', tagline: '', logoUrl: null, primaryColor: DEFAULT_PRIMARY_COLOR, accentColor: DEFAULT_ACCENT_COLOR, surfaceColor: DEFAULT_SURFACE_COLOR };
+  const settings = settingsQuery.data ?? { collegeName: 'Sahsrah Junior College', tagline: '', logoUrl: null, email: '', phone: '', footerText: '', primaryColor: DEFAULT_PRIMARY_COLOR, accentColor: DEFAULT_ACCENT_COLOR, surfaceColor: DEFAULT_SURFACE_COLOR };
   const themeStyle = createPublicThemeStyle(settings.primaryColor || DEFAULT_PRIMARY_COLOR, settings.accentColor || DEFAULT_ACCENT_COLOR, settings.surfaceColor || DEFAULT_SURFACE_COLOR);
   const content = query.data;
   const published = useMemo(() => (content?.results ?? []).filter((result) => result.isPublished), [content?.results]);
@@ -152,8 +155,14 @@ export default function Results() {
     });
   }, [category, published, search, sort, year]);
   const topPerformers = filtered.slice(0, 3);
-  const storyResult = filtered.find((result) => result.id === storyId) ?? null;
-  const storyIndex = storyResult ? filtered.findIndex((result) => result.id === storyResult.id) : -1;
+  const stories = useMemo(
+    () => published.filter((result) => result.storyIsPublished && Boolean(result.story?.trim()))
+      .sort((a, b) => a.storyOrder - b.storyOrder || a.displayOrder - b.displayOrder || a.id.localeCompare(b.id)),
+    [published],
+  );
+  const dialogResults = storySource === 'stories' ? stories : filtered;
+  const storyResult = dialogResults.find((result) => result.id === storyId) ?? null;
+  const storyIndex = storyResult ? dialogResults.findIndex((result) => result.id === storyResult.id) : -1;
   const clearFilters = () => {
     setCategory('ALL');
     setYear('');
@@ -167,8 +176,9 @@ export default function Results() {
       expandTrigger.current?.scrollIntoView({ block: 'center', behavior: 'auto' });
     });
   };
-  const openStory = (id: string) => {
+  const openStory = (id: string, source: 'results' | 'stories' = 'results') => {
     storyScrollPosition.current = window.scrollY;
+    setStorySource(source);
     setStoryId(id);
   };
   useEffect(() => {
@@ -261,15 +271,27 @@ export default function Results() {
             )}
           </div>
         </section>
+        <ResultsSuccessStories stories={stories} onStory={(result) => openStory(result.id, 'stories')} />
+        {content.settings.ctaIsVisible && (
+          <ResultsContactCta
+            heading={content.settings.ctaHeading}
+            description={content.settings.ctaDescription}
+            primaryLabel={content.settings.ctaPrimaryLabel}
+            secondaryLabel={content.settings.ctaSecondaryLabel}
+            primaryHref={content.settings.ctaPrimaryHref}
+            secondaryHref={content.settings.ctaSecondaryHref}
+          />
+        )}
       </main>
+      <PublicFooter settings={settings} />
       <ResultsStoryDialog
         result={storyResult}
         index={storyIndex}
-        total={filtered.length}
+        total={dialogResults.length}
         themeStyle={themeStyle}
         onOpenChange={(open) => !open && setStoryId(null)}
-        onPrevious={() => storyIndex > 0 && setStoryId(filtered[storyIndex - 1].id)}
-        onNext={() => storyIndex >= 0 && storyIndex < filtered.length - 1 && setStoryId(filtered[storyIndex + 1].id)}
+        onPrevious={() => storyIndex > 0 && setStoryId(dialogResults[storyIndex - 1].id)}
+        onNext={() => storyIndex >= 0 && storyIndex < dialogResults.length - 1 && setStoryId(dialogResults[storyIndex + 1].id)}
       />
     </div>
   );

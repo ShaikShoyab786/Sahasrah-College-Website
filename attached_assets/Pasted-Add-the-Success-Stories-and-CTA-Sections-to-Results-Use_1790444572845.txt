@@ -1,0 +1,33 @@
+Add the Success Stories and CTA Sections to Results
+Use attached_assets/ref_1790444401465.mp4 as a visual and interaction reference. Keep Sahasrah branding rather than copying the KVR branding.
+
+Place these two sections after the Complete Merit List:
+
+Success Stories
+CTA
+The existing shared site footer
+Success Stories
+Add a polished Success Stories section with three visible story cards on desktop, styled to fit the Results page.
+Use published story content from the shared Results data where available. Reuse the student’s existing name, photo, and result details rather than entering duplicate student records.
+Add a smooth auto-scroll/carousel animation through the published stories.
+Provide working previous/next controls and indicators if they fit the current design.
+Pause auto-scroll on hover or keyboard focus, and respect reduced-motion settings.
+Remove the View All Stories button. Do not replace it with another link to the Results page.
+Do not invent testimonials. If there are fewer than three published stories, show only the available stories or have the admin add more.
+CTA
+Add the CTA section shown in the video, with editable heading and supporting copy. Both CTA buttons should navigate to the site’s Contact page. Use the existing router/link pattern and verify both destinations work.
+
+Shared footer
+Show the same footer used on the Home page at the end of the Results page. Reuse the shared footer component and its existing configuration; do not create a separate Results-only footer.
+
+Admin management
+Keep Results management under Pages → Results—do not add another standalone Results menu item. Allow administrators to manage the Results-specific content there, including:
+
+Success-story content, publication status, and order
+CTA heading, description, button labels, and Contact-page destinations
+Existing Results hero, statistics, performer, and merit-list content
+Keep the shared Home Results preview and shared result records intact. The site-wide footer should continue to use its existing shared management location rather than being duplicated in Results settings.
+
+Do not add an empty Our Achievements section or blank placeholder headings. Preserve the previously agreed centered hero, light statistics panel, Top Performers filters, and student biography dialog.
+
+Verify the three story cards and carousel controls, both CTA buttons, the shared footer, and the Results admin editing and persistence.

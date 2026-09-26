@@ -753,6 +753,8 @@ export interface HomepageResult {
   course: string | null;
   /** @nullable */
   story: string | null;
+  storyIsPublished: boolean;
+  storyOrder: number;
   /** @nullable */
   accentColor: string | null;
   displayOrder: number;
@@ -784,6 +786,9 @@ export interface HomepageResultInput {
   course: string | null;
   /** @nullable */
   story: string | null;
+  storyIsPublished?: boolean;
+  /** @minimum 1 */
+  storyOrder?: number;
   /** @nullable */
   accentColor: string | null;
   /**
@@ -841,6 +846,15 @@ export interface ResultsPageSettings {
   /** @nullable */
   configuredYear: string | null;
   isVisible: boolean;
+  ctaHeading: string;
+  ctaDescription: string;
+  ctaPrimaryLabel: string;
+  ctaSecondaryLabel: string;
+  /** @pattern ^/contact(?:[?#][^\s]*)?$ */
+  ctaPrimaryHref: string;
+  /** @pattern ^/contact(?:[?#][^\s]*)?$ */
+  ctaSecondaryHref: string;
+  ctaIsVisible: boolean;
 }
 
 export interface ResultsPageSettingsInput {
@@ -853,6 +867,19 @@ export interface ResultsPageSettingsInput {
   /** @nullable */
   configuredYear: string | null;
   isVisible: boolean;
+  /** @minLength 1 */
+  ctaHeading: string;
+  /** @minLength 1 */
+  ctaDescription: string;
+  /** @minLength 1 */
+  ctaPrimaryLabel: string;
+  /** @minLength 1 */
+  ctaSecondaryLabel: string;
+  /** @pattern ^/contact(?:[?#][^\s]*)?$ */
+  ctaPrimaryHref: string;
+  /** @pattern ^/contact(?:[?#][^\s]*)?$ */
+  ctaSecondaryHref: string;
+  ctaIsVisible: boolean;
 }
 
 export interface ResultsPageData {

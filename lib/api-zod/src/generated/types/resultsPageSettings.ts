@@ -13,4 +13,13 @@ export interface ResultsPageSettings {
   /** @nullable */
   configuredYear: string | null;
   isVisible: boolean;
+  ctaHeading: string;
+  ctaDescription: string;
+  ctaPrimaryLabel: string;
+  ctaSecondaryLabel: string;
+  /** @pattern ^/contact(?:[?#][^\s]*)?$ */
+  ctaPrimaryHref: string;
+  /** @pattern ^/contact(?:[?#][^\s]*)?$ */
+  ctaSecondaryHref: string;
+  ctaIsVisible: boolean;
 }

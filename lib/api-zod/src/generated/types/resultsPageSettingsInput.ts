@@ -16,4 +16,17 @@ export interface ResultsPageSettingsInput {
   /** @nullable */
   configuredYear: string | null;
   isVisible: boolean;
+  /** @minLength 1 */
+  ctaHeading: string;
+  /** @minLength 1 */
+  ctaDescription: string;
+  /** @minLength 1 */
+  ctaPrimaryLabel: string;
+  /** @minLength 1 */
+  ctaSecondaryLabel: string;
+  /** @pattern ^/contact(?:[?#][^\s]*)?$ */
+  ctaPrimaryHref: string;
+  /** @pattern ^/contact(?:[?#][^\s]*)?$ */
+  ctaSecondaryHref: string;
+  ctaIsVisible: boolean;
 }

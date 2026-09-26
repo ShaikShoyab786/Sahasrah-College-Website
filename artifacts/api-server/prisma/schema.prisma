@@ -276,13 +276,20 @@ model HomepageResults {
 }
 
 model ResultsPageSettings {
-  id             String   @id @default("singleton")
-  eyebrow        String
-  heading        String
-  description    String
-  configuredYear String?
-  isVisible      Boolean  @default(true)
-  updatedAt      DateTime @updatedAt
+  id                  String   @id @default("singleton")
+  eyebrow             String
+  heading             String
+  description         String
+  configuredYear      String?
+  isVisible           Boolean  @default(true)
+  ctaHeading          String   @default("Your next chapter starts here.")
+  ctaDescription      String   @default("Connect with our team to learn about admissions and next steps.")
+  ctaPrimaryLabel     String   @default("Enquire Now")
+  ctaSecondaryLabel   String   @default("Contact Us")
+  ctaPrimaryHref      String   @default("/contact")
+  ctaSecondaryHref    String   @default("/contact")
+  ctaIsVisible        Boolean  @default(true)
+  updatedAt           DateTime @updatedAt
 }
 
 model HomepageResult {
@@ -301,6 +308,8 @@ model HomepageResult {
   institution         String?
   course              String?
   story               String?
+  storyIsPublished    Boolean         @default(false)
+  storyOrder          Int             @default(1)
   accentColor         String?
   displayOrder        Int
   isActive            Boolean         @default(true)

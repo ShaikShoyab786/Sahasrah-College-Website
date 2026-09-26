@@ -30,6 +30,9 @@ export interface HomepageResultInput {
   course: string | null;
   /** @nullable */
   story: string | null;
+  storyIsPublished?: boolean;
+  /** @minimum 1 */
+  storyOrder?: number;
   /** @nullable */
   accentColor: string | null;
   /**

@@ -28,6 +28,14 @@ function isValidImageReference(value: string | null) {
   return value === null || value.startsWith("/api/uploads/") || isHttpUrl(value);
 }
 
+function isValidContactDestination(value: string) {
+  return /^\/contact(?:[?#][^\s]*)?$/.test(value);
+}
+
+function publicStory(result: { isPublished: boolean; storyIsPublished: boolean; story: string | null }) {
+  return result.isPublished && result.storyIsPublished ? result.story?.trim() || null : null;
+}
+
 function resultData(result: ResultPayload): Prisma.HomepageResultUncheckedCreateInput {
   return {
     homepageResultsId: "singleton",
@@ -44,6 +52,8 @@ function resultData(result: ResultPayload): Prisma.HomepageResultUncheckedCreate
     institution: result.institution?.trim() || null,
     course: result.course?.trim() || null,
     story: result.story?.trim() || null,
+    storyIsPublished: result.storyIsPublished ?? false,
+    storyOrder: result.storyOrder ?? 1,
     accentColor: result.accentColor?.trim() || null,
     displayOrder: result.displayOrder,
     isActive: result.isPublished,
@@ -105,7 +115,9 @@ router.get("/results", async (req, res): Promise<void> => {
 
     res.json(GetResultsPageResponse.parse({
       settings,
-      results: (sharedResults?.results ?? []).filter((result) => result.isPublished),
+      results: (sharedResults?.results ?? [])
+        .filter((result) => result.isPublished)
+        .map((result) => ({ ...result, story: publicStory(result) })),
       statistics: (sharedResults?.statistics ?? []).filter((statistic) => statistic.isPublished),
     }));
   } catch (error) {
@@ -162,6 +174,7 @@ router.put("/admin/results", requireAdmin, async (req, res): Promise<void> => {
     const label = `Result ${index + 1}`;
     if (!result.studentName.trim()) validationErrors.push(`${label}: enter a student name.`);
     if (!result.achievement.trim()) validationErrors.push(`${label}: enter an achievement.`);
+    if (result.storyIsPublished && !result.story?.trim()) validationErrors.push(`${label}: enter a student story before publishing it.`);
     if (!isValidImageReference(result.studentImageUrl)) validationErrors.push(`${label}: use an HTTP(S) image URL or a stored image path.`);
     if (result.studentImageUrl !== null && !result.studentImageAltText.trim()) validationErrors.push(`${label}: enter image alt text.`);
   });
@@ -185,10 +198,33 @@ router.put("/admin/results", requireAdmin, async (req, res): Promise<void> => {
     description: settings.description.trim(),
     configuredYear: settings.configuredYear?.trim() || null,
     isVisible: settings.isVisible,
+    ctaHeading: settings.ctaHeading.trim(),
+    ctaDescription: settings.ctaDescription.trim(),
+    ctaPrimaryLabel: settings.ctaPrimaryLabel.trim(),
+    ctaSecondaryLabel: settings.ctaSecondaryLabel.trim(),
+    ctaPrimaryHref: settings.ctaPrimaryHref.trim(),
+    ctaSecondaryHref: settings.ctaSecondaryHref.trim(),
+    ctaIsVisible: settings.ctaIsVisible,
   };
 
   if (!normalizedSettings.eyebrow || !normalizedSettings.heading || !normalizedSettings.description) {
     res.status(400).json({ error: "Results page eyebrow, heading, and description are required." });
+    return;
+  }
+  if (
+    !normalizedSettings.ctaHeading ||
+    !normalizedSettings.ctaDescription ||
+    !normalizedSettings.ctaPrimaryLabel ||
+    !normalizedSettings.ctaSecondaryLabel
+  ) {
+    res.status(400).json({ error: "Results page CTA heading, description, and button labels are required." });
+    return;
+  }
+  if (
+    !isValidContactDestination(normalizedSettings.ctaPrimaryHref) ||
+    !isValidContactDestination(normalizedSettings.ctaSecondaryHref)
+  ) {
+    res.status(400).json({ error: "Results page CTA destinations must point to /contact, with an optional query or hash." });
     return;
   }
 
