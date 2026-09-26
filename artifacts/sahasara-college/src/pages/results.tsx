@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, BookOpen, ChevronDown, ChevronLeft, ChevronRight, SlidersHorizontal, X } from 'lucide-react';
+import { ArrowRight, BookOpen, ChevronDown, ChevronLeft, SlidersHorizontal } from 'lucide-react';
 import { useGetResultsPage, useGetSiteSettings, type HomepageResult, type ResultStatistic } from '@workspace/api-client-react';
 import { PublicHeader } from '@/components/public-header';
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { DEFAULT_ACCENT_COLOR, DEFAULT_PRIMARY_COLOR, DEFAULT_SURFACE_COLOR, createPublicThemeStyle } from '@/lib/public-theme';
+import { ResultsStoryDialog } from '@/components/results-story-dialog';
 
 const categories = [
   { value: 'ALL', label: 'All results' },
@@ -27,7 +27,9 @@ function CountUp({ value, id }: { value: string; id: string }) {
   const suffix = match?.[2] ?? '';
   useEffect(() => {
     const media = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setReduced(media.matches);
+    const updateMotionPreference = () => setReduced(media.matches);
+    updateMotionPreference();
+    media.addEventListener('change', updateMotionPreference);
     const observer = new IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) {
         setVisible(true);
@@ -35,7 +37,10 @@ function CountUp({ value, id }: { value: string; id: string }) {
       }
     }, { threshold: 0.45 });
     if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      media.removeEventListener('change', updateMotionPreference);
+    };
   }, []);
   const [current, setCurrent] = useState(0);
   useEffect(() => {
@@ -62,13 +67,33 @@ function CountUp({ value, id }: { value: string; id: string }) {
 
 function StatStrip({ statistics }: { statistics: ResultStatistic[] }) {
   if (!statistics.length) return null;
+  const desktopColumns = statistics.length <= 4
+    ? statistics.length
+    : [5, 6, 9, 12, 15, 18].includes(statistics.length) ? 3 : 4;
+  const centerLastCard = statistics.length > desktopColumns && statistics.length % desktopColumns === 1;
+  const desktopColumnClass = desktopColumns === 1
+    ? 'max-w-2xl'
+    : desktopColumns === 2
+      ? 'lg:grid-cols-2'
+      : desktopColumns === 3
+        ? 'lg:grid-cols-3'
+        : 'lg:grid-cols-4';
+  const tabletColumnClass = statistics.length > 1 ? 'sm:grid-cols-2' : '';
   return (
-    <section className="mx-auto grid max-w-7xl gap-px overflow-hidden rounded-[1.5rem] border border-[hsl(var(--primary)/.18)] bg-[hsl(var(--primary)/.18)] sm:grid-cols-2 lg:grid-cols-4" aria-label="Results at a glance">
-      {statistics.map((stat) => (
-        <div key={stat.id} data-testid={`stat-card-${stat.id}`} className="bg-[hsl(var(--primary))] px-6 py-7 text-[hsl(var(--primary-foreground))]">
+    <section
+      className={`mx-auto grid w-full max-w-7xl grid-cols-1 gap-3 rounded-[1.5rem] border border-[hsl(var(--primary)/.12)] bg-[#fffdf7] p-3 shadow-[0_16px_38px_hsl(var(--primary)/.10)] ${tabletColumnClass} ${desktopColumnClass}`}
+      aria-label="Results at a glance"
+      data-testid="results-statistics"
+    >
+      {statistics.map((stat, index) => (
+        <div
+          key={stat.id}
+          data-testid={`stat-card-${stat.id}`}
+          className={`min-w-0 rounded-[1.1rem] bg-[#fffdf7] px-5 py-6 text-center sm:px-6 sm:py-7 ${statistics.length === 1 ? 'mx-auto w-full max-w-2xl' : ''} ${centerLastCard && index === statistics.length - 1 ? 'lg:col-span-2 lg:col-start-2' : ''}`}
+        >
           <p className="font-display text-4xl font-semibold tracking-[-.05em] text-[hsl(var(--accent))]"><CountUp value={stat.value} id={stat.id} /></p>
-          <p className="mt-3 text-sm font-bold">{stat.label}</p>
-          {stat.supportingText && <p className="mt-1 text-xs leading-5 text-[hsl(var(--primary-foreground)/.62)]">{stat.supportingText}</p>}
+          <p className="mt-3 text-sm font-bold text-[hsl(var(--primary))]">{stat.label}</p>
+          {stat.supportingText && <p className="mt-1 text-xs leading-5 text-[hsl(var(--primary)/.72)]">{stat.supportingText}</p>}
         </div>
       ))}
     </section>
@@ -92,7 +117,9 @@ function ResultCard({ result, onStory }: { result: HomepageResult; onStory: () =
           <p className="font-display text-4xl font-semibold tracking-[-.04em]" style={{ color: accent }} data-testid={`text-result-score-${result.id}`}>{result.score}</p>
           <p className="mt-1 text-sm font-semibold text-[hsl(var(--foreground))]">{result.achievement}</p>
           {(result.examName || result.year) && <p className="mt-3 text-xs text-[hsl(var(--muted-foreground))]">{[result.examName, result.year].filter(Boolean).join(' · ')}</p>}
-          {result.story && <button type="button" onClick={onStory} data-testid={`button-read-story-${result.id}`} className="mt-5 inline-flex items-center gap-2 text-xs font-bold text-[hsl(var(--primary))] underline decoration-[hsl(var(--accent)/.5)] underline-offset-4 transition hover:text-[hsl(var(--accent-foreground))]">Read their story <ArrowRight size={14} /></button>}
+          <button type="button" onClick={onStory} data-testid={`button-read-story-${result.id}`} className="mt-5 inline-flex items-center gap-2 text-xs font-bold text-[hsl(var(--primary))] underline decoration-[hsl(var(--accent)/.5)] underline-offset-4 transition hover:text-[hsl(var(--accent-foreground))]">
+            {result.story?.trim() ? 'Read Success Story' : 'View achievement details'} <ArrowRight size={14} />
+          </button>
         </div>
       </div>
     </article>
@@ -106,6 +133,8 @@ export default function Results() {
   const [category, setCategory] = useState<(typeof categories)[number]['value']>('ALL');
   const [expanded, setExpanded] = useState(false);
   const [storyId, setStoryId] = useState<string | null>(null);
+  const storyScrollPosition = useRef(0);
+  const storyWasOpen = useRef(false);
   const settings = settingsQuery.data ?? { collegeName: 'Sahsrah Junior College', tagline: '', logoUrl: null, primaryColor: DEFAULT_PRIMARY_COLOR, accentColor: DEFAULT_ACCENT_COLOR, surfaceColor: DEFAULT_SURFACE_COLOR };
   const themeStyle = createPublicThemeStyle(settings.primaryColor || DEFAULT_PRIMARY_COLOR, settings.accentColor || DEFAULT_ACCENT_COLOR, settings.surfaceColor || DEFAULT_SURFACE_COLOR);
   const content = query.data;
@@ -123,7 +152,16 @@ export default function Results() {
   const filtered = useMemo(() => (content?.results ?? []).filter((result) => (!year || result.year === year) && (category === 'ALL' || result.category === category)).sort((a, b) => a.displayOrder - b.displayOrder), [category, content?.results, year]);
   const storyResult = filtered.find((result) => result.id === storyId) ?? null;
   const storyIndex = storyResult ? filtered.findIndex((result) => result.id === storyResult.id) : -1;
-  const openStory = (id: string) => setStoryId(id);
+  const openStory = (id: string) => {
+    storyScrollPosition.current = window.scrollY;
+    setStoryId(id);
+  };
+  useEffect(() => {
+    if (storyWasOpen.current && !storyId) {
+      requestAnimationFrame(() => requestAnimationFrame(() => window.scrollTo({ top: storyScrollPosition.current, behavior: 'auto' })));
+    }
+    storyWasOpen.current = Boolean(storyId);
+  }, [storyId]);
   if (query.isLoading) return <div className="min-h-[100dvh] animate-pulse bg-[hsl(var(--background))] p-6"><div className="mx-auto max-w-7xl space-y-6 pt-24"><div className="h-8 w-44 rounded bg-[hsl(var(--muted))]" /><div className="h-64 rounded-[2rem] bg-[hsl(var(--muted))]" /><div className="grid gap-4 md:grid-cols-3"><div className="h-64 rounded-2xl bg-[hsl(var(--muted))]" /><div className="h-64 rounded-2xl bg-[hsl(var(--muted))]" /><div className="h-64 rounded-2xl bg-[hsl(var(--muted))]" /></div></div></div>;
   if (query.isError || !content) return <div className="min-h-[100dvh] bg-[hsl(var(--background))]"><PublicHeader settings={settings} activePage="results" mobileFlow /><main className="mx-auto max-w-2xl px-6 py-24 text-center"><p className="text-xs font-bold uppercase tracking-[.2em] text-[hsl(var(--accent-foreground))]">Results library</p><h1 className="mt-4 font-display text-4xl font-semibold text-[hsl(var(--primary))]">Results are temporarily unavailable.</h1><p className="mt-4 text-sm leading-6 text-[hsl(var(--muted-foreground))]">Please try again shortly.</p><button type="button" onClick={() => query.refetch()} data-testid="button-retry-results" className="mt-7 rounded-full bg-[hsl(var(--primary))] px-5 py-3 text-sm font-bold text-[hsl(var(--primary-foreground))]">Try again</button></main></div>;
   if (!content.settings.isVisible) return <div className="min-h-[100dvh] bg-[hsl(var(--background))]"><PublicHeader settings={settings} mobileFlow /><main className="mx-auto max-w-2xl px-6 py-24 text-center"><BookOpen className="mx-auto text-[hsl(var(--accent))]" size={30} /><h1 className="mt-5 font-display text-4xl font-semibold text-[hsl(var(--primary))]">Results will be shared here soon.</h1><p className="mt-4 text-sm leading-6 text-[hsl(var(--muted-foreground))]">The Results page is being prepared by the Sahsrah team.</p></main></div>;
@@ -132,33 +170,40 @@ export default function Results() {
       <PublicHeader settings={settings} activePage="results" />
       <main>
         <section className="relative overflow-hidden bg-[hsl(var(--primary))] px-6 pb-20 pt-36 text-[hsl(var(--primary-foreground))] lg:px-10 lg:pb-28 lg:pt-48">
-          <div className="pointer-events-none absolute -right-24 top-14 h-72 w-72 rounded-full border-[34px] border-[hsl(var(--accent)/.22)] motion-safe:animate-drift" />
-          <div className="mx-auto max-w-7xl">
-            <p className="animate-rise text-xs font-bold uppercase tracking-[.22em] text-[hsl(var(--accent))]" data-testid="text-results-eyebrow">{content.settings.eyebrow}</p>
-            <h1 className="animate-rise-delay mt-6 max-w-4xl font-display text-6xl font-semibold leading-[.92] tracking-[-.06em] md:text-8xl" data-testid="text-results-heading">{content.settings.heading}</h1>
-            <p className="animate-rise-delay mt-7 max-w-2xl text-base leading-7 text-[hsl(var(--primary-foreground)/.68)]" data-testid="text-results-description">{content.settings.description}</p>
+          <div className="results-hero-orb pointer-events-none absolute -right-24 top-14 h-72 w-72 rounded-full border-[34px] border-[hsl(var(--accent)/.22)]" />
+          <div className="mx-auto max-w-7xl text-center">
+            <p className="results-hero-eyebrow text-xs font-bold uppercase tracking-[.22em] text-[hsl(var(--eyebrow-dark-text))]" data-testid="text-results-eyebrow">{content.settings.eyebrow}</p>
+            <h1 className="results-hero-heading mx-auto mt-6 max-w-4xl font-display text-6xl font-semibold leading-[.92] tracking-[-.06em] md:text-8xl" data-testid="text-results-heading">{content.settings.heading}</h1>
+            <p className="results-hero-description mx-auto mt-7 max-w-2xl text-base leading-7 text-[hsl(var(--primary-foreground)/.72)]" data-testid="text-results-description">{content.settings.description}</p>
           </div>
         </section>
         <div className="relative z-10 -mt-8 px-6 lg:px-10"><StatStrip statistics={content.statistics.filter((stat) => stat.isPublished).sort((a, b) => a.displayOrder - b.displayOrder)} /></div>
         <section className="mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-24" aria-labelledby="published-results-heading">
-          <div className="flex flex-col gap-7 border-b border-[hsl(var(--border))] pb-8 lg:flex-row lg:items-end lg:justify-between">
-            <div><p className="text-xs font-bold uppercase tracking-[.2em] text-[hsl(var(--accent-foreground))]">Verified outcomes</p><h2 id="published-results-heading" className="mt-3 font-display text-4xl font-semibold tracking-[-.04em] text-[hsl(var(--primary))] md:text-5xl">A record of focused work.</h2></div>
-            <div className="flex flex-wrap items-center gap-3">
-              {years.length > 1 && <label className="relative"><span className="sr-only">Filter by year</span><select value={year} onChange={(event) => setYear(event.target.value)} data-testid="select-results-year" className="h-11 appearance-none rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--card))] py-2 pl-4 pr-10 text-sm font-bold text-[hsl(var(--primary))] outline-none focus:border-[hsl(var(--accent))]"><option value="">All years</option>{years.map((item) => <option key={item} value={item}>{item}</option>)}</select><ChevronDown className="pointer-events-none absolute right-3 top-3.5" size={15} /></label>}
-              <SlidersHorizontal size={17} className="text-[hsl(var(--muted-foreground))]" aria-hidden="true" />
+          <div className="border-b border-[hsl(var(--border))] pb-8">
+            <p className="text-center text-xs font-bold uppercase tracking-[.2em] text-[hsl(var(--eyebrow-text))]">Verified outcomes</p>
+            <h2 id="published-results-heading" className="mt-3 text-center font-display text-4xl font-semibold tracking-[-.04em] text-[hsl(var(--primary))] md:text-5xl">Our Top Performers</h2>
+            <div className="mt-7 flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+              <div className="flex min-w-0 gap-2 overflow-x-auto pb-2 scrollbar-none" role="group" aria-label="Filter results by exam category">
+                {availableCategories.map((item) => <button key={item.value} type="button" aria-pressed={category === item.value} onClick={() => setCategory(item.value)} data-testid={`filter-results-${item.value.toLowerCase()}`} className={`shrink-0 rounded-full px-4 py-2.5 text-xs font-bold transition ${category === item.value ? 'bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))]' : 'border border-[hsl(var(--border))] bg-[hsl(var(--card))] text-[hsl(var(--muted-foreground))] hover:border-[hsl(var(--accent))] hover:text-[hsl(var(--primary))]'}`}>{item.label}</button>)}
+              </div>
+              <div className="flex items-center gap-3">
+                {years.length > 1 && <label className="relative"><span className="sr-only">Filter by year</span><select value={year} onChange={(event) => setYear(event.target.value)} data-testid="select-results-year" className="h-11 appearance-none rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--card))] py-2 pl-4 pr-10 text-sm font-bold text-[hsl(var(--primary))] outline-none focus:border-[hsl(var(--accent))] focus-visible:ring-4 focus-visible:ring-[hsl(var(--accent)/.2)]"><option value="">All years</option>{years.map((item) => <option key={item} value={item}>{item}</option>)}</select><ChevronDown className="pointer-events-none absolute right-3 top-3.5" size={15} /></label>}
+                <SlidersHorizontal size={17} className="text-[hsl(var(--muted-foreground))]" aria-hidden="true" />
+              </div>
             </div>
-          </div>
-          <div className="mt-7 flex gap-2 overflow-x-auto pb-2 scrollbar-none" role="tablist" aria-label="Filter results by exam category">
-            {availableCategories.map((item) => <button key={item.value} type="button" role="tab" aria-selected={category === item.value} onClick={() => setCategory(item.value)} data-testid={`filter-results-${item.value.toLowerCase()}`} className={`shrink-0 rounded-full px-4 py-2.5 text-xs font-bold transition ${category === item.value ? 'bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))]' : 'border border-[hsl(var(--border))] bg-[hsl(var(--card))] text-[hsl(var(--muted-foreground))] hover:border-[hsl(var(--accent))] hover:text-[hsl(var(--primary))]'}`}>{item.label}</button>)}
           </div>
           {!filtered.length ? <div className="mt-10 rounded-[1.5rem] border border-dashed border-[hsl(var(--border))] bg-[hsl(var(--card))] px-6 py-16 text-center"><p className="font-display text-2xl font-semibold text-[hsl(var(--primary))]" data-testid="empty-results">No published results match these filters.</p><p className="mt-2 text-sm text-[hsl(var(--muted-foreground))]">Try another year or category.</p></div> : <><div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{filtered.slice(0, expanded ? undefined : 6).map((result) => <ResultCard key={result.id} result={result} onStory={() => openStory(result.id)} />)}</div>{filtered.length > 6 && <button type="button" onClick={() => setExpanded((current) => !current)} data-testid="button-complete-merit-list" className="mx-auto mt-10 flex items-center gap-2 rounded-full border border-[hsl(var(--primary)/.22)] bg-[hsl(var(--card))] px-5 py-3 text-sm font-bold text-[hsl(var(--primary))] transition hover:-translate-y-0.5 hover:border-[hsl(var(--accent))]">{expanded ? 'Show featured results' : 'View Complete Merit List'} {expanded ? <ChevronLeft size={16} /> : <ArrowRight size={16} />}</button>}</>}
         </section>
       </main>
-      <Dialog open={Boolean(storyResult)} onOpenChange={(open) => !open && setStoryId(null)}>
-        <DialogContent className="max-w-2xl rounded-[1.5rem] border-[hsl(var(--border))] bg-[hsl(var(--card))] p-0 text-[hsl(var(--foreground))]">
-          {storyResult && <div className="p-7 sm:p-10"><DialogHeader><p className="text-xs font-bold uppercase tracking-[.2em] text-[hsl(var(--accent-foreground))]">{storyResult.resultLabel || 'Student story'}</p><DialogTitle data-testid="dialog-story-title" className="mt-4 font-display text-4xl font-semibold tracking-[-.04em] text-[hsl(var(--primary))]">{storyResult.studentName}</DialogTitle><DialogDescription className="mt-2 text-sm text-[hsl(var(--muted-foreground))]">{[storyResult.examName, storyResult.year, storyResult.institution, storyResult.course].filter(Boolean).join(' · ')}</DialogDescription></DialogHeader><p className="mt-8 whitespace-pre-line text-lg leading-8 text-[hsl(var(--foreground))]" data-testid="dialog-story-content">{storyResult.story?.trim() || 'A written story is not available for this result.'}</p><div className="mt-10 flex items-center justify-between border-t border-[hsl(var(--border))] pt-5"><button type="button" disabled={storyIndex <= 0} onClick={() => setStoryId(filtered[storyIndex - 1].id)} data-testid="button-story-previous" className="inline-flex items-center gap-2 text-sm font-bold disabled:opacity-30"><ChevronLeft size={17} /> Previous</button><span className="text-xs text-[hsl(var(--muted-foreground))]">{storyIndex + 1} of {filtered.length}</span><button type="button" disabled={storyIndex >= filtered.length - 1} onClick={() => setStoryId(filtered[storyIndex + 1].id)} data-testid="button-story-next" className="inline-flex items-center gap-2 text-sm font-bold disabled:opacity-30">Next <ChevronRight size={17} /></button></div><DialogClose asChild><button type="button" aria-label="Close story" data-testid="button-close-story" className="absolute right-5 top-5 rounded-full p-2 text-[hsl(var(--muted-foreground))] hover:bg-[hsl(var(--secondary))]"><X size={17} /></button></DialogClose></div>}
-        </DialogContent>
-      </Dialog>
+      <ResultsStoryDialog
+        result={storyResult}
+        index={storyIndex}
+        total={filtered.length}
+        themeStyle={themeStyle}
+        onOpenChange={(open) => !open && setStoryId(null)}
+        onPrevious={() => storyIndex > 0 && setStoryId(filtered[storyIndex - 1].id)}
+        onNext={() => storyIndex >= 0 && storyIndex < filtered.length - 1 && setStoryId(filtered[storyIndex + 1].id)}
+      />
     </div>
   );
 }

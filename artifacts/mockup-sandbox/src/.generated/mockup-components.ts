@@ -5,5 +5,7 @@ export const modules: ModuleMap = {
   "./components/mockups/callback-popup/CompactEmerald.tsx": () => import("../components/mockups/callback-popup/CompactEmerald.tsx"),
   "./components/mockups/callback-popup/CompactMobile.tsx": () => import("../components/mockups/callback-popup/CompactMobile.tsx"),
   "./components/mockups/callback-popup/CompactSunset.tsx": () => import("../components/mockups/callback-popup/CompactSunset.tsx"),
-  "./components/mockups/callback-popup/Current.tsx": () => import("../components/mockups/callback-popup/Current.tsx")
+  "./components/mockups/callback-popup/Current.tsx": () => import("../components/mockups/callback-popup/Current.tsx"),
+  "./components/mockups/results-refinement/Current.tsx": () => import("../components/mockups/results-refinement/Current.tsx"),
+  "./components/mockups/results-refinement/Refined.tsx": () => import("../components/mockups/results-refinement/Refined.tsx")
 };

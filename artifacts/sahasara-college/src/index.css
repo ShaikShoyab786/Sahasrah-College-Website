@@ -253,6 +253,12 @@ body { min-width: 320px; }
 .animate-rise { animation: rise .65s cubic-bezier(.22,1,.36,1) both; }
 .animate-rise-delay { animation: rise .65s .12s cubic-bezier(.22,1,.36,1) both; }
 .animate-drift { animation: drift 5s ease-in-out infinite alternate; }
+@media (prefers-reduced-motion: no-preference) {
+  .results-hero-eyebrow { animation: rise .65s cubic-bezier(.22,1,.36,1) both; }
+  .results-hero-heading { animation: rise .7s .1s cubic-bezier(.22,1,.36,1) both; }
+  .results-hero-description { animation: rise .7s .2s cubic-bezier(.22,1,.36,1) both; }
+  .results-hero-orb { animation: drift 7s ease-in-out infinite alternate; }
+}
 
 @keyframes story-reveal-up {
   from { opacity: 0; transform: translateY(14px); }
