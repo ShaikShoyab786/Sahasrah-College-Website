@@ -1,0 +1,56 @@
+Fix the Results Page and Home Preview Regression
+The latest Results update caused several regressions:
+
+The “Pride of Sahasrah” Results preview section disappeared from the public Home page.
+The Results preview section disappeared from the Pages → Home editor.
+Results was added as a standalone admin menu item outside Pages.
+Saving the Results library fails with the generic error shown in attached_assets/image_1790424786008.png.
+Please investigate and fix the underlying causes. Do not rebuild unrelated pages or undo the Gallery and Faculty shared-library patterns.
+
+1. Restore the Home Results preview
+Restore the existing “Pride of Sahasrah” section on the public Home page, preserving its previous placement, content, and appearance as closely as possible. Also restore its section entry in Pages → Home so it can be configured there.
+
+Use the shared Results library for its student and statistics content. Do not create a duplicate Home-only Results collection or duplicate existing records. Check for existing Home preview data and preserve or reuse it.
+
+If the section is enabled but has no featured records, do not silently remove the entire section. Keep its configured heading and provide an appropriate empty state until records are selected.
+
+2. Put Results under Pages in the admin
+Remove the duplicate standalone Results menu item outside Pages. Add Results as a page editor inside Pages, immediately after About:
+
+Pages
+  Home
+  About
+  Results
+  Faculty
+  Gallery
+  Contact
+Keep Results page editing and Results library management accessible from Pages → Results.
+
+In Pages → Home, restore the Results preview section and add a clear Manage Results button linking to Pages → Results, following the same pattern used by Home → Gallery and Home → Faculty. Do not put the Home preview editor outside the Home page editor.
+
+Preserve the public Results page and its public navigation link.
+
+3. Fix Results library saving
+Trace the save failure from the form through the API and persistence layer. Check frontend validation, request payload shape, server-side schema validation, and database handling. Fix the actual mismatch or validation bug rather than hiding the error.
+
+The screenshot shows Results statistics (0). An empty statistics list must not by itself prevent saving the library. Allow valid saves when there are no statistics yet.
+
+For other invalid fields, show a specific validation message near the affected field or explain which required information is missing. Do not leave users with only a generic “We could not save the Results library” message.
+
+Ensure Publish on Results page and Feature on Home are independently saved and respected:
+
+Publish on Results page controls visibility on the full Results page.
+Feature on Home controls visibility in the Home preview.
+Do not silently couple or reset these choices. Preserve records and existing data when saving.
+
+4. Verify the fix
+Confirm that:
+
+The “Pride of Sahasrah” preview is visible on the Home page again.
+The Results preview section is configurable under Pages → Home.
+Pages → Home → Manage Results opens Pages → Results.
+Results appears inside Pages after About, not as a duplicate standalone admin item.
+Results records and statistics save successfully, including when the statistics list is empty.
+The two visibility toggles persist and control their respective pages.
+Existing Gallery, Faculty, and other completed pages still work.
+The project builds and starts successfully.
