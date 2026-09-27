@@ -32,9 +32,11 @@ type FacultyRecord = {
   experience: string;
   biography: string;
   socialLinks: Prisma.JsonValue;
+  teachingSubjects: string[];
   displayOrder: number;
   isActive: boolean;
   showInHomePreview: boolean;
+  showOnCourses: boolean;
   homePreviewOrder: number;
 };
 
@@ -91,7 +93,9 @@ function toFacultyProfile(member: FacultyRecord) {
 function toAdminFacultyMember(member: FacultyRecord) {
   return {
     ...toFacultyProfile(member),
+    teachingSubjects: member.teachingSubjects,
     showInHomePreview: member.showInHomePreview,
+    showOnCourses: member.showOnCourses,
     homePreviewOrder: member.homePreviewOrder,
   };
 }
@@ -129,9 +133,11 @@ function memberWriteData(input: {
   experience: string;
   biography: string;
   socialLinks: Array<{ label: string; href: string }>;
+  teachingSubjects: string[];
   displayOrder: number;
   isActive: boolean;
   showInHomePreview: boolean;
+  showOnCourses: boolean;
   homePreviewOrder: number;
 }) {
   return {

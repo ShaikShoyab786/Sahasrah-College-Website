@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'wouter';
-import { BookOpen, ChevronDown, FileText, Gauge, GraduationCap, Home, Images, LayoutDashboard, LogOut, Menu, MessageCircle, PanelsTopLeft, Settings2, Trophy, X } from 'lucide-react';
+import { BookOpen, ChevronDown, FileText, Gauge, GraduationCap, Home, Images, LayoutDashboard, LogOut, Menu, MessageCircle, PanelsTopLeft, Settings2, Trophy, X, Waypoints } from 'lucide-react';
 import { useLogoutAdmin, getGetAdminSessionQueryKey, useGetSiteSettings } from '@workspace/api-client-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { SiteMark } from '@/components/site-mark';
@@ -53,6 +53,7 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
   const contactActive = location.startsWith('/admin/pages/contact');
   const galleryPageActive = location.startsWith('/admin/pages/gallery');
   const facultyPageActive = location.startsWith('/admin/pages/faculty');
+  const coursesPageActive = location.startsWith('/admin/pages/courses');
   const resultsPageActive = location.startsWith('/admin/pages/results') || location.startsWith('/admin/results');
   const nestedHomeRoute = heroActive || aboutActive || liveUpdatesActive || statisticsActive || favoriteTopicsActive || resultsActive || ribbonActive || testimonialsActive || facultyActive || galleryActive || knowledgeHubActive || admissionsFaqActive || finalCtaActive;
   const nestedAboutRoute = aboutHeroActive || aboutStoryActive || chairmanActive || principlesActive || parentChoiceActive || leadershipActive || campusHighlightsActive || achievementsActive || faqActive || admissionCtaActive;
@@ -67,14 +68,14 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
     } else if (nestedAboutRoute) {
       setPagesOpen(true);
       setAboutOpen(true);
-    } else if (contactActive || galleryPageActive || facultyPageActive || resultsPageActive) {
+    } else if (contactActive || galleryPageActive || facultyPageActive || coursesPageActive || resultsPageActive) {
       setPagesOpen(true);
     } else {
       setPagesOpen(false);
       setHomeOpen(false);
       setAboutOpen(false);
     }
-  }, [location, contactActive, galleryPageActive, facultyPageActive, resultsPageActive, nestedAboutRoute, nestedHomeRoute]);
+  }, [location, contactActive, galleryPageActive, facultyPageActive, coursesPageActive, resultsPageActive, nestedAboutRoute, nestedHomeRoute]);
 
   useEffect(() => {
     const mobile = window.matchMedia('(max-width: 767px)');
@@ -185,6 +186,11 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
             {pagesOpen && (
               <div className="mt-2 rounded-2xl bg-[hsl(var(--sidebar-accent)/.55)] p-2">
                 <Link href="/admin/pages/faculty" onClick={() => setOpen(false)} className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition ${facultyPageActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-faculty"><GraduationCap size={16} /><span>Faculty</span></Link>
+              </div>
+            )}
+            {pagesOpen && (
+              <div className="mt-2 rounded-2xl bg-[hsl(var(--sidebar-accent)/.55)] p-2">
+                <Link href="/admin/pages/courses" onClick={() => setOpen(false)} className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition ${coursesPageActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-courses"><Waypoints size={16} /><span>Courses</span></Link>
               </div>
             )}
             {pagesOpen && (

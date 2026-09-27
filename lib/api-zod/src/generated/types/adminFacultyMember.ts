@@ -6,6 +6,7 @@
  * OpenAPI spec version: 0.1.0
  */
 import type { FacultySocialLink } from './facultySocialLink';
+import type { TeachingSubject } from './teachingSubject';
 
 export interface AdminFacultyMember {
   id: string;
@@ -19,8 +20,11 @@ export interface AdminFacultyMember {
   experience: string;
   biography: string;
   socialLinks: FacultySocialLink[];
+  /** @maxItems 7 */
+  teachingSubjects: TeachingSubject[];
   displayOrder: number;
   isActive: boolean;
   showInHomePreview: boolean;
+  showOnCourses: boolean;
   homePreviewOrder: number;
 }

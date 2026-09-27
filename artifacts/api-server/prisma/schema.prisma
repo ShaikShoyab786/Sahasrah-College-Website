@@ -710,14 +710,45 @@ model FacultyMember {
   experience                   String   @default("")
   biography                    String   @default("")
   socialLinks                  Json     @default("[]")
+  teachingSubjects             String[] @default([])
   isActive                     Boolean  @default(true)
   displayOrder                 Int      @default(1)
   showInHomePreview            Boolean  @default(false)
+  showOnCourses                 Boolean  @default(false)
   homePreviewOrder             Int      @default(1)
   updatedAt                    DateTime @updatedAt
 
   @@index([isActive, displayOrder])
   @@index([isActive, showInHomePreview, homePreviewOrder])
+  @@index([showOnCourses])
+}
+
+model Course {
+  id                        String   @id @default(cuid())
+  slug                      String   @unique
+  name                      String
+  displayOrder              Int      @default(1)
+  heroEyebrow               String
+  heroTitle                 String
+  heroDescription           String
+  primaryActionLabel        String   @default("Explore admissions")
+  primaryActionUrl          String   @default("/contact")
+  secondaryActionLabel      String   @default("Talk to a counsellor")
+  secondaryActionUrl        String   @default("/contact")
+  highlights                Json     @default("[]")
+  whyChoose                 Json     @default("[]")
+  overviewText              String
+  programGoals              Json     @default("[]")
+  idealProfileTitle         String
+  idealProfileDescription   String
+  idealProfileIndicators    Json     @default("[]")
+  syllabus                  Json     @default("[]")
+  curriculumPdfObjectPath   String?
+  curriculumPdfFileName     String?
+  createdAt                 DateTime @default(now())
+  updatedAt                 DateTime @updatedAt
+
+  @@index([displayOrder])
 }
 
 model FacultyImportState {

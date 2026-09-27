@@ -5,6 +5,7 @@ import {
   parseStoredContactCourseOptions,
 } from "./contact-course-options";
 import { homepagePreviewCopyDefaults } from "./homepage-preview-copy-defaults";
+import { COURSE_SEEDS } from "./course-content";
 
 export const prisma = new PrismaClient();
 
@@ -222,6 +223,14 @@ export async function initializeDatabase() {
   await ensureAlumniStorySchema();
   await backfillLegacyResultStories();
   await backfillCollegeNameTypo();
+
+  for (const course of COURSE_SEEDS) {
+    await prisma.course.upsert({
+      where: { slug: course.slug },
+      update: {},
+      create: course,
+    });
+  }
 
   await prisma.siteSettings.upsert({
     where: { id: "singleton" },

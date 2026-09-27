@@ -6,6 +6,7 @@
  * OpenAPI spec version: 0.1.0
  */
 import type { FacultySocialLink } from './facultySocialLink';
+import type { TeachingSubject } from './teachingSubject';
 
 export interface FacultyMemberInput {
   /** @nullable */
@@ -35,6 +36,8 @@ export interface FacultyMemberInput {
   biography: string;
   /** @maxItems 10 */
   socialLinks: FacultySocialLink[];
+  /** @maxItems 7 */
+  teachingSubjects: TeachingSubject[];
   /**
      * @minimum 1
      * @maximum 1000
@@ -42,6 +45,7 @@ export interface FacultyMemberInput {
   displayOrder: number;
   isActive: boolean;
   showInHomePreview: boolean;
+  showOnCourses: boolean;
   /**
      * @minimum 1
      * @maximum 1000

@@ -40,6 +40,7 @@ import type {
   AboutStoryInput,
   AboutWhyParentsChoose,
   AboutWhyParentsChooseInput,
+  AdminCourse,
   AdminFacultyCollection,
   AdminFacultyMember,
   AdminResultsLibrary,
@@ -52,7 +53,13 @@ import type {
   ContactEnquirySubmission,
   ContactSettings,
   ContactSettingsInput,
+  CourseSlug,
+  CourseSummary,
+  CourseUpdate,
+  CurriculumUploadUrlRequest,
+  CurriculumUploadUrlResponse,
   DeletedFacultyMember,
+  ErrorEnvelope,
   ErrorResponse,
   FacultyMemberInput,
   FacultyOrderInput,
@@ -95,6 +102,7 @@ import type {
   ImageUploadResult,
   LoginInput,
   MessageResponse,
+  PublicCourse,
   ResultsPageData,
   SiteSettings,
   SiteSettingsInput
@@ -4906,6 +4914,492 @@ export const useUpdateHomepageTestimonials = <TError = ErrorType<ErrorResponse>,
         TContext
       > => {
       return useMutation(getUpdateHomepageTestimonialsMutationOptions(options));
+    }
+
+export const getGetCoursesUrl = () => {
+
+
+
+
+  return `/api/courses`
+}
+
+/**
+ * @summary List the five regular course pathways
+ */
+export const getCourses = async ( options?: Parameters<typeof customFetch>[1]): Promise<CourseSummary[]> => {
+
+  return customFetch<CourseSummary[]>(getGetCoursesUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetCoursesQueryKey = () => {
+    return [
+    `/api/courses`
+    ] as const;
+    }
+
+
+export const getGetCoursesQueryOptions = <TData = Awaited<ReturnType<typeof getCourses>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getCourses>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetCoursesQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCourses>>> = ({ signal }) => getCourses({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getCourses>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetCoursesQueryResult = NonNullable<Awaited<ReturnType<typeof getCourses>>>
+export type GetCoursesQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary List the five regular course pathways
+ */
+
+export function useGetCourses<TData = Awaited<ReturnType<typeof getCourses>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getCourses>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetCoursesQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetCourseBySlugUrl = (slug: CourseSlug,) => {
+
+
+
+
+  return `/api/courses/${slug}`
+}
+
+/**
+ * @summary Read a course detail page and its subject-matched mentors
+ */
+export const getCourseBySlug = async (slug: CourseSlug, options?: Parameters<typeof customFetch>[1]): Promise<PublicCourse> => {
+
+  return customFetch<PublicCourse>(getGetCourseBySlugUrl(slug),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetCourseBySlugQueryKey = (slug: CourseSlug,) => {
+    return [
+    `/api/courses/${slug}`
+    ] as const;
+    }
+
+
+export const getGetCourseBySlugQueryOptions = <TData = Awaited<ReturnType<typeof getCourseBySlug>>, TError = ErrorType<ErrorEnvelope>>(slug: CourseSlug, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getCourseBySlug>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetCourseBySlugQueryKey(slug);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCourseBySlug>>> = ({ signal }) => getCourseBySlug(slug, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: slug !== null && slug !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getCourseBySlug>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetCourseBySlugQueryResult = NonNullable<Awaited<ReturnType<typeof getCourseBySlug>>>
+export type GetCourseBySlugQueryError = ErrorType<ErrorEnvelope>
+
+
+/**
+ * @summary Read a course detail page and its subject-matched mentors
+ */
+
+export function useGetCourseBySlug<TData = Awaited<ReturnType<typeof getCourseBySlug>>, TError = ErrorType<ErrorEnvelope>>(
+ slug: CourseSlug, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getCourseBySlug>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetCourseBySlugQueryOptions(slug,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getDownloadCourseCurriculumUrl = (slug: CourseSlug,) => {
+
+
+
+
+  return `/api/courses/${slug}/curriculum.pdf`
+}
+
+/**
+ * @summary Download the selected course curriculum PDF
+ */
+export const downloadCourseCurriculum = async (slug: CourseSlug, options?: Parameters<typeof customFetch>[1]): Promise<Blob> => {
+
+  return customFetch<Blob>(getDownloadCourseCurriculumUrl(slug),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getDownloadCourseCurriculumQueryKey = (slug: CourseSlug,) => {
+    return [
+    `/api/courses/${slug}/curriculum.pdf`
+    ] as const;
+    }
+
+
+export const getDownloadCourseCurriculumQueryOptions = <TData = Awaited<ReturnType<typeof downloadCourseCurriculum>>, TError = ErrorType<ErrorEnvelope>>(slug: CourseSlug, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof downloadCourseCurriculum>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getDownloadCourseCurriculumQueryKey(slug);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof downloadCourseCurriculum>>> = ({ signal }) => downloadCourseCurriculum(slug, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: slug !== null && slug !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof downloadCourseCurriculum>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type DownloadCourseCurriculumQueryResult = NonNullable<Awaited<ReturnType<typeof downloadCourseCurriculum>>>
+export type DownloadCourseCurriculumQueryError = ErrorType<ErrorEnvelope>
+
+
+/**
+ * @summary Download the selected course curriculum PDF
+ */
+
+export function useDownloadCourseCurriculum<TData = Awaited<ReturnType<typeof downloadCourseCurriculum>>, TError = ErrorType<ErrorEnvelope>>(
+ slug: CourseSlug, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof downloadCourseCurriculum>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getDownloadCourseCurriculumQueryOptions(slug,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetAdminCoursesUrl = () => {
+
+
+
+
+  return `/api/admin/courses`
+}
+
+/**
+ * @summary Read editable course content
+ */
+export const getAdminCourses = async ( options?: Parameters<typeof customFetch>[1]): Promise<AdminCourse[]> => {
+
+  return customFetch<AdminCourse[]>(getGetAdminCoursesUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAdminCoursesQueryKey = () => {
+    return [
+    `/api/admin/courses`
+    ] as const;
+    }
+
+
+export const getGetAdminCoursesQueryOptions = <TData = Awaited<ReturnType<typeof getAdminCourses>>, TError = ErrorType<ErrorEnvelope>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminCourses>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAdminCoursesQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdminCourses>>> = ({ signal }) => getAdminCourses({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAdminCourses>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetAdminCoursesQueryResult = NonNullable<Awaited<ReturnType<typeof getAdminCourses>>>
+export type GetAdminCoursesQueryError = ErrorType<ErrorEnvelope>
+
+
+/**
+ * @summary Read editable course content
+ */
+
+export function useGetAdminCourses<TData = Awaited<ReturnType<typeof getAdminCourses>>, TError = ErrorType<ErrorEnvelope>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminCourses>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetAdminCoursesQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getUpdateAdminCourseUrl = (slug: CourseSlug,) => {
+
+
+
+
+  return `/api/admin/courses/${slug}`
+}
+
+/**
+ * @summary Save editable course content
+ */
+export const updateAdminCourse = async (slug: CourseSlug,
+    courseUpdate: CourseUpdate, options?: Parameters<typeof customFetch>[1]): Promise<AdminCourse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<AdminCourse>(getUpdateAdminCourseUrl(slug),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(courseUpdate)
+  }
+);}
+
+
+
+
+
+export const getUpdateAdminCourseMutationKey = () => ['updateAdminCourse'] as const;
+
+export const getUpdateAdminCourseMutationOptions = <TError = ErrorType<ErrorEnvelope>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAdminCourse>>, TError,UpdateAdminCourseMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateAdminCourse>>, TError,UpdateAdminCourseMutationVariables, TContext> => {
+
+const mutationKey = getUpdateAdminCourseMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateAdminCourse>>, UpdateAdminCourseMutationVariables> = (props) => {
+          const {slug,data} = props ?? {};
+
+          return  updateAdminCourse(slug,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateAdminCourseMutationResult = NonNullable<Awaited<ReturnType<typeof updateAdminCourse>>>
+    export type UpdateAdminCourseMutationBody = BodyType<CourseUpdate>
+    export type UpdateAdminCourseMutationError = ErrorType<ErrorEnvelope>
+    export type UpdateAdminCourseMutationVariables = {slug: CourseSlug;data: BodyType<CourseUpdate>}
+
+    /**
+ * @summary Save editable course content
+ */
+export const useUpdateAdminCourse = <TError = ErrorType<ErrorEnvelope>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAdminCourse>>, TError,UpdateAdminCourseMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateAdminCourse>>,
+        TError,
+        UpdateAdminCourseMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateAdminCourseMutationOptions(options));
+    }
+
+export const getRequestCourseCurriculumUploadUrlUrl = (slug: CourseSlug,) => {
+
+
+
+
+  return `/api/admin/courses/${slug}/curriculum/upload-url`
+}
+
+/**
+ * @summary Request an admin-only presigned PDF upload URL
+ */
+export const requestCourseCurriculumUploadUrl = async (slug: CourseSlug,
+    curriculumUploadUrlRequest: CurriculumUploadUrlRequest, options?: Parameters<typeof customFetch>[1]): Promise<CurriculumUploadUrlResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<CurriculumUploadUrlResponse>(getRequestCourseCurriculumUploadUrlUrl(slug),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(curriculumUploadUrlRequest)
+  }
+);}
+
+
+
+
+
+export const getRequestCourseCurriculumUploadUrlMutationKey = () => ['requestCourseCurriculumUploadUrl'] as const;
+
+export const getRequestCourseCurriculumUploadUrlMutationOptions = <TError = ErrorType<ErrorEnvelope>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof requestCourseCurriculumUploadUrl>>, TError,RequestCourseCurriculumUploadUrlMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof requestCourseCurriculumUploadUrl>>, TError,RequestCourseCurriculumUploadUrlMutationVariables, TContext> => {
+
+const mutationKey = getRequestCourseCurriculumUploadUrlMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof requestCourseCurriculumUploadUrl>>, RequestCourseCurriculumUploadUrlMutationVariables> = (props) => {
+          const {slug,data} = props ?? {};
+
+          return  requestCourseCurriculumUploadUrl(slug,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type RequestCourseCurriculumUploadUrlMutationResult = NonNullable<Awaited<ReturnType<typeof requestCourseCurriculumUploadUrl>>>
+    export type RequestCourseCurriculumUploadUrlMutationBody = BodyType<CurriculumUploadUrlRequest>
+    export type RequestCourseCurriculumUploadUrlMutationError = ErrorType<ErrorEnvelope>
+    export type RequestCourseCurriculumUploadUrlMutationVariables = {slug: CourseSlug;data: BodyType<CurriculumUploadUrlRequest>}
+
+    /**
+ * @summary Request an admin-only presigned PDF upload URL
+ */
+export const useRequestCourseCurriculumUploadUrl = <TError = ErrorType<ErrorEnvelope>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof requestCourseCurriculumUploadUrl>>, TError,RequestCourseCurriculumUploadUrlMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof requestCourseCurriculumUploadUrl>>,
+        TError,
+        RequestCourseCurriculumUploadUrlMutationVariables,
+        TContext
+      > => {
+      return useMutation(getRequestCourseCurriculumUploadUrlMutationOptions(options));
     }
 
 export const getGetAdminFacultyUrl = () => {

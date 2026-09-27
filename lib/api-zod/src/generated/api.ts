@@ -2176,6 +2176,331 @@ export const UpdateHomepageTestimonialsResponse = zod.object({
 
 
 /**
+ * @summary List the five regular course pathways
+ */
+export const GetCoursesResponseItem = zod.object({
+  "slug": zod.enum(['mpc', 'bipc', 'mpc-iit-jee', 'bipc-neet', 'mpc-eamcet']),
+  "name": zod.string(),
+  "displayOrder": zod.number().int(),
+  "heroEyebrow": zod.string(),
+  "heroTitle": zod.string(),
+  "heroDescription": zod.string()
+})
+export const GetCoursesResponse = zod.array(GetCoursesResponseItem)
+
+
+/**
+ * @summary Read a course detail page and its subject-matched mentors
+ */
+export const GetCourseBySlugParams = zod.object({
+  "slug": zod.enum(['mpc', 'bipc', 'mpc-iit-jee', 'bipc-neet', 'mpc-eamcet'])
+})
+
+export const getCourseBySlugResponseHighlightsItemLabelMax = 80;
+
+export const getCourseBySlugResponseHighlightsItemValueMax = 180;
+
+export const getCourseBySlugResponseHighlightsItemDescriptionMax = 500;
+
+export const getCourseBySlugResponseWhyChooseItemTitleMax = 140;
+
+export const getCourseBySlugResponseWhyChooseItemDescriptionMax = 1000;
+
+export const getCourseBySlugResponseSyllabusItemSubjectMax = 100;
+
+export const getCourseBySlugResponseSyllabusItemTopicsItemMax = 120;
+
+export const getCourseBySlugResponseSyllabusItemTopicsMax = 40;
+
+
+
+export const GetCourseBySlugResponse = zod.object({
+  "slug": zod.enum(['mpc', 'bipc', 'mpc-iit-jee', 'bipc-neet', 'mpc-eamcet']),
+  "name": zod.string(),
+  "displayOrder": zod.number().int(),
+  "heroEyebrow": zod.string(),
+  "heroTitle": zod.string(),
+  "heroDescription": zod.string(),
+  "primaryActionLabel": zod.string(),
+  "primaryActionUrl": zod.string(),
+  "secondaryActionLabel": zod.string(),
+  "secondaryActionUrl": zod.string(),
+  "highlights": zod.array(zod.object({
+  "label": zod.string().min(1).max(getCourseBySlugResponseHighlightsItemLabelMax),
+  "value": zod.string().min(1).max(getCourseBySlugResponseHighlightsItemValueMax),
+  "description": zod.string().max(getCourseBySlugResponseHighlightsItemDescriptionMax)
+})),
+  "whyChoose": zod.array(zod.object({
+  "title": zod.string().min(1).max(getCourseBySlugResponseWhyChooseItemTitleMax),
+  "description": zod.string().min(1).max(getCourseBySlugResponseWhyChooseItemDescriptionMax)
+})),
+  "overviewText": zod.string(),
+  "programGoals": zod.array(zod.string()),
+  "idealProfileTitle": zod.string(),
+  "idealProfileDescription": zod.string(),
+  "idealProfileIndicators": zod.array(zod.string()),
+  "syllabus": zod.array(zod.object({
+  "subject": zod.string().min(1).max(getCourseBySlugResponseSyllabusItemSubjectMax),
+  "topics": zod.array(zod.string().min(1).max(getCourseBySlugResponseSyllabusItemTopicsItemMax)).max(getCourseBySlugResponseSyllabusItemTopicsMax)
+})),
+  "curriculumPdfFileName": zod.string().nullable(),
+  "curriculumPdfIsSample": zod.boolean(),
+  "curriculumDownloadUrl": zod.string(),
+  "mentors": zod.array(zod.object({
+  "id": zod.string(),
+  "imageUrl": zod.string().nullable(),
+  "imageAltText": zod.string(),
+  "name": zod.string(),
+  "role": zod.string(),
+  "subject": zod.string(),
+  "teachingSubjects": zod.array(zod.enum(['Mathematics', 'Physics', 'Chemistry', 'Biology', 'IIT-JEE', 'NEET', 'EAMCET'])),
+  "qualification": zod.string(),
+  "experience": zod.string(),
+  "biography": zod.string()
+})),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Download the selected course curriculum PDF
+ */
+export const DownloadCourseCurriculumParams = zod.object({
+  "slug": zod.enum(['mpc', 'bipc', 'mpc-iit-jee', 'bipc-neet', 'mpc-eamcet'])
+})
+
+export const DownloadCourseCurriculumResponse = zod.unknown()
+
+
+/**
+ * @summary Read editable course content
+ */
+export const getAdminCoursesResponseHighlightsItemLabelMax = 80;
+
+export const getAdminCoursesResponseHighlightsItemValueMax = 180;
+
+export const getAdminCoursesResponseHighlightsItemDescriptionMax = 500;
+
+export const getAdminCoursesResponseWhyChooseItemTitleMax = 140;
+
+export const getAdminCoursesResponseWhyChooseItemDescriptionMax = 1000;
+
+export const getAdminCoursesResponseSyllabusItemSubjectMax = 100;
+
+export const getAdminCoursesResponseSyllabusItemTopicsItemMax = 120;
+
+export const getAdminCoursesResponseSyllabusItemTopicsMax = 40;
+
+
+
+export const GetAdminCoursesResponseItem = zod.object({
+  "slug": zod.enum(['mpc', 'bipc', 'mpc-iit-jee', 'bipc-neet', 'mpc-eamcet']),
+  "name": zod.string(),
+  "displayOrder": zod.number().int(),
+  "heroEyebrow": zod.string(),
+  "heroTitle": zod.string(),
+  "heroDescription": zod.string(),
+  "primaryActionLabel": zod.string(),
+  "primaryActionUrl": zod.string(),
+  "secondaryActionLabel": zod.string(),
+  "secondaryActionUrl": zod.string(),
+  "highlights": zod.array(zod.object({
+  "label": zod.string().min(1).max(getAdminCoursesResponseHighlightsItemLabelMax),
+  "value": zod.string().min(1).max(getAdminCoursesResponseHighlightsItemValueMax),
+  "description": zod.string().max(getAdminCoursesResponseHighlightsItemDescriptionMax)
+})),
+  "whyChoose": zod.array(zod.object({
+  "title": zod.string().min(1).max(getAdminCoursesResponseWhyChooseItemTitleMax),
+  "description": zod.string().min(1).max(getAdminCoursesResponseWhyChooseItemDescriptionMax)
+})),
+  "overviewText": zod.string(),
+  "programGoals": zod.array(zod.string()),
+  "idealProfileTitle": zod.string(),
+  "idealProfileDescription": zod.string(),
+  "idealProfileIndicators": zod.array(zod.string()),
+  "syllabus": zod.array(zod.object({
+  "subject": zod.string().min(1).max(getAdminCoursesResponseSyllabusItemSubjectMax),
+  "topics": zod.array(zod.string().min(1).max(getAdminCoursesResponseSyllabusItemTopicsItemMax)).max(getAdminCoursesResponseSyllabusItemTopicsMax)
+})),
+  "curriculumPdfObjectPath": zod.string().nullable(),
+  "curriculumPdfFileName": zod.string().nullable(),
+  "curriculumPdfIsSample": zod.boolean(),
+  "curriculumDownloadUrl": zod.string(),
+  "updatedAt": zod.coerce.date()
+})
+export const GetAdminCoursesResponse = zod.array(GetAdminCoursesResponseItem)
+
+
+/**
+ * @summary Save editable course content
+ */
+export const UpdateAdminCourseParams = zod.object({
+  "slug": zod.enum(['mpc', 'bipc', 'mpc-iit-jee', 'bipc-neet', 'mpc-eamcet'])
+})
+
+export const updateAdminCourseBodyHeroEyebrowMax = 100;
+
+export const updateAdminCourseBodyHeroTitleMax = 180;
+
+export const updateAdminCourseBodyHeroDescriptionMax = 2000;
+
+export const updateAdminCourseBodyPrimaryActionLabelMax = 100;
+
+export const updateAdminCourseBodyPrimaryActionUrlMax = 500;
+
+export const updateAdminCourseBodySecondaryActionLabelMax = 100;
+
+export const updateAdminCourseBodySecondaryActionUrlMax = 500;
+
+export const updateAdminCourseBodyHighlightsItemLabelMax = 80;
+
+export const updateAdminCourseBodyHighlightsItemValueMax = 180;
+
+export const updateAdminCourseBodyHighlightsItemDescriptionMax = 500;
+
+export const updateAdminCourseBodyHighlightsMax = 8;
+
+export const updateAdminCourseBodyWhyChooseItemTitleMax = 140;
+
+export const updateAdminCourseBodyWhyChooseItemDescriptionMax = 1000;
+
+export const updateAdminCourseBodyWhyChooseMax = 8;
+
+export const updateAdminCourseBodyOverviewTextMax = 4000;
+
+export const updateAdminCourseBodyProgramGoalsItemMax = 500;
+
+export const updateAdminCourseBodyProgramGoalsMax = 12;
+
+export const updateAdminCourseBodyIdealProfileTitleMax = 180;
+
+export const updateAdminCourseBodyIdealProfileDescriptionMax = 2000;
+
+export const updateAdminCourseBodyIdealProfileIndicatorsItemMax = 300;
+
+export const updateAdminCourseBodyIdealProfileIndicatorsMax = 12;
+
+export const updateAdminCourseBodySyllabusItemSubjectMax = 100;
+
+export const updateAdminCourseBodySyllabusItemTopicsItemMax = 120;
+
+export const updateAdminCourseBodySyllabusItemTopicsMax = 40;
+
+export const updateAdminCourseBodySyllabusMax = 8;
+
+
+
+export const UpdateAdminCourseBody = zod.object({
+  "heroEyebrow": zod.string().min(1).max(updateAdminCourseBodyHeroEyebrowMax),
+  "heroTitle": zod.string().min(1).max(updateAdminCourseBodyHeroTitleMax),
+  "heroDescription": zod.string().min(1).max(updateAdminCourseBodyHeroDescriptionMax),
+  "primaryActionLabel": zod.string().min(1).max(updateAdminCourseBodyPrimaryActionLabelMax),
+  "primaryActionUrl": zod.string().min(1).max(updateAdminCourseBodyPrimaryActionUrlMax),
+  "secondaryActionLabel": zod.string().min(1).max(updateAdminCourseBodySecondaryActionLabelMax),
+  "secondaryActionUrl": zod.string().min(1).max(updateAdminCourseBodySecondaryActionUrlMax),
+  "highlights": zod.array(zod.object({
+  "label": zod.string().min(1).max(updateAdminCourseBodyHighlightsItemLabelMax),
+  "value": zod.string().min(1).max(updateAdminCourseBodyHighlightsItemValueMax),
+  "description": zod.string().max(updateAdminCourseBodyHighlightsItemDescriptionMax)
+})).min(1).max(updateAdminCourseBodyHighlightsMax),
+  "whyChoose": zod.array(zod.object({
+  "title": zod.string().min(1).max(updateAdminCourseBodyWhyChooseItemTitleMax),
+  "description": zod.string().min(1).max(updateAdminCourseBodyWhyChooseItemDescriptionMax)
+})).min(1).max(updateAdminCourseBodyWhyChooseMax),
+  "overviewText": zod.string().min(1).max(updateAdminCourseBodyOverviewTextMax),
+  "programGoals": zod.array(zod.string().min(1).max(updateAdminCourseBodyProgramGoalsItemMax)).min(1).max(updateAdminCourseBodyProgramGoalsMax),
+  "idealProfileTitle": zod.string().min(1).max(updateAdminCourseBodyIdealProfileTitleMax),
+  "idealProfileDescription": zod.string().min(1).max(updateAdminCourseBodyIdealProfileDescriptionMax),
+  "idealProfileIndicators": zod.array(zod.string().min(1).max(updateAdminCourseBodyIdealProfileIndicatorsItemMax)).min(1).max(updateAdminCourseBodyIdealProfileIndicatorsMax),
+  "syllabus": zod.array(zod.object({
+  "subject": zod.string().min(1).max(updateAdminCourseBodySyllabusItemSubjectMax),
+  "topics": zod.array(zod.string().min(1).max(updateAdminCourseBodySyllabusItemTopicsItemMax)).max(updateAdminCourseBodySyllabusItemTopicsMax)
+})).min(1).max(updateAdminCourseBodySyllabusMax),
+  "curriculumPdfObjectPath": zod.string().nullable(),
+  "curriculumPdfFileName": zod.string().nullable()
+})
+
+export const updateAdminCourseResponseHighlightsItemLabelMax = 80;
+
+export const updateAdminCourseResponseHighlightsItemValueMax = 180;
+
+export const updateAdminCourseResponseHighlightsItemDescriptionMax = 500;
+
+export const updateAdminCourseResponseWhyChooseItemTitleMax = 140;
+
+export const updateAdminCourseResponseWhyChooseItemDescriptionMax = 1000;
+
+export const updateAdminCourseResponseSyllabusItemSubjectMax = 100;
+
+export const updateAdminCourseResponseSyllabusItemTopicsItemMax = 120;
+
+export const updateAdminCourseResponseSyllabusItemTopicsMax = 40;
+
+
+
+export const UpdateAdminCourseResponse = zod.object({
+  "slug": zod.enum(['mpc', 'bipc', 'mpc-iit-jee', 'bipc-neet', 'mpc-eamcet']),
+  "name": zod.string(),
+  "displayOrder": zod.number().int(),
+  "heroEyebrow": zod.string(),
+  "heroTitle": zod.string(),
+  "heroDescription": zod.string(),
+  "primaryActionLabel": zod.string(),
+  "primaryActionUrl": zod.string(),
+  "secondaryActionLabel": zod.string(),
+  "secondaryActionUrl": zod.string(),
+  "highlights": zod.array(zod.object({
+  "label": zod.string().min(1).max(updateAdminCourseResponseHighlightsItemLabelMax),
+  "value": zod.string().min(1).max(updateAdminCourseResponseHighlightsItemValueMax),
+  "description": zod.string().max(updateAdminCourseResponseHighlightsItemDescriptionMax)
+})),
+  "whyChoose": zod.array(zod.object({
+  "title": zod.string().min(1).max(updateAdminCourseResponseWhyChooseItemTitleMax),
+  "description": zod.string().min(1).max(updateAdminCourseResponseWhyChooseItemDescriptionMax)
+})),
+  "overviewText": zod.string(),
+  "programGoals": zod.array(zod.string()),
+  "idealProfileTitle": zod.string(),
+  "idealProfileDescription": zod.string(),
+  "idealProfileIndicators": zod.array(zod.string()),
+  "syllabus": zod.array(zod.object({
+  "subject": zod.string().min(1).max(updateAdminCourseResponseSyllabusItemSubjectMax),
+  "topics": zod.array(zod.string().min(1).max(updateAdminCourseResponseSyllabusItemTopicsItemMax)).max(updateAdminCourseResponseSyllabusItemTopicsMax)
+})),
+  "curriculumPdfObjectPath": zod.string().nullable(),
+  "curriculumPdfFileName": zod.string().nullable(),
+  "curriculumPdfIsSample": zod.boolean(),
+  "curriculumDownloadUrl": zod.string(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Request an admin-only presigned PDF upload URL
+ */
+export const RequestCourseCurriculumUploadUrlParams = zod.object({
+  "slug": zod.enum(['mpc', 'bipc', 'mpc-iit-jee', 'bipc-neet', 'mpc-eamcet'])
+})
+
+export const requestCourseCurriculumUploadUrlBodyFileNameMax = 240;
+
+export const requestCourseCurriculumUploadUrlBodySizeMax = 20971520;
+
+
+
+export const RequestCourseCurriculumUploadUrlBody = zod.object({
+  "fileName": zod.string().min(1).max(requestCourseCurriculumUploadUrlBodyFileNameMax),
+  "size": zod.number().int().min(1).max(requestCourseCurriculumUploadUrlBodySizeMax),
+  "contentType": zod.enum(['application/pdf'])
+})
+
+export const RequestCourseCurriculumUploadUrlResponse = zod.object({
+  "uploadURL": zod.string().url(),
+  "objectPath": zod.string()
+})
+
+
+/**
  * @summary Read Faculty page settings and the shared faculty collection
  */
 export const getAdminFacultyResponseSettingsEyebrowMax = 100;
@@ -2187,6 +2512,8 @@ export const getAdminFacultyResponseSettingsDescriptionMax = 1200;
 export const getAdminFacultyResponseMembersItemSocialLinksItemLabelMax = 48;
 
 export const getAdminFacultyResponseMembersItemSocialLinksItemHrefMax = 500;
+
+export const getAdminFacultyResponseMembersItemTeachingSubjectsMax = 7;
 
 
 
@@ -2210,9 +2537,11 @@ export const GetAdminFacultyResponse = zod.object({
   "label": zod.string().min(1).max(getAdminFacultyResponseMembersItemSocialLinksItemLabelMax),
   "href": zod.string().url().max(getAdminFacultyResponseMembersItemSocialLinksItemHrefMax)
 })),
+  "teachingSubjects": zod.array(zod.enum(['Mathematics', 'Physics', 'Chemistry', 'Biology', 'IIT-JEE', 'NEET', 'EAMCET'])).max(getAdminFacultyResponseMembersItemTeachingSubjectsMax),
   "displayOrder": zod.number().int(),
   "isActive": zod.boolean(),
   "showInHomePreview": zod.boolean(),
+  "showOnCourses": zod.boolean(),
   "homePreviewOrder": zod.number().int()
 }))
 })
@@ -2273,6 +2602,8 @@ export const createAdminFacultyMemberBodySocialLinksItemHrefMax = 500;
 
 export const createAdminFacultyMemberBodySocialLinksMax = 10;
 
+export const createAdminFacultyMemberBodyTeachingSubjectsMax = 7;
+
 export const createAdminFacultyMemberBodyDisplayOrderMax = 1000;
 
 export const createAdminFacultyMemberBodyHomePreviewOrderMax = 1000;
@@ -2292,15 +2623,19 @@ export const CreateAdminFacultyMemberBody = zod.object({
   "label": zod.string().min(1).max(createAdminFacultyMemberBodySocialLinksItemLabelMax),
   "href": zod.string().url().max(createAdminFacultyMemberBodySocialLinksItemHrefMax)
 })).max(createAdminFacultyMemberBodySocialLinksMax),
+  "teachingSubjects": zod.array(zod.enum(['Mathematics', 'Physics', 'Chemistry', 'Biology', 'IIT-JEE', 'NEET', 'EAMCET'])).max(createAdminFacultyMemberBodyTeachingSubjectsMax),
   "displayOrder": zod.number().int().min(1).max(createAdminFacultyMemberBodyDisplayOrderMax),
   "isActive": zod.boolean(),
   "showInHomePreview": zod.boolean(),
+  "showOnCourses": zod.boolean(),
   "homePreviewOrder": zod.number().int().min(1).max(createAdminFacultyMemberBodyHomePreviewOrderMax)
 })
 
 export const createAdminFacultyMemberResponseSocialLinksItemLabelMax = 48;
 
 export const createAdminFacultyMemberResponseSocialLinksItemHrefMax = 500;
+
+export const createAdminFacultyMemberResponseTeachingSubjectsMax = 7;
 
 
 
@@ -2318,9 +2653,11 @@ export const CreateAdminFacultyMemberResponse = zod.object({
   "label": zod.string().min(1).max(createAdminFacultyMemberResponseSocialLinksItemLabelMax),
   "href": zod.string().url().max(createAdminFacultyMemberResponseSocialLinksItemHrefMax)
 })),
+  "teachingSubjects": zod.array(zod.enum(['Mathematics', 'Physics', 'Chemistry', 'Biology', 'IIT-JEE', 'NEET', 'EAMCET'])).max(createAdminFacultyMemberResponseTeachingSubjectsMax),
   "displayOrder": zod.number().int(),
   "isActive": zod.boolean(),
   "showInHomePreview": zod.boolean(),
+  "showOnCourses": zod.boolean(),
   "homePreviewOrder": zod.number().int()
 })
 
@@ -2348,6 +2685,8 @@ export const updateAdminFacultyOrderResponseSocialLinksItemLabelMax = 48;
 
 export const updateAdminFacultyOrderResponseSocialLinksItemHrefMax = 500;
 
+export const updateAdminFacultyOrderResponseTeachingSubjectsMax = 7;
+
 
 
 export const UpdateAdminFacultyOrderResponseItem = zod.object({
@@ -2364,9 +2703,11 @@ export const UpdateAdminFacultyOrderResponseItem = zod.object({
   "label": zod.string().min(1).max(updateAdminFacultyOrderResponseSocialLinksItemLabelMax),
   "href": zod.string().url().max(updateAdminFacultyOrderResponseSocialLinksItemHrefMax)
 })),
+  "teachingSubjects": zod.array(zod.enum(['Mathematics', 'Physics', 'Chemistry', 'Biology', 'IIT-JEE', 'NEET', 'EAMCET'])).max(updateAdminFacultyOrderResponseTeachingSubjectsMax),
   "displayOrder": zod.number().int(),
   "isActive": zod.boolean(),
   "showInHomePreview": zod.boolean(),
+  "showOnCourses": zod.boolean(),
   "homePreviewOrder": zod.number().int()
 })
 export const UpdateAdminFacultyOrderResponse = zod.array(UpdateAdminFacultyOrderResponseItem)
@@ -2399,6 +2740,8 @@ export const updateAdminFacultyMemberBodySocialLinksItemHrefMax = 500;
 
 export const updateAdminFacultyMemberBodySocialLinksMax = 10;
 
+export const updateAdminFacultyMemberBodyTeachingSubjectsMax = 7;
+
 export const updateAdminFacultyMemberBodyDisplayOrderMax = 1000;
 
 export const updateAdminFacultyMemberBodyHomePreviewOrderMax = 1000;
@@ -2418,15 +2761,19 @@ export const UpdateAdminFacultyMemberBody = zod.object({
   "label": zod.string().min(1).max(updateAdminFacultyMemberBodySocialLinksItemLabelMax),
   "href": zod.string().url().max(updateAdminFacultyMemberBodySocialLinksItemHrefMax)
 })).max(updateAdminFacultyMemberBodySocialLinksMax),
+  "teachingSubjects": zod.array(zod.enum(['Mathematics', 'Physics', 'Chemistry', 'Biology', 'IIT-JEE', 'NEET', 'EAMCET'])).max(updateAdminFacultyMemberBodyTeachingSubjectsMax),
   "displayOrder": zod.number().int().min(1).max(updateAdminFacultyMemberBodyDisplayOrderMax),
   "isActive": zod.boolean(),
   "showInHomePreview": zod.boolean(),
+  "showOnCourses": zod.boolean(),
   "homePreviewOrder": zod.number().int().min(1).max(updateAdminFacultyMemberBodyHomePreviewOrderMax)
 })
 
 export const updateAdminFacultyMemberResponseSocialLinksItemLabelMax = 48;
 
 export const updateAdminFacultyMemberResponseSocialLinksItemHrefMax = 500;
+
+export const updateAdminFacultyMemberResponseTeachingSubjectsMax = 7;
 
 
 
@@ -2444,9 +2791,11 @@ export const UpdateAdminFacultyMemberResponse = zod.object({
   "label": zod.string().min(1).max(updateAdminFacultyMemberResponseSocialLinksItemLabelMax),
   "href": zod.string().url().max(updateAdminFacultyMemberResponseSocialLinksItemHrefMax)
 })),
+  "teachingSubjects": zod.array(zod.enum(['Mathematics', 'Physics', 'Chemistry', 'Biology', 'IIT-JEE', 'NEET', 'EAMCET'])).max(updateAdminFacultyMemberResponseTeachingSubjectsMax),
   "displayOrder": zod.number().int(),
   "isActive": zod.boolean(),
   "showInHomePreview": zod.boolean(),
+  "showOnCourses": zod.boolean(),
   "homePreviewOrder": zod.number().int()
 })
 

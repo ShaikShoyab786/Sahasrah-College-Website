@@ -5,6 +5,9 @@ import {
   getGetAdminFacultyQueryKey,
   getGetFacultyPageQueryKey,
   getGetHomepageFacultyQueryKey,
+  getGetCourseBySlugQueryKey,
+  CourseSlug,
+  TeachingSubject,
   useCreateAdminFacultyMember,
   useDeleteAdminFacultyMember,
   useGetAdminFaculty,
@@ -30,9 +33,11 @@ const EMPTY_MEMBER: FacultyMemberInput = {
   experience: '',
   biography: '',
   socialLinks: [],
+  teachingSubjects: [],
   displayOrder: 1,
   isActive: true,
   showInHomePreview: false,
+  showOnCourses: false,
   homePreviewOrder: 1,
 };
 
@@ -49,9 +54,11 @@ function toInput(member: AdminFacultyMember): FacultyMemberInput {
     experience: member.experience,
     biography: member.biography,
     socialLinks: member.socialLinks,
+    teachingSubjects: member.teachingSubjects,
     displayOrder: member.displayOrder,
     isActive: member.isActive,
     showInHomePreview: member.showInHomePreview,
+    showOnCourses: member.showOnCourses,
     homePreviewOrder: member.homePreviewOrder,
   };
 }
@@ -138,6 +145,29 @@ function ProfileFields({
       </div>
 
       <div className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--background))] p-4">
+        <h4 className="text-sm font-bold text-[hsl(var(--primary))]">Course mentor eligibility</h4>
+        <p className="mt-1 text-xs leading-5 text-[hsl(var(--muted-foreground))]">A mentor appears on a course only when this is enabled and at least one selected subject matches that course.</p>
+        <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+          {Object.values(TeachingSubject).map((subject) => (
+            <label key={`${idPrefix}-${subject}`} className="flex items-center gap-2 rounded-lg border border-[hsl(var(--border))] bg-[hsl(var(--card))] px-3 py-2 text-sm font-semibold">
+              <input
+                type="checkbox"
+                checked={value.teachingSubjects.includes(subject)}
+                onChange={(event) => onChange({ teachingSubjects: event.target.checked ? [...value.teachingSubjects, subject] : value.teachingSubjects.filter((item) => item !== subject) })}
+                className="h-4 w-4 accent-[hsl(var(--accent))]"
+                data-testid={`checkbox-${idPrefix}-teaching-${subject.toLowerCase().replaceAll('-', '-')}`}
+              />
+              {subject}
+            </label>
+          ))}
+        </div>
+        <label className="mt-4 flex items-start gap-3 text-sm font-semibold text-[hsl(var(--foreground))]">
+          <input type="checkbox" checked={value.showOnCourses} onChange={(event) => onChange({ showOnCourses: event.target.checked })} className="mt-0.5 h-4 w-4 accent-[hsl(var(--accent))]" data-testid={`checkbox-${idPrefix}-show-on-courses`} />
+          <span><span className="block">Eligible for course mentor sections</span><span className="mt-1 block text-xs font-normal leading-5 text-[hsl(var(--muted-foreground))]">Independent from Faculty page visibility and Home preview selection.</span></span>
+        </label>
+      </div>
+
+      <div className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--background))] p-4">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <h4 className="text-sm font-bold text-[hsl(var(--primary))]">Social links</h4>
@@ -199,6 +229,9 @@ export default function AdminFaculty() {
     void client.invalidateQueries({ queryKey: getGetAdminFacultyQueryKey() });
     void client.invalidateQueries({ queryKey: getGetFacultyPageQueryKey() });
     void client.invalidateQueries({ queryKey: getGetHomepageFacultyQueryKey() });
+    Object.values(CourseSlug).forEach((slug) => {
+      void client.invalidateQueries({ queryKey: getGetCourseBySlugQueryKey(slug) });
+    });
   };
 
   const saveSettings = (event: FormEvent) => {

@@ -1280,6 +1280,173 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+  /courses:
+    get:
+      tags: [Courses]
+      operationId: getCourses
+      summary: List the five regular course pathways
+      responses:
+        "200":
+          description: Course overview cards
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CourseSummary"
+  /courses/{slug}:
+    get:
+      tags: [Courses]
+      operationId: getCourseBySlug
+      summary: Read a course detail page and its subject-matched mentors
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/CourseSlug"
+      responses:
+        "200":
+          description: Course detail content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PublicCourse"
+        "404":
+          description: Course not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /courses/{slug}/curriculum.pdf:
+    get:
+      tags: [Courses]
+      operationId: downloadCourseCurriculum
+      summary: Download the selected course curriculum PDF
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/CourseSlug"
+      responses:
+        "200":
+          description: Uploaded curriculum or clearly labeled replaceable sample PDF
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        "404":
+          description: Course or uploaded curriculum not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /admin/courses:
+    get:
+      tags: [Courses]
+      operationId: getAdminCourses
+      summary: Read editable course content
+      responses:
+        "200":
+          description: Editable regular course records
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/AdminCourse"
+        "401":
+          description: Admin authentication required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /admin/courses/{slug}:
+    put:
+      tags: [Courses]
+      operationId: updateAdminCourse
+      summary: Save editable course content
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/CourseSlug"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CourseUpdate"
+      responses:
+        "200":
+          description: Updated course
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminCourse"
+        "400":
+          description: Invalid course content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          description: Admin authentication required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "404":
+          description: Course not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+  /admin/courses/{slug}/curriculum/upload-url:
+    post:
+      tags: [Courses]
+      operationId: requestCourseCurriculumUploadUrl
+      summary: Request an admin-only presigned PDF upload URL
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/CourseSlug"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CurriculumUploadUrlRequest"
+      responses:
+        "200":
+          description: Presigned URL for direct upload to persistent object storage
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CurriculumUploadUrlResponse"
+        "400":
+          description: Invalid file metadata
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          description: Admin authentication required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "404":
+          description: Course not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
   /admin/faculty:
     get:
       operationId: getAdminFaculty
@@ -4352,15 +4519,22 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/FacultySocialLink"
+        teachingSubjects:
+          type: array
+          maxItems: 7
+          items:
+            $ref: "#/components/schemas/TeachingSubject"
         displayOrder:
           type: integer
         isActive:
           type: boolean
         showInHomePreview:
           type: boolean
+        showOnCourses:
+          type: boolean
         homePreviewOrder:
           type: integer
-      required: [id, imageUrl, imageAltText, name, role, subject, qualification, experience, biography, socialLinks, displayOrder, isActive, showInHomePreview, homePreviewOrder]
+      required: [id, imageUrl, imageAltText, name, role, subject, qualification, experience, biography, socialLinks, teachingSubjects, displayOrder, isActive, showInHomePreview, showOnCourses, homePreviewOrder]
     AdminFacultyCollection:
       type: object
       properties:
@@ -4405,6 +4579,12 @@ components:
           maxItems: 10
           items:
             $ref: "#/components/schemas/FacultySocialLink"
+        teachingSubjects:
+          type: array
+          uniqueItems: true
+          maxItems: 7
+          items:
+            $ref: "#/components/schemas/TeachingSubject"
         displayOrder:
           type: integer
           minimum: 1
@@ -4413,11 +4593,352 @@ components:
           type: boolean
         showInHomePreview:
           type: boolean
+        showOnCourses:
+          type: boolean
         homePreviewOrder:
           type: integer
           minimum: 1
           maximum: 1000
-      required: [imageUrl, imageAltText, name, role, subject, qualification, experience, biography, socialLinks, displayOrder, isActive, showInHomePreview, homePreviewOrder]
+      required: [imageUrl, imageAltText, name, role, subject, qualification, experience, biography, socialLinks, teachingSubjects, displayOrder, isActive, showInHomePreview, showOnCourses, homePreviewOrder]
+
+    TeachingSubject:
+      type: string
+      enum: [Mathematics, Physics, Chemistry, Biology, IIT-JEE, NEET, EAMCET]
+
+    CourseSlug:
+      type: string
+      enum: [mpc, bipc, mpc-iit-jee, bipc-neet, mpc-eamcet]
+
+    CourseHighlight:
+      type: object
+      properties:
+        label:
+          type: string
+          minLength: 1
+          maxLength: 80
+        value:
+          type: string
+          minLength: 1
+          maxLength: 180
+        description:
+          type: string
+          maxLength: 500
+      required: [label, value, description]
+
+    CourseReason:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 140
+        description:
+          type: string
+          minLength: 1
+          maxLength: 1000
+      required: [title, description]
+
+    CourseSyllabusSubject:
+      type: object
+      properties:
+        subject:
+          type: string
+          minLength: 1
+          maxLength: 100
+        topics:
+          type: array
+          maxItems: 40
+          items:
+            type: string
+            minLength: 1
+            maxLength: 120
+      required: [subject, topics]
+
+    CourseMentor:
+      type: object
+      properties:
+        id:
+          type: string
+        imageUrl:
+          type: ["string", "null"]
+        imageAltText:
+          type: string
+        name:
+          type: string
+        role:
+          type: string
+        subject:
+          type: string
+        teachingSubjects:
+          type: array
+          items:
+            $ref: "#/components/schemas/TeachingSubject"
+        qualification:
+          type: string
+        experience:
+          type: string
+        biography:
+          type: string
+      required: [id, imageUrl, imageAltText, name, role, subject, teachingSubjects, qualification, experience, biography]
+
+    CourseSummary:
+      type: object
+      properties:
+        slug:
+          $ref: "#/components/schemas/CourseSlug"
+        name:
+          type: string
+        displayOrder:
+          type: integer
+        heroEyebrow:
+          type: string
+        heroTitle:
+          type: string
+        heroDescription:
+          type: string
+      required: [slug, name, displayOrder, heroEyebrow, heroTitle, heroDescription]
+
+    PublicCourse:
+      type: object
+      properties:
+        slug:
+          $ref: "#/components/schemas/CourseSlug"
+        name:
+          type: string
+        displayOrder:
+          type: integer
+        heroEyebrow:
+          type: string
+        heroTitle:
+          type: string
+        heroDescription:
+          type: string
+        primaryActionLabel:
+          type: string
+        primaryActionUrl:
+          type: string
+        secondaryActionLabel:
+          type: string
+        secondaryActionUrl:
+          type: string
+        highlights:
+          type: array
+          items:
+            $ref: "#/components/schemas/CourseHighlight"
+        whyChoose:
+          type: array
+          items:
+            $ref: "#/components/schemas/CourseReason"
+        overviewText:
+          type: string
+        programGoals:
+          type: array
+          items:
+            type: string
+        idealProfileTitle:
+          type: string
+        idealProfileDescription:
+          type: string
+        idealProfileIndicators:
+          type: array
+          items:
+            type: string
+        syllabus:
+          type: array
+          items:
+            $ref: "#/components/schemas/CourseSyllabusSubject"
+        curriculumPdfFileName:
+          type: ["string", "null"]
+        curriculumPdfIsSample:
+          type: boolean
+        curriculumDownloadUrl:
+          type: string
+        mentors:
+          type: array
+          items:
+            $ref: "#/components/schemas/CourseMentor"
+        updatedAt:
+          type: string
+          format: date-time
+      required: [slug, name, displayOrder, heroEyebrow, heroTitle, heroDescription, primaryActionLabel, primaryActionUrl, secondaryActionLabel, secondaryActionUrl, highlights, whyChoose, overviewText, programGoals, idealProfileTitle, idealProfileDescription, idealProfileIndicators, syllabus, curriculumPdfFileName, curriculumPdfIsSample, curriculumDownloadUrl, mentors, updatedAt]
+
+    AdminCourse:
+      type: object
+      properties:
+        slug:
+          $ref: "#/components/schemas/CourseSlug"
+        name:
+          type: string
+        displayOrder:
+          type: integer
+        heroEyebrow:
+          type: string
+        heroTitle:
+          type: string
+        heroDescription:
+          type: string
+        primaryActionLabel:
+          type: string
+        primaryActionUrl:
+          type: string
+        secondaryActionLabel:
+          type: string
+        secondaryActionUrl:
+          type: string
+        highlights:
+          type: array
+          items:
+            $ref: "#/components/schemas/CourseHighlight"
+        whyChoose:
+          type: array
+          items:
+            $ref: "#/components/schemas/CourseReason"
+        overviewText:
+          type: string
+        programGoals:
+          type: array
+          items:
+            type: string
+        idealProfileTitle:
+          type: string
+        idealProfileDescription:
+          type: string
+        idealProfileIndicators:
+          type: array
+          items:
+            type: string
+        syllabus:
+          type: array
+          items:
+            $ref: "#/components/schemas/CourseSyllabusSubject"
+        curriculumPdfObjectPath:
+          type: ["string", "null"]
+        curriculumPdfFileName:
+          type: ["string", "null"]
+        curriculumPdfIsSample:
+          type: boolean
+        curriculumDownloadUrl:
+          type: string
+        updatedAt:
+          type: string
+          format: date-time
+      required: [slug, name, displayOrder, heroEyebrow, heroTitle, heroDescription, primaryActionLabel, primaryActionUrl, secondaryActionLabel, secondaryActionUrl, highlights, whyChoose, overviewText, programGoals, idealProfileTitle, idealProfileDescription, idealProfileIndicators, syllabus, curriculumPdfObjectPath, curriculumPdfFileName, curriculumPdfIsSample, curriculumDownloadUrl, updatedAt]
+
+    CourseUpdate:
+      type: object
+      properties:
+        heroEyebrow:
+          type: string
+          minLength: 1
+          maxLength: 100
+        heroTitle:
+          type: string
+          minLength: 1
+          maxLength: 180
+        heroDescription:
+          type: string
+          minLength: 1
+          maxLength: 2000
+        primaryActionLabel:
+          type: string
+          minLength: 1
+          maxLength: 100
+        primaryActionUrl:
+          type: string
+          minLength: 1
+          maxLength: 500
+        secondaryActionLabel:
+          type: string
+          minLength: 1
+          maxLength: 100
+        secondaryActionUrl:
+          type: string
+          minLength: 1
+          maxLength: 500
+        highlights:
+          type: array
+          minItems: 1
+          maxItems: 8
+          items:
+            $ref: "#/components/schemas/CourseHighlight"
+        whyChoose:
+          type: array
+          minItems: 1
+          maxItems: 8
+          items:
+            $ref: "#/components/schemas/CourseReason"
+        overviewText:
+          type: string
+          minLength: 1
+          maxLength: 4000
+        programGoals:
+          type: array
+          minItems: 1
+          maxItems: 12
+          items:
+            type: string
+            minLength: 1
+            maxLength: 500
+        idealProfileTitle:
+          type: string
+          minLength: 1
+          maxLength: 180
+        idealProfileDescription:
+          type: string
+          minLength: 1
+          maxLength: 2000
+        idealProfileIndicators:
+          type: array
+          minItems: 1
+          maxItems: 12
+          items:
+            type: string
+            minLength: 1
+            maxLength: 300
+        syllabus:
+          type: array
+          minItems: 1
+          maxItems: 8
+          items:
+            $ref: "#/components/schemas/CourseSyllabusSubject"
+        curriculumPdfObjectPath:
+          type: ["string", "null"]
+        curriculumPdfFileName:
+          type: ["string", "null"]
+      required: [heroEyebrow, heroTitle, heroDescription, primaryActionLabel, primaryActionUrl, secondaryActionLabel, secondaryActionUrl, highlights, whyChoose, overviewText, programGoals, idealProfileTitle, idealProfileDescription, idealProfileIndicators, syllabus, curriculumPdfObjectPath, curriculumPdfFileName]
+
+    CurriculumUploadUrlRequest:
+      type: object
+      properties:
+        fileName:
+          type: string
+          minLength: 1
+          maxLength: 240
+        size:
+          type: integer
+          minimum: 1
+          maximum: 20971520
+        contentType:
+          type: string
+          enum: [application/pdf]
+      required: [fileName, size, contentType]
+
+    CurriculumUploadUrlResponse:
+      type: object
+      properties:
+        uploadURL:
+          type: string
+          format: uri
+        objectPath:
+          type: string
+      required: [uploadURL, objectPath]
+
+    ErrorEnvelope:
+      type: object
+      properties:
+        error:
+          type: string
+      required: [error]
     FacultyOrderInput:
       type: object
       properties:

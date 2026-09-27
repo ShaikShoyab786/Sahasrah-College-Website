@@ -1310,6 +1310,19 @@ export interface FacultyPage {
   members: HomepageFacultyMember[];
 }
 
+export type TeachingSubject = typeof TeachingSubject[keyof typeof TeachingSubject];
+
+
+export const TeachingSubject = {
+  Mathematics: 'Mathematics',
+  Physics: 'Physics',
+  Chemistry: 'Chemistry',
+  Biology: 'Biology',
+  'IIT-JEE': 'IIT-JEE',
+  NEET: 'NEET',
+  EAMCET: 'EAMCET',
+} as const;
+
 export interface AdminFacultyMember {
   id: string;
   /** @nullable */
@@ -1322,9 +1335,12 @@ export interface AdminFacultyMember {
   experience: string;
   biography: string;
   socialLinks: FacultySocialLink[];
+  /** @maxItems 7 */
+  teachingSubjects: TeachingSubject[];
   displayOrder: number;
   isActive: boolean;
   showInHomePreview: boolean;
+  showOnCourses: boolean;
   homePreviewOrder: number;
 }
 
@@ -1361,6 +1377,8 @@ export interface FacultyMemberInput {
   biography: string;
   /** @maxItems 10 */
   socialLinks: FacultySocialLink[];
+  /** @maxItems 7 */
+  teachingSubjects: TeachingSubject[];
   /**
      * @minimum 1
      * @maximum 1000
@@ -1368,11 +1386,259 @@ export interface FacultyMemberInput {
   displayOrder: number;
   isActive: boolean;
   showInHomePreview: boolean;
+  showOnCourses: boolean;
   /**
      * @minimum 1
      * @maximum 1000
      */
   homePreviewOrder: number;
+}
+
+export type CourseSlug = typeof CourseSlug[keyof typeof CourseSlug];
+
+
+export const CourseSlug = {
+  mpc: 'mpc',
+  bipc: 'bipc',
+  'mpc-iit-jee': 'mpc-iit-jee',
+  'bipc-neet': 'bipc-neet',
+  'mpc-eamcet': 'mpc-eamcet',
+} as const;
+
+export interface CourseHighlight {
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  label: string;
+  /**
+     * @minLength 1
+     * @maxLength 180
+     */
+  value: string;
+  /** @maxLength 500 */
+  description: string;
+}
+
+export interface CourseReason {
+  /**
+     * @minLength 1
+     * @maxLength 140
+     */
+  title: string;
+  /**
+     * @minLength 1
+     * @maxLength 1000
+     */
+  description: string;
+}
+
+export interface CourseSyllabusSubject {
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  subject: string;
+  /**
+     * @maxItems 40
+     * @items.minLength 1
+     * @items.maxLength 120
+     */
+  topics: string[];
+}
+
+export interface CourseMentor {
+  id: string;
+  /** @nullable */
+  imageUrl: string | null;
+  imageAltText: string;
+  name: string;
+  role: string;
+  subject: string;
+  teachingSubjects: TeachingSubject[];
+  qualification: string;
+  experience: string;
+  biography: string;
+}
+
+export interface CourseSummary {
+  slug: CourseSlug;
+  name: string;
+  displayOrder: number;
+  heroEyebrow: string;
+  heroTitle: string;
+  heroDescription: string;
+}
+
+export interface PublicCourse {
+  slug: CourseSlug;
+  name: string;
+  displayOrder: number;
+  heroEyebrow: string;
+  heroTitle: string;
+  heroDescription: string;
+  primaryActionLabel: string;
+  primaryActionUrl: string;
+  secondaryActionLabel: string;
+  secondaryActionUrl: string;
+  highlights: CourseHighlight[];
+  whyChoose: CourseReason[];
+  overviewText: string;
+  programGoals: string[];
+  idealProfileTitle: string;
+  idealProfileDescription: string;
+  idealProfileIndicators: string[];
+  syllabus: CourseSyllabusSubject[];
+  /** @nullable */
+  curriculumPdfFileName: string | null;
+  curriculumPdfIsSample: boolean;
+  curriculumDownloadUrl: string;
+  mentors: CourseMentor[];
+  updatedAt: string;
+}
+
+export interface AdminCourse {
+  slug: CourseSlug;
+  name: string;
+  displayOrder: number;
+  heroEyebrow: string;
+  heroTitle: string;
+  heroDescription: string;
+  primaryActionLabel: string;
+  primaryActionUrl: string;
+  secondaryActionLabel: string;
+  secondaryActionUrl: string;
+  highlights: CourseHighlight[];
+  whyChoose: CourseReason[];
+  overviewText: string;
+  programGoals: string[];
+  idealProfileTitle: string;
+  idealProfileDescription: string;
+  idealProfileIndicators: string[];
+  syllabus: CourseSyllabusSubject[];
+  /** @nullable */
+  curriculumPdfObjectPath: string | null;
+  /** @nullable */
+  curriculumPdfFileName: string | null;
+  curriculumPdfIsSample: boolean;
+  curriculumDownloadUrl: string;
+  updatedAt: string;
+}
+
+export interface CourseUpdate {
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  heroEyebrow: string;
+  /**
+     * @minLength 1
+     * @maxLength 180
+     */
+  heroTitle: string;
+  /**
+     * @minLength 1
+     * @maxLength 2000
+     */
+  heroDescription: string;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  primaryActionLabel: string;
+  /**
+     * @minLength 1
+     * @maxLength 500
+     */
+  primaryActionUrl: string;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  secondaryActionLabel: string;
+  /**
+     * @minLength 1
+     * @maxLength 500
+     */
+  secondaryActionUrl: string;
+  /**
+     * @minItems 1
+     * @maxItems 8
+     */
+  highlights: CourseHighlight[];
+  /**
+     * @minItems 1
+     * @maxItems 8
+     */
+  whyChoose: CourseReason[];
+  /**
+     * @minLength 1
+     * @maxLength 4000
+     */
+  overviewText: string;
+  /**
+     * @minItems 1
+     * @maxItems 12
+     * @items.minLength 1
+     * @items.maxLength 500
+     */
+  programGoals: string[];
+  /**
+     * @minLength 1
+     * @maxLength 180
+     */
+  idealProfileTitle: string;
+  /**
+     * @minLength 1
+     * @maxLength 2000
+     */
+  idealProfileDescription: string;
+  /**
+     * @minItems 1
+     * @maxItems 12
+     * @items.minLength 1
+     * @items.maxLength 300
+     */
+  idealProfileIndicators: string[];
+  /**
+     * @minItems 1
+     * @maxItems 8
+     */
+  syllabus: CourseSyllabusSubject[];
+  /** @nullable */
+  curriculumPdfObjectPath: string | null;
+  /** @nullable */
+  curriculumPdfFileName: string | null;
+}
+
+export type CurriculumUploadUrlRequestContentType = typeof CurriculumUploadUrlRequestContentType[keyof typeof CurriculumUploadUrlRequestContentType];
+
+
+export const CurriculumUploadUrlRequestContentType = {
+  'application/pdf': 'application/pdf',
+} as const;
+
+export interface CurriculumUploadUrlRequest {
+  /**
+     * @minLength 1
+     * @maxLength 240
+     */
+  fileName: string;
+  /**
+     * @minimum 1
+     * @maximum 20971520
+     */
+  size: number;
+  contentType: CurriculumUploadUrlRequestContentType;
+}
+
+export interface CurriculumUploadUrlResponse {
+  uploadURL: string;
+  objectPath: string;
+}
+
+export interface ErrorEnvelope {
+  error: string;
 }
 
 export type FacultyOrderInputItemsItem = {

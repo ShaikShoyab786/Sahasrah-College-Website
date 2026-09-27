@@ -1,0 +1,46 @@
+import { getGetCourseBySlugQueryKey, useGetCourseBySlug, useGetSiteSettings, type CourseSlug } from '@workspace/api-client-react';
+import { PublicFooter } from '@/components/public-footer';
+import { PublicHeader } from '@/components/public-header';
+import { CourseEmptyState, CourseErrorState, CourseHero, CourseLoadingState, CurriculumSection, HighlightsSection, IdealProfileSection, MentorsSection, OverviewSection, WhyChooseSection } from '@/components/course-experience';
+import { createPublicThemeStyle, DEFAULT_ACCENT_COLOR, DEFAULT_PRIMARY_COLOR, DEFAULT_SURFACE_COLOR } from '@/lib/public-theme';
+import { useParams } from 'wouter';
+
+const validSlugs = new Set<CourseSlug>(['mpc', 'bipc', 'mpc-iit-jee', 'bipc-neet', 'mpc-eamcet']);
+
+export default function CourseDetail() {
+  const params = useParams<{ slug: string }>();
+  const slug = params.slug as CourseSlug;
+  const settingsQuery = useGetSiteSettings();
+  const courseQuery = useGetCourseBySlug(slug, { query: { queryKey: getGetCourseBySlugQueryKey(slug) } });
+  const settings = settingsQuery.data;
+  const publicSettings = settings ?? {
+    collegeName: 'Sahsrah Junior College',
+    tagline: 'Your College Tagline',
+    logoUrl: null,
+    email: 'admissions@sahsrah.edu',
+    phone: '+91 40 2458 0176',
+    footerText: 'A public junior college for curious minds and purposeful lives.',
+  };
+
+  if (!validSlugs.has(slug)) return <CourseEmptyState detail />;
+  if (settingsQuery.isLoading || courseQuery.isLoading) return <CourseLoadingState label="Loading course detail" />;
+  if (settingsQuery.isError || courseQuery.isError) return <CourseErrorState label="Course unavailable" onRetry={() => { void settingsQuery.refetch(); void courseQuery.refetch(); }} />;
+  const course = courseQuery.data;
+  if (!course) return <CourseEmptyState detail />;
+
+  return (
+    <div className="paper-grain overflow-hidden bg-[hsl(var(--background))]" style={createPublicThemeStyle(settings?.primaryColor || DEFAULT_PRIMARY_COLOR, settings?.accentColor || DEFAULT_ACCENT_COLOR, settings?.surfaceColor || DEFAULT_SURFACE_COLOR)}>
+      <PublicHeader settings={publicSettings} activePage="courses" />
+      <main>
+        <CourseHero course={course} />
+        <HighlightsSection highlights={course.highlights} />
+        <WhyChooseSection reasons={course.whyChoose} />
+        <MentorsSection mentors={course.mentors} />
+        <OverviewSection text={course.overviewText} goals={course.programGoals} />
+        <IdealProfileSection title={course.idealProfileTitle} description={course.idealProfileDescription} indicators={course.idealProfileIndicators} />
+        <CurriculumSection syllabus={course.syllabus} fileName={course.curriculumPdfFileName} isSample={course.curriculumPdfIsSample} downloadUrl={course.curriculumDownloadUrl} />
+      </main>
+      <PublicFooter settings={publicSettings} />
+    </div>
+  );
+}

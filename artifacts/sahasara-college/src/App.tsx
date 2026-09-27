@@ -35,6 +35,10 @@ import { AdminAboutAchievements, AdminAboutAdmissionCta, AdminAboutCampusHighlig
 import { AdminContact, AdminContactEnquiries } from '@/pages/admin-contact';
 import AdminGallery from '@/pages/admin-gallery';
 import AdminFaculty from '@/pages/admin-faculty';
+import AdminCourses from '@/pages/admin-courses';
+import Courses from '@/pages/courses';
+import CourseDetail from '@/pages/course-detail';
+import IntegratedCourses from '@/pages/integrated-courses';
 import {
   Route,
   Switch,
@@ -56,6 +60,9 @@ function Router() {
         <Route path="/contact" component={Contact} />
         <Route path="/gallery" component={Gallery} />
         <Route path="/results" component={Results} />
+        <Route path="/courses" component={Courses} />
+        <Route path="/courses/integrated" component={IntegratedCourses} />
+        <Route path="/courses/:slug" component={CourseDetail} />
         <Route path="/admin/login" component={AdminLogin} />
         <Route path="/admin/pages/home/hero">
           <AdminGuard><AdminHomepageHero /></AdminGuard>
@@ -143,6 +150,9 @@ function Router() {
         </Route>
         <Route path="/admin/pages/faculty">
           <AdminGuard><AdminFaculty /></AdminGuard>
+        </Route>
+        <Route path="/admin/pages/courses">
+          <AdminGuard><AdminCourses /></AdminGuard>
         </Route>
         <Route path="/admin">
           <AdminGuard><AdminOverview /></AdminGuard>
