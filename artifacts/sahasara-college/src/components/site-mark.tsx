@@ -22,7 +22,11 @@ export function SiteMark({ name = 'Sahsrah Junior College', tagline = 'Your Coll
       )}
       <span className={`${responsive ? 'min-w-0 flex-1 lg:flex-none' : ''} leading-tight`}>
         <span className={`block font-display ${responsive ? 'max-w-full break-words text-xs leading-4 sm:text-base lg:text-lg' : 'text-lg'} font-semibold tracking-[-0.02em] ${inverse ? 'text-[hsl(var(--sidebar-foreground))]' : 'text-[hsl(var(--primary))]'}`}>{name}</span>
-        {!compact && <span className={`mt-0.5 block text-[10px] font-semibold uppercase tracking-[0.2em] ${responsive ? 'hidden sm:block' : ''} ${inverse ? 'text-[hsl(var(--accent))]' : 'text-[hsl(var(--muted-foreground))]'}`}>{tagline || 'Your College Tagline'}</span>}
+        {!compact && (
+          <span className={`${responsive ? 'mt-1.5 block max-w-full break-words text-[11px] leading-[1.35] tracking-[.08em] sm:text-xs sm:tracking-[.12em]' : 'mt-0.5 block text-[10px] tracking-[0.2em]'} font-semibold uppercase ${responsive ? inverse ? 'text-[hsl(var(--primary-foreground)/.82)]' : 'text-[hsl(var(--muted-foreground))]' : inverse ? 'text-[hsl(var(--accent))]' : 'text-[hsl(var(--muted-foreground))]'}`}>
+            {tagline || 'Your College Tagline'}
+          </span>
+        )}
       </span>
     </Link>
   );

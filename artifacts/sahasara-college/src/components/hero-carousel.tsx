@@ -97,7 +97,7 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
         );
       })}
 
-      <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-7xl items-end px-6 pb-28 pt-40 sm:pb-32 lg:items-center lg:px-10 lg:pb-20">
+      <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-7xl items-start px-5 pb-32 pt-[calc(var(--public-header-height,4.75rem)+1.5rem)] sm:px-6 sm:pb-36 lg:items-center lg:px-10 lg:pb-20 lg:pt-40">
         <div className="max-w-3xl">
           {safeSlides.map((slide, index) => {
             const active = index === activeIndex;
@@ -112,16 +112,16 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
                   <Sparkles size={14} className="shrink-0 text-[hsl(var(--accent))]" />
                   <span>{slide.eyebrowText}</span>
                 </div>
-                <h1 className="mt-7 max-w-4xl break-words font-display text-[clamp(3.4rem,10vw,7.8rem)] font-semibold leading-[.9] tracking-[-0.06em] text-white" data-testid={`text-hero-heading-${slide.displayOrder}`}>
+                <h1 className="mt-5 max-w-4xl break-words font-display text-[clamp(3.4rem,10vw,7.8rem)] font-semibold leading-[.9] tracking-[-0.06em] text-white sm:mt-6" data-testid={`text-hero-heading-${slide.displayOrder}`}>
                   {slide.heading}{' '}
                   <span className="text-[hsl(var(--accent))] [box-decoration-break:clone] [-webkit-box-decoration-break:clone]">
                     {slide.highlightedHeadingText}
                   </span>
                 </h1>
-                <p className="mt-7 max-w-xl text-base leading-7 text-white/80 sm:text-lg sm:leading-8" data-testid={`text-hero-description-${slide.displayOrder}`}>
+                <p className="mt-5 max-w-xl text-base leading-7 text-white/80 sm:mt-6 sm:text-lg sm:leading-8" data-testid={`text-hero-description-${slide.displayOrder}`}>
                   {slide.description}
                 </p>
-                <div className="mt-9 flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+                <div className="mt-7 flex flex-col items-stretch gap-3 sm:mt-8 sm:flex-row sm:flex-wrap sm:items-center">
                   <a href={slide.primaryButtonUrl || '/contact'} className="inline-flex h-13 items-center justify-center rounded-full bg-[hsl(var(--accent))] px-6 py-3.5 text-sm font-bold text-[hsl(var(--primary))] shadow-lg shadow-black/20 transition hover:-translate-y-1" data-testid={`link-hero-primary-${slide.displayOrder}`}>
                     {slide.primaryButtonLabel}
                     <ArrowRight size={17} className="ml-2" />

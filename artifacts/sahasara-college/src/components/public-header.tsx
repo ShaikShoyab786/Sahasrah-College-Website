@@ -1,6 +1,6 @@
 import { ArrowRight } from 'lucide-react';
 import { Menu, X } from 'lucide-react';
-import { useState } from 'react';
+import { useLayoutEffect, useRef, useState } from 'react';
 import { useLocation } from 'wouter';
 import { SiteMark } from '@/components/site-mark';
 
@@ -17,6 +17,7 @@ type PublicHeaderProps = {
 export function PublicHeader({ settings, activePage = 'home', mobileFlow = false }: PublicHeaderProps) {
   const [location] = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
+  const headerRowRef = useRef<HTMLDivElement>(null);
   const homeActive = activePage === 'home' || location === '/';
   const aboutActive = activePage === 'about' || location === '/about';
   const facultyActive = activePage === 'faculty' || location === '/faculty';
@@ -27,9 +28,30 @@ export function PublicHeader({ settings, activePage = 'home', mobileFlow = false
   const linkClass = (active: boolean) => `transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))] focus-visible:ring-offset-4 focus-visible:ring-offset-transparent ${active ? 'text-[hsl(var(--accent))]' : ''}`;
   const closeMenu = () => setMenuOpen(false);
 
+  useLayoutEffect(() => {
+    const headerRow = headerRowRef.current;
+    if (!headerRow) return;
+
+    const updateHeaderHeight = () => {
+      document.documentElement.style.setProperty(
+        '--public-header-height',
+        `${Math.ceil(headerRow.getBoundingClientRect().height)}px`,
+      );
+    };
+
+    updateHeaderHeight();
+    const observer = new ResizeObserver(updateHeaderHeight);
+    observer.observe(headerRow);
+
+    return () => {
+      observer.disconnect();
+      document.documentElement.style.removeProperty('--public-header-height');
+    };
+  }, []);
+
   return (
     <header className={`${mobileFlow ? 'relative bg-[hsl(var(--primary))] lg:absolute lg:bg-gradient-to-b lg:from-black/45 lg:to-transparent' : 'absolute bg-gradient-to-b from-black/45 to-transparent'} inset-x-0 top-0 z-20`}>
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 px-3 py-4 sm:px-6 sm:py-5 lg:gap-0 lg:px-10">
+      <div ref={headerRowRef} className="mx-auto flex max-w-7xl items-center justify-between gap-1 px-2 py-3 sm:gap-2 sm:px-6 sm:py-5 lg:gap-0 lg:px-10">
         <div className="min-w-0 flex-1 lg:flex-none">
           <SiteMark name={settings.collegeName} tagline={settings.tagline} logoUrl={settings.logoUrl} inverse responsive />
         </div>
@@ -41,8 +63,8 @@ export function PublicHeader({ settings, activePage = 'home', mobileFlow = false
           <a href="/gallery" className={linkClass(galleryActive)} aria-current={galleryActive ? 'page' : undefined} data-testid="link-nav-gallery">Gallery</a>
           <a href={contactHref} className={linkClass(contactActive)} aria-current={contactActive ? 'page' : undefined} data-testid="link-nav-contact">Contact</a>
         </nav>
-        <div className="flex shrink-0 items-center gap-1.5 sm:gap-2">
-          <a href={contactHref} className="inline-flex h-10 shrink-0 items-center whitespace-nowrap rounded-full bg-[hsl(var(--accent))] px-3 text-xs font-bold text-[hsl(var(--primary))] shadow-sm transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-4 focus-visible:ring-offset-transparent sm:h-11 sm:px-5 sm:text-sm" data-testid="link-header-admissions">
+        <div className="flex shrink-0 items-center gap-1 sm:gap-2">
+          <a href={contactHref} className="inline-flex h-10 shrink-0 items-center whitespace-nowrap rounded-full bg-[hsl(var(--accent))] px-2 text-xs font-bold text-[hsl(var(--primary))] shadow-sm transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-4 focus-visible:ring-offset-transparent sm:h-11 sm:px-5 sm:text-sm" data-testid="link-header-admissions">
             Admissions <ArrowRight size={16} className="ml-2 hidden sm:inline" />
           </a>
           <button type="button" aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'} aria-controls="public-mobile-navigation" aria-expanded={menuOpen} onClick={() => setMenuOpen((current) => !current)} className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/25 text-white transition hover:border-white/60 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))] sm:h-11 sm:w-11 lg:hidden" data-testid="button-public-menu">

@@ -62,7 +62,7 @@ export default function Gallery() {
           <div className="mx-auto max-w-7xl">
             <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
               <h2 id="gallery-grid-heading" className="font-display text-3xl font-semibold tracking-[-.04em] text-[hsl(var(--primary))]">A closer look</h2>
-              <div className="flex max-w-full gap-2 overflow-x-auto pb-1 scrollbar-none" aria-label="Filter gallery by category">
+              <div className="flex max-w-full flex-wrap gap-2" role="group" aria-label="Filter gallery by category">
                 {CATEGORIES.map((value) => <button key={value} type="button" onClick={() => setCategory(value)} aria-pressed={category === value} className={`shrink-0 rounded-full border px-4 py-2.5 text-xs font-bold transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--accent)/.25)] ${category === value ? 'border-[hsl(var(--primary))] bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))]' : 'border-[hsl(var(--border))] bg-[hsl(var(--card))] text-[hsl(var(--muted-foreground))] hover:border-[hsl(var(--accent))] hover:text-[hsl(var(--primary))]'}`} data-testid={`button-filter-gallery-${value.toLowerCase()}`}>{value}</button>)}
               </div>
             </div>
