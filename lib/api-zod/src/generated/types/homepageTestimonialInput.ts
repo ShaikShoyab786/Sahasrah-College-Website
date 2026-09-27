@@ -10,19 +10,15 @@ export interface HomepageTestimonialInput {
   /**
      * @minimum 1
      * @maximum 5
+     * @nullable
      */
-  rating: number;
-  /** @minLength 1 */
+  rating: number | null;
   quote: string;
-  /** @minLength 1 */
   personName: string;
-  /** @minLength 1 */
   role: string;
-  /** @minLength 1 */
   courseAchievement: string;
   /** @nullable */
   avatarImageUrl: string | null;
-  /** @minLength 1 */
   avatarAltText: string;
   /** @nullable */
   accentColor: string | null;

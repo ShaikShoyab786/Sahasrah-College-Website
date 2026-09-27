@@ -345,6 +345,11 @@ model AlumniStoryImportMarker {
   importedAt     DateTime @default(now())
 }
 
+model AlumniStoryShareMarker {
+  sourceStoryId String   @id
+  mergedAt      DateTime @default(now())
+}
+
 model AlumniSuccessStoriesRevision {
   id        String   @id @default("singleton")
   revision  Int      @default(0)
@@ -405,7 +410,7 @@ model HomepageTestimonials {
 model HomepageTestimonial {
   id                      String                @id @default(cuid())
   homepageTestimonialsId  String                @default("singleton")
-  rating                  Int
+  rating                  Int?
   quote                   String
   personName              String
   role                    String

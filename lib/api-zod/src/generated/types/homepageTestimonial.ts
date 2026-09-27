@@ -11,8 +11,9 @@ export interface HomepageTestimonial {
   /**
      * @minimum 1
      * @maximum 5
+     * @nullable
      */
-  rating: number;
+  rating: number | null;
   quote: string;
   personName: string;
   role: string;

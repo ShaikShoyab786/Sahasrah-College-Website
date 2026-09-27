@@ -796,68 +796,6 @@ export interface HomepageResultInput {
   homePreviewOrder: number;
 }
 
-export interface AlumniSuccessStory {
-  id: string;
-  displayName: string;
-  /** @nullable */
-  portraitUrl: string | null;
-  /** @nullable */
-  portraitAltText: string | null;
-  /** @nullable */
-  passingYear: string | null;
-  /** @nullable */
-  course: string | null;
-  /** @nullable */
-  currentOutcome: string | null;
-  story: string;
-  isPublished: boolean;
-  displayOrder: number;
-}
-
-export type AdminAlumniSuccessStory = AlumniSuccessStory & ({
-  /** @nullable */
-  importedFromResultId: string | null;
-});
-
-export interface AlumniSuccessStoryInput {
-  id?: string;
-  displayName: string;
-  /** @nullable */
-  portraitUrl: string | null;
-  /** @nullable */
-  portraitAltText: string | null;
-  /** @nullable */
-  passingYear: string | null;
-  /** @nullable */
-  course: string | null;
-  /** @nullable */
-  currentOutcome: string | null;
-  story: string;
-  isPublished: boolean;
-  /**
-     * @minimum 1
-     * @maximum 100
-     */
-  displayOrder: number;
-}
-
-export interface AlumniSuccessStories {
-  alumniStories: AlumniSuccessStory[];
-}
-
-export interface AdminAlumniSuccessStories {
-  /** @minimum 0 */
-  revision: number;
-  alumniStories: AdminAlumniSuccessStory[];
-}
-
-export interface AlumniSuccessStoriesInput {
-  /** @minimum 0 */
-  expectedRevision: number;
-  /** @maxItems 100 */
-  alumniStories: AlumniSuccessStoryInput[];
-}
-
 export interface ResultStatistic {
   id: string;
   label: string;
@@ -935,10 +873,31 @@ export interface ResultsPageSettingsInput {
   ctaIsVisible: boolean;
 }
 
+export interface HomepageTestimonial {
+  id: string;
+  /**
+     * @minimum 1
+     * @maximum 5
+     * @nullable
+     */
+  rating: number | null;
+  quote: string;
+  personName: string;
+  role: string;
+  courseAchievement: string;
+  /** @nullable */
+  avatarImageUrl: string | null;
+  avatarAltText: string;
+  /** @nullable */
+  accentColor: string | null;
+  displayOrder: number;
+  isActive: boolean;
+}
+
 export interface ResultsPageData {
   settings: ResultsPageSettings;
   results: HomepageResult[];
-  alumniStories: AlumniSuccessStory[];
+  testimonials: HomepageTestimonial[];
   statistics: ResultStatistic[];
 }
 
@@ -1035,43 +994,19 @@ export interface HomepageAchievementRibbonInput {
   phrases: HomepageAchievementRibbonPhraseInput[];
 }
 
-export interface HomepageTestimonial {
-  id: string;
-  /**
-     * @minimum 1
-     * @maximum 5
-     */
-  rating: number;
-  quote: string;
-  personName: string;
-  role: string;
-  courseAchievement: string;
-  /** @nullable */
-  avatarImageUrl: string | null;
-  avatarAltText: string;
-  /** @nullable */
-  accentColor: string | null;
-  displayOrder: number;
-  isActive: boolean;
-}
-
 export interface HomepageTestimonialInput {
   /**
      * @minimum 1
      * @maximum 5
+     * @nullable
      */
-  rating: number;
-  /** @minLength 1 */
+  rating: number | null;
   quote: string;
-  /** @minLength 1 */
   personName: string;
-  /** @minLength 1 */
   role: string;
-  /** @minLength 1 */
   courseAchievement: string;
   /** @nullable */
   avatarImageUrl: string | null;
-  /** @minLength 1 */
   avatarAltText: string;
   /** @nullable */
   accentColor: string | null;

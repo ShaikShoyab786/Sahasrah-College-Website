@@ -170,7 +170,35 @@ export function HomeTestimonials({ content }: { content: HomepageTestimonials })
 }
 
 function TestimonialCard({ testimonial, index }: { testimonial: HomepageTestimonials['testimonials'][number]; index: number }) {
-  return <article data-testimonial-slide className="home-reveal min-w-0 flex-[0_0_88%] rounded-[1.5rem] border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-7 shadow-sm transition duration-500 hover:-translate-y-1 hover:shadow-lg sm:flex-[0_0_56%] lg:flex-[0_0_calc((100%-2rem)/3)]" style={{ '--home-card-delay': `${index * 80}ms`, borderBottomColor: testimonial.accentColor || undefined } as React.CSSProperties}><div className="flex items-center justify-between gap-4"><div className="flex gap-1 text-[hsl(var(--accent))]" aria-label={`${testimonial.rating} out of 5 stars`}>{Array.from({ length: testimonial.rating }).map((_, starIndex) => <Star key={starIndex} size={15} fill="currentColor" />)}</div><Quote size={27} className="text-[hsl(var(--accent)/.5)]" /></div><p className="mt-7 min-h-[120px] text-base leading-7 text-[hsl(var(--foreground))]">“{testimonial.quote}”</p><div className="mt-7 flex items-center gap-3 border-t border-[hsl(var(--border))] pt-5"><div className="grid h-11 w-11 shrink-0 place-items-center overflow-hidden rounded-full bg-[hsl(var(--primary))] text-xs font-bold text-[hsl(var(--accent))]">{testimonial.avatarImageUrl ? <img src={testimonial.avatarImageUrl} alt={testimonial.avatarAltText} className="h-full w-full object-cover" /> : testimonial.personName.split(' ').map((word) => word[0]).join('').slice(0, 2)}</div><div><p className="text-sm font-bold text-[hsl(var(--primary))]">{testimonial.personName}</p><p className="mt-0.5 text-xs text-[hsl(var(--muted-foreground))]">{testimonial.role} · {testimonial.courseAchievement}</p></div></div></article>;
+  const details = [testimonial.role, testimonial.courseAchievement].filter((value) => value.trim());
+  return (
+    <article
+      data-testimonial-slide
+      className="home-reveal min-w-0 flex-[0_0_88%] rounded-[1.5rem] border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-7 shadow-sm transition duration-500 hover:-translate-y-1 hover:shadow-lg sm:flex-[0_0_56%] lg:flex-[0_0_calc((100%-2rem)/3)]"
+      style={{ '--home-card-delay': `${index * 80}ms`, borderBottomColor: testimonial.accentColor || undefined } as CSSProperties}
+    >
+      <div className="flex items-center justify-between gap-4">
+        {testimonial.rating !== null && <div className="flex gap-1 text-[hsl(var(--accent))]" aria-label={`${testimonial.rating} out of 5 stars`}>
+          {Array.from({ length: testimonial.rating }).map((_, starIndex) => <Star key={starIndex} size={15} fill="currentColor" />)}
+        </div>}
+        <Quote size={27} className="text-[hsl(var(--accent)/.5)]" />
+      </div>
+      <p className="mt-7 min-h-[120px] text-base leading-7 text-[hsl(var(--foreground))]">“{testimonial.quote}”</p>
+      <div className="mt-7 flex items-center gap-3 border-t border-[hsl(var(--border))] pt-5">
+        <div className="grid h-11 w-11 shrink-0 place-items-center overflow-hidden rounded-full bg-[hsl(var(--primary))] text-xs font-bold text-[hsl(var(--accent))]">
+          {testimonial.avatarImageUrl ? (
+            <img src={testimonial.avatarImageUrl} alt={testimonial.avatarAltText || ''} className="h-full w-full object-cover" />
+          ) : (
+            <span aria-hidden="true">{testimonial.personName.trim().split(/\s+/).filter(Boolean).map((word) => word[0]).join('').slice(0, 2)}</span>
+          )}
+        </div>
+        <div>
+          {testimonial.personName && <p className="text-sm font-bold text-[hsl(var(--primary))]">{testimonial.personName}</p>}
+          {details.length > 0 && <p className="mt-0.5 text-xs text-[hsl(var(--muted-foreground))]">{details.join(' · ')}</p>}
+        </div>
+      </div>
+    </article>
+  );
 }
 
 export function HomeFaculty({ faculty, eyebrow = 'Learn From the Best', heading = 'Our Expert Faculty', description = 'Experienced subject-matter experts who make difficult ideas clearer and ambitious goals more achievable.', buttonLabel = 'More Faculty', buttonHref = '/faculty', themeStyle, unavailable = false }: { faculty: HomepageFacultyMember[]; eyebrow?: string; heading?: string; description?: string; buttonLabel?: string; buttonHref?: string; themeStyle?: CSSProperties; unavailable?: boolean }) {

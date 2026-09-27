@@ -910,7 +910,17 @@ router.get("/admin/homepage-testimonials", requireAdmin, async (req, res) => {
 
 router.put("/admin/homepage-testimonials", requireAdmin, async (req, res) => {
   const parsed = UpdateHomepageTestimonialsBody.safeParse(req.body);
-  if (!parsed.success || !hasUniqueDisplayOrders(parsed.data.testimonials) || parsed.data.testimonials.some((testimonial) => !isValidImageReference(testimonial.avatarImageUrl))) {
+  if (
+    !parsed.success ||
+    !hasUniqueDisplayOrders(parsed.data.testimonials) ||
+    parsed.data.testimonials.some((testimonial) => !isValidImageReference(testimonial.avatarImageUrl)) ||
+    parsed.data.testimonials.some((testimonial) => testimonial.isActive && (
+      !testimonial.quote.trim() ||
+      !testimonial.personName.trim() ||
+      !testimonial.role.trim() ||
+      !testimonial.courseAchievement.trim()
+    ))
+  ) {
     res.status(400).json({ error: "Check testimonial fields, image references, and unique display orders." });
     return;
   }

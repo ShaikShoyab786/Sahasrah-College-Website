@@ -5,14 +5,14 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
-import type { AlumniSuccessStory } from './alumniSuccessStory';
 import type { HomepageResult } from './homepageResult';
+import type { HomepageTestimonial } from './homepageTestimonial';
 import type { ResultsPageSettings } from './resultsPageSettings';
 import type { ResultStatistic } from './resultStatistic';
 
 export interface ResultsPageData {
   settings: ResultsPageSettings;
   results: HomepageResult[];
-  alumniStories: AlumniSuccessStory[];
+  testimonials: HomepageTestimonial[];
   statistics: ResultStatistic[];
 }

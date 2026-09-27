@@ -126,6 +126,66 @@ async function backfillLegacyResultStories() {
   }
 }
 
+function normalizeTestimonialText(value: string) {
+  return value.trim().replace(/\s+/g, " ").toLocaleLowerCase();
+}
+
+async function mergeLegacyAlumniStoriesIntoSharedTestimonials() {
+  const legacyStories = await prisma.alumniSuccessStory.findMany({
+    orderBy: [{ displayOrder: "asc" }, { id: "asc" }],
+  });
+
+  for (const legacy of legacyStories) {
+    await prisma.$transaction(async (tx) => {
+      await tx.$queryRaw`SELECT 1 AS locked FROM (SELECT pg_advisory_xact_lock(74130206)) AS lock`;
+      const marker = await tx.alumniStoryShareMarker.findUnique({
+        where: { sourceStoryId: legacy.id },
+        select: { sourceStoryId: true },
+      });
+      if (marker) return;
+
+      const existing = await tx.homepageTestimonial.findMany({
+        where: { homepageTestimonialsId: "singleton" },
+        select: { quote: true },
+      });
+      const quote = legacy.story.trim();
+      const alreadyPresent = quote.length > 0 && existing.some(
+        (item) => normalizeTestimonialText(item.quote) === normalizeTestimonialText(quote),
+      );
+
+      if (quote.length > 0 && !alreadyPresent) {
+        const latestOrder = await tx.homepageTestimonial.aggregate({
+          where: { homepageTestimonialsId: "singleton" },
+          _max: { displayOrder: true },
+        });
+        const courseAchievement = [legacy.passingYear, legacy.course, legacy.currentOutcome]
+          .map((item) => item?.trim())
+          .filter((item): item is string => Boolean(item))
+          .join(" · ");
+        await tx.homepageTestimonial.create({
+          data: {
+            homepageTestimonialsId: "singleton",
+            rating: null,
+            quote,
+            personName: legacy.displayName.trim(),
+            role: "",
+            courseAchievement,
+            avatarImageUrl: legacy.portraitUrl,
+            avatarAltText: legacy.portraitAltText?.trim() ?? "",
+            accentColor: null,
+            displayOrder: (latestOrder._max.displayOrder ?? 0) + 1,
+            isActive: legacy.isPublished && Boolean(legacy.displayName.trim()),
+          },
+        });
+      }
+
+      await tx.alumniStoryShareMarker.create({
+        data: { sourceStoryId: legacy.id },
+      });
+    }, { maxWait: 10_000, timeout: 30_000 });
+  }
+}
+
 function getGalleryCategory(category: string | null, title: string) {
   const normalized = category?.trim().toLowerCase();
   const existing = galleryCategories.find((value) => value.toLowerCase() === normalized);
@@ -587,6 +647,7 @@ export async function initializeDatabase() {
       ],
     });
   }
+  await mergeLegacyAlumniStoriesIntoSharedTestimonials();
 
   await prisma.homepageKnowledgeHub.upsert({
     where: { id: "singleton" },

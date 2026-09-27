@@ -90,7 +90,7 @@ async function readAdminLibrary() {
 
 router.get("/results", async (req, res): Promise<void> => {
   try {
-    const [settings, sharedResults, alumniStories] = await Promise.all([
+    const [settings, sharedResults, sharedTestimonials] = await Promise.all([
       prisma.resultsPageSettings.findUnique({ where: { id: "singleton" } }),
       prisma.homepageResults.findUnique({
         where: { id: "singleton" },
@@ -99,9 +99,9 @@ router.get("/results", async (req, res): Promise<void> => {
           statistics: { orderBy: [{ displayOrder: "asc" }, { id: "asc" }] },
         },
       }),
-      prisma.alumniSuccessStory.findMany({
-        where: { isPublished: true },
-        orderBy: [{ displayOrder: "asc" }, { id: "asc" }],
+      prisma.homepageTestimonials.findUnique({
+        where: { id: "singleton" },
+        include: { testimonials: { orderBy: [{ displayOrder: "asc" }, { id: "asc" }] } },
       }),
     ]);
 
@@ -114,7 +114,7 @@ router.get("/results", async (req, res): Promise<void> => {
       settings,
       results: (sharedResults?.results ?? [])
         .filter((result) => result.isPublished),
-      alumniStories,
+      testimonials: (sharedTestimonials?.testimonials ?? []).filter((testimonial) => testimonial.isActive),
       statistics: (sharedResults?.statistics ?? []).filter((statistic) => statistic.isPublished),
     }));
   } catch (error) {

@@ -10,6 +10,7 @@ import {
   getGetHomepageGalleryQueryKey,
   getGetHomepagePreviewCopyQueryKey,
   getGetHomepageResultsQueryKey,
+  getGetResultsPageQueryKey,
   getGetHomepageTestimonialsQueryKey,
   useGetAdminHomepageAchievementRibbon,
   useGetAdminHomepagePreviewCopy,
@@ -113,12 +114,150 @@ export function AdminHomepageAchievementRibbon() {
 }
 
 export function AdminHomepageTestimonials() {
-  const query = useGetAdminHomepageTestimonials(); const update = useUpdateHomepageTestimonials(); const client = useQueryClient(); const feedback = useFeedback(); const [form, setForm] = useState(testimonialDefaults);
-  useEffect(() => { if (query.data) setForm({ eyebrow: query.data.eyebrow, heading: query.data.heading, description: query.data.description, isVisible: query.data.isVisible, sortOrder: query.data.sortOrder, testimonials: query.data.testimonials.map(({ id: _id, ...item }) => item) }); }, [query.data]);
-  const setItem = (index: number, patch: Partial<HomepageTestimonialsInput['testimonials'][number]>) => setForm((current) => ({ ...current, testimonials: current.testimonials.map((item, itemIndex) => itemIndex === index ? { ...item, ...patch } : item) }));
-  const submit = (event: FormEvent) => { event.preventDefault(); feedback.clear(); update.mutate({ data: form }, { onSuccess: () => { client.invalidateQueries({ queryKey: getGetAdminHomepageTestimonialsQueryKey() }); client.invalidateQueries({ queryKey: getGetHomepageTestimonialsQueryKey() }); feedback.setNotice('Testimonials saved.'); }, onError: () => feedback.setError('We could not save the testimonials. Check the fields and ordering.') }); };
-  if (query.isLoading) return <EditorSkeleton />; if (query.isError && !query.data) return <LoadError onRetry={() => query.refetch()} />;
-  return <EditorFrame eyebrow="Pages / Home / Testimonials" title="Let the community speak." description="Manage the short, honest stories shown in the homepage success section." previewHref="/#home-testimonials"><form onSubmit={submit} className="mt-10 space-y-6"><EditorCard title="Section introduction" description="Set the heading and context for the story cards."><div className="space-y-4"><Field label="Eyebrow" value={form.eyebrow} onChange={(e) => setForm({ ...form, eyebrow: e.target.value })} required /><Field label="Heading" value={form.heading} onChange={(e) => setForm({ ...form, heading: e.target.value })} required /><Area label="Description" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} required /></div></EditorCard><EditorCard title="Stories" description="Keep each quote specific, short, and attributed to a real member of the community."><div className="space-y-5">{form.testimonials.map((item, index) => <div key={index} className="rounded-2xl bg-[hsl(var(--secondary))] p-5"><div className="flex justify-between"><p className="text-xs font-bold uppercase tracking-[.16em]">Story {index + 1}</p><Actions index={index} count={form.testimonials.length} onMove={(direction) => setForm({ ...form, testimonials: reorder(form.testimonials, index, direction) })} onRemove={() => setForm({ ...form, testimonials: form.testimonials.filter((_, itemIndex) => itemIndex !== index).map((entry, itemIndex) => ({ ...entry, displayOrder: itemIndex + 1 })) })} /></div><div className="mt-4 space-y-4"><Area label="Quote" value={item.quote} onChange={(e) => setItem(index, { quote: e.target.value })} required /><div className="grid gap-4 md:grid-cols-2"><Field label="Person name" value={item.personName} onChange={(e) => setItem(index, { personName: e.target.value })} required /><Field label="Role" value={item.role} onChange={(e) => setItem(index, { role: e.target.value })} required /><Field label="Course / achievement" value={item.courseAchievement} onChange={(e) => setItem(index, { courseAchievement: e.target.value })} required /><Field label="Rating (1–5)" type="number" min={1} max={5} value={item.rating} onChange={(e) => setItem(index, { rating: Number(e.target.value) })} required /><Field label="Avatar URL" value={item.avatarImageUrl ?? ''} onChange={(e) => setItem(index, { avatarImageUrl: e.target.value || null })} /><Field label="Avatar alt text" value={item.avatarAltText} onChange={(e) => setItem(index, { avatarAltText: e.target.value })} required /></div><div className="flex items-center justify-between gap-3"><UploadButton purpose="testimonial" onUploaded={(url) => setItem(index, { avatarImageUrl: url })} /><label className="flex items-center gap-2 text-sm font-semibold"><input type="checkbox" checked={item.isActive} onChange={(e) => setItem(index, { isActive: e.target.checked })} className="accent-[hsl(var(--accent))]" /> Show story</label></div></div></div>)}</div><button type="button" onClick={() => setForm({ ...form, testimonials: [...form.testimonials, { ...testimonialDefaults.testimonials[0], quote: '', personName: '', displayOrder: form.testimonials.length + 1 }] })} className="mt-5 inline-flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-bold"><Plus size={16} /> Add story</button></EditorCard><VisibilityToggle checked={form.isVisible} onChange={(value) => setForm({ ...form, isVisible: value })} label="Show Testimonials on the public homepage" /><SaveStatus error={feedback.error} notice={feedback.notice} /><div className="flex justify-end"><SaveButton pending={update.isPending}>Save Testimonials</SaveButton></div></form></EditorFrame>;
+  const query = useGetAdminHomepageTestimonials();
+  const update = useUpdateHomepageTestimonials();
+  const client = useQueryClient();
+  const feedback = useFeedback();
+  const [form, setForm] = useState(testimonialDefaults);
+
+  useEffect(() => {
+    if (!query.data) return;
+    setForm({
+      eyebrow: query.data.eyebrow,
+      heading: query.data.heading,
+      description: query.data.description,
+      isVisible: query.data.isVisible,
+      sortOrder: query.data.sortOrder,
+      testimonials: query.data.testimonials
+        .map(({ id: _id, ...item }) => item)
+        .sort((a, b) => a.displayOrder - b.displayOrder),
+    });
+  }, [query.data]);
+
+  const setItem = (index: number, patch: Partial<HomepageTestimonialsInput['testimonials'][number]>) => {
+    setForm((current) => ({
+      ...current,
+      testimonials: current.testimonials.map((item, itemIndex) =>
+        itemIndex === index ? { ...item, ...patch } : item,
+      ),
+    }));
+  };
+
+  const submit = (event: FormEvent) => {
+    event.preventDefault();
+    feedback.clear();
+    const incomplete = form.testimonials.some((item) => item.isActive && (
+      !item.quote.trim() ||
+      !item.personName.trim() ||
+      !item.role.trim() ||
+      !item.courseAchievement.trim()
+    ));
+    if (incomplete) {
+      feedback.setError('Published testimonials need a quote, person name, role, and course or achievement.');
+      return;
+    }
+    update.mutate({ data: form }, {
+      onSuccess: () => {
+        void client.invalidateQueries({ queryKey: getGetAdminHomepageTestimonialsQueryKey() });
+        void client.invalidateQueries({ queryKey: getGetHomepageTestimonialsQueryKey() });
+        void client.invalidateQueries({ queryKey: getGetResultsPageQueryKey() });
+        feedback.setNotice('Shared testimonials saved for Home and Results.');
+      },
+      onError: () => feedback.setError('We could not save the testimonials. Check the fields and ordering.'),
+    });
+  };
+
+  if (query.isLoading) return <EditorSkeleton />;
+  if (query.isError && !query.data) return <LoadError onRetry={() => query.refetch()} />;
+
+  return (
+    <EditorFrame
+      eyebrow="Pages / Home / Testimonials"
+      title="Let the community speak."
+      description="Manage the shared testimonial library. Published stories appear on both Home and Results; section headings and layouts remain page-specific."
+      previewHref="/#home-testimonials"
+    >
+      <form onSubmit={submit} className="mt-10 space-y-6">
+        <EditorCard title="Section introduction" description="These heading and visibility settings apply to the Home section. Results uses its own heading and always follows the shared published testimonial set.">
+          <div className="space-y-4">
+            <Field label="Eyebrow" value={form.eyebrow} onChange={(event) => setForm({ ...form, eyebrow: event.target.value })} required />
+            <Field label="Heading" value={form.heading} onChange={(event) => setForm({ ...form, heading: event.target.value })} required />
+            <Area label="Description" value={form.description} onChange={(event) => setForm({ ...form, description: event.target.value })} required />
+          </div>
+        </EditorCard>
+        <EditorCard title="Shared testimonials" description="Published records appear on both Home and Results in this order. Unpublished drafts can keep incomplete attribution while they are reviewed.">
+          <div className="space-y-5">
+            {form.testimonials.map((item, index) => (
+              <div key={index} className="rounded-2xl bg-[hsl(var(--secondary))] p-5">
+                <div className="flex justify-between">
+                  <p className="text-xs font-bold uppercase tracking-[.16em]">Testimonial {index + 1}</p>
+                  <Actions
+                    index={index}
+                    count={form.testimonials.length}
+                    onMove={(direction) => setForm({ ...form, testimonials: reorder(form.testimonials, index, direction) })}
+                    onRemove={() => setForm({
+                      ...form,
+                      testimonials: form.testimonials
+                        .filter((_, itemIndex) => itemIndex !== index)
+                        .map((entry, itemIndex) => ({ ...entry, displayOrder: itemIndex + 1 })),
+                    })}
+                  />
+                </div>
+                <div className="mt-4 space-y-4">
+                  <Area label="Quote" value={item.quote} onChange={(event) => setItem(index, { quote: event.target.value })} />
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <Field label="Person name" value={item.personName} onChange={(event) => setItem(index, { personName: event.target.value })} />
+                    <Field label="Role" value={item.role} onChange={(event) => setItem(index, { role: event.target.value })} />
+                    <Field label="Course / achievement" value={item.courseAchievement} onChange={(event) => setItem(index, { courseAchievement: event.target.value })} />
+                    <Field
+                      label="Rating (optional, 1–5)"
+                      type="number"
+                      min={1}
+                      max={5}
+                      value={item.rating ?? ''}
+                      onChange={(event) => setItem(index, { rating: event.target.value ? Number(event.target.value) : null })}
+                    />
+                    <Field label="Avatar URL" value={item.avatarImageUrl ?? ''} onChange={(event) => setItem(index, { avatarImageUrl: event.target.value || null })} />
+                    <Field label="Avatar alt text" value={item.avatarAltText} onChange={(event) => setItem(index, { avatarAltText: event.target.value })} />
+                  </div>
+                  <div className="flex items-center justify-between gap-3">
+                    <UploadButton purpose="testimonial" onUploaded={(url) => setItem(index, { avatarImageUrl: url })} />
+                    <label className="flex items-center gap-2 text-sm font-semibold">
+                      <input type="checkbox" checked={item.isActive} onChange={(event) => setItem(index, { isActive: event.target.checked })} className="accent-[hsl(var(--accent))]" />
+                      Publish on Home and Results
+                    </label>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <button
+            type="button"
+            onClick={() => setForm({
+              ...form,
+              testimonials: [...form.testimonials, {
+                ...testimonialDefaults.testimonials[0],
+                quote: '',
+                personName: '',
+                role: '',
+                courseAchievement: '',
+                rating: null,
+                avatarAltText: '',
+                isActive: false,
+                displayOrder: form.testimonials.length + 1,
+              }],
+            })}
+            className="mt-5 inline-flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-bold"
+          >
+            <Plus size={16} /> Add testimonial
+          </button>
+        </EditorCard>
+        <VisibilityToggle checked={form.isVisible} onChange={(value) => setForm({ ...form, isVisible: value })} label="Show Testimonials section on Home" />
+        <SaveStatus error={feedback.error} notice={feedback.notice} />
+        <div className="flex justify-end"><SaveButton pending={update.isPending}>Save shared testimonials</SaveButton></div>
+      </form>
+    </EditorFrame>
+  );
 }
 
 function SectionCopyFields({ kind, eyebrow, heading, description, buttonLabel, buttonHref, onEyebrowChange, onHeadingChange, onDescriptionChange, onButtonLabelChange, onButtonHrefChange, onSave, pending }: {

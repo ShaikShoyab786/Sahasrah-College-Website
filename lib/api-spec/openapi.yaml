@@ -1178,63 +1178,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
-  /admin/results/alumni-stories:
-    get:
-      operationId: getAdminAlumniSuccessStories
-      tags: [admin]
-      summary: Read alumni success stories for independent editing
-      security:
-        - cookieAuth: []
-      responses:
-        "200":
-          description: Alumni stories, including admin-only import provenance
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/AdminAlumniSuccessStories"
-        "401":
-          description: Not authenticated
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-    put:
-      operationId: updateAdminAlumniSuccessStories
-      tags: [admin]
-      summary: Independently replace, reorder, publish, and delete alumni stories
-      security:
-        - cookieAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/AlumniSuccessStoriesInput"
-      responses:
-        "200":
-          description: Updated alumni stories
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/AdminAlumniSuccessStories"
-        "400":
-          description: Validation error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "401":
-          description: Not authenticated
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "409":
-          description: Alumni stories changed in another session
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
   /admin/homepage-achievement-ribbon:
     get:
       operationId: getAdminHomepageAchievementRibbon
@@ -3639,95 +3582,6 @@ components:
     ResultCategory:
       type: string
       enum: [INTERMEDIATE, JEE_MAIN, NEET, EAMCET, OTHER]
-    AlumniSuccessStory:
-      type: object
-      properties:
-        id:
-          type: string
-        displayName:
-          type: string
-        portraitUrl:
-          type: ["string", "null"]
-        portraitAltText:
-          type: ["string", "null"]
-        passingYear:
-          type: ["string", "null"]
-        course:
-          type: ["string", "null"]
-        currentOutcome:
-          type: ["string", "null"]
-        story:
-          type: string
-        isPublished:
-          type: boolean
-        displayOrder:
-          type: integer
-      required: [id, displayName, portraitUrl, portraitAltText, passingYear, course, currentOutcome, story, isPublished, displayOrder]
-    AdminAlumniSuccessStory:
-      allOf:
-        - $ref: "#/components/schemas/AlumniSuccessStory"
-        - type: object
-          properties:
-            importedFromResultId:
-              type: ["string", "null"]
-          required: [importedFromResultId]
-    AlumniSuccessStoryInput:
-      type: object
-      properties:
-        id:
-          type: string
-        displayName:
-          type: string
-        portraitUrl:
-          type: ["string", "null"]
-        portraitAltText:
-          type: ["string", "null"]
-        passingYear:
-          type: ["string", "null"]
-        course:
-          type: ["string", "null"]
-        currentOutcome:
-          type: ["string", "null"]
-        story:
-          type: string
-        isPublished:
-          type: boolean
-        displayOrder:
-          type: integer
-          minimum: 1
-          maximum: 100
-      required: [displayName, portraitUrl, portraitAltText, passingYear, course, currentOutcome, story, isPublished, displayOrder]
-    AlumniSuccessStories:
-      type: object
-      properties:
-        alumniStories:
-          type: array
-          items:
-            $ref: "#/components/schemas/AlumniSuccessStory"
-      required: [alumniStories]
-    AdminAlumniSuccessStories:
-      type: object
-      properties:
-        revision:
-          type: integer
-          minimum: 0
-        alumniStories:
-          type: array
-          items:
-            $ref: "#/components/schemas/AdminAlumniSuccessStory"
-      required: [revision, alumniStories]
-    AlumniSuccessStoriesInput:
-      type: object
-      properties:
-        expectedRevision:
-          type: integer
-          minimum: 0
-        alumniStories:
-          type: array
-          maxItems: 100
-          items:
-            $ref: "#/components/schemas/AlumniSuccessStoryInput"
-      required: [expectedRevision, alumniStories]
     ResultStatistic:
       type: object
       properties:
@@ -3850,15 +3704,15 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/HomepageResult"
-        alumniStories:
+        testimonials:
           type: array
           items:
-            $ref: "#/components/schemas/AlumniSuccessStory"
+            $ref: "#/components/schemas/HomepageTestimonial"
         statistics:
           type: array
           items:
             $ref: "#/components/schemas/ResultStatistic"
-      required: [settings, results, alumniStories, statistics]
+      required: [settings, results, testimonials, statistics]
     AdminResultsLibrary:
       type: object
       properties:
@@ -4014,7 +3868,7 @@ components:
         id:
           type: string
         rating:
-          type: integer
+          type: ["integer", "null"]
           minimum: 1
           maximum: 5
         quote:
@@ -4040,26 +3894,21 @@ components:
       type: object
       properties:
         rating:
-          type: integer
+          type: ["integer", "null"]
           minimum: 1
           maximum: 5
         quote:
           type: string
-          minLength: 1
         personName:
           type: string
-          minLength: 1
         role:
           type: string
-          minLength: 1
         courseAchievement:
           type: string
-          minLength: 1
         avatarImageUrl:
           type: ["string", "null"]
         avatarAltText:
           type: string
-          minLength: 1
         accentColor:
           type: ["string", "null"]
         displayOrder:

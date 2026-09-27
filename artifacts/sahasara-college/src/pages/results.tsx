@@ -264,7 +264,7 @@ export default function Results() {
             )}
           </div>
         </section>
-        <ResultsSuccessStories stories={content.alumniStories} />
+        <ResultsSuccessStories testimonials={content.testimonials} />
         {content.settings.ctaIsVisible && (
           <ResultsContactCta
             heading={content.settings.ctaHeading}

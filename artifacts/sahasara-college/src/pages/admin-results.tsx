@@ -1,11 +1,10 @@
 import { useEffect, useState, type ChangeEvent } from 'react';
 import { FormProvider, useFieldArray, useForm, useFormContext } from 'react-hook-form';
-import { ArrowDown, ArrowUp, ImagePlus, Plus, Trash2 } from 'lucide-react';
+import { ArrowDown, ArrowUp, ArrowUpRight, ImagePlus, Plus, Trash2 } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { getGetAdminHomepageResultsQueryKey, getGetAdminResultsLibraryQueryKey, getGetHomepageResultsQueryKey, getGetResultsPageQueryKey, useGetAdminResultsLibrary, useUpdateAdminResultsLibrary, useUploadAdminImage, type AdminResultsLibraryInput, type HomepageResultInput, type ResultCategory, type ResultStatisticInput } from '@workspace/api-client-react';
 import { Area, Field } from '@/components/form-fields';
 import { EditorCard, EditorFrame, EditorSkeleton, LoadError, SaveStatus } from '@/pages/admin-about-hero';
-import { AlumniStoriesEditor } from '@/components/admin-alumni-stories-editor';
 
 const emptyResult: HomepageResultInput = { studentImageUrl: null, studentImageAltText: 'Student achievement portrait', studentName: '', examCourse: '', score: '', achievement: '', resultLabel: '', examName: null, category: 'OTHER', year: null, institution: null, course: null, accentColor: null, displayOrder: 1, isPublished: false, showInHomePreview: false, homePreviewOrder: 1 };
 const emptyStatistic: ResultStatisticInput = { label: '', value: '', supportingText: null, displayOrder: 1, isPublished: false, showInHomePreview: false, homePreviewOrder: 1 };
@@ -114,7 +113,12 @@ export default function AdminResults() {
   if (query.isError && !query.data) return <LoadError onRetry={() => query.refetch()} />;
   return <EditorFrame eyebrow="Pages / Results" title="One library for every outcome." description="Publish verified student achievements, curate the Home preview, and keep the public Results page grounded in the shared library." previewHref="/results"><FormProvider {...form}><div className="mt-10 space-y-6">
     <EditorCard title="Results page introduction" description="Set the copy families see above the published record."><div className="grid gap-4 md:grid-cols-2"><Field id="results-settings-eyebrow" label="Eyebrow" {...form.register('settings.eyebrow', { required: true })} /><Field id="results-settings-heading" label="Heading" {...form.register('settings.heading', { required: true })} /><div className="md:col-span-2"><Area id="results-settings-description" label="Description" {...form.register('settings.description', { required: true })} /></div><Field id="results-settings-year" label="Configured year (optional)" {...form.register('settings.configuredYear')} placeholder="2025" /><label className="flex items-center gap-3 text-sm font-semibold"><input type="checkbox" {...form.register('settings.isVisible')} className="h-4 w-4 accent-[hsl(var(--admin-focus))]" /> Show the public Results page</label></div></EditorCard>
-     <ResultsEditor /><StatisticsEditor /><AlumniStoriesEditor />
+      <ResultsEditor /><StatisticsEditor />
+     <EditorCard title="Testimonials (shared with Home)" description="The Home page and Results page use the same published testimonial records and ordering. Manage them in the existing Home Testimonials editor.">
+       <a href="/admin/pages/home/testimonials" data-testid="link-manage-shared-testimonials" className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-[hsl(var(--admin-primary))] px-4 text-sm font-bold text-[hsl(var(--admin-on-primary))] transition hover:-translate-y-0.5">
+         Manage shared testimonials <ArrowUpRight size={15} aria-hidden="true" />
+       </a>
+     </EditorCard>
     <EditorCard title="Results contact call to action" description="Edit the closing invitation. Both buttons must lead to the site's Contact page; optional query strings or anchors are allowed.">
       <div className="grid gap-4 md:grid-cols-2">
         <div className="md:col-span-2"><Field id="results-cta-heading" label="CTA heading" {...form.register('settings.ctaHeading', { required: true })} /></div>

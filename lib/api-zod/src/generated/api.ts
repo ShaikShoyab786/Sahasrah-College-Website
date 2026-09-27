@@ -272,6 +272,8 @@ export const GetHomepageResultsResponse = zod.object({
  */
 export const getResultsPageResponseSettingsCtaPrimaryHrefRegExp = new RegExp('^/contact(?:[?#][^\\s]*)?$');
 export const getResultsPageResponseSettingsCtaSecondaryHrefRegExp = new RegExp('^/contact(?:[?#][^\\s]*)?$');
+export const getResultsPageResponseTestimonialsItemRatingMax = 5;
+
 
 
 export const GetResultsPageResponse = zod.object({
@@ -309,17 +311,18 @@ export const GetResultsPageResponse = zod.object({
   "showInHomePreview": zod.boolean(),
   "homePreviewOrder": zod.number().int()
 })),
-  "alumniStories": zod.array(zod.object({
+  "testimonials": zod.array(zod.object({
   "id": zod.string(),
-  "displayName": zod.string(),
-  "portraitUrl": zod.string().nullable(),
-  "portraitAltText": zod.string().nullable(),
-  "passingYear": zod.string().nullable(),
-  "course": zod.string().nullable(),
-  "currentOutcome": zod.string().nullable(),
-  "story": zod.string(),
-  "isPublished": zod.boolean(),
-  "displayOrder": zod.number().int()
+  "rating": zod.number().int().min(1).max(getResultsPageResponseTestimonialsItemRatingMax).nullable(),
+  "quote": zod.string(),
+  "personName": zod.string(),
+  "role": zod.string(),
+  "courseAchievement": zod.string(),
+  "avatarImageUrl": zod.string().nullable(),
+  "avatarAltText": zod.string(),
+  "accentColor": zod.string().nullable(),
+  "displayOrder": zod.number().int(),
+  "isActive": zod.boolean()
 })),
   "statistics": zod.array(zod.object({
   "id": zod.string(),
@@ -370,7 +373,7 @@ export const GetHomepageTestimonialsResponse = zod.object({
   "updatedAt": zod.coerce.date(),
   "testimonials": zod.array(zod.object({
   "id": zod.string(),
-  "rating": zod.number().int().min(1).max(getHomepageTestimonialsResponseTestimonialsItemRatingMax),
+  "rating": zod.number().int().min(1).max(getHomepageTestimonialsResponseTestimonialsItemRatingMax).nullable(),
   "quote": zod.string(),
   "personName": zod.string(),
   "role": zod.string(),
@@ -2019,82 +2022,6 @@ export const UpdateAdminResultsLibraryResponse = zod.object({
 
 
 /**
- * @summary Read alumni success stories for independent editing
- */
-export const getAdminAlumniSuccessStoriesResponseRevisionMin = 0;
-
-
-
-export const GetAdminAlumniSuccessStoriesResponse = zod.object({
-  "revision": zod.number().int().min(getAdminAlumniSuccessStoriesResponseRevisionMin),
-  "alumniStories": zod.array(zod.object({
-  "id": zod.string(),
-  "displayName": zod.string(),
-  "portraitUrl": zod.string().nullable(),
-  "portraitAltText": zod.string().nullable(),
-  "passingYear": zod.string().nullable(),
-  "course": zod.string().nullable(),
-  "currentOutcome": zod.string().nullable(),
-  "story": zod.string(),
-  "isPublished": zod.boolean(),
-  "displayOrder": zod.number().int()
-}).and(zod.object({
-  "importedFromResultId": zod.string().nullable()
-})))
-})
-
-
-/**
- * @summary Independently replace, reorder, publish, and delete alumni stories
- */
-export const updateAdminAlumniSuccessStoriesBodyExpectedRevisionMin = 0;
-
-export const updateAdminAlumniSuccessStoriesBodyAlumniStoriesItemDisplayOrderMax = 100;
-
-export const updateAdminAlumniSuccessStoriesBodyAlumniStoriesMax = 100;
-
-
-
-export const UpdateAdminAlumniSuccessStoriesBody = zod.object({
-  "expectedRevision": zod.number().int().min(updateAdminAlumniSuccessStoriesBodyExpectedRevisionMin),
-  "alumniStories": zod.array(zod.object({
-  "id": zod.string().optional(),
-  "displayName": zod.string(),
-  "portraitUrl": zod.string().nullable(),
-  "portraitAltText": zod.string().nullable(),
-  "passingYear": zod.string().nullable(),
-  "course": zod.string().nullable(),
-  "currentOutcome": zod.string().nullable(),
-  "story": zod.string(),
-  "isPublished": zod.boolean(),
-  "displayOrder": zod.number().int().min(1).max(updateAdminAlumniSuccessStoriesBodyAlumniStoriesItemDisplayOrderMax)
-})).max(updateAdminAlumniSuccessStoriesBodyAlumniStoriesMax)
-})
-
-export const updateAdminAlumniSuccessStoriesResponseRevisionMin = 0;
-
-
-
-export const UpdateAdminAlumniSuccessStoriesResponse = zod.object({
-  "revision": zod.number().int().min(updateAdminAlumniSuccessStoriesResponseRevisionMin),
-  "alumniStories": zod.array(zod.object({
-  "id": zod.string(),
-  "displayName": zod.string(),
-  "portraitUrl": zod.string().nullable(),
-  "portraitAltText": zod.string().nullable(),
-  "passingYear": zod.string().nullable(),
-  "course": zod.string().nullable(),
-  "currentOutcome": zod.string().nullable(),
-  "story": zod.string(),
-  "isPublished": zod.boolean(),
-  "displayOrder": zod.number().int()
-}).and(zod.object({
-  "importedFromResultId": zod.string().nullable()
-})))
-})
-
-
-/**
  * @summary Read homepage achievement ribbon for editing
  */
 export const GetAdminHomepageAchievementRibbonResponse = zod.object({
@@ -2170,7 +2097,7 @@ export const GetAdminHomepageTestimonialsResponse = zod.object({
   "updatedAt": zod.coerce.date(),
   "testimonials": zod.array(zod.object({
   "id": zod.string(),
-  "rating": zod.number().int().min(1).max(getAdminHomepageTestimonialsResponseTestimonialsItemRatingMax),
+  "rating": zod.number().int().min(1).max(getAdminHomepageTestimonialsResponseTestimonialsItemRatingMax).nullable(),
   "quote": zod.string(),
   "personName": zod.string(),
   "role": zod.string(),
@@ -2194,11 +2121,6 @@ export const updateHomepageTestimonialsBodySortOrderMax = 20;
 
 export const updateHomepageTestimonialsBodyTestimonialsItemRatingMax = 5;
 
-
-
-
-
-
 export const updateHomepageTestimonialsBodyTestimonialsItemDisplayOrderMax = 20;
 
 export const updateHomepageTestimonialsBodyTestimonialsMax = 20;
@@ -2212,13 +2134,13 @@ export const UpdateHomepageTestimonialsBody = zod.object({
   "isVisible": zod.boolean(),
   "sortOrder": zod.number().int().min(1).max(updateHomepageTestimonialsBodySortOrderMax),
   "testimonials": zod.array(zod.object({
-  "rating": zod.number().int().min(1).max(updateHomepageTestimonialsBodyTestimonialsItemRatingMax),
-  "quote": zod.string().min(1),
-  "personName": zod.string().min(1),
-  "role": zod.string().min(1),
-  "courseAchievement": zod.string().min(1),
+  "rating": zod.number().int().min(1).max(updateHomepageTestimonialsBodyTestimonialsItemRatingMax).nullable(),
+  "quote": zod.string(),
+  "personName": zod.string(),
+  "role": zod.string(),
+  "courseAchievement": zod.string(),
   "avatarImageUrl": zod.string().nullable(),
-  "avatarAltText": zod.string().min(1),
+  "avatarAltText": zod.string(),
   "accentColor": zod.string().nullable(),
   "displayOrder": zod.number().int().min(1).max(updateHomepageTestimonialsBodyTestimonialsItemDisplayOrderMax),
   "isActive": zod.boolean()
@@ -2239,7 +2161,7 @@ export const UpdateHomepageTestimonialsResponse = zod.object({
   "updatedAt": zod.coerce.date(),
   "testimonials": zod.array(zod.object({
   "id": zod.string(),
-  "rating": zod.number().int().min(1).max(updateHomepageTestimonialsResponseTestimonialsItemRatingMax),
+  "rating": zod.number().int().min(1).max(updateHomepageTestimonialsResponseTestimonialsItemRatingMax).nullable(),
   "quote": zod.string(),
   "personName": zod.string(),
   "role": zod.string(),

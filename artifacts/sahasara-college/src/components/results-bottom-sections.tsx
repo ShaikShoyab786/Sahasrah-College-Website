@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react';
-import type { AlumniSuccessStory } from '@workspace/api-client-react';
+import { ArrowLeft, ArrowRight, ArrowUpRight, Quote, Star } from 'lucide-react';
+import type { HomepageTestimonial } from '@workspace/api-client-react';
 
-function alumniInitials(name: string) {
+function testimonialInitials(name: string) {
   return name.trim().split(/\s+/).filter(Boolean).map((part) => part[0]).join('').slice(0, 2).toUpperCase();
 }
 
@@ -13,12 +13,12 @@ function visibleStoryCount() {
   return 3;
 }
 
-function StoryCard({ story, active }: { story: AlumniSuccessStory; active: boolean }) {
-  const details = [story.passingYear, story.course, story.currentOutcome].filter((item): item is string => Boolean(item?.trim()));
+function StoryCard({ testimonial, active }: { testimonial: HomepageTestimonial; active: boolean }) {
+  const details = [testimonial.role, testimonial.courseAchievement].filter((item) => Boolean(item?.trim()));
 
   return (
     <article
-      data-story-card={story.id}
+      data-story-card={testimonial.id}
       aria-current={active ? 'true' : undefined}
       className={`flex h-full min-h-[264px] min-w-0 flex-col rounded-[1.35rem] border px-5 py-6 transition-[transform,opacity,border-color,box-shadow] duration-500 sm:px-6 sm:py-7 ${
         active
@@ -26,25 +26,31 @@ function StoryCard({ story, active }: { story: AlumniSuccessStory; active: boole
           : 'border-[hsl(var(--primary-foreground)/.14)] bg-[hsl(var(--primary-foreground)/.68)] opacity-80 shadow-[0_10px_28px_hsl(var(--background)/.14)]'
       } motion-reduce:transform-none motion-reduce:transition-none`}
     >
+      <div className="mb-3 flex items-center justify-between gap-3">
+        {testimonial.rating !== null && <div className="flex gap-1 text-[hsl(var(--accent))]" aria-label={`${testimonial.rating} out of 5 stars`}>
+          {Array.from({ length: testimonial.rating }).map((_, index) => <Star key={index} size={13} fill="currentColor" />)}
+        </div>}
+        <Quote size={22} className="ml-auto shrink-0 text-[hsl(var(--accent)/.55)]" aria-hidden="true" />
+      </div>
       <p className="min-w-0 flex-1 whitespace-pre-line break-words text-[13px] leading-[1.75] text-[hsl(var(--foreground)/.8)] sm:text-sm">
-        {story.story}
+        {testimonial.quote}
       </p>
       <div className="mt-6 flex min-w-0 items-center gap-3.5 border-t border-[hsl(var(--primary)/.10)] pt-4">
         <div className="grid h-11 w-11 shrink-0 place-items-center overflow-hidden rounded-full border border-[hsl(var(--accent)/.36)] bg-[hsl(var(--secondary))] font-display text-xs font-semibold tracking-wide text-[hsl(var(--primary))]">
-          {story.portraitUrl ? (
+          {testimonial.avatarImageUrl ? (
             <img
-              src={story.portraitUrl}
-              alt={story.portraitAltText || ''}
+              src={testimonial.avatarImageUrl}
+              alt={testimonial.avatarAltText || ''}
               className="h-full w-full object-cover"
               loading="lazy"
             />
           ) : (
-            <span aria-hidden="true">{alumniInitials(story.displayName)}</span>
+            <span aria-hidden="true">{testimonialInitials(testimonial.personName)}</span>
           )}
         </div>
         <div className="min-w-0 flex-1">
           <h3 className="break-words font-display text-[15px] font-semibold leading-tight tracking-[-.02em] text-[hsl(var(--primary))] [overflow-wrap:anywhere]">
-            {story.displayName}
+            {testimonial.personName}
           </h3>
           {details.length > 0 && (
             <p className="mt-1 break-words text-[11px] leading-4 text-[hsl(var(--muted-foreground))] [overflow-wrap:anywhere]">
@@ -57,8 +63,8 @@ function StoryCard({ story, active }: { story: AlumniSuccessStory; active: boole
   );
 }
 
-export function ResultsSuccessStories({ stories }: { stories: AlumniSuccessStory[] }) {
-  const results = stories.filter((story) => story.isPublished && Boolean(story.story?.trim())).sort((a, b) => a.displayOrder - b.displayOrder);
+export function ResultsSuccessStories({ testimonials }: { testimonials: HomepageTestimonial[] }) {
+  const results = testimonials.filter((testimonial) => testimonial.isActive && Boolean(testimonial.quote.trim())).sort((a, b) => a.displayOrder - b.displayOrder);
   const railRef = useRef<HTMLDivElement>(null);
   const touchResumeRef = useRef<number | null>(null);
   const scrollResumeRef = useRef<number | null>(null);
@@ -145,7 +151,7 @@ export function ResultsSuccessStories({ stories }: { stories: AlumniSuccessStory
     touchResumeRef.current = window.setTimeout(() => setTouchPaused(false), 5000);
   };
 
-  if (!stories.length || !results.length) return null;
+  if (!testimonials.length || !results.length) return null;
 
   return (
     <section
@@ -157,12 +163,12 @@ export function ResultsSuccessStories({ stories }: { stories: AlumniSuccessStory
       <div aria-hidden="true" className="pointer-events-none absolute -right-8 -top-20 h-[17rem] w-[17rem] rounded-full border border-[hsl(var(--accent)/.18)]" />
       <div className="relative mx-auto max-w-7xl">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="text-[10px] font-bold uppercase tracking-[.24em] text-[hsl(var(--accent))]">Alumni voices</p>
+          <p className="text-[10px] font-bold uppercase tracking-[.24em] text-[hsl(var(--accent))]">From our community</p>
           <h2 id="results-success-stories-heading" className="mt-3 font-display text-4xl font-semibold tracking-[-.045em] text-[hsl(var(--primary-foreground))] sm:text-5xl">
             Success Stories
           </h2>
           <p className="mx-auto mt-3 max-w-lg text-sm leading-6 text-[hsl(var(--primary-foreground)/.68)]">
-            Reflections from former students, shared with their approval.
+            Published testimonials shared with our Home page.
           </p>
         </div>
 
@@ -193,7 +199,7 @@ export function ResultsSuccessStories({ stories }: { stories: AlumniSuccessStory
             ref={railRef}
             onScroll={handleRailScroll}
             className="flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain scroll-smooth pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden motion-reduce:scroll-auto sm:gap-4"
-            aria-label="Alumni success stories"
+            aria-label="Shared community testimonials"
             aria-roledescription="carousel"
             tabIndex={0}
           >
@@ -202,7 +208,7 @@ export function ResultsSuccessStories({ stories }: { stories: AlumniSuccessStory
                 key={result.id}
                 className="w-full shrink-0 snap-center sm:w-[calc((100%-1rem)/2)] lg:w-[calc((100%-2rem)/3)]"
               >
-                <StoryCard story={result} active={activeIndex === index} />
+                <StoryCard testimonial={result} active={activeIndex === index} />
               </div>
             ))}
           </div>
