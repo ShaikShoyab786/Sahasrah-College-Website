@@ -1,0 +1,90 @@
+Prompt: Update the Courses Mega Menu and Five Course Detail Pages
+Use these references:
+
+attached_assets/image_1790524950770.png — current mega-menu items and links
+attached_assets/courses_page_reference_video_1_1790527296740.mp4 — course detail page layout and section order
+attached_assets/image_1790527562519.png — existing Faculty admin profile form
+attached_assets/image_1790528024515.png — syllabus accordion and topic display
+Use Sahasrah branding. The older KVR references are for structure and behavior only.
+
+1. Update the Courses mega menu
+Create a clean, professional mega menu with five regular courses in a consistent card layout:
+
+MPC (Maths, Physics, Chemistry)
+BiPC (Biology, Physics, Chemistry)
+MPC + IIT-JEE
+BiPC + NEET
+MPC + EAMCET
+Keep Integrated Courses separate as a special item at the end of the menu. Do not change its page content in this update.
+
+Keep the utility links and destinations:
+
+Compare Courses → /courses
+Scholarship Test → /courses
+Book Campus Visit → /contact
+Talk to Counsellor → /contact
+Keep any admissions promotion visually secondary to the course choices.
+
+The menu should open and close smoothly. Support hover and keyboard focus on desktop, and tap-to-toggle on mobile. When a visitor selects a course, close the menu immediately and navigate to that course. Also close it on route changes, Escape, and outside click. Do not leave the open menu covering the newly loaded course page.
+
+2. Use one reusable template with course-specific content
+Use the same page structure for each of the five regular courses, but store distinct content for each one. Selecting a course must load that course’s own information—not repeated generic content from another course.
+
+Keep the existing course URL patterns where possible. Focus on the individual course detail pages and the sections listed below; do not redesign the Courses overview page or Integrated Courses page in this update.
+
+3. Course detail sections in this update
+For each of the five regular courses, make these sections editable in the existing Courses admin area:
+
+Hero — course-specific title, eyebrow/tag, description, and existing actions
+Quick Course Highlights
+Why Choose This Course?
+Meet Your Mentors
+Program Overview & Goals
+Ideal Profile
+Curriculum / Syllabus Breakdown
+Keep the course layout readable and responsive. Do not modify or remove sections below the curriculum section; those are for a later update.
+
+4. Reuse Faculty records for mentors
+Do not create separate mentor records for Courses. Extend the existing Faculty profiles managed in the Faculty admin area:
+
+Add a multi-select Teaching Subjects field, separate from any existing profile subject/specialization field.
+Add a Show on Courses page toggle.
+Keep existing Faculty page and Home preview controls unchanged.
+Show a faculty member in a course’s Meet Your Mentors section only if:
+
+Show on Courses page is enabled, and
+Their teaching subjects match that course.
+The toggle alone must not bypass subject matching. For example, Physics, Mathematics, and Chemistry faculty may appear for MPC; Biology faculty must not. Use the corresponding subject mapping for BiPC and each related course. Show each mentor only once even if they match more than one subject. Keep course visibility independent of whether the Faculty page or Home preview toggles are enabled.
+
+5. Curriculum keywords and PDF downloads
+In each course’s curriculum section:
+
+Use subject-level rows or accordions as shown in the reference.
+The View action should reveal concise topic keywords/chips—not long curriculum paragraphs.
+Add a working course-specific curriculum PDF upload in the admin editor and a Download Curriculum PDF action on the public course page.
+Seed each course with relevant curriculum topic keywords.
+Provide a valid, clearly labeled sample PDF for each course if no approved PDF is available yet. Mark sample files as replaceable and do not present them as official or verified curricula.
+Do not show a dead download link or a button that does nothing.
+6. Seed course-specific sample content
+Do not leave these five course pages empty or use Lorem Ipsum. Seed complete, editable starter content for:
+
+MPC — Mathematics, Physics, and Chemistry
+BiPC — Biology, Physics, and Chemistry
+MPC + IIT-JEE — PCM with JEE-focused preparation
+BiPC + NEET — Biology, Physics, and Chemistry with NEET-focused preparation
+MPC + EAMCET — PCM with EAMCET-focused preparation
+Give each course its own highlights, “Why Choose” content, overview, ideal-profile details, curriculum keywords, and curriculum PDF. Avoid copying the same text across all five. Do not invent faculty members, credentials, or unsupported college results; use existing Faculty records that pass the subject-matching rules.
+
+7. Admin and verification
+Extend the existing Courses and Faculty admin screens gradually. Do not replace the admin dashboard or create duplicate course/mentor data. Make all new course-specific fields editable and persistent.
+
+Verify that:
+
+All five course links open the correct detail content.
+Integrated Courses remains separate and last in the mega menu, with its page unchanged.
+The four utility links go to their specified destinations.
+The menu closes immediately after navigation and works with mouse, keyboard, and touch.
+Each page displays only mentors whose subjects match the course and whose Show on Courses page toggle is enabled.
+Each course has non-empty, distinct content through the curriculum section.
+Topic views and curriculum PDF downloads work.
+The pages remain readable and responsive on mobile.
