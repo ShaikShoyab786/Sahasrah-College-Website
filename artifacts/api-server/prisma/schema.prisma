@@ -743,6 +743,8 @@ model Course {
   highlightsHeading         String   @default("Quick Course Highlights")
   highlightsIntroduction    String   @default("")
   highlights                Json     @default("[]")
+  whyChooseHeading          String   @default("A focused start, built around the student.")
+  whyChooseIntroduction     String   @default("")
   whyChoose                 Json     @default("[]")
   overviewText              String
   programGoals              Json     @default("[]")

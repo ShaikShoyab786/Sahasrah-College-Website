@@ -83,10 +83,20 @@ export interface CourseUpdate {
      */
   highlights: CourseHighlight[];
   /**
-     * @minItems 1
-     * @maxItems 8
+     * @minItems 3
+     * @maxItems 3
      */
   whyChoose: CourseReason[];
+  /**
+     * @minLength 1
+     * @maxLength 180
+     */
+  whyChooseHeading: string;
+  /**
+     * @minLength 1
+     * @maxLength 1000
+     */
+  whyChooseIntroduction: string;
   /**
      * @minLength 1
      * @maxLength 4000

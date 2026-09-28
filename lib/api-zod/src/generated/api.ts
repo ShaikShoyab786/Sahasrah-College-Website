@@ -2807,6 +2807,9 @@ export const getCourseBySlugResponseWhyChooseItemTitleMax = 140;
 
 export const getCourseBySlugResponseWhyChooseItemDescriptionMax = 1000;
 
+export const getCourseBySlugResponseWhyChooseMin = 3;
+export const getCourseBySlugResponseWhyChooseMax = 3;
+
 export const getCourseBySlugResponseSyllabusItemSubjectMax = 100;
 
 export const getCourseBySlugResponseSyllabusItemTopicsItemMax = 120;
@@ -2842,7 +2845,9 @@ export const GetCourseBySlugResponse = zod.object({
   "whyChoose": zod.array(zod.object({
   "title": zod.string().min(1).max(getCourseBySlugResponseWhyChooseItemTitleMax),
   "description": zod.string().min(1).max(getCourseBySlugResponseWhyChooseItemDescriptionMax)
-})),
+})).min(getCourseBySlugResponseWhyChooseMin).max(getCourseBySlugResponseWhyChooseMax),
+  "whyChooseHeading": zod.string(),
+  "whyChooseIntroduction": zod.string(),
   "overviewText": zod.string(),
   "programGoals": zod.array(zod.string()),
   "idealProfileTitle": zod.string(),
@@ -2899,6 +2904,9 @@ export const getAdminCoursesResponseWhyChooseItemTitleMax = 140;
 
 export const getAdminCoursesResponseWhyChooseItemDescriptionMax = 1000;
 
+export const getAdminCoursesResponseWhyChooseMin = 3;
+export const getAdminCoursesResponseWhyChooseMax = 3;
+
 export const getAdminCoursesResponseSyllabusItemSubjectMax = 100;
 
 export const getAdminCoursesResponseSyllabusItemTopicsItemMax = 120;
@@ -2934,7 +2942,9 @@ export const GetAdminCoursesResponseItem = zod.object({
   "whyChoose": zod.array(zod.object({
   "title": zod.string().min(1).max(getAdminCoursesResponseWhyChooseItemTitleMax),
   "description": zod.string().min(1).max(getAdminCoursesResponseWhyChooseItemDescriptionMax)
-})),
+})).min(getAdminCoursesResponseWhyChooseMin).max(getAdminCoursesResponseWhyChooseMax),
+  "whyChooseHeading": zod.string(),
+  "whyChooseIntroduction": zod.string(),
   "overviewText": zod.string(),
   "programGoals": zod.array(zod.string()),
   "idealProfileTitle": zod.string(),
@@ -3002,7 +3012,12 @@ export const updateAdminCourseBodyWhyChooseItemTitleMax = 140;
 
 export const updateAdminCourseBodyWhyChooseItemDescriptionMax = 1000;
 
-export const updateAdminCourseBodyWhyChooseMax = 8;
+export const updateAdminCourseBodyWhyChooseMin = 3;
+export const updateAdminCourseBodyWhyChooseMax = 3;
+
+export const updateAdminCourseBodyWhyChooseHeadingMax = 180;
+
+export const updateAdminCourseBodyWhyChooseIntroductionMax = 1000;
 
 export const updateAdminCourseBodyOverviewTextMax = 4000;
 
@@ -3052,7 +3067,9 @@ export const UpdateAdminCourseBody = zod.object({
   "whyChoose": zod.array(zod.object({
   "title": zod.string().min(1).max(updateAdminCourseBodyWhyChooseItemTitleMax),
   "description": zod.string().min(1).max(updateAdminCourseBodyWhyChooseItemDescriptionMax)
-})).min(1).max(updateAdminCourseBodyWhyChooseMax),
+})).min(updateAdminCourseBodyWhyChooseMin).max(updateAdminCourseBodyWhyChooseMax),
+  "whyChooseHeading": zod.string().min(1).max(updateAdminCourseBodyWhyChooseHeadingMax),
+  "whyChooseIntroduction": zod.string().min(1).max(updateAdminCourseBodyWhyChooseIntroductionMax),
   "overviewText": zod.string().min(1).max(updateAdminCourseBodyOverviewTextMax),
   "programGoals": zod.array(zod.string().min(1).max(updateAdminCourseBodyProgramGoalsItemMax)).min(1).max(updateAdminCourseBodyProgramGoalsMax),
   "idealProfileTitle": zod.string().min(1).max(updateAdminCourseBodyIdealProfileTitleMax),
@@ -3080,6 +3097,9 @@ export const updateAdminCourseResponseHighlightsMax = 4;
 export const updateAdminCourseResponseWhyChooseItemTitleMax = 140;
 
 export const updateAdminCourseResponseWhyChooseItemDescriptionMax = 1000;
+
+export const updateAdminCourseResponseWhyChooseMin = 3;
+export const updateAdminCourseResponseWhyChooseMax = 3;
 
 export const updateAdminCourseResponseSyllabusItemSubjectMax = 100;
 
@@ -3116,7 +3136,9 @@ export const UpdateAdminCourseResponse = zod.object({
   "whyChoose": zod.array(zod.object({
   "title": zod.string().min(1).max(updateAdminCourseResponseWhyChooseItemTitleMax),
   "description": zod.string().min(1).max(updateAdminCourseResponseWhyChooseItemDescriptionMax)
-})),
+})).min(updateAdminCourseResponseWhyChooseMin).max(updateAdminCourseResponseWhyChooseMax),
+  "whyChooseHeading": zod.string(),
+  "whyChooseIntroduction": zod.string(),
   "overviewText": zod.string(),
   "programGoals": zod.array(zod.string()),
   "idealProfileTitle": zod.string(),

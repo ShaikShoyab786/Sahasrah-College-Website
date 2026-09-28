@@ -33,6 +33,8 @@ export type CourseSeed = {
   highlightsEyebrow: string;
   highlightsIntroduction: string;
   highlights: CourseHighlight[];
+  whyChooseHeading: string;
+  whyChooseIntroduction: string;
   whyChoose: CourseReason[];
   overviewText: string;
   programGoals: string[];
@@ -66,6 +68,8 @@ export const COURSE_SEEDS: CourseSeed[] = [
       { category: "Practice focus", title: "Reasoning with accuracy", description: "Use equations, diagrams, and clear working to explain each answer.", displayOrder: 3 },
       { category: "Good fit for", title: "Curious problem-solvers", description: "For students drawn to patterns, models, and scientific questions.", displayOrder: 4 },
     ],
+    whyChooseHeading: "A focused start, built around the student.",
+    whyChooseIntroduction: "A well-structured combination of Mathematics, Physics, and Chemistry builds strong fundamentals, develops problem-solving skills, and keeps future opportunities open.",
     whyChoose: [
       { title: "See how the subjects connect", description: "Mathematics gives students tools for describing patterns, while Physics and Chemistry put those tools to work in scientific settings." },
       { title: "Strengthen step-by-step reasoning", description: "Regular work with equations, diagrams, and evidence helps students explain how they reached an answer." },
@@ -115,6 +119,8 @@ export const COURSE_SEEDS: CourseSeed[] = [
       { category: "Practice focus", title: "Careful recall and explanation", description: "Organise detailed topics and explain them with accurate scientific language.", displayOrder: 3 },
       { category: "Good fit for", title: "Students curious about life science", description: "For learners interested in organisms, health, and the environment.", displayOrder: 4 },
     ],
+    whyChooseHeading: "A focused start, built around the student.",
+    whyChooseIntroduction: "Biology at the centre, supported by Physics and Chemistry, builds understanding of living systems and the science that helps explain them.",
     whyChoose: [
       { title: "Put living systems at the centre", description: "Biology explores how organisms are built, how they function, and how they relate to their environment." },
       { title: "Use Physics and Chemistry as supporting lenses", description: "The companion subjects help explain processes such as movement, energy transfer, and molecular interaction." },
@@ -164,6 +170,8 @@ export const COURSE_SEEDS: CourseSeed[] = [
       { category: "Practice focus", title: "Multi-step problem solving", description: "Work through unfamiliar problems and review the reasoning behind each method.", displayOrder: 3 },
       { category: "Good fit for", title: "Learners ready for challenge", description: "For students prepared to analyse, practise, and revisit difficult concepts.", displayOrder: 4 },
     ],
+    whyChooseHeading: "A focused start, built around the student.",
+    whyChooseIntroduction: "Connect PCM foundations with IIT-JEE practice, building conceptual depth and a disciplined approach to challenging entrance questions.",
     whyChoose: [
       { title: "Connect classroom ideas to entrance questions", description: "JEE-focused work asks students to recognise which concepts apply and how they fit together." },
       { title: "Practise depth, not only speed", description: "Working through a difficult problem carefully can reveal gaps in the underlying Mathematics, Physics, or Chemistry." },
@@ -213,6 +221,8 @@ export const COURSE_SEEDS: CourseSeed[] = [
       { category: "Practice focus", title: "Accuracy across question types", description: "Balance close reading, recall, and numerical work in Physics and Chemistry.", displayOrder: 3 },
       { category: "Revision focus", title: "A steady review routine", description: "Return to diagrams, terminology, formulas, and question patterns as topics develop.", displayOrder: 4 },
     ],
+    whyChooseHeading: "A focused start, built around the student.",
+    whyChooseIntroduction: "A Biology-led science pathway with Physics and Chemistry practice, designed to strengthen subject understanding and steady NEET preparation.",
     whyChoose: [
       { title: "Give Biology room for depth", description: "NEET-focused BiPC preparation asks students to understand detailed biological ideas and recall them accurately." },
       { title: "Keep Physics and Chemistry in balance", description: "Regular attention to all three subjects helps learners practise both conceptual and numerical questions." },
@@ -262,6 +272,8 @@ export const COURSE_SEEDS: CourseSeed[] = [
       { category: "Practice focus", title: "Method and pacing", description: "Choose a sound approach and manage time without skipping key steps.", displayOrder: 3 },
       { category: "Good fit for", title: "Students who value structure", description: "For learners who benefit from clear practice and repeatable review goals.", displayOrder: 4 },
     ],
+    whyChooseHeading: "A focused start, built around the student.",
+    whyChooseIntroduction: "Connect PCM fundamentals with EAMCET-style practice, building subject confidence, accuracy, and pace through regular review.",
     whyChoose: [
       { title: "Keep the PCM syllabus connected", description: "Revisiting related ideas across Mathematics, Physics, and Chemistry makes practice more purposeful than treating each chapter in isolation." },
       { title: "Practise for a timed setting", description: "Entrance-style sets let students work on reading carefully, selecting a method, and keeping track of time." },
@@ -322,6 +334,17 @@ export function normalizeCourseHighlights(
       title: nonEmptyText(item?.title) ?? nonEmptyText(item?.value) ?? seed.title,
       description: nonEmptyText(item?.description) ?? seed.description,
       displayOrder: index + 1,
+    };
+  });
+}
+
+export function normalizeCourseReasons(value: unknown, fallback: CourseReason[]): CourseReason[] {
+  const existing = Array.isArray(value) ? value.filter(isObjectRecord) : [];
+  return fallback.slice(0, 3).map((seed, index) => {
+    const item = existing[index];
+    return {
+      title: nonEmptyText(item?.title) ?? seed.title,
+      description: nonEmptyText(item?.description) ?? seed.description,
     };
   });
 }

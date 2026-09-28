@@ -38,6 +38,8 @@ function toUpdate(course: AdminCourse): CourseUpdate {
     highlightsHeading: course.highlightsHeading,
     highlightsIntroduction: course.highlightsIntroduction,
     highlights: course.highlights,
+    whyChooseHeading: course.whyChooseHeading,
+    whyChooseIntroduction: course.whyChooseIntroduction,
     whyChoose: course.whyChoose,
     overviewText: course.overviewText,
     programGoals: course.programGoals,
@@ -131,11 +133,20 @@ function HighlightEditor({
   );
 }
 
-function ReasonEditor({ values, onChange }: { values: CourseReason[]; onChange: (values: CourseReason[]) => void }) {
+function ReasonEditor({ heading, onHeadingChange, introduction, onIntroductionChange, values, onChange }: {
+  heading: string;
+  onHeadingChange: (value: string) => void;
+  introduction: string;
+  onIntroductionChange: (value: string) => void;
+  values: CourseReason[];
+  onChange: (values: CourseReason[]) => void;
+}) {
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between gap-3"><p className="text-sm font-bold text-[hsl(var(--admin-text))]">Why choose this pathway</p><button type="button" onClick={() => onChange([...values, { title: '', description: '' }])} disabled={values.length >= 8} className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-[hsl(var(--admin-border))] px-3 text-xs font-bold" data-testid="button-add-course-reason"><Plus size={14} /> Add reason</button></div>
-      {values.map((item, index) => <div key={`reason-${index}`} className="rounded-xl bg-[hsl(var(--admin-surface-soft))] p-4"><div className="flex items-end gap-3"><div className="flex-1 space-y-4"><Field id={`course-reason-${index}-title`} label="Title" value={item.title} onChange={(event) => onChange(values.map((entry, itemIndex) => itemIndex === index ? { ...entry, title: event.target.value } : entry))} required /><Area id={`course-reason-${index}-description`} label="Description" value={item.description} onChange={(event) => onChange(values.map((entry, itemIndex) => itemIndex === index ? { ...entry, description: event.target.value } : entry))} required /></div><button type="button" onClick={() => onChange(values.filter((_, itemIndex) => itemIndex !== index))} disabled={values.length <= 1} className="mb-1 grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-[hsl(var(--admin-border))] text-[hsl(var(--admin-text-muted))] disabled:opacity-40" aria-label={`Remove reason ${index + 1}`} data-testid={`button-remove-course-reason-${index}`}><Trash2 size={15} /></button></div></div>)}
+    <div className="space-y-5">
+      <Field id="course-why-choose-heading" label="Section heading" value={heading} onChange={(event) => onHeadingChange(event.target.value)} required />
+      <Area id="course-why-choose-introduction" label="Section introduction" value={introduction} onChange={(event) => onIntroductionChange(event.target.value)} required />
+      <p className="text-sm font-bold text-[hsl(var(--admin-text))]">Three pathway cards</p>
+      {values.slice(0, 3).map((item, index) => <div key={`reason-${index}`} className="rounded-xl bg-[hsl(var(--admin-surface-soft))] p-4"><p className="mb-3 text-xs font-bold uppercase tracking-[.14em] text-[hsl(var(--admin-text-muted))]">Card 0{index + 1}</p><div className="space-y-4"><Field id={`course-reason-${index}-title`} label="Title" value={item.title} onChange={(event) => onChange(values.map((entry, itemIndex) => itemIndex === index ? { ...entry, title: event.target.value } : entry))} required /><Area id={`course-reason-${index}-description`} label="Description" value={item.description} onChange={(event) => onChange(values.map((entry, itemIndex) => itemIndex === index ? { ...entry, description: event.target.value } : entry))} required /></div></div>)}
     </div>
   );
 }
@@ -307,7 +318,7 @@ export default function AdminCourses() {
             />
           </EditorCard>
           <EditorCard title="Course story" description="Explain the pathway clearly, from its overview to the reasons families choose it.">
-            <div className="space-y-7"><Area id="course-overview" label="Overview" value={form.overviewText} onChange={(event) => setForm({ overviewText: event.target.value })} required /><ReasonEditor values={form.whyChoose} onChange={(whyChoose) => setForm({ whyChoose })} /></div>
+            <div className="space-y-7"><Area id="course-overview" label="Overview" value={form.overviewText} onChange={(event) => setForm({ overviewText: event.target.value })} required /><ReasonEditor heading={form.whyChooseHeading} onHeadingChange={(whyChooseHeading) => setForm({ whyChooseHeading })} introduction={form.whyChooseIntroduction} onIntroductionChange={(whyChooseIntroduction) => setForm({ whyChooseIntroduction })} values={form.whyChoose} onChange={(whyChoose) => setForm({ whyChoose })} /></div>
           </EditorCard>
           <EditorCard title="Goals and ideal profile" description="Make the fit for this pathway specific and useful for student conversations.">
             <div className="space-y-7"><ListEditor label="Program goals" values={form.programGoals} onChange={(programGoals) => setForm({ programGoals })} max={12} placeholder="A measurable learning goal" testId="program-goal" /><div className="grid gap-5 md:grid-cols-2"><Field id="course-ideal-title" label="Ideal profile title" value={form.idealProfileTitle} onChange={(event) => setForm({ idealProfileTitle: event.target.value })} required /><Area id="course-ideal-description" label="Ideal profile description" value={form.idealProfileDescription} onChange={(event) => setForm({ idealProfileDescription: event.target.value })} required /></div><ListEditor label="Ideal profile indicators" values={form.idealProfileIndicators} onChange={(idealProfileIndicators) => setForm({ idealProfileIndicators })} max={12} placeholder="A useful student indicator" testId="ideal-indicator" /></div>

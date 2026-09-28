@@ -34,7 +34,13 @@ export interface AdminCourse {
      * @maxItems 4
      */
   highlights: CourseHighlight[];
+  /**
+     * @minItems 3
+     * @maxItems 3
+     */
   whyChoose: CourseReason[];
+  whyChooseHeading: string;
+  whyChooseIntroduction: string;
   overviewText: string;
   programGoals: string[];
   idealProfileTitle: string;
