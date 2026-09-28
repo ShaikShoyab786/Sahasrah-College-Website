@@ -1,0 +1,17 @@
+Use the first image as the current result and the second image as the design reference. This reference is a horizontal timeline-style section, not the previous outlined-card layout.
+
+Refine only the Quick Course Highlights section on the five standard course detail pages. Match the second attached image’s timeline-style design. Don’t change the hero, mega menu, or other course sections.
+
+Frontend design
+Add a centered eyebrow label, QUICK OVERVIEW, with subtle red divider lines.
+Show the heading Quick Course Highlights, with “Highlights” in the site’s red accent color, followed by a short, centered course-specific introduction.
+Display four ordered highlights as a horizontal sequence on desktop. Use large, pale 01–04 numbers behind or above the content, connected by a thin line with small red milestone dots.
+Give each highlight a small uppercase category label, a short red accent line, a prominent dark heading, and a concise description. Use soft alternating pale-blue and pale-pink backgrounds with rounded corners, as in the reference.
+Add a restrained hover effect—slight lift and soft shadow. Keep all text legible and don’t let the numbers or connecting line overlap it.
+On mobile, make the sequence a clean vertical timeline with no horizontal overflow.
+Admin editing
+Add a dedicated Quick Course Highlights editor to each course’s existing admin edit screen. Admins must be able to edit the section eyebrow, heading, introduction, and each highlight’s category label, title, description, and order. The displayed 01–04 numbers should update automatically from the order.
+
+Store and load the content through the existing course admin/API flow. Don’t hard-code a second copy in the frontend. Seed distinct, relevant highlights for each standard course: MPC, BiPC, MPC + IIT-JEE, BiPC + NEET, and MPC + EAMCET. Tailor the copy to each course’s subjects and goals; don’t repeat generic matter across all five or invent unsupported results or statistics.
+
+Done when: the five course pages show their own saved highlight content in this design, admins can edit and save it, and the layout works on desktop and mobile.
