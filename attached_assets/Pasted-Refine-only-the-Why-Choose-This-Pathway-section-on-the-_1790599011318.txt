@@ -1,0 +1,15 @@
+Refine only the Why Choose This Pathway section on the course detail pages. Match the second attached image’s layout and visual style. Don’t change the hero, Quick Course Highlights, or any other section.
+
+Section design
+
+Add a clear eyebrow label, WHY CHOOSE THIS PATHWAY, with a small red accent line.
+Add the heading A focused start, built around the student. Use the reference’s navy text and red emphasis on “student.”
+Include a short, centered-alignment paragraph beneath the heading, using course-specific copy.
+Show three numbered cards: 01, 02, and 03. On desktop, use a two-column layout with two cards in the first row and the third card aligned left in the next row. Stack them cleanly on mobile.
+Style the cards with soft pastel backgrounds, rounded corners, subtle shadows, oversized pale numbers, a short red accent line, dark navy headings, and readable body text. Use subtle decorative shapes like the reference. Remove the current check icons and blue outlines; don’t leave an empty colored area.
+Keep card hover effects restrained: a small lift and slightly stronger shadow.
+Reveal animation Add a scroll-triggered staggered reveal to the three cards. When the section enters the viewport, reveal cards sequentially from 1 to 3 with a 180ms stagger. Each starts at opacity 0, translateY(30px), and scale(0.97), then animates to opacity 1, translateY(0), and scale(1). Use an elegant ease-out curve and approximately 700ms duration. Keep it subtle, trigger once, and respect prefers-reduced-motion.
+
+Course content and admin Keep the heading, introduction, and three card titles and descriptions editable per course in the existing course-admin flow. Use distinct content appropriate to each course; don’t reuse MPC copy across BiPC, IIT-JEE, NEET, or EAMCET pages. The reference copy can be the MPC example.
+
+Done when: the section matches the reference, all three cards reveal in sequence as the user scrolls, the layout works on mobile, and each course shows its own admin-managed content.
