@@ -32,6 +32,7 @@ export interface GalleryItemInput {
   displayOrder: number;
   isPublished: boolean;
   showInHomePreview: boolean;
+  showOnCourses: boolean;
   /** @minimum 1 */
   homePreviewOrder: number;
 }

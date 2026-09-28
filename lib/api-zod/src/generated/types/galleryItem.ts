@@ -21,5 +21,6 @@ export interface GalleryItem {
   displayOrder: number;
   isPublished: boolean;
   showInHomePreview: boolean;
+  showOnCourses: boolean;
   homePreviewOrder: number;
 }

@@ -5396,9 +5396,11 @@ components:
           type: boolean
         showInHomePreview:
           type: boolean
+        showOnCourses:
+          type: boolean
         homePreviewOrder:
           type: integer
-      required: [id, imageUrl, imageAltText, title, description, category, locationLabel, displayOrder, isPublished, showInHomePreview, homePreviewOrder]
+      required: [id, imageUrl, imageAltText, title, description, category, locationLabel, displayOrder, isPublished, showInHomePreview, showOnCourses, homePreviewOrder]
     GalleryCollection:
       type: object
       properties:
@@ -5437,10 +5439,12 @@ components:
           type: boolean
         showInHomePreview:
           type: boolean
+        showOnCourses:
+          type: boolean
         homePreviewOrder:
           type: integer
           minimum: 1
-      required: [imageUrl, imageAltText, title, description, category, locationLabel, displayOrder, isPublished, showInHomePreview, homePreviewOrder]
+      required: [imageUrl, imageAltText, title, description, category, locationLabel, displayOrder, isPublished, showInHomePreview, showOnCourses, homePreviewOrder]
     GalleryItemOrder:
       type: object
       properties:

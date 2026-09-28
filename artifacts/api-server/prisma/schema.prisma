@@ -829,6 +829,7 @@ model GalleryItem {
   isPublished         Boolean  @default(true)
   displayOrder        Int      @default(1)
   showInHomePreview   Boolean  @default(false)
+  showOnCourses       Boolean  @default(false)
   homePreviewOrder    Int      @default(1)
   updatedAt           DateTime @updatedAt
 

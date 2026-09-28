@@ -101,7 +101,7 @@ export function CourseHero({
   ) ?? '';
 
   return (
-    <section className={`relative isolate overflow-hidden px-6 pb-12 pt-32 lg:px-10 lg:pb-16 lg:pt-44 ${hasImage ? 'bg-[hsl(var(--primary))] text-white' : 'bg-[hsl(var(--secondary))] text-[hsl(var(--primary))]'}`} aria-label={`${course.name} course introduction`} data-testid="section-course-hero">
+    <section className={`relative isolate overflow-hidden border-b border-[hsl(var(--border))] px-6 pb-10 pt-32 lg:px-10 lg:pb-12 lg:pt-44 ${hasImage ? 'bg-[hsl(var(--primary))] text-white' : 'bg-[hsl(var(--secondary))] text-[hsl(var(--primary))]'}`} aria-label={`${course.name} course introduction`} data-testid="section-course-hero">
       {imageUrl && <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${JSON.stringify(imageUrl)})` }} aria-hidden="true" />}
       {hasImage
         ? <div className="absolute inset-0" style={{ backgroundColor: `rgba(7, 25, 31, ${Math.min(80, Math.max(0, course.heroBackgroundOverlay)) / 100})` }} aria-hidden="true" />
@@ -158,7 +158,7 @@ export function HighlightsSection({
   const orderedHighlights = [...highlights].sort((left, right) => left.displayOrder - right.displayOrder);
 
   return (
-    <section id="course-highlights" className="border-b border-[hsl(var(--border))] bg-[hsl(var(--background))] px-6 py-16 lg:px-10 lg:py-20" aria-labelledby="course-highlights-heading" data-testid="section-course-highlights">
+    <section id="course-highlights" className="border-b border-[hsl(var(--border))] bg-[hsl(var(--background))] px-6 py-12 lg:px-10 lg:py-16" aria-labelledby="course-highlights-heading" data-testid="section-course-highlights">
       <div className="mx-auto max-w-7xl">
         <header className="mx-auto max-w-3xl text-center">
           <CourseEyebrow label={eyebrow} className="mx-auto" testId="text-course-highlights-eyebrow" />
@@ -223,7 +223,7 @@ export function WhyChooseSection({ heading, introduction, reasons }: { heading: 
   const numberColors = ['text-sky-700/15 dark:text-sky-300/20', 'text-rose-700/15 dark:text-rose-300/20', 'text-emerald-700/15 dark:text-emerald-300/20'];
 
   return (
-    <section ref={sectionRef} data-revealed={hasEntered} className="bg-[hsl(var(--background))] px-6 py-16 lg:px-10 lg:py-24" aria-labelledby="why-course-heading" data-testid="section-course-why-choose">
+    <section ref={sectionRef} data-revealed={hasEntered} className="border-b border-[hsl(var(--border))] bg-[hsl(var(--background))] px-6 py-12 lg:px-10 lg:py-16" aria-labelledby="why-course-heading" data-testid="section-course-why-choose">
       <div className="mx-auto max-w-7xl">
         <header className="max-w-4xl">
           <CourseEyebrow label="Why choose this pathway" testId="text-course-why-eyebrow" />
@@ -261,7 +261,7 @@ export function MentorsSection({ mentors }: { mentors: CourseMentor[] }) {
   ));
 
   return (
-    <section className="bg-[hsl(var(--background))] px-6 py-16 lg:px-10 lg:py-24" aria-labelledby="course-mentors-heading" data-testid="section-course-faculty">
+    <section className="border-b border-[hsl(var(--border))] bg-[hsl(var(--background))] px-6 py-12 lg:px-10 lg:py-16" aria-labelledby="course-mentors-heading" data-testid="section-course-faculty">
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-2xl">
@@ -332,7 +332,7 @@ export function CurriculumSection({ syllabus, fileName, isSample, downloadUrl }:
   }, [syllabus]);
 
   return (
-    <section id="course-syllabus" className="scroll-mt-28 bg-[hsl(var(--background))] px-6 py-16 lg:px-10 lg:py-20" aria-labelledby="course-curriculum-heading" data-testid="section-course-syllabus">
+    <section id="course-syllabus" className="scroll-mt-28 border-b border-[hsl(var(--border))] bg-[hsl(var(--background))] px-6 py-12 lg:px-10 lg:py-16" aria-labelledby="course-curriculum-heading" data-testid="section-course-syllabus">
       <div className="mx-auto grid max-w-7xl items-start gap-8 lg:grid-cols-[minmax(0,1.5fr)_minmax(19rem,.9fr)] lg:gap-10">
         <div className="min-w-0">
           <CourseEyebrow label="Curriculum" testId="text-course-syllabus-eyebrow" />

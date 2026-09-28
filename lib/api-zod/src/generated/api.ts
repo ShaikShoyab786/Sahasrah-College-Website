@@ -499,6 +499,7 @@ export const GetGalleryPageResponse = zod.object({
   "displayOrder": zod.number().int(),
   "isPublished": zod.boolean(),
   "showInHomePreview": zod.boolean(),
+  "showOnCourses": zod.boolean(),
   "homePreviewOrder": zod.number().int()
 }))
 })
@@ -3517,6 +3518,7 @@ export const GetAdminGalleryResponse = zod.object({
   "displayOrder": zod.number().int(),
   "isPublished": zod.boolean(),
   "showInHomePreview": zod.boolean(),
+  "showOnCourses": zod.boolean(),
   "homePreviewOrder": zod.number().int()
 }))
 })
@@ -3573,6 +3575,7 @@ export const CreateAdminGalleryItemBody = zod.object({
   "displayOrder": zod.number().int().min(1),
   "isPublished": zod.boolean(),
   "showInHomePreview": zod.boolean(),
+  "showOnCourses": zod.boolean(),
   "homePreviewOrder": zod.number().int().min(1)
 })
 
@@ -3587,6 +3590,7 @@ export const CreateAdminGalleryItemResponse = zod.object({
   "displayOrder": zod.number().int(),
   "isPublished": zod.boolean(),
   "showInHomePreview": zod.boolean(),
+  "showOnCourses": zod.boolean(),
   "homePreviewOrder": zod.number().int()
 })
 
@@ -3617,6 +3621,7 @@ export const UpdateAdminGalleryOrderResponseItem = zod.object({
   "displayOrder": zod.number().int(),
   "isPublished": zod.boolean(),
   "showInHomePreview": zod.boolean(),
+  "showOnCourses": zod.boolean(),
   "homePreviewOrder": zod.number().int()
 })
 export const UpdateAdminGalleryOrderResponse = zod.array(UpdateAdminGalleryOrderResponseItem)
@@ -3649,6 +3654,7 @@ export const UpdateAdminGalleryItemBody = zod.object({
   "displayOrder": zod.number().int().min(1),
   "isPublished": zod.boolean(),
   "showInHomePreview": zod.boolean(),
+  "showOnCourses": zod.boolean(),
   "homePreviewOrder": zod.number().int().min(1)
 })
 
@@ -3663,6 +3669,7 @@ export const UpdateAdminGalleryItemResponse = zod.object({
   "displayOrder": zod.number().int(),
   "isPublished": zod.boolean(),
   "showInHomePreview": zod.boolean(),
+  "showOnCourses": zod.boolean(),
   "homePreviewOrder": zod.number().int()
 })
 

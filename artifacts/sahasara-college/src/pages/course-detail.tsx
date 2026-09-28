@@ -1,7 +1,8 @@
-import { getGetCallbackPopupSettingsQueryKey, getGetCourseBySlugQueryKey, useGetCallbackPopupSettings, useGetCourseBySlug, useGetSiteSettings, type CourseSlug } from '@workspace/api-client-react';
+import { getGetCallbackPopupSettingsQueryKey, getGetCourseBySlugQueryKey, useGetCallbackPopupSettings, useGetCourseBySlug, useGetGalleryPage, useGetSiteSettings, type CourseSlug } from '@workspace/api-client-react';
 import { PublicFooter } from '@/components/public-footer';
 import { PublicHeader } from '@/components/public-header';
 import { CourseEmptyState, CourseErrorState, CourseHero, CourseLoadingState, CurriculumSection, HighlightsSection, MentorsSection, WhyChooseSection } from '@/components/course-experience';
+import { CourseCampusGallery } from '@/components/course-campus-gallery';
 import { createPublicThemeStyle, DEFAULT_ACCENT_COLOR, DEFAULT_PRIMARY_COLOR, DEFAULT_SURFACE_COLOR } from '@/lib/public-theme';
 import { useParams } from 'wouter';
 
@@ -15,6 +16,7 @@ export default function CourseDetail() {
   const enquirySettingsQuery = useGetCallbackPopupSettings({
     query: { queryKey: getGetCallbackPopupSettingsQueryKey() },
   });
+  const galleryQuery = useGetGalleryPage();
   const settings = settingsQuery.data;
   const publicSettings = settings ?? {
     collegeName: 'Sahsrah Junior College',
@@ -46,6 +48,7 @@ export default function CourseDetail() {
         <WhyChooseSection heading={course.whyChooseHeading} introduction={course.whyChooseIntroduction} reasons={course.whyChoose} />
         <MentorsSection mentors={course.mentors} />
         <CurriculumSection syllabus={course.syllabus} fileName={course.curriculumPdfFileName} isSample={course.curriculumPdfIsSample} downloadUrl={course.curriculumDownloadUrl} />
+        <CourseCampusGallery items={galleryQuery.data?.items ?? []} />
       </main>
       <PublicFooter settings={publicSettings} />
     </div>

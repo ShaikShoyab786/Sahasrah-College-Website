@@ -34,6 +34,7 @@ function toGalleryItem(item: {
   displayOrder: number;
   isPublished: boolean;
   showInHomePreview: boolean;
+  showOnCourses: boolean;
   homePreviewOrder: number;
 }) {
   return {
@@ -47,6 +48,7 @@ function toGalleryItem(item: {
     displayOrder: item.displayOrder,
     isPublished: item.isPublished,
     showInHomePreview: item.showInHomePreview,
+    showOnCourses: item.showOnCourses,
     homePreviewOrder: item.homePreviewOrder,
   };
 }
