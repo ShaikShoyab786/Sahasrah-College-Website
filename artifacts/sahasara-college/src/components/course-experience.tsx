@@ -1,4 +1,4 @@
-import { ArrowRight, BookOpen, ChevronDown, Download, GraduationCap, Target } from 'lucide-react';
+import { ArrowRight, BookOpen, ChevronDown, Download, GraduationCap } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import type { CallbackPopupSettings, CourseMentor, CourseReason, CourseSyllabusSubject, PublicCourse } from '@workspace/api-client-react';
 import { Link } from 'wouter';
@@ -45,6 +45,30 @@ export function CourseEmptyState({ detail = false }: { detail?: boolean }) {
   );
 }
 
+export function CourseEyebrow({
+  label,
+  tone = 'light',
+  className = '',
+  testId,
+}: {
+  label: string;
+  tone?: 'light' | 'dark';
+  className?: string;
+  testId?: string;
+}) {
+  const toneClass = tone === 'dark'
+    ? 'border-[hsl(var(--accent)/.45)] bg-[hsl(var(--background)/.96)] text-[hsl(var(--primary))] shadow-sm'
+    : 'border-[hsl(var(--accent)/.32)] bg-[hsl(var(--accent)/.08)] text-[hsl(var(--primary))]';
+
+  return (
+    <span className={`inline-flex max-w-full items-center gap-2 rounded-full border px-3 py-1.5 text-[10px] font-bold uppercase tracking-[.2em] ${toneClass} ${className}`} data-testid={testId}>
+      <span aria-hidden="true" className="h-px w-3 shrink-0 rounded-full bg-[hsl(var(--accent))]" />
+      <span aria-hidden="true" className="h-1.5 w-1.5 shrink-0 rounded-full bg-[hsl(var(--accent))]" />
+      <span className="min-w-0 truncate">{label}</span>
+    </span>
+  );
+}
+
 const courseInterestBySlug: Record<string, string> = {
   mpc: 'MPC',
   bipc: 'BiPC',
@@ -69,19 +93,22 @@ export function CourseHero({
   const imageUrl = course.heroBackgroundImageUrl;
   const hasImage = Boolean(imageUrl);
   const preferredCourse = courseInterestBySlug[course.slug] ?? course.name;
+  const secondaryActionUrl = course.secondaryActionLabel?.trim().toLowerCase() === 'view curriculum'
+    ? '#course-syllabus'
+    : course.secondaryActionUrl;
   const initialCourse = enquirySettings?.courseOptions.find(
     (option) => option.trim().toLowerCase() === preferredCourse.toLowerCase(),
   ) ?? '';
 
   return (
-    <section className={`relative isolate overflow-hidden px-6 pb-12 pt-32 lg:px-10 lg:pb-16 lg:pt-44 ${hasImage ? 'bg-[hsl(var(--primary))] text-white' : 'bg-[hsl(var(--secondary))] text-[hsl(var(--primary))]'}`} aria-label={`${course.name} course introduction`}>
+    <section className={`relative isolate overflow-hidden px-6 pb-12 pt-32 lg:px-10 lg:pb-16 lg:pt-44 ${hasImage ? 'bg-[hsl(var(--primary))] text-white' : 'bg-[hsl(var(--secondary))] text-[hsl(var(--primary))]'}`} aria-label={`${course.name} course introduction`} data-testid="section-course-hero">
       {imageUrl && <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${JSON.stringify(imageUrl)})` }} aria-hidden="true" />}
       {hasImage
         ? <div className="absolute inset-0" style={{ backgroundColor: `rgba(7, 25, 31, ${Math.min(80, Math.max(0, course.heroBackgroundOverlay)) / 100})` }} aria-hidden="true" />
         : <div className="pointer-events-none absolute -right-28 -top-24 h-[26rem] w-[26rem] rounded-full border border-[hsl(var(--primary)/.08)]" aria-hidden="true" />}
       <div className="relative mx-auto grid max-w-7xl items-center gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(20rem,.85fr)] lg:gap-12">
         <div className="py-2 lg:py-8">
-          <p className={`inline-flex max-w-full items-center rounded-full border px-3 py-1.5 text-[11px] font-bold uppercase tracking-[.18em] ${hasImage ? 'border-white/30 bg-black/20 text-white' : 'border-[hsl(var(--border))] bg-[hsl(var(--background)/.8)] text-[hsl(var(--primary))]'}`} data-testid="text-course-hero-eyebrow">{course.heroEyebrow}</p>
+          <CourseEyebrow label={course.heroEyebrow} tone={hasImage ? 'dark' : 'light'} testId="text-course-hero-eyebrow" />
           <h1 className={`mt-6 max-w-4xl font-display text-4xl font-semibold leading-[.98] tracking-[-.045em] sm:text-5xl md:text-6xl ${hasImage ? 'text-white' : 'text-[hsl(var(--primary))]'}`} data-testid="text-course-hero-title">{course.heroTitle}</h1>
           <p className={`mt-6 max-w-2xl text-base leading-7 md:text-lg md:leading-8 ${hasImage ? 'text-white/85' : 'text-[hsl(var(--muted-foreground))]'}`} data-testid="text-course-hero-description">{course.heroDescription}</p>
           <div className="mt-6 flex flex-wrap gap-2.5" aria-label="Course format">
@@ -90,11 +117,11 @@ export function CourseHero({
           </div>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
             {course.primaryActionLabel && course.primaryActionUrl && <a href={course.primaryActionUrl} className="group inline-flex min-h-12 items-center justify-center rounded-full bg-[hsl(var(--accent))] px-5 py-3 text-sm font-bold text-[hsl(var(--primary))] shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))] focus-visible:ring-offset-2" data-testid="link-course-primary-action">{course.primaryActionLabel}<ArrowRight size={17} className="ml-2 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" /></a>}
-            {course.secondaryActionLabel && course.secondaryActionUrl && <a href={course.secondaryActionUrl} className={`inline-flex min-h-12 items-center justify-center rounded-full border px-5 py-3 text-sm font-bold transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))] focus-visible:ring-offset-2 ${hasImage ? 'border-white/40 text-white hover:bg-white/10' : 'border-[hsl(var(--border))] bg-[hsl(var(--background)/.75)] text-[hsl(var(--primary))] hover:border-[hsl(var(--accent))]'}`} data-testid="link-course-secondary-action">{course.secondaryActionLabel}</a>}
+            {course.secondaryActionLabel && secondaryActionUrl && <a href={secondaryActionUrl} className={`inline-flex min-h-12 items-center justify-center rounded-full border px-5 py-3 text-sm font-bold transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))] focus-visible:ring-offset-2 ${hasImage ? 'border-white/40 text-white hover:bg-white/10' : 'border-[hsl(var(--border))] bg-[hsl(var(--background)/.75)] text-[hsl(var(--primary))] hover:border-[hsl(var(--accent))]'}`} data-testid="link-course-secondary-action">{course.secondaryActionLabel}</a>}
           </div>
         </div>
         <aside className="rounded-3xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5 text-[hsl(var(--card-foreground))] shadow-xl sm:p-7" aria-labelledby="course-enquiry-heading">
-          <p className="text-[10px] font-bold uppercase tracking-[.18em] text-[hsl(var(--accent-foreground))]">Course enquiry</p>
+           <CourseEyebrow label="Course enquiry" testId="text-course-enquiry-eyebrow" />
           <h2 id="course-enquiry-heading" className="mt-2 font-display text-2xl font-semibold leading-tight tracking-[-.03em] text-[hsl(var(--primary))] sm:text-3xl">{enquirySettings?.callbackPopupHeading ?? 'Contact admissions'}</h2>
           <p className="mt-2 text-sm leading-6 text-[hsl(var(--muted-foreground))]">{enquirySettings?.callbackPopupDescription ?? 'Share your details and the admissions team will get in touch.'}</p>
           <div className="mt-5">
@@ -131,14 +158,10 @@ export function HighlightsSection({
   const orderedHighlights = [...highlights].sort((left, right) => left.displayOrder - right.displayOrder);
 
   return (
-    <section id="course-highlights" className="border-b border-[hsl(var(--border))] bg-[hsl(var(--background))] px-6 py-16 lg:px-10 lg:py-20" aria-labelledby="course-highlights-heading">
+    <section id="course-highlights" className="border-b border-[hsl(var(--border))] bg-[hsl(var(--background))] px-6 py-16 lg:px-10 lg:py-20" aria-labelledby="course-highlights-heading" data-testid="section-course-highlights">
       <div className="mx-auto max-w-7xl">
         <header className="mx-auto max-w-3xl text-center">
-          <div className="flex items-center justify-center gap-3" data-testid="text-course-highlights-eyebrow">
-            <span aria-hidden="true" className="h-px w-9 bg-[hsl(var(--accent))]" />
-            <p className="text-[10px] font-bold uppercase tracking-[.24em] text-[hsl(var(--accent))]">{eyebrow}</p>
-            <span aria-hidden="true" className="h-px w-9 bg-[hsl(var(--accent))]" />
-          </div>
+          <CourseEyebrow label={eyebrow} className="mx-auto" testId="text-course-highlights-eyebrow" />
           <h2 id="course-highlights-heading" className="mt-4 font-display text-3xl font-semibold leading-tight tracking-[-.035em] text-[hsl(var(--primary))] sm:text-4xl md:text-5xl" data-testid="heading-course-highlights">
             <HighlightHeading heading={heading} />
           </h2>
@@ -200,13 +223,10 @@ export function WhyChooseSection({ heading, introduction, reasons }: { heading: 
   const numberColors = ['text-sky-700/15 dark:text-sky-300/20', 'text-rose-700/15 dark:text-rose-300/20', 'text-emerald-700/15 dark:text-emerald-300/20'];
 
   return (
-    <section ref={sectionRef} data-revealed={hasEntered} className="bg-[hsl(var(--background))] px-6 py-16 lg:px-10 lg:py-24" aria-labelledby="why-course-heading">
+    <section ref={sectionRef} data-revealed={hasEntered} className="bg-[hsl(var(--background))] px-6 py-16 lg:px-10 lg:py-24" aria-labelledby="why-course-heading" data-testid="section-course-why-choose">
       <div className="mx-auto max-w-7xl">
         <header className="max-w-4xl">
-          <div className="flex items-center gap-4">
-            <p className="text-[10px] font-bold uppercase tracking-[.24em] text-[hsl(var(--primary))]">Why choose this pathway</p>
-            <span aria-hidden="true" className="h-px w-9 bg-[hsl(var(--destructive))]" />
-          </div>
+          <CourseEyebrow label="Why choose this pathway" testId="text-course-why-eyebrow" />
           <h2 id="why-course-heading" className="mt-4 max-w-4xl font-display text-4xl font-semibold leading-[1.03] tracking-[-.045em] text-[hsl(var(--primary))] sm:text-5xl md:text-6xl">
             <WhyChooseHeading heading={heading} />
           </h2>
@@ -236,35 +256,53 @@ export function WhyChooseSection({ heading, introduction, reasons }: { heading: 
 }
 
 export function MentorsSection({ mentors }: { mentors: CourseMentor[] }) {
+  const visibleMentors = mentors.filter((mentor) => (
+    mentor.name.trim().length > 0 && !/\b(?:placeholder|sample|tbd)\b/i.test(mentor.name)
+  ));
+
   return (
-    <section className="bg-[hsl(var(--background))] px-6 py-20 lg:px-10 lg:py-28" aria-labelledby="course-mentors-heading">
+    <section className="bg-[hsl(var(--background))] px-6 py-16 lg:px-10 lg:py-24" aria-labelledby="course-mentors-heading" data-testid="section-course-faculty">
       <div className="mx-auto max-w-7xl">
-        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-2xl">
-            <p className="text-xs font-bold uppercase tracking-[.2em] text-[hsl(var(--accent-foreground))]">Faculty for this pathway</p>
-            <h2 id="course-mentors-heading" className="mt-4 font-display text-4xl font-semibold leading-none tracking-[-.05em] text-[hsl(var(--primary))] md:text-6xl">Meet the subject mentors.</h2>
+            <CourseEyebrow label="Meet our faculty" testId="text-course-faculty-eyebrow" />
+            <h2 id="course-mentors-heading" className="mt-4 font-display text-4xl font-semibold leading-[1.02] tracking-[-.05em] text-[hsl(var(--primary))] sm:text-5xl md:text-6xl">
+              Meet the subject <span className="text-[hsl(var(--destructive))]">mentors.</span>
+            </h2>
+            <p className="mt-4 max-w-2xl text-sm leading-7 text-[hsl(var(--muted-foreground))] sm:text-base">
+              Learn from experienced educators who guide, support, and inspire students through every step of their journey.
+            </p>
           </div>
-          <Link href="/faculty" className="inline-flex items-center gap-2 text-sm font-bold text-[hsl(var(--primary))] hover:text-[hsl(var(--accent-foreground))]" data-testid="link-course-all-faculty">Meet all faculty <ArrowRight size={16} aria-hidden="true" /></Link>
+          <Link href="/faculty" className="inline-flex min-h-11 shrink-0 items-center gap-2 self-start text-sm font-bold text-[hsl(var(--primary))] transition hover:text-[hsl(var(--accent-foreground))] sm:self-auto" data-testid="link-course-all-faculty">Meet all faculty <ArrowRight size={16} aria-hidden="true" /></Link>
         </div>
-        {mentors.length ? (
-          <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {mentors.map((mentor) => (
-              <article key={mentor.id} className="overflow-hidden rounded-3xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] shadow-sm" data-testid={`card-course-mentor-${mentor.id}`}>
-                <div className="flex gap-4 p-6">
-                  {mentor.imageUrl ? <img src={mentor.imageUrl} alt={mentor.imageAltText} className="h-20 w-20 shrink-0 rounded-2xl object-cover" data-testid={`img-course-mentor-${mentor.id}`} /> : <div className="grid h-20 w-20 shrink-0 place-items-center rounded-2xl bg-[hsl(var(--primary))] font-display text-2xl font-semibold text-[hsl(var(--accent))]" aria-label={`${mentor.name} portrait placeholder`}>{mentor.name.charAt(0)}</div>}
-                  <div className="min-w-0">
-                    <h3 className="font-display text-2xl font-semibold leading-tight text-[hsl(var(--primary))]">{mentor.name}</h3>
-                    <p className="mt-1 text-sm font-semibold text-[hsl(var(--accent-foreground))]">{mentor.subject || mentor.role}</p>
-                    {mentor.experience && <p className="mt-2 text-xs text-[hsl(var(--muted-foreground))]">{mentor.experience}</p>}
+        {visibleMentors.length ? (
+          <div className="mt-9 grid gap-5 md:grid-cols-2 lg:mt-12">
+            {visibleMentors.map((mentor, index) => {
+              const experience = mentor.experience.trim();
+              const qualification = mentor.qualification.trim();
+              const initials = mentor.name.trim().split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0]).join('').toUpperCase();
+              const tint = index % 2 === 0 ? 'bg-sky-50/70 dark:bg-sky-950/20' : 'bg-rose-50/65 dark:bg-rose-950/20';
+              return (
+                <article key={mentor.id} className={`relative overflow-hidden rounded-2xl border border-[hsl(var(--primary)/.09)] ${tint} shadow-sm transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-lg motion-reduce:transition-none`} data-testid={`card-course-mentor-${mentor.id}`}>
+                  <span aria-hidden="true" className="pointer-events-none absolute right-5 top-3 font-display text-6xl font-semibold leading-none text-[hsl(var(--accent)/.24)] sm:text-7xl">{String(index + 1).padStart(2, '0')}</span>
+                  <div className="flex min-h-36 items-center gap-4 p-5 pr-20 sm:gap-5 sm:p-6 sm:pr-24">
+                    {mentor.imageUrl
+                      ? <img src={mentor.imageUrl} alt={mentor.imageAltText || `${mentor.name} portrait`} className="h-24 w-24 shrink-0 rounded-2xl object-cover sm:h-28 sm:w-28" data-testid={`img-course-mentor-${mentor.id}`} />
+                      : <div className="grid h-24 w-24 shrink-0 place-items-center rounded-2xl bg-[hsl(var(--primary))] font-display text-3xl font-semibold text-[hsl(var(--accent))] sm:h-28 sm:w-28" aria-label={`${mentor.name} initials portrait`}>{initials}</div>}
+                    <div className="min-w-0">
+                      <h3 className="break-words font-display text-xl font-semibold leading-tight text-[hsl(var(--primary))] sm:text-2xl">{mentor.name}</h3>
+                      {qualification && <p className="mt-2 text-[10px] font-bold uppercase tracking-[.16em] text-[hsl(var(--muted-foreground))]">{qualification}</p>}
+                      {mentor.teachingSubjects.length > 0 && <div className="mt-3 flex flex-wrap gap-2" aria-label={`${mentor.name} teaching subjects`}>{mentor.teachingSubjects.map((subject) => <span key={subject} className="rounded-full bg-[hsl(var(--accent)/.11)] px-2.5 py-1 text-[11px] font-semibold text-[hsl(var(--primary))]" data-testid={`tag-course-mentor-subject-${mentor.id}-${subject}`}>{subject}</span>)}</div>}
+                    </div>
                   </div>
-                </div>
-                <div className="border-t border-[hsl(var(--border))] px-6 py-5">
-                  {mentor.qualification && <p className="text-xs font-bold uppercase tracking-[.13em] text-[hsl(var(--primary))]">{mentor.qualification}</p>}
-                  {mentor.teachingSubjects.length > 0 && <div className="mt-3 flex flex-wrap gap-2" aria-label={`${mentor.name} teaching subjects`}>{mentor.teachingSubjects.map((subject) => <span key={subject} className="rounded-full bg-[hsl(var(--secondary))] px-2.5 py-1 text-[11px] font-semibold text-[hsl(var(--primary))]" data-testid={`tag-course-mentor-subject-${mentor.id}-${subject}`}>{subject}</span>)}</div>}
-                  {mentor.biography && <p className="mt-3 text-sm leading-6 text-[hsl(var(--muted-foreground))]">{mentor.biography}</p>}
-                </div>
-              </article>
-            ))}
+                  {mentor.biography.trim() && <p className="border-t border-[hsl(var(--primary)/.1)] px-5 py-4 text-sm leading-6 text-[hsl(var(--muted-foreground))] sm:px-6" data-testid={`text-course-mentor-bio-${mentor.id}`}>{mentor.biography}</p>}
+                  {experience && <div className="border-t border-[hsl(var(--primary)/.1)] px-5 py-3.5 sm:px-6">
+                    <p className="font-display text-lg font-semibold text-[hsl(var(--primary))]">{experience}</p>
+                    <p className="mt-0.5 text-[10px] font-bold uppercase tracking-[.16em] text-[hsl(var(--muted-foreground))]">Experience</p>
+                  </div>}
+                </article>
+              );
+            })}
           </div>
         ) : (
           <div className="mt-12 rounded-3xl border border-dashed border-[hsl(var(--border))] bg-[hsl(var(--secondary))] px-6 py-14 text-center" data-testid="status-course-mentors-empty">
@@ -278,48 +316,13 @@ export function MentorsSection({ mentors }: { mentors: CourseMentor[] }) {
   );
 }
 
-export function OverviewSection({ text, goals }: { text: string; goals: string[] }) {
-  return (
-    <section className="bg-[hsl(var(--primary))] px-6 py-20 text-[hsl(var(--primary-foreground))] lg:px-10 lg:py-28" aria-labelledby="course-overview-heading">
-      <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[.9fr_1.1fr] lg:gap-24">
-        <div>
-          <p className="text-xs font-bold uppercase tracking-[.2em] text-[hsl(var(--accent))]">Program overview</p>
-          <h2 id="course-overview-heading" className="mt-4 font-display text-4xl font-semibold leading-none tracking-[-.05em] md:text-6xl">Know what the year is for.</h2>
-          <p className="mt-7 max-w-xl text-base leading-8 text-white/70" data-testid="text-course-overview">{text}</p>
-        </div>
-        <div>
-          <p className="text-xs font-bold uppercase tracking-[.2em] text-white/55">Program goals</p>
-          {goals.length ? <ul className="mt-5 divide-y divide-white/15 border-y border-white/15">{goals.map((goal, index) => <li key={`${goal}-${index}`} className="flex gap-4 py-5 text-base leading-7 text-white/80" data-testid={`text-course-goal-${index}`}><span className="font-display text-2xl text-[hsl(var(--accent))]">0{index + 1}</span><span>{goal}</span></li>)}</ul> : <p className="mt-5 text-sm text-white/60">Program goals will be shared with families soon.</p>}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-export function IdealProfileSection({ title, description, indicators }: { title: string; description: string; indicators: string[] }) {
-  return (
-    <section className="bg-[hsl(var(--secondary))] px-6 py-20 lg:px-10 lg:py-28" aria-labelledby="ideal-profile-heading">
-      <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[.8fr_1.2fr] lg:items-start">
-        <div>
-          <p className="text-xs font-bold uppercase tracking-[.2em] text-[hsl(var(--accent-foreground))]">Is it right for you?</p>
-          <h2 id="ideal-profile-heading" className="mt-4 font-display text-4xl font-semibold leading-none tracking-[-.05em] text-[hsl(var(--primary))] md:text-6xl">{title}</h2>
-          <p className="mt-6 max-w-md text-base leading-7 text-[hsl(var(--muted-foreground))]" data-testid="text-course-ideal-profile">{description}</p>
-        </div>
-        <div className="grid gap-3 sm:grid-cols-2">
-          {indicators.length ? indicators.map((indicator, index) => <div key={`${indicator}-${index}`} className="flex gap-3 rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5 text-sm leading-6 text-[hsl(var(--primary))]" data-testid={`text-course-ideal-indicator-${index}`}><Target size={18} className="mt-1 shrink-0 text-[hsl(var(--accent-foreground))]" aria-hidden="true" /><span>{indicator}</span></div>) : <p className="text-sm text-[hsl(var(--muted-foreground))]">Profile guidance will be shared soon.</p>}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 export function CurriculumSection({ syllabus, fileName, isSample, downloadUrl }: { syllabus: CourseSyllabusSubject[]; fileName: string | null; isSample: boolean; downloadUrl: string }) {
   const [openSubject, setOpenSubject] = useState<string | null>(syllabus[0]?.subject ?? null);
   return (
-    <section className="bg-[hsl(var(--background))] px-6 py-20 lg:px-10 lg:py-28" aria-labelledby="course-curriculum-heading">
+    <section id="course-syllabus" className="scroll-mt-28 bg-[hsl(var(--background))] px-6 py-20 lg:px-10 lg:py-28" aria-labelledby="course-curriculum-heading" data-testid="section-course-syllabus">
       <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1fr_.42fr] lg:gap-20">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[.2em] text-[hsl(var(--accent-foreground))]">Curriculum</p>
+          <CourseEyebrow label="Curriculum" testId="text-course-syllabus-eyebrow" />
           <h2 id="course-curriculum-heading" className="mt-4 font-display text-4xl font-semibold leading-none tracking-[-.05em] text-[hsl(var(--primary))] md:text-6xl">The subjects, laid out clearly.</h2>
           {syllabus.length ? <div className="mt-10 divide-y divide-[hsl(var(--border))] border-y border-[hsl(var(--border))]" data-testid="list-course-curriculum">{syllabus.map((item, index) => {
             const open = openSubject === item.subject;

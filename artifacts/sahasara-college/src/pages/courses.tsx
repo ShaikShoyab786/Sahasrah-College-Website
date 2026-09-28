@@ -2,7 +2,7 @@ import { ArrowRight, BookOpen, Phone } from 'lucide-react';
 import { getGetCoursesQueryKey, useGetCourses, useGetSiteSettings } from '@workspace/api-client-react';
 import { PublicFooter } from '@/components/public-footer';
 import { PublicHeader } from '@/components/public-header';
-import { CourseEmptyState, CourseErrorState, CourseLoadingState } from '@/components/course-experience';
+import { CourseEmptyState, CourseErrorState, CourseEyebrow, CourseLoadingState } from '@/components/course-experience';
 import { createPublicThemeStyle, DEFAULT_ACCENT_COLOR, DEFAULT_PRIMARY_COLOR, DEFAULT_SURFACE_COLOR } from '@/lib/public-theme';
 import { Link } from 'wouter';
 
@@ -33,7 +33,7 @@ export default function Courses() {
           <div className="absolute -right-24 top-20 h-80 w-80 rounded-full border border-[hsl(var(--accent)/.2)]" aria-hidden="true" />
           <div className="relative mx-auto grid max-w-7xl items-end gap-10 lg:grid-cols-[1fr_.42fr]">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[.24em] text-[hsl(var(--accent))]">Courses at Sahsrah</p>
+              <CourseEyebrow label="Courses at Sahsrah" tone="dark" testId="text-courses-eyebrow" />
               <h1 className="mt-6 max-w-4xl font-display text-6xl font-semibold leading-[.9] tracking-[-.06em] md:text-8xl" data-testid="text-courses-heading">Find the path that fits.</h1>
               <p className="mt-7 max-w-2xl text-base leading-8 text-white/70 md:text-lg" data-testid="text-courses-description">Five regular pathways, clearly explained for students and families. Start with your subjects, then see the support, people, and curriculum behind each choice.</p>
             </div>
@@ -47,14 +47,14 @@ export default function Courses() {
         <section className="px-6 py-16 lg:px-10 lg:py-24" aria-labelledby="regular-pathways-heading">
           <div className="mx-auto max-w-7xl">
             <div className="flex flex-col gap-4 border-b border-[hsl(var(--border))] pb-7 md:flex-row md:items-end md:justify-between">
-              <div><p className="text-xs font-bold uppercase tracking-[.2em] text-[hsl(var(--accent-foreground))]">Regular pathways</p><h2 id="regular-pathways-heading" className="mt-3 font-display text-4xl font-semibold tracking-[-.05em] text-[hsl(var(--primary))] md:text-5xl">Choose with context.</h2></div>
+              <div><CourseEyebrow label="Regular pathways" testId="text-regular-pathways-eyebrow" /><h2 id="regular-pathways-heading" className="mt-3 font-display text-4xl font-semibold tracking-[-.05em] text-[hsl(var(--primary))] md:text-5xl">Choose with context.</h2></div>
               <p className="max-w-sm text-sm leading-6 text-[hsl(var(--muted-foreground))]">{courses.length} pathways with clear subject direction and a supportive college experience.</p>
             </div>
             <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3" data-testid="list-course-pathways">
               {courses.map((course, index) => (
                 <Link href={`/courses/${course.slug}`} key={course.slug} className={`group relative flex min-h-[320px] flex-col overflow-hidden rounded-3xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-7 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[hsl(var(--accent)/.7)] hover:shadow-xl ${index === 0 ? 'lg:row-span-2 lg:min-h-[665px] lg:justify-end' : ''}`} data-testid={`card-course-${course.slug}`}>
                   <div className="absolute right-7 top-7 grid h-11 w-11 place-items-center rounded-full bg-[hsl(var(--secondary))] text-[hsl(var(--primary))] transition group-hover:bg-[hsl(var(--accent))]"><ArrowRight size={18} aria-hidden="true" /></div>
-                  <span className="text-xs font-bold uppercase tracking-[.2em] text-[hsl(var(--accent-foreground))]">{course.heroEyebrow}</span>
+                  <CourseEyebrow label={course.heroEyebrow} className="w-fit max-w-[calc(100%_-_3.5rem)]" testId={`text-course-card-eyebrow-${course.slug}`} />
                   <h3 className="mt-8 max-w-xs font-display text-4xl font-semibold leading-[.94] tracking-[-.05em] text-[hsl(var(--primary))]">{course.name}</h3>
                   <p className="mt-5 max-w-sm text-sm leading-7 text-[hsl(var(--muted-foreground))]">{course.heroDescription}</p>
                   <span className="mt-auto pt-9 text-sm font-bold text-[hsl(var(--primary))]">Explore pathway <ArrowRight size={15} className="ml-1 inline transition-transform group-hover:translate-x-1" aria-hidden="true" /></span>

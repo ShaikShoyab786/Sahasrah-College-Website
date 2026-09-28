@@ -1,7 +1,7 @@
 import { getGetCallbackPopupSettingsQueryKey, getGetCourseBySlugQueryKey, useGetCallbackPopupSettings, useGetCourseBySlug, useGetSiteSettings, type CourseSlug } from '@workspace/api-client-react';
 import { PublicFooter } from '@/components/public-footer';
 import { PublicHeader } from '@/components/public-header';
-import { CourseEmptyState, CourseErrorState, CourseHero, CourseLoadingState, CurriculumSection, HighlightsSection, IdealProfileSection, MentorsSection, OverviewSection, WhyChooseSection } from '@/components/course-experience';
+import { CourseEmptyState, CourseErrorState, CourseHero, CourseLoadingState, CurriculumSection, HighlightsSection, MentorsSection, WhyChooseSection } from '@/components/course-experience';
 import { createPublicThemeStyle, DEFAULT_ACCENT_COLOR, DEFAULT_PRIMARY_COLOR, DEFAULT_SURFACE_COLOR } from '@/lib/public-theme';
 import { useParams } from 'wouter';
 
@@ -45,8 +45,6 @@ export default function CourseDetail() {
         <HighlightsSection eyebrow={course.highlightsEyebrow} heading={course.highlightsHeading} introduction={course.highlightsIntroduction} highlights={course.highlights} />
         <WhyChooseSection heading={course.whyChooseHeading} introduction={course.whyChooseIntroduction} reasons={course.whyChoose} />
         <MentorsSection mentors={course.mentors} />
-        <OverviewSection text={course.overviewText} goals={course.programGoals} />
-        <IdealProfileSection title={course.idealProfileTitle} description={course.idealProfileDescription} indicators={course.idealProfileIndicators} />
         <CurriculumSection syllabus={course.syllabus} fileName={course.curriculumPdfFileName} isSample={course.curriculumPdfIsSample} downloadUrl={course.curriculumDownloadUrl} />
       </main>
       <PublicFooter settings={publicSettings} />

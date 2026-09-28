@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, type ChangeEvent, type FormEvent } from 'react';
-import { ArrowDown, ArrowUp, BookOpen, FileCheck2, FileUp, ImagePlus, Plus, RotateCcw, Trash2 } from 'lucide-react';
+import { ArrowDown, ArrowUp, BookOpen, FileUp, ImagePlus, Plus, RotateCcw, Trash2 } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   CourseSlug,
@@ -33,7 +33,7 @@ function toUpdate(course: AdminCourse): CourseUpdate {
     primaryActionLabel: course.primaryActionLabel,
     primaryActionUrl: course.primaryActionUrl,
     secondaryActionLabel: 'View Curriculum',
-    secondaryActionUrl: '#course-curriculum-heading',
+    secondaryActionUrl: '#course-syllabus',
     highlightsEyebrow: course.highlightsEyebrow,
     highlightsHeading: course.highlightsHeading,
     highlightsIntroduction: course.highlightsIntroduction,
@@ -317,21 +317,24 @@ export default function AdminCourses() {
               onChange={(highlights) => setForm({ highlights })}
             />
           </EditorCard>
-          <EditorCard title="Course story" description="Explain the pathway clearly, from its overview to the reasons families choose it.">
-            <div className="space-y-7"><Area id="course-overview" label="Overview" value={form.overviewText} onChange={(event) => setForm({ overviewText: event.target.value })} required /><ReasonEditor heading={form.whyChooseHeading} onHeadingChange={(whyChooseHeading) => setForm({ whyChooseHeading })} introduction={form.whyChooseIntroduction} onIntroductionChange={(whyChooseIntroduction) => setForm({ whyChooseIntroduction })} values={form.whyChoose} onChange={(whyChoose) => setForm({ whyChoose })} /></div>
+          <EditorCard title="Why Choose This Pathway" description="Edit the heading, introduction, and three pathway cards shown below Quick Course Highlights.">
+            <ReasonEditor heading={form.whyChooseHeading} onHeadingChange={(whyChooseHeading) => setForm({ whyChooseHeading })} introduction={form.whyChooseIntroduction} onIntroductionChange={(whyChooseIntroduction) => setForm({ whyChooseIntroduction })} values={form.whyChoose} onChange={(whyChoose) => setForm({ whyChoose })} />
           </EditorCard>
-          <EditorCard title="Goals and ideal profile" description="Make the fit for this pathway specific and useful for student conversations.">
-            <div className="space-y-7"><ListEditor label="Program goals" values={form.programGoals} onChange={(programGoals) => setForm({ programGoals })} max={12} placeholder="A measurable learning goal" testId="program-goal" /><div className="grid gap-5 md:grid-cols-2"><Field id="course-ideal-title" label="Ideal profile title" value={form.idealProfileTitle} onChange={(event) => setForm({ idealProfileTitle: event.target.value })} required /><Area id="course-ideal-description" label="Ideal profile description" value={form.idealProfileDescription} onChange={(event) => setForm({ idealProfileDescription: event.target.value })} required /></div><ListEditor label="Ideal profile indicators" values={form.idealProfileIndicators} onChange={(idealProfileIndicators) => setForm({ idealProfileIndicators })} max={12} placeholder="A useful student indicator" testId="ideal-indicator" /></div>
-          </EditorCard>
-          <EditorCard title="Syllabus" description="Keep subject names and topic lists aligned with the current teaching plan.">
-            <SyllabusEditor values={form.syllabus} onChange={(syllabus) => setForm({ syllabus })} />
-          </EditorCard>
-          <EditorCard icon={<FileCheck2 size={19} />} title="Curriculum PDF" description="Use a signed upload for a replacement PDF. The object path remains private; previews and downloads use the server-provided URL.">
-            <div className="rounded-2xl border border-[hsl(var(--admin-border))] bg-[hsl(var(--admin-surface-soft))] p-5">
-              <div className="flex flex-wrap items-start justify-between gap-4"><div><p className="text-sm font-bold text-[hsl(var(--admin-text))]" data-testid="status-course-curriculum">{form.curriculumPdfObjectPath ? `Uploaded PDF: ${form.curriculumPdfFileName || 'Unnamed PDF'}` : course.curriculumPdfIsSample ? 'Using the generated sample curriculum' : 'No uploaded PDF selected'}</p><p className="mt-1 text-xs leading-5 text-[hsl(var(--admin-text-muted))]">PDF only, maximum 20 MiB. Upload first, then save the course.</p></div><label className="inline-flex min-h-10 cursor-pointer items-center gap-2 rounded-xl border border-[hsl(var(--admin-border))] bg-[hsl(var(--admin-input-background))] px-4 text-xs font-bold text-[hsl(var(--admin-text))]"><input type="file" accept="application/pdf,.pdf" onChange={handlePdf} disabled={uploading} className="sr-only" data-testid="input-course-curriculum-pdf" /><FileUp size={15} aria-hidden="true" />{uploading ? 'Uploading PDF…' : 'Upload PDF'}</label></div>
-              {course.curriculumDownloadUrl && <a href={course.curriculumDownloadUrl} target="_blank" rel="noreferrer" className="mt-4 inline-flex text-sm font-bold text-[hsl(var(--admin-primary))] underline-offset-4 hover:underline" data-testid="link-course-curriculum-preview">Preview current curriculum</a>}
-              {form.curriculumPdfObjectPath && !course.curriculumPdfIsSample && <p className="mt-3 text-xs text-[hsl(var(--admin-text-muted))]">The uploaded file will replace the current curriculum after saving.</p>}
-              {form.curriculumPdfObjectPath && <button type="button" onClick={() => { setForm({ curriculumPdfObjectPath: null, curriculumPdfFileName: null }); setNotice('Sample curriculum selected. Save the course to revert.'); }} className="mt-4 inline-flex items-center gap-2 rounded-lg border border-[hsl(var(--admin-border))] px-3 py-2 text-xs font-bold text-[hsl(var(--admin-text))]" data-testid="button-revert-curriculum"><RotateCcw size={14} /> Revert to generated sample</button>}
+          <EditorCard title="Syllabus" description="Edit subject names, topic lists, and the downloadable curriculum PDF for this pathway.">
+            <div className="space-y-6" data-testid="editor-course-syllabus">
+              <SyllabusEditor values={form.syllabus} onChange={(syllabus) => setForm({ syllabus })} />
+              <div className="border-t border-[hsl(var(--admin-border))] pt-6">
+                <div className="mb-4">
+                  <p className="text-sm font-bold text-[hsl(var(--admin-text))]">Curriculum PDF</p>
+                  <p className="mt-1 text-xs leading-5 text-[hsl(var(--admin-text-muted))]">Use a signed upload for a replacement PDF. The object path remains private; previews and downloads use the server-provided URL.</p>
+                </div>
+                <div className="rounded-2xl border border-[hsl(var(--admin-border))] bg-[hsl(var(--admin-surface-soft))] p-5">
+                  <div className="flex flex-wrap items-start justify-between gap-4"><div><p className="text-sm font-bold text-[hsl(var(--admin-text))]" data-testid="status-course-curriculum">{form.curriculumPdfObjectPath ? `Uploaded PDF: ${form.curriculumPdfFileName || 'Unnamed PDF'}` : course.curriculumPdfIsSample ? 'Using the generated sample curriculum' : 'No uploaded PDF selected'}</p><p className="mt-1 text-xs leading-5 text-[hsl(var(--admin-text-muted))]">PDF only, maximum 20 MiB. Upload first, then save the course.</p></div><label className="inline-flex min-h-10 cursor-pointer items-center gap-2 rounded-xl border border-[hsl(var(--admin-border))] bg-[hsl(var(--admin-input-background))] px-4 text-xs font-bold text-[hsl(var(--admin-text))]"><input type="file" accept="application/pdf,.pdf" onChange={handlePdf} disabled={uploading} className="sr-only" data-testid="input-course-curriculum-pdf" /><FileUp size={15} aria-hidden="true" />{uploading ? 'Uploading PDF…' : 'Upload PDF'}</label></div>
+                  {course.curriculumDownloadUrl && <a href={course.curriculumDownloadUrl} target="_blank" rel="noreferrer" className="mt-4 inline-flex text-sm font-bold text-[hsl(var(--admin-primary))] underline-offset-4 hover:underline" data-testid="link-course-curriculum-preview">Preview current curriculum</a>}
+                  {form.curriculumPdfObjectPath && !course.curriculumPdfIsSample && <p className="mt-3 text-xs text-[hsl(var(--admin-text-muted))]">The uploaded file will replace the current curriculum after saving.</p>}
+                  {form.curriculumPdfObjectPath && <button type="button" onClick={() => { setForm({ curriculumPdfObjectPath: null, curriculumPdfFileName: null }); setNotice('Sample curriculum selected. Save the course to revert.'); }} className="mt-4 inline-flex items-center gap-2 rounded-lg border border-[hsl(var(--admin-border))] px-3 py-2 text-xs font-bold text-[hsl(var(--admin-text))]" data-testid="button-revert-curriculum"><RotateCcw size={14} /> Revert to generated sample</button>}
+                </div>
+              </div>
             </div>
           </EditorCard>
           <SaveStatus error={error} notice={notice} />
