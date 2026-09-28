@@ -266,6 +266,7 @@ export default function AdminCourses() {
         </EditorCard>
 
         <form onSubmit={save} className="space-y-6">
+          <div id="admin-courses-hero" className="scroll-mt-24">
           <EditorCard title="Hero and actions" description="The opening copy, course details, and calls to action for this pathway.">
             <div className="space-y-5">
               <Field id="course-hero-eyebrow" label="Eyebrow" value={form.heroEyebrow} onChange={(event) => setForm({ heroEyebrow: event.target.value })} required />
@@ -305,6 +306,8 @@ export default function AdminCourses() {
               <p className="rounded-xl bg-[hsl(var(--admin-surface-soft))] px-4 py-3 text-xs leading-5 text-[hsl(var(--admin-text-muted))]">The second hero action is fixed to “View Curriculum” and scrolls to this course’s syllabus.</p>
             </div>
           </EditorCard>
+          </div>
+          <div id="admin-courses-highlights" className="scroll-mt-24">
           <EditorCard title="Quick Course Highlights" description="Edit the public overview, all four highlight entries, and their displayed order.">
             <HighlightEditor
               eyebrow={form.highlightsEyebrow}
@@ -317,9 +320,13 @@ export default function AdminCourses() {
               onChange={(highlights) => setForm({ highlights })}
             />
           </EditorCard>
+          </div>
+          <div id="admin-courses-why-choose" className="scroll-mt-24">
           <EditorCard title="Why Choose This Pathway" description="Edit the heading, introduction, and three pathway cards shown below Quick Course Highlights.">
             <ReasonEditor heading={form.whyChooseHeading} onHeadingChange={(whyChooseHeading) => setForm({ whyChooseHeading })} introduction={form.whyChooseIntroduction} onIntroductionChange={(whyChooseIntroduction) => setForm({ whyChooseIntroduction })} values={form.whyChoose} onChange={(whyChoose) => setForm({ whyChoose })} />
           </EditorCard>
+          </div>
+          <div id="admin-courses-syllabus" className="scroll-mt-24">
           <EditorCard title="Syllabus" description="Edit subject names, topic lists, and the downloadable curriculum PDF for this pathway.">
             <div className="space-y-6" data-testid="editor-course-syllabus">
               <SyllabusEditor values={form.syllabus} onChange={(syllabus) => setForm({ syllabus })} />
@@ -337,6 +344,7 @@ export default function AdminCourses() {
               </div>
             </div>
           </EditorCard>
+          </div>
           <SaveStatus error={error} notice={notice} />
           <div className="flex justify-end"><SaveButton pending={update.isPending} testId="button-save-course">{`Save ${course.name}`}</SaveButton></div>
         </form>

@@ -112,14 +112,20 @@ export default function AdminResults() {
   if (query.isLoading) return <EditorSkeleton />;
   if (query.isError && !query.data) return <LoadError onRetry={() => query.refetch()} />;
   return <EditorFrame eyebrow="Pages / Results" title="One library for every outcome." description="Publish verified student achievements, curate the Home preview, and keep the public Results page grounded in the shared library." previewHref="/results"><FormProvider {...form}><div className="mt-10 space-y-6">
-    <EditorCard title="Results page introduction" description="Set the copy families see above the published record."><div className="grid gap-4 md:grid-cols-2"><Field id="results-settings-eyebrow" label="Eyebrow" {...form.register('settings.eyebrow', { required: true })} /><Field id="results-settings-heading" label="Heading" {...form.register('settings.heading', { required: true })} /><div className="md:col-span-2"><Area id="results-settings-description" label="Description" {...form.register('settings.description', { required: true })} /></div><Field id="results-settings-year" label="Configured year (optional)" {...form.register('settings.configuredYear')} placeholder="2025" /><label className="flex items-center gap-3 text-sm font-semibold"><input type="checkbox" {...form.register('settings.isVisible')} className="h-4 w-4 accent-[hsl(var(--admin-focus))]" /> Show the public Results page</label></div></EditorCard>
-      <ResultsEditor /><StatisticsEditor />
-     <EditorCard title="Testimonials (shared with Home)" description="The Home page and Results page use the same published testimonial records and ordering. Manage them in the existing Home Testimonials editor.">
+    <div id="admin-results-introduction" className="scroll-mt-24">
+      <EditorCard title="Results page introduction" description="Set the copy families see above the published record."><div className="grid gap-4 md:grid-cols-2"><Field id="results-settings-eyebrow" label="Eyebrow" {...form.register('settings.eyebrow', { required: true })} /><Field id="results-settings-heading" label="Heading" {...form.register('settings.heading', { required: true })} /><div className="md:col-span-2"><Area id="results-settings-description" label="Description" {...form.register('settings.description', { required: true })} /></div><Field id="results-settings-year" label="Configured year (optional)" {...form.register('settings.configuredYear')} placeholder="2025" /><label className="flex items-center gap-3 text-sm font-semibold"><input type="checkbox" {...form.register('settings.isVisible')} className="h-4 w-4 accent-[hsl(var(--admin-focus))]" /> Show the public Results page</label></div></EditorCard>
+    </div>
+      <div id="admin-results-student-results" className="scroll-mt-24"><ResultsEditor /></div>
+      <div id="admin-results-statistics" className="scroll-mt-24"><StatisticsEditor /></div>
+     <div id="admin-results-testimonials" className="scroll-mt-24">
+      <EditorCard title="Testimonials (shared with Home)" description="The Home page and Results page use the same published testimonial records and ordering. Manage them in the existing Home Testimonials editor.">
        <a href="/admin/pages/home/testimonials" data-testid="link-manage-shared-testimonials" className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-[hsl(var(--admin-primary))] px-4 text-sm font-bold text-[hsl(var(--admin-on-primary))] transition hover:-translate-y-0.5">
          Manage shared testimonials <ArrowUpRight size={15} aria-hidden="true" />
        </a>
      </EditorCard>
-    <EditorCard title="Results contact call to action" description="Edit the closing invitation. Both buttons must lead to the site's Contact page; optional query strings or anchors are allowed.">
+     </div>
+     <div id="admin-results-contact-cta" className="scroll-mt-24">
+      <EditorCard title="Results contact call to action" description="Edit the closing invitation. Both buttons must lead to the site's Contact page; optional query strings or anchors are allowed.">
       <div className="grid gap-4 md:grid-cols-2">
         <div className="md:col-span-2"><Field id="results-cta-heading" label="CTA heading" {...form.register('settings.ctaHeading', { required: true })} /></div>
         <div className="md:col-span-2"><Area id="results-cta-description" label="Supporting copy" {...form.register('settings.ctaDescription', { required: true })} /></div>
@@ -129,7 +135,8 @@ export default function AdminResults() {
         <Field id="results-cta-secondary-href" label="Second button Contact destination" {...form.register('settings.ctaSecondaryHref', { required: true, pattern: /^\/contact(?:[?#].*)?$/ })} placeholder="/contact" />
         <label className="flex items-center gap-3 text-sm font-semibold md:col-span-2"><input type="checkbox" {...form.register('settings.ctaIsVisible')} className="h-4 w-4 accent-[hsl(var(--admin-focus))]" /> Show the contact call to action on Results</label>
       </div>
-    </EditorCard>
+      </EditorCard>
+     </div>
      <SaveStatus error={error} notice={notice} /><div className="flex justify-end"><button type="button" onClick={() => void save()} disabled={update.isPending} data-testid="button-save-results-library" className="inline-flex h-11 items-center justify-center rounded-xl bg-[hsl(var(--admin-primary))] px-5 text-sm font-bold text-[hsl(var(--admin-on-primary))] shadow-sm transition hover:-translate-y-0.5 hover:bg-[hsl(var(--admin-primary)/.9)] disabled:cursor-not-allowed disabled:opacity-60">{update.isPending ? 'Saving changes…' : 'Save Results library'}</button></div>
    </div></FormProvider></EditorFrame>;
 }

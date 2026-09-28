@@ -318,16 +318,19 @@ export default function AdminFaculty() {
       previewHref="/faculty"
     >
       <div className="mt-10 space-y-6">
-        <EditorCard title="Faculty page introduction" description="This copy appears above every active profile on /faculty.">
+        <div id="admin-faculty-introduction" className="scroll-mt-24">
+          <EditorCard title="Faculty page introduction" description="This copy appears above every active profile on /faculty.">
           <form onSubmit={saveSettings} className="space-y-4">
             <Field label="Eyebrow" value={settings.eyebrow} onChange={(event) => setSettings({ ...settings, eyebrow: event.target.value })} required />
             <Field label="Heading" value={settings.heading} onChange={(event) => setSettings({ ...settings, heading: event.target.value })} required />
             <Area label="Description" value={settings.description} onChange={(event) => setSettings({ ...settings, description: event.target.value })} required />
             <div className="flex justify-end"><SaveButton pending={updateSettings.isPending}>Save Faculty page copy</SaveButton></div>
           </form>
-        </EditorCard>
+          </EditorCard>
+        </div>
 
-        <EditorCard title="Add a faculty profile" description="Profiles added here appear on /faculty when active. Choose Home preview selection separately.">
+        <div id="admin-faculty-profiles" className="space-y-6 scroll-mt-24">
+          <EditorCard title="Add a faculty profile" description="Profiles added here appear on /faculty when active. Choose Home preview selection separately.">
           <form onSubmit={submitDraft} className="space-y-5">
             <ProfileFields idPrefix="new-faculty" value={draft} onChange={(patch) => setDraft((current) => ({ ...current, ...patch }))} />
             <div className="flex flex-wrap items-center justify-between gap-4 border-t border-[hsl(var(--border))] pt-5">
@@ -337,9 +340,9 @@ export default function AdminFaculty() {
               </button>
             </div>
           </form>
-        </EditorCard>
+          </EditorCard>
 
-        <EditorCard title={`Faculty profiles (${members.length})`} description="Update profile details and visibility here. Full-page order and Home preview order are separate.">
+          <EditorCard title={`Faculty profiles (${members.length})`} description="Update profile details and visibility here. Full-page order and Home preview order are separate.">
           <div className="mb-6 flex flex-col gap-3 rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--secondary))] p-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-sm font-bold text-[hsl(var(--primary))]">Save ordering separately</p>
@@ -412,7 +415,8 @@ export default function AdminFaculty() {
               <p className="mt-2 text-sm text-[hsl(var(--muted-foreground))]">Add a profile above to build the Faculty page and Home preview.</p>
             </div>
           )}
-        </EditorCard>
+          </EditorCard>
+        </div>
 
         <SaveStatus error={error} notice={notice} />
       </div>

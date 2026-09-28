@@ -8,6 +8,32 @@ import { createAdminThemeStyle, DEFAULT_ACCENT_COLOR, DEFAULT_PRIMARY_COLOR, DEF
 
 type ShellProps = { children: React.ReactNode; displayName?: string; email?: string };
 
+function PageSectionLink({
+  href,
+  id,
+  label,
+  active,
+  onSelect,
+}: {
+  href: string;
+  id: string;
+  label: string;
+  active: boolean;
+  onSelect: () => void;
+}) {
+  return (
+    <Link
+      href={href}
+      onClick={onSelect}
+      className={`mt-1 flex items-center gap-3 rounded-xl px-3 py-2.5 pl-9 text-sm font-semibold transition ${active ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`}
+      data-testid={`link-admin-section-${id}`}
+    >
+      <PanelsTopLeft size={16} />
+      <span>{label}</span>
+    </Link>
+  );
+}
+
 export function AdminShell({ children, displayName = 'Administrator', email = '' }: ShellProps) {
   const [open, setOpen] = useState(false);
   const [signOutOpen, setSignOutOpen] = useState(false);
@@ -58,9 +84,16 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
   const resultsPageActive = location.startsWith('/admin/pages/results') || location.startsWith('/admin/results');
   const nestedHomeRoute = heroActive || aboutActive || liveUpdatesActive || statisticsActive || favoriteTopicsActive || resultsActive || ribbonActive || testimonialsActive || facultyActive || galleryActive || knowledgeHubActive || admissionsFaqActive || finalCtaActive;
   const nestedAboutRoute = aboutHeroActive || aboutStoryActive || chairmanActive || principlesActive || parentChoiceActive || leadershipActive || campusHighlightsActive || achievementsActive || faqActive || admissionCtaActive;
+  const nestedResultsRoute = resultsPageActive;
+  const nestedFacultyRoute = facultyPageActive;
+  const nestedCoursesRoute = coursesPageActive;
   const [pagesOpen, setPagesOpen] = useState(false);
   const [homeOpen, setHomeOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
+  const [resultsOpen, setResultsOpen] = useState(false);
+  const [facultyOpen, setFacultyOpen] = useState(false);
+  const [coursesOpen, setCoursesOpen] = useState(false);
+  const [activeAdminSection, setActiveAdminSection] = useState(() => typeof window === 'undefined' ? '' : window.location.hash.slice(1));
 
   useEffect(() => {
     if (nestedHomeRoute) {
@@ -69,14 +102,66 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
     } else if (nestedAboutRoute) {
       setPagesOpen(true);
       setAboutOpen(true);
-    } else if (contactActive || galleryPageActive || facultyPageActive || coursesPageActive || resultsPageActive) {
+    } else if (nestedResultsRoute) {
+      setPagesOpen(true);
+      setResultsOpen(true);
+    } else if (nestedFacultyRoute) {
+      setPagesOpen(true);
+      setFacultyOpen(true);
+    } else if (nestedCoursesRoute) {
+      setPagesOpen(true);
+      setCoursesOpen(true);
+    } else if (contactActive || galleryPageActive) {
       setPagesOpen(true);
     } else {
       setPagesOpen(false);
       setHomeOpen(false);
       setAboutOpen(false);
+      setResultsOpen(false);
+      setFacultyOpen(false);
+      setCoursesOpen(false);
     }
-  }, [location, contactActive, galleryPageActive, facultyPageActive, coursesPageActive, resultsPageActive, nestedAboutRoute, nestedHomeRoute]);
+  }, [location, contactActive, galleryPageActive, nestedAboutRoute, nestedHomeRoute, nestedCoursesRoute, nestedFacultyRoute, nestedResultsRoute]);
+
+  useEffect(() => {
+    const syncHash = () => setActiveAdminSection(window.location.hash.slice(1));
+    window.addEventListener('hashchange', syncHash);
+    window.addEventListener('popstate', syncHash);
+
+    const sectionId = activeAdminSection || window.location.hash.slice(1);
+    if (!sectionId) {
+      return () => {
+        window.removeEventListener('hashchange', syncHash);
+        window.removeEventListener('popstate', syncHash);
+      };
+    }
+
+    let observer: MutationObserver | undefined;
+    let timeout: number | undefined;
+    let frame: number | undefined;
+    const scrollWhenReady = () => {
+      const section = document.getElementById(sectionId);
+      if (!section) return false;
+      frame = window.requestAnimationFrame(() => section.scrollIntoView({ block: 'start', behavior: 'smooth' }));
+      observer?.disconnect();
+      if (timeout !== undefined) window.clearTimeout(timeout);
+      return true;
+    };
+
+    if (!scrollWhenReady()) {
+      observer = new MutationObserver(scrollWhenReady);
+      observer.observe(document.querySelector('.admin-main-content') ?? document.body, { childList: true, subtree: true });
+      timeout = window.setTimeout(() => observer?.disconnect(), 5000);
+    }
+
+    return () => {
+      window.removeEventListener('hashchange', syncHash);
+      window.removeEventListener('popstate', syncHash);
+      observer?.disconnect();
+      if (timeout !== undefined) window.clearTimeout(timeout);
+      if (frame !== undefined) window.cancelAnimationFrame(frame);
+    };
+  }, [location, activeAdminSection]);
 
   useEffect(() => {
     const mobile = window.matchMedia('(max-width: 767px)');
@@ -181,17 +266,49 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
             )}
             {pagesOpen && (
               <div className="mt-2 rounded-2xl bg-[hsl(var(--sidebar-accent)/.55)] p-2">
-                <Link href="/admin/pages/results" onClick={() => setOpen(false)} className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition ${resultsPageActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-results"><Trophy size={16} /><span>Results</span></Link>
+                <button type="button" onClick={() => setResultsOpen((current) => !current)} aria-expanded={resultsOpen} className={`flex w-full items-center justify-between rounded-xl px-2 py-2 text-xs font-bold transition ${resultsOpen || nestedResultsRoute ? 'text-[hsl(var(--sidebar-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.65)] hover:bg-[hsl(var(--sidebar-accent))]'}`} data-testid="button-admin-results-toggle">
+                  <span className="flex items-center gap-2"><Trophy size={15} /> Results</span>
+                  <ChevronDown size={14} className={`transition-transform ${resultsOpen ? 'rotate-180' : ''}`} />
+                </button>
+                {resultsOpen && (
+                  <div className="mt-1">
+                    <PageSectionLink href="/admin/pages/results#admin-results-introduction" id="admin-results-introduction" label="Page Introduction" active={resultsPageActive && activeAdminSection === 'admin-results-introduction'} onSelect={() => { setActiveAdminSection('admin-results-introduction'); setOpen(false); }} />
+                    <PageSectionLink href="/admin/pages/results#admin-results-statistics" id="admin-results-statistics" label="Statistics" active={resultsPageActive && activeAdminSection === 'admin-results-statistics'} onSelect={() => { setActiveAdminSection('admin-results-statistics'); setOpen(false); }} />
+                    <PageSectionLink href="/admin/pages/results#admin-results-student-results" id="admin-results-student-results" label="Student Results" active={resultsPageActive && activeAdminSection === 'admin-results-student-results'} onSelect={() => { setActiveAdminSection('admin-results-student-results'); setOpen(false); }} />
+                    <PageSectionLink href="/admin/pages/results#admin-results-testimonials" id="admin-results-testimonials" label="Shared Testimonials" active={resultsPageActive && activeAdminSection === 'admin-results-testimonials'} onSelect={() => { setActiveAdminSection('admin-results-testimonials'); setOpen(false); }} />
+                    <PageSectionLink href="/admin/pages/results#admin-results-contact-cta" id="admin-results-contact-cta" label="Contact CTA" active={resultsPageActive && activeAdminSection === 'admin-results-contact-cta'} onSelect={() => { setActiveAdminSection('admin-results-contact-cta'); setOpen(false); }} />
+                  </div>
+                )}
               </div>
             )}
             {pagesOpen && (
               <div className="mt-2 rounded-2xl bg-[hsl(var(--sidebar-accent)/.55)] p-2">
-                <Link href="/admin/pages/faculty" onClick={() => setOpen(false)} className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition ${facultyPageActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-faculty"><GraduationCap size={16} /><span>Faculty</span></Link>
+                <button type="button" onClick={() => setFacultyOpen((current) => !current)} aria-expanded={facultyOpen} className={`flex w-full items-center justify-between rounded-xl px-2 py-2 text-xs font-bold transition ${facultyOpen || nestedFacultyRoute ? 'text-[hsl(var(--sidebar-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.65)] hover:bg-[hsl(var(--sidebar-accent))]'}`} data-testid="button-admin-faculty-toggle">
+                  <span className="flex items-center gap-2"><GraduationCap size={15} /> Faculty</span>
+                  <ChevronDown size={14} className={`transition-transform ${facultyOpen ? 'rotate-180' : ''}`} />
+                </button>
+                {facultyOpen && (
+                  <div className="mt-1">
+                    <PageSectionLink href="/admin/pages/faculty#admin-faculty-introduction" id="admin-faculty-introduction" label="Page Introduction" active={facultyPageActive && activeAdminSection === 'admin-faculty-introduction'} onSelect={() => { setActiveAdminSection('admin-faculty-introduction'); setOpen(false); }} />
+                    <PageSectionLink href="/admin/pages/faculty#admin-faculty-profiles" id="admin-faculty-profiles" label="Faculty Profiles" active={facultyPageActive && activeAdminSection === 'admin-faculty-profiles'} onSelect={() => { setActiveAdminSection('admin-faculty-profiles'); setOpen(false); }} />
+                  </div>
+                )}
               </div>
             )}
             {pagesOpen && (
               <div className="mt-2 rounded-2xl bg-[hsl(var(--sidebar-accent)/.55)] p-2">
-                <Link href="/admin/pages/courses" onClick={() => setOpen(false)} className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition ${coursesPageActive ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="link-admin-pages-courses"><Waypoints size={16} /><span>Courses</span></Link>
+                <button type="button" onClick={() => setCoursesOpen((current) => !current)} aria-expanded={coursesOpen} className={`flex w-full items-center justify-between rounded-xl px-2 py-2 text-xs font-bold transition ${coursesOpen || nestedCoursesRoute ? 'text-[hsl(var(--sidebar-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.65)] hover:bg-[hsl(var(--sidebar-accent))]'}`} data-testid="button-admin-courses-toggle">
+                  <span className="flex items-center gap-2"><Waypoints size={15} /> Courses</span>
+                  <ChevronDown size={14} className={`transition-transform ${coursesOpen ? 'rotate-180' : ''}`} />
+                </button>
+                {coursesOpen && (
+                  <div className="mt-1">
+                    <PageSectionLink href="/admin/pages/courses#admin-courses-hero" id="admin-courses-hero" label="Hero" active={coursesPageActive && activeAdminSection === 'admin-courses-hero'} onSelect={() => { setActiveAdminSection('admin-courses-hero'); setOpen(false); }} />
+                    <PageSectionLink href="/admin/pages/courses#admin-courses-highlights" id="admin-courses-highlights" label="Quick Course Highlights" active={coursesPageActive && activeAdminSection === 'admin-courses-highlights'} onSelect={() => { setActiveAdminSection('admin-courses-highlights'); setOpen(false); }} />
+                    <PageSectionLink href="/admin/pages/courses#admin-courses-why-choose" id="admin-courses-why-choose" label="Why Choose This Pathway" active={coursesPageActive && activeAdminSection === 'admin-courses-why-choose'} onSelect={() => { setActiveAdminSection('admin-courses-why-choose'); setOpen(false); }} />
+                    <PageSectionLink href="/admin/pages/courses#admin-courses-syllabus" id="admin-courses-syllabus" label="Syllabus" active={coursesPageActive && activeAdminSection === 'admin-courses-syllabus'} onSelect={() => { setActiveAdminSection('admin-courses-syllabus'); setOpen(false); }} />
+                  </div>
+                )}
               </div>
             )}
             {pagesOpen && (
