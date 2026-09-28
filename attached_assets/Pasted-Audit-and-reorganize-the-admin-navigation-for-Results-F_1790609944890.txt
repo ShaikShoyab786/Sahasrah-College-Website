@@ -1,0 +1,21 @@
+Audit and reorganize the admin navigation for Results, Faculty, and Courses. Use the existing Home and About dropdowns as the pattern. This request is for the admin dashboard only; don’t change the public site.
+
+Audit first
+Before editing, inspect the current admin navigation and the full Results, Faculty, and Courses management screens. List the actual content sections and actions in each, then use those findings to create the submenu structure. Don’t guess section names or omit existing content.
+
+Navigation update
+Add a collapsible submenu under Results, Faculty, and Courses, with a separate item for each major content section currently managed in that module.
+Keep child items in the same order as their corresponding public-page sections.
+Match the interaction and styling of the existing Home and About dropdowns, including active-item styling and the parent staying expanded when one of its child items is open.
+Do not add submenus to Contact or Gallery; leave those menu items unchanged.
+Preserve existing behavior and data
+Keep all current create, edit, delete, upload, validation, visibility, and save behavior working.
+Preserve authentication, role permissions, API calls, and existing data relationships. Don’t duplicate content or create new faculty records to support the navigation.
+In particular, keep Faculty as the shared source of faculty records. Preserve the independent Show on Home and Show on Courses toggles and subject-matching behavior.
+For Courses, reflect the agreed page sections: Hero, Quick Course Highlights, Why Choose This Pathway, and Syllabus. Faculty profiles remain managed in the shared Faculty module, not duplicated in Courses.
+Don’t delete saved records or perform a destructive schema change as part of reorganizing the admin interface.
+Keep Contact and Gallery, and the existing Home and About management, functioning as they do now.
+Each submenu item should open or navigate to the correct editor section without losing saved data or causing unrelated form fields to reset. Avoid placeholder menu items and duplicate entry points.
+
+Verify before finishing
+Check that every existing Results, Faculty, and Courses content section is represented once in the correct submenu; each item opens the right editor; existing save and upload flows still work; and Faculty visibility settings remain independent. In your completion summary, list the submenu items added under each parent and confirm what you tested.
