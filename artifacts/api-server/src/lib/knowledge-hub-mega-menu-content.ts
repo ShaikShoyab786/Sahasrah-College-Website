@@ -1,0 +1,45 @@
+export const DEFAULT_KNOWLEDGE_HUB_MEGA_MENU = {
+  cards: [
+    {
+      id: "articles",
+      category: "articles",
+      description: "In-depth study strategies, subject guides, exam tips and more.",
+      ctaLabel: "Explore Articles",
+      displayOrder: 1,
+      isVisible: true,
+    },
+    {
+      id: "video-hub",
+      category: "video-hub",
+      description: "Watch expert lectures, motivational sessions and concept videos.",
+      ctaLabel: "Watch Videos",
+      displayOrder: 2,
+      isVisible: true,
+    },
+    {
+      id: "study-resources",
+      category: "study-resources",
+      description: "Notes, PDFs, formulas, previous papers and important downloads.",
+      ctaLabel: "Browse Resources",
+      displayOrder: 3,
+      isVisible: true,
+    },
+    {
+      id: "exam-updates",
+      category: "exam-updates",
+      description: "Latest notifications, exam dates, results and important announcements.",
+      ctaLabel: "View Updates",
+      displayOrder: 4,
+      isVisible: true,
+    },
+  ],
+  panel: {
+    eyebrow: "Sahsrah Knowledge Hub",
+    title: "Learn. Prepare. Grow.",
+    description: "Curated resources to help you excel in your academics and competitive exams.",
+    imageUrl: null,
+    imageAltText: "",
+    ctaLabel: "Explore Knowledge Hub",
+  },
+  trendingItems: [],
+};

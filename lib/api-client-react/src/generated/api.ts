@@ -102,6 +102,7 @@ import type {
   HomepageTestimonialsInput,
   ImageUploadInput,
   ImageUploadResult,
+  KnowledgeHubMegaMenu,
   LoginInput,
   MessageResponse,
   PublicCourse,
@@ -5235,6 +5236,248 @@ export const useUpdateAllCoursesPage = <TError = ErrorType<ErrorEnvelope>,
         TContext
       > => {
       return useMutation(getUpdateAllCoursesPageMutationOptions(options));
+    }
+
+export const getGetKnowledgeHubMegaMenuUrl = () => {
+
+
+
+
+  return `/api/knowledge-hub-mega-menu`
+}
+
+/**
+ * @summary Read the public Knowledge Hub mega menu
+ */
+export const getKnowledgeHubMegaMenu = async ( options?: Parameters<typeof customFetch>[1]): Promise<KnowledgeHubMegaMenu> => {
+
+  return customFetch<KnowledgeHubMegaMenu>(getGetKnowledgeHubMegaMenuUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetKnowledgeHubMegaMenuQueryKey = () => {
+    return [
+    `/api/knowledge-hub-mega-menu`
+    ] as const;
+    }
+
+
+export const getGetKnowledgeHubMegaMenuQueryOptions = <TData = Awaited<ReturnType<typeof getKnowledgeHubMegaMenu>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getKnowledgeHubMegaMenu>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetKnowledgeHubMegaMenuQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getKnowledgeHubMegaMenu>>> = ({ signal }) => getKnowledgeHubMegaMenu({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getKnowledgeHubMegaMenu>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetKnowledgeHubMegaMenuQueryResult = NonNullable<Awaited<ReturnType<typeof getKnowledgeHubMegaMenu>>>
+export type GetKnowledgeHubMegaMenuQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Read the public Knowledge Hub mega menu
+ */
+
+export function useGetKnowledgeHubMegaMenu<TData = Awaited<ReturnType<typeof getKnowledgeHubMegaMenu>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getKnowledgeHubMegaMenu>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetKnowledgeHubMegaMenuQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetAdminKnowledgeHubMegaMenuUrl = () => {
+
+
+
+
+  return `/api/admin/knowledge-hub-mega-menu`
+}
+
+/**
+ * @summary Read editable Knowledge Hub mega menu content
+ */
+export const getAdminKnowledgeHubMegaMenu = async ( options?: Parameters<typeof customFetch>[1]): Promise<KnowledgeHubMegaMenu> => {
+
+  return customFetch<KnowledgeHubMegaMenu>(getGetAdminKnowledgeHubMegaMenuUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAdminKnowledgeHubMegaMenuQueryKey = () => {
+    return [
+    `/api/admin/knowledge-hub-mega-menu`
+    ] as const;
+    }
+
+
+export const getGetAdminKnowledgeHubMegaMenuQueryOptions = <TData = Awaited<ReturnType<typeof getAdminKnowledgeHubMegaMenu>>, TError = ErrorType<ErrorEnvelope>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminKnowledgeHubMegaMenu>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAdminKnowledgeHubMegaMenuQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdminKnowledgeHubMegaMenu>>> = ({ signal }) => getAdminKnowledgeHubMegaMenu({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAdminKnowledgeHubMegaMenu>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetAdminKnowledgeHubMegaMenuQueryResult = NonNullable<Awaited<ReturnType<typeof getAdminKnowledgeHubMegaMenu>>>
+export type GetAdminKnowledgeHubMegaMenuQueryError = ErrorType<ErrorEnvelope>
+
+
+/**
+ * @summary Read editable Knowledge Hub mega menu content
+ */
+
+export function useGetAdminKnowledgeHubMegaMenu<TData = Awaited<ReturnType<typeof getAdminKnowledgeHubMegaMenu>>, TError = ErrorType<ErrorEnvelope>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminKnowledgeHubMegaMenu>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetAdminKnowledgeHubMegaMenuQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getUpdateKnowledgeHubMegaMenuUrl = () => {
+
+
+
+
+  return `/api/admin/knowledge-hub-mega-menu`
+}
+
+/**
+ * @summary Save Knowledge Hub mega menu content
+ */
+export const updateKnowledgeHubMegaMenu = async (knowledgeHubMegaMenu: KnowledgeHubMegaMenu, options?: Parameters<typeof customFetch>[1]): Promise<KnowledgeHubMegaMenu> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<KnowledgeHubMegaMenu>(getUpdateKnowledgeHubMegaMenuUrl(),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(knowledgeHubMegaMenu)
+  }
+);}
+
+
+
+
+
+export const getUpdateKnowledgeHubMegaMenuMutationKey = () => ['updateKnowledgeHubMegaMenu'] as const;
+
+export const getUpdateKnowledgeHubMegaMenuMutationOptions = <TError = ErrorType<ErrorEnvelope>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateKnowledgeHubMegaMenu>>, TError,UpdateKnowledgeHubMegaMenuMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateKnowledgeHubMegaMenu>>, TError,UpdateKnowledgeHubMegaMenuMutationVariables, TContext> => {
+
+const mutationKey = getUpdateKnowledgeHubMegaMenuMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateKnowledgeHubMegaMenu>>, UpdateKnowledgeHubMegaMenuMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  updateKnowledgeHubMegaMenu(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateKnowledgeHubMegaMenuMutationResult = NonNullable<Awaited<ReturnType<typeof updateKnowledgeHubMegaMenu>>>
+    export type UpdateKnowledgeHubMegaMenuMutationBody = BodyType<KnowledgeHubMegaMenu>
+    export type UpdateKnowledgeHubMegaMenuMutationError = ErrorType<ErrorEnvelope>
+    export type UpdateKnowledgeHubMegaMenuMutationVariables = {data: BodyType<KnowledgeHubMegaMenu>}
+
+    /**
+ * @summary Save Knowledge Hub mega menu content
+ */
+export const useUpdateKnowledgeHubMegaMenu = <TError = ErrorType<ErrorEnvelope>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateKnowledgeHubMegaMenu>>, TError,UpdateKnowledgeHubMegaMenuMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateKnowledgeHubMegaMenu>>,
+        TError,
+        UpdateKnowledgeHubMegaMenuMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateKnowledgeHubMegaMenuMutationOptions(options));
     }
 
 export const getGetCoursesMegaMenuUrl = () => {

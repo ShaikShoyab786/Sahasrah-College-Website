@@ -1353,6 +1353,69 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorEnvelope"
+  /knowledge-hub-mega-menu:
+    get:
+      tags: [Mega Menus]
+      operationId: getKnowledgeHubMegaMenu
+      summary: Read the public Knowledge Hub mega menu
+      responses:
+        "200":
+          description: Saved Knowledge Hub mega menu content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KnowledgeHubMegaMenu"
+  /admin/knowledge-hub-mega-menu:
+    get:
+      tags: [Mega Menus]
+      operationId: getAdminKnowledgeHubMegaMenu
+      summary: Read editable Knowledge Hub mega menu content
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Editable Knowledge Hub mega menu content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KnowledgeHubMegaMenu"
+        "401":
+          description: Admin authentication required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+    put:
+      tags: [Mega Menus]
+      operationId: updateKnowledgeHubMegaMenu
+      summary: Save Knowledge Hub mega menu content
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KnowledgeHubMegaMenu"
+      responses:
+        "200":
+          description: Saved Knowledge Hub mega menu content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KnowledgeHubMegaMenu"
+        "400":
+          description: Invalid Knowledge Hub mega menu content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          description: Admin authentication required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
   /courses-mega-menu:
     get:
       tags: [Mega Menus]
@@ -5024,6 +5087,102 @@ components:
     MegaMenuCtaStyle:
       type: string
       enum: [primary, secondary]
+
+    KnowledgeHubMenuCategory:
+      type: string
+      enum: [articles, video-hub, study-resources, exam-updates]
+
+    KnowledgeHubMenuCard:
+      type: object
+      properties:
+        id:
+          type: string
+          minLength: 1
+          maxLength: 80
+        category:
+          $ref: "#/components/schemas/KnowledgeHubMenuCategory"
+        description:
+          type: string
+          minLength: 1
+          maxLength: 360
+        ctaLabel:
+          type: string
+          minLength: 1
+          maxLength: 100
+        displayOrder:
+          type: integer
+          minimum: 1
+          maximum: 4
+        isVisible:
+          type: boolean
+      required: [id, category, description, ctaLabel, displayOrder, isVisible]
+
+    KnowledgeHubMenuPanel:
+      type: object
+      properties:
+        eyebrow:
+          type: string
+          minLength: 1
+          maxLength: 100
+        title:
+          type: string
+          minLength: 1
+          maxLength: 180
+        description:
+          type: string
+          minLength: 1
+          maxLength: 360
+        imageUrl:
+          type: ["string", "null"]
+          maxLength: 1000
+        imageAltText:
+          type: string
+          maxLength: 180
+        ctaLabel:
+          type: string
+          minLength: 1
+          maxLength: 100
+      required: [eyebrow, title, description, imageUrl, imageAltText, ctaLabel]
+
+    KnowledgeHubTrendingItem:
+      type: object
+      properties:
+        id:
+          type: string
+          minLength: 1
+          maxLength: 80
+        title:
+          type: string
+          minLength: 1
+          maxLength: 180
+        href:
+          type: ["string", "null"]
+          maxLength: 500
+        displayOrder:
+          type: integer
+          minimum: 1
+          maximum: 12
+        isVisible:
+          type: boolean
+      required: [id, title, href, displayOrder, isVisible]
+
+    KnowledgeHubMegaMenu:
+      type: object
+      properties:
+        cards:
+          type: array
+          minItems: 4
+          maxItems: 4
+          items:
+            $ref: "#/components/schemas/KnowledgeHubMenuCard"
+        panel:
+          $ref: "#/components/schemas/KnowledgeHubMenuPanel"
+        trendingItems:
+          type: array
+          maxItems: 12
+          items:
+            $ref: "#/components/schemas/KnowledgeHubTrendingItem"
+      required: [cards, panel, trendingItems]
 
     CoursesMegaMenuCard:
       type: object

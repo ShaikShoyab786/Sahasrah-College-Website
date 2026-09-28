@@ -2667,6 +2667,262 @@ export const UpdateAllCoursesPageResponse = zod.object({
 
 
 /**
+ * @summary Read the public Knowledge Hub mega menu
+ */
+export const getKnowledgeHubMegaMenuResponseCardsItemIdMax = 80;
+
+export const getKnowledgeHubMegaMenuResponseCardsItemDescriptionMax = 360;
+
+export const getKnowledgeHubMegaMenuResponseCardsItemCtaLabelMax = 100;
+
+export const getKnowledgeHubMegaMenuResponseCardsItemDisplayOrderMax = 4;
+
+export const getKnowledgeHubMegaMenuResponseCardsMin = 4;
+export const getKnowledgeHubMegaMenuResponseCardsMax = 4;
+
+export const getKnowledgeHubMegaMenuResponsePanelEyebrowMax = 100;
+
+export const getKnowledgeHubMegaMenuResponsePanelTitleMax = 180;
+
+export const getKnowledgeHubMegaMenuResponsePanelDescriptionMax = 360;
+
+export const getKnowledgeHubMegaMenuResponsePanelImageUrlMax = 1000;
+
+export const getKnowledgeHubMegaMenuResponsePanelImageAltTextMax = 180;
+
+export const getKnowledgeHubMegaMenuResponsePanelCtaLabelMax = 100;
+
+export const getKnowledgeHubMegaMenuResponseTrendingItemsItemIdMax = 80;
+
+export const getKnowledgeHubMegaMenuResponseTrendingItemsItemTitleMax = 180;
+
+export const getKnowledgeHubMegaMenuResponseTrendingItemsItemHrefMax = 500;
+
+export const getKnowledgeHubMegaMenuResponseTrendingItemsItemDisplayOrderMax = 12;
+
+export const getKnowledgeHubMegaMenuResponseTrendingItemsMax = 12;
+
+
+
+export const GetKnowledgeHubMegaMenuResponse = zod.object({
+  "cards": zod.array(zod.object({
+  "id": zod.string().min(1).max(getKnowledgeHubMegaMenuResponseCardsItemIdMax),
+  "category": zod.enum(['articles', 'video-hub', 'study-resources', 'exam-updates']),
+  "description": zod.string().min(1).max(getKnowledgeHubMegaMenuResponseCardsItemDescriptionMax),
+  "ctaLabel": zod.string().min(1).max(getKnowledgeHubMegaMenuResponseCardsItemCtaLabelMax),
+  "displayOrder": zod.number().int().min(1).max(getKnowledgeHubMegaMenuResponseCardsItemDisplayOrderMax),
+  "isVisible": zod.boolean()
+})).min(getKnowledgeHubMegaMenuResponseCardsMin).max(getKnowledgeHubMegaMenuResponseCardsMax),
+  "panel": zod.object({
+  "eyebrow": zod.string().min(1).max(getKnowledgeHubMegaMenuResponsePanelEyebrowMax),
+  "title": zod.string().min(1).max(getKnowledgeHubMegaMenuResponsePanelTitleMax),
+  "description": zod.string().min(1).max(getKnowledgeHubMegaMenuResponsePanelDescriptionMax),
+  "imageUrl": zod.string().max(getKnowledgeHubMegaMenuResponsePanelImageUrlMax).nullable(),
+  "imageAltText": zod.string().max(getKnowledgeHubMegaMenuResponsePanelImageAltTextMax),
+  "ctaLabel": zod.string().min(1).max(getKnowledgeHubMegaMenuResponsePanelCtaLabelMax)
+}),
+  "trendingItems": zod.array(zod.object({
+  "id": zod.string().min(1).max(getKnowledgeHubMegaMenuResponseTrendingItemsItemIdMax),
+  "title": zod.string().min(1).max(getKnowledgeHubMegaMenuResponseTrendingItemsItemTitleMax),
+  "href": zod.string().max(getKnowledgeHubMegaMenuResponseTrendingItemsItemHrefMax).nullable(),
+  "displayOrder": zod.number().int().min(1).max(getKnowledgeHubMegaMenuResponseTrendingItemsItemDisplayOrderMax),
+  "isVisible": zod.boolean()
+})).max(getKnowledgeHubMegaMenuResponseTrendingItemsMax)
+})
+
+
+/**
+ * @summary Read editable Knowledge Hub mega menu content
+ */
+export const getAdminKnowledgeHubMegaMenuResponseCardsItemIdMax = 80;
+
+export const getAdminKnowledgeHubMegaMenuResponseCardsItemDescriptionMax = 360;
+
+export const getAdminKnowledgeHubMegaMenuResponseCardsItemCtaLabelMax = 100;
+
+export const getAdminKnowledgeHubMegaMenuResponseCardsItemDisplayOrderMax = 4;
+
+export const getAdminKnowledgeHubMegaMenuResponseCardsMin = 4;
+export const getAdminKnowledgeHubMegaMenuResponseCardsMax = 4;
+
+export const getAdminKnowledgeHubMegaMenuResponsePanelEyebrowMax = 100;
+
+export const getAdminKnowledgeHubMegaMenuResponsePanelTitleMax = 180;
+
+export const getAdminKnowledgeHubMegaMenuResponsePanelDescriptionMax = 360;
+
+export const getAdminKnowledgeHubMegaMenuResponsePanelImageUrlMax = 1000;
+
+export const getAdminKnowledgeHubMegaMenuResponsePanelImageAltTextMax = 180;
+
+export const getAdminKnowledgeHubMegaMenuResponsePanelCtaLabelMax = 100;
+
+export const getAdminKnowledgeHubMegaMenuResponseTrendingItemsItemIdMax = 80;
+
+export const getAdminKnowledgeHubMegaMenuResponseTrendingItemsItemTitleMax = 180;
+
+export const getAdminKnowledgeHubMegaMenuResponseTrendingItemsItemHrefMax = 500;
+
+export const getAdminKnowledgeHubMegaMenuResponseTrendingItemsItemDisplayOrderMax = 12;
+
+export const getAdminKnowledgeHubMegaMenuResponseTrendingItemsMax = 12;
+
+
+
+export const GetAdminKnowledgeHubMegaMenuResponse = zod.object({
+  "cards": zod.array(zod.object({
+  "id": zod.string().min(1).max(getAdminKnowledgeHubMegaMenuResponseCardsItemIdMax),
+  "category": zod.enum(['articles', 'video-hub', 'study-resources', 'exam-updates']),
+  "description": zod.string().min(1).max(getAdminKnowledgeHubMegaMenuResponseCardsItemDescriptionMax),
+  "ctaLabel": zod.string().min(1).max(getAdminKnowledgeHubMegaMenuResponseCardsItemCtaLabelMax),
+  "displayOrder": zod.number().int().min(1).max(getAdminKnowledgeHubMegaMenuResponseCardsItemDisplayOrderMax),
+  "isVisible": zod.boolean()
+})).min(getAdminKnowledgeHubMegaMenuResponseCardsMin).max(getAdminKnowledgeHubMegaMenuResponseCardsMax),
+  "panel": zod.object({
+  "eyebrow": zod.string().min(1).max(getAdminKnowledgeHubMegaMenuResponsePanelEyebrowMax),
+  "title": zod.string().min(1).max(getAdminKnowledgeHubMegaMenuResponsePanelTitleMax),
+  "description": zod.string().min(1).max(getAdminKnowledgeHubMegaMenuResponsePanelDescriptionMax),
+  "imageUrl": zod.string().max(getAdminKnowledgeHubMegaMenuResponsePanelImageUrlMax).nullable(),
+  "imageAltText": zod.string().max(getAdminKnowledgeHubMegaMenuResponsePanelImageAltTextMax),
+  "ctaLabel": zod.string().min(1).max(getAdminKnowledgeHubMegaMenuResponsePanelCtaLabelMax)
+}),
+  "trendingItems": zod.array(zod.object({
+  "id": zod.string().min(1).max(getAdminKnowledgeHubMegaMenuResponseTrendingItemsItemIdMax),
+  "title": zod.string().min(1).max(getAdminKnowledgeHubMegaMenuResponseTrendingItemsItemTitleMax),
+  "href": zod.string().max(getAdminKnowledgeHubMegaMenuResponseTrendingItemsItemHrefMax).nullable(),
+  "displayOrder": zod.number().int().min(1).max(getAdminKnowledgeHubMegaMenuResponseTrendingItemsItemDisplayOrderMax),
+  "isVisible": zod.boolean()
+})).max(getAdminKnowledgeHubMegaMenuResponseTrendingItemsMax)
+})
+
+
+/**
+ * @summary Save Knowledge Hub mega menu content
+ */
+export const updateKnowledgeHubMegaMenuBodyCardsItemIdMax = 80;
+
+export const updateKnowledgeHubMegaMenuBodyCardsItemDescriptionMax = 360;
+
+export const updateKnowledgeHubMegaMenuBodyCardsItemCtaLabelMax = 100;
+
+export const updateKnowledgeHubMegaMenuBodyCardsItemDisplayOrderMax = 4;
+
+export const updateKnowledgeHubMegaMenuBodyCardsMin = 4;
+export const updateKnowledgeHubMegaMenuBodyCardsMax = 4;
+
+export const updateKnowledgeHubMegaMenuBodyPanelEyebrowMax = 100;
+
+export const updateKnowledgeHubMegaMenuBodyPanelTitleMax = 180;
+
+export const updateKnowledgeHubMegaMenuBodyPanelDescriptionMax = 360;
+
+export const updateKnowledgeHubMegaMenuBodyPanelImageUrlMax = 1000;
+
+export const updateKnowledgeHubMegaMenuBodyPanelImageAltTextMax = 180;
+
+export const updateKnowledgeHubMegaMenuBodyPanelCtaLabelMax = 100;
+
+export const updateKnowledgeHubMegaMenuBodyTrendingItemsItemIdMax = 80;
+
+export const updateKnowledgeHubMegaMenuBodyTrendingItemsItemTitleMax = 180;
+
+export const updateKnowledgeHubMegaMenuBodyTrendingItemsItemHrefMax = 500;
+
+export const updateKnowledgeHubMegaMenuBodyTrendingItemsItemDisplayOrderMax = 12;
+
+export const updateKnowledgeHubMegaMenuBodyTrendingItemsMax = 12;
+
+
+
+export const UpdateKnowledgeHubMegaMenuBody = zod.object({
+  "cards": zod.array(zod.object({
+  "id": zod.string().min(1).max(updateKnowledgeHubMegaMenuBodyCardsItemIdMax),
+  "category": zod.enum(['articles', 'video-hub', 'study-resources', 'exam-updates']),
+  "description": zod.string().min(1).max(updateKnowledgeHubMegaMenuBodyCardsItemDescriptionMax),
+  "ctaLabel": zod.string().min(1).max(updateKnowledgeHubMegaMenuBodyCardsItemCtaLabelMax),
+  "displayOrder": zod.number().int().min(1).max(updateKnowledgeHubMegaMenuBodyCardsItemDisplayOrderMax),
+  "isVisible": zod.boolean()
+})).min(updateKnowledgeHubMegaMenuBodyCardsMin).max(updateKnowledgeHubMegaMenuBodyCardsMax),
+  "panel": zod.object({
+  "eyebrow": zod.string().min(1).max(updateKnowledgeHubMegaMenuBodyPanelEyebrowMax),
+  "title": zod.string().min(1).max(updateKnowledgeHubMegaMenuBodyPanelTitleMax),
+  "description": zod.string().min(1).max(updateKnowledgeHubMegaMenuBodyPanelDescriptionMax),
+  "imageUrl": zod.string().max(updateKnowledgeHubMegaMenuBodyPanelImageUrlMax).nullable(),
+  "imageAltText": zod.string().max(updateKnowledgeHubMegaMenuBodyPanelImageAltTextMax),
+  "ctaLabel": zod.string().min(1).max(updateKnowledgeHubMegaMenuBodyPanelCtaLabelMax)
+}),
+  "trendingItems": zod.array(zod.object({
+  "id": zod.string().min(1).max(updateKnowledgeHubMegaMenuBodyTrendingItemsItemIdMax),
+  "title": zod.string().min(1).max(updateKnowledgeHubMegaMenuBodyTrendingItemsItemTitleMax),
+  "href": zod.string().max(updateKnowledgeHubMegaMenuBodyTrendingItemsItemHrefMax).nullable(),
+  "displayOrder": zod.number().int().min(1).max(updateKnowledgeHubMegaMenuBodyTrendingItemsItemDisplayOrderMax),
+  "isVisible": zod.boolean()
+})).max(updateKnowledgeHubMegaMenuBodyTrendingItemsMax)
+})
+
+export const updateKnowledgeHubMegaMenuResponseCardsItemIdMax = 80;
+
+export const updateKnowledgeHubMegaMenuResponseCardsItemDescriptionMax = 360;
+
+export const updateKnowledgeHubMegaMenuResponseCardsItemCtaLabelMax = 100;
+
+export const updateKnowledgeHubMegaMenuResponseCardsItemDisplayOrderMax = 4;
+
+export const updateKnowledgeHubMegaMenuResponseCardsMin = 4;
+export const updateKnowledgeHubMegaMenuResponseCardsMax = 4;
+
+export const updateKnowledgeHubMegaMenuResponsePanelEyebrowMax = 100;
+
+export const updateKnowledgeHubMegaMenuResponsePanelTitleMax = 180;
+
+export const updateKnowledgeHubMegaMenuResponsePanelDescriptionMax = 360;
+
+export const updateKnowledgeHubMegaMenuResponsePanelImageUrlMax = 1000;
+
+export const updateKnowledgeHubMegaMenuResponsePanelImageAltTextMax = 180;
+
+export const updateKnowledgeHubMegaMenuResponsePanelCtaLabelMax = 100;
+
+export const updateKnowledgeHubMegaMenuResponseTrendingItemsItemIdMax = 80;
+
+export const updateKnowledgeHubMegaMenuResponseTrendingItemsItemTitleMax = 180;
+
+export const updateKnowledgeHubMegaMenuResponseTrendingItemsItemHrefMax = 500;
+
+export const updateKnowledgeHubMegaMenuResponseTrendingItemsItemDisplayOrderMax = 12;
+
+export const updateKnowledgeHubMegaMenuResponseTrendingItemsMax = 12;
+
+
+
+export const UpdateKnowledgeHubMegaMenuResponse = zod.object({
+  "cards": zod.array(zod.object({
+  "id": zod.string().min(1).max(updateKnowledgeHubMegaMenuResponseCardsItemIdMax),
+  "category": zod.enum(['articles', 'video-hub', 'study-resources', 'exam-updates']),
+  "description": zod.string().min(1).max(updateKnowledgeHubMegaMenuResponseCardsItemDescriptionMax),
+  "ctaLabel": zod.string().min(1).max(updateKnowledgeHubMegaMenuResponseCardsItemCtaLabelMax),
+  "displayOrder": zod.number().int().min(1).max(updateKnowledgeHubMegaMenuResponseCardsItemDisplayOrderMax),
+  "isVisible": zod.boolean()
+})).min(updateKnowledgeHubMegaMenuResponseCardsMin).max(updateKnowledgeHubMegaMenuResponseCardsMax),
+  "panel": zod.object({
+  "eyebrow": zod.string().min(1).max(updateKnowledgeHubMegaMenuResponsePanelEyebrowMax),
+  "title": zod.string().min(1).max(updateKnowledgeHubMegaMenuResponsePanelTitleMax),
+  "description": zod.string().min(1).max(updateKnowledgeHubMegaMenuResponsePanelDescriptionMax),
+  "imageUrl": zod.string().max(updateKnowledgeHubMegaMenuResponsePanelImageUrlMax).nullable(),
+  "imageAltText": zod.string().max(updateKnowledgeHubMegaMenuResponsePanelImageAltTextMax),
+  "ctaLabel": zod.string().min(1).max(updateKnowledgeHubMegaMenuResponsePanelCtaLabelMax)
+}),
+  "trendingItems": zod.array(zod.object({
+  "id": zod.string().min(1).max(updateKnowledgeHubMegaMenuResponseTrendingItemsItemIdMax),
+  "title": zod.string().min(1).max(updateKnowledgeHubMegaMenuResponseTrendingItemsItemTitleMax),
+  "href": zod.string().max(updateKnowledgeHubMegaMenuResponseTrendingItemsItemHrefMax).nullable(),
+  "displayOrder": zod.number().int().min(1).max(updateKnowledgeHubMegaMenuResponseTrendingItemsItemDisplayOrderMax),
+  "isVisible": zod.boolean()
+})).max(updateKnowledgeHubMegaMenuResponseTrendingItemsMax)
+})
+
+
+/**
  * @summary Read the public Courses mega menu
  */
 export const getCoursesMegaMenuResponseEyebrowMax = 100;

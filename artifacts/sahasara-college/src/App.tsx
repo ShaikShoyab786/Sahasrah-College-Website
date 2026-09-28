@@ -39,6 +39,8 @@ import AdminFaculty from '@/pages/admin-faculty';
 import AdminCourses from '@/pages/admin-courses';
 import AdminAllCourses from '@/pages/admin-all-courses';
 import Courses from '@/pages/courses';
+import KnowledgeHub from '@/pages/knowledge-hub';
+import AdminKnowledgeHubMegaMenu from '@/pages/admin-knowledge-hub-mega-menu';
 import CourseDetail from '@/pages/course-detail';
 import IntegratedCourses from '@/pages/integrated-courses';
 import {
@@ -62,6 +64,7 @@ function Router() {
         <Route path="/contact" component={Contact} />
         <Route path="/gallery" component={Gallery} />
         <Route path="/results" component={Results} />
+        <Route path="/knowledge-hub" component={KnowledgeHub} />
         <Route path="/courses" component={Courses} />
         <Route path="/courses/integrated" component={IntegratedCourses} />
         <Route path="/courses/:slug" component={CourseDetail} />
@@ -170,6 +173,9 @@ function Router() {
         </Route>
         <Route path="/admin/mega-menus">
           <AdminGuard><AdminMegaMenus /></AdminGuard>
+        </Route>
+        <Route path="/admin/knowledge-hub-mega-menu">
+          <AdminGuard><AdminKnowledgeHubMegaMenu /></AdminGuard>
         </Route>
         <Route path="/admin/homepage-hero">
           <AdminGuard><AdminHomepageHero /></AdminGuard>

@@ -52,8 +52,8 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
     { href: '/admin/dashboard', label: 'Dashboard', icon: Gauge },
     { href: '/admin', label: 'Overview', icon: LayoutDashboard },
     { href: '/admin/site-settings', label: 'Site identity', icon: Settings2 },
-    { href: '/admin/mega-menus', label: 'Mega Menus', icon: PanelsTopLeft },
   ];
+  const megaMenusActive = location.startsWith('/admin/mega-menus') || location.startsWith('/admin/knowledge-hub-mega-menu');
   const heroActive = location.startsWith('/admin/pages/home/hero') || location.startsWith('/admin/homepage-hero');
   const aboutActive = location.startsWith('/admin/pages/home/about-preview');
   const liveUpdatesActive = location.startsWith('/admin/pages/home/live-updates');
@@ -94,9 +94,16 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
   const [resultsOpen, setResultsOpen] = useState(false);
   const [facultyOpen, setFacultyOpen] = useState(false);
   const [coursesOpen, setCoursesOpen] = useState(false);
+  const [megaMenusOpen, setMegaMenusOpen] = useState(false);
   const [activeAdminSection, setActiveAdminSection] = useState(() => typeof window === 'undefined' ? '' : window.location.hash.slice(1));
 
   useEffect(() => {
+    if (megaMenusActive) {
+      setMegaMenusOpen(true);
+      setPagesOpen(false);
+      return;
+    }
+    setMegaMenusOpen(false);
     if (nestedHomeRoute) {
       setPagesOpen(true);
       setHomeOpen(true);
@@ -122,7 +129,7 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
       setFacultyOpen(false);
       setCoursesOpen(false);
     }
-  }, [location, contactActive, galleryPageActive, nestedAboutRoute, nestedHomeRoute, nestedCoursesRoute, nestedFacultyRoute, nestedResultsRoute]);
+  }, [location, contactActive, galleryPageActive, megaMenusActive, nestedAboutRoute, nestedHomeRoute, nestedCoursesRoute, nestedFacultyRoute, nestedResultsRoute]);
 
   useEffect(() => {
     const syncHash = () => setActiveAdminSection(window.location.hash.slice(1));
@@ -213,6 +220,18 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
             const active = href === '/admin' ? location === href : location.startsWith(href);
             return <Link key={href} href={href} onClick={() => setOpen(false)} className={`flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-semibold transition ${active ? 'bg-[hsl(var(--sidebar-primary))] text-[hsl(var(--sidebar-primary-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.72)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid={`link-admin-${label.toLowerCase().replaceAll(' ', '-')}`}><Icon size={18} strokeWidth={1.8} /><span>{label}</span></Link>;
           })}
+          <div className="mt-5">
+            <button type="button" onClick={() => setMegaMenusOpen((current) => !current)} aria-expanded={megaMenusOpen} className={`flex w-full items-center justify-between rounded-xl px-3 py-3 text-xs font-bold uppercase tracking-[.16em] transition ${megaMenusOpen || megaMenusActive ? 'text-[hsl(var(--sidebar-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.45)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="button-admin-mega-menus-toggle">
+              <span className="flex items-center gap-2"><PanelsTopLeft size={14} /> Mega Menus</span>
+              <ChevronDown size={15} className={`transition-transform ${megaMenusOpen ? 'rotate-180' : ''}`} />
+            </button>
+            {megaMenusOpen && (
+              <div className="mt-2 rounded-2xl bg-[hsl(var(--sidebar-accent)/.55)] p-2">
+                <PageSectionLink href="/admin/mega-menus" id="courses-mega-menu" label="Courses Mega Menu" active={location.startsWith('/admin/mega-menus')} onSelect={() => setOpen(false)} />
+                <PageSectionLink href="/admin/knowledge-hub-mega-menu" id="knowledge-hub-mega-menu" label="Knowledge Hub Mega Menu" active={location.startsWith('/admin/knowledge-hub-mega-menu')} onSelect={() => setOpen(false)} />
+              </div>
+            )}
+          </div>
           <div className="mt-5">
             <button type="button" onClick={() => setPagesOpen((current) => !current)} aria-expanded={pagesOpen} className={`flex w-full items-center justify-between rounded-xl px-3 py-3 text-xs font-bold uppercase tracking-[.16em] transition ${pagesOpen || nestedHomeRoute ? 'text-[hsl(var(--sidebar-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.45)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="button-admin-pages-toggle">
               <span className="flex items-center gap-2"><FileText size={14} /> Pages</span>

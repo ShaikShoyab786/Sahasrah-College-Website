@@ -1,0 +1,116 @@
+import { ArrowRight, BookOpen, CheckCircle2, FileText, GraduationCap, PlayCircle, Bell } from 'lucide-react';
+import { Link } from 'wouter';
+import { useGetKnowledgeHubMegaMenu, useGetSiteSettings } from '@workspace/api-client-react';
+import { PublicFooter } from '@/components/public-footer';
+import { PublicHeader } from '@/components/public-header';
+import { createPublicThemeStyle, DEFAULT_ACCENT_COLOR, DEFAULT_PRIMARY_COLOR, DEFAULT_SURFACE_COLOR } from '@/lib/public-theme';
+
+const fallbackSettings = {
+  collegeName: 'Sahsrah Junior College',
+  tagline: 'Your College Tagline',
+  logoUrl: null,
+  email: 'admissions@sahsrah.edu',
+  phone: '+91 40 2458 0176',
+  address: '18 Vidya Marg, Hyderabad, Telangana 500034',
+  primaryColor: DEFAULT_PRIMARY_COLOR,
+  accentColor: DEFAULT_ACCENT_COLOR,
+  surfaceColor: DEFAULT_SURFACE_COLOR,
+  footerText: 'A public junior college for curious minds and purposeful lives.',
+};
+
+const categories = [
+  { id: 'articles', title: 'Articles', icon: FileText, tint: 'rose', description: 'Clear guidance for the questions students and families ask most often.' },
+  { id: 'video-hub', title: 'Video Hub', icon: PlayCircle, tint: 'violet', description: 'A future home for focused explanations and practical learning sessions.' },
+  { id: 'study-resources', title: 'Study Resources', icon: BookOpen, tint: 'emerald', description: 'A carefully organised shelf for notes, papers, and useful downloads.' },
+  { id: 'exam-updates', title: 'Exam Updates', icon: Bell, tint: 'amber', description: 'A dependable place for dates, notifications, and official exam guidance.' },
+] as const;
+
+function KnowledgeHubSkeleton() {
+  return <div className="min-h-[100dvh] bg-[hsl(var(--background))] p-6"><div className="mx-auto max-w-6xl animate-pulse space-y-5"><div className="h-10 w-56 rounded-full bg-[hsl(var(--muted))]" /><div className="h-72 rounded-[2rem] bg-[hsl(var(--muted))]" /><div className="grid gap-4 md:grid-cols-4">{categories.map((category) => <div key={category.id} className="h-48 rounded-2xl bg-[hsl(var(--muted))]" />)}</div></div></div>;
+}
+
+function CategorySection({ category }: { category: typeof categories[number] }) {
+  const Icon = category.icon;
+  const tint = category.tint === 'rose'
+    ? 'bg-rose-50 border-rose-100 text-rose-700'
+    : category.tint === 'violet'
+      ? 'bg-violet-50 border-violet-100 text-violet-700'
+      : category.tint === 'emerald'
+        ? 'bg-emerald-50 border-emerald-100 text-emerald-700'
+        : 'bg-amber-50 border-amber-100 text-amber-700';
+
+  return (
+    <section id={`knowledge-hub-${category.id}`} className="scroll-mt-28 border-t border-[hsl(var(--border))] py-16 sm:py-20" data-testid={`section-knowledge-hub-${category.id}`}>
+      <div className="mx-auto grid max-w-5xl gap-7 md:grid-cols-[minmax(0,.65fr)_minmax(0,1fr)] md:items-center">
+        <div className={`grid min-h-40 place-items-center rounded-[1.75rem] border ${tint}`}>
+          <Icon size={54} strokeWidth={1.2} aria-hidden="true" />
+        </div>
+        <div>
+          <div className="flex flex-wrap items-center gap-3">
+            <p className="text-xs font-bold uppercase tracking-[.18em] text-[hsl(var(--accent-foreground))]">Knowledge Hub</p>
+            <span className="rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--card))] px-3 py-1 text-[10px] font-bold uppercase tracking-[.12em] text-[hsl(var(--muted-foreground))]">Coming Soon</span>
+          </div>
+          <h2 className="mt-3 font-display text-4xl font-semibold tracking-[-.045em] text-[hsl(var(--primary))] sm:text-5xl">{category.title}</h2>
+          <p className="mt-4 max-w-xl text-base leading-7 text-[hsl(var(--muted-foreground))]">{category.description}</p>
+          <p className="mt-5 flex items-center gap-2 text-sm font-semibold text-[hsl(var(--primary)/.7)]"><CheckCircle2 size={17} className="text-[hsl(var(--accent-foreground))]" /> This section is being prepared for students and families.</p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export default function KnowledgeHub() {
+  const settingsQuery = useGetSiteSettings();
+  const menuQuery = useGetKnowledgeHubMegaMenu();
+  if (settingsQuery.isLoading) return <KnowledgeHubSkeleton />;
+
+  const settings = settingsQuery.data ?? fallbackSettings;
+  const panel = menuQuery.data?.panel ?? {
+    eyebrow: 'SAHSRAH KNOWLEDGE HUB',
+    title: 'Learn with more clarity.',
+    description: 'A focused companion for the study questions, resources, and exam guidance that matter.',
+    imageUrl: null,
+    imageAltText: '',
+    ctaLabel: 'Explore the Hub',
+  };
+
+  return (
+    <div className="paper-grain overflow-hidden bg-[hsl(var(--background))]" style={createPublicThemeStyle(settings.primaryColor || DEFAULT_PRIMARY_COLOR, settings.accentColor || DEFAULT_ACCENT_COLOR, settings.surfaceColor || DEFAULT_SURFACE_COLOR)}>
+      <PublicHeader settings={settings} activePage="knowledge-hub" />
+      <main>
+        <section className="relative overflow-hidden bg-[hsl(var(--primary))] px-6 pb-16 pt-36 text-[hsl(var(--primary-foreground))] sm:pb-20 sm:pt-44 lg:px-10">
+          <div className="absolute inset-0 opacity-30" aria-hidden="true" style={{ backgroundImage: 'linear-gradient(120deg, transparent 0 52%, hsl(var(--accent) / .22) 52.2%, transparent 52.5%), radial-gradient(circle at 80% 25%, hsl(var(--accent) / .3), transparent 28%)' }} />
+          <div className="relative mx-auto grid max-w-7xl gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(21rem,.72fr)] lg:items-end">
+            <div className="max-w-3xl">
+              <p className="text-xs font-bold uppercase tracking-[.21em] text-[hsl(var(--accent))]" data-testid="text-knowledge-hub-eyebrow">{panel.eyebrow}</p>
+              <h1 className="mt-5 max-w-3xl font-display text-5xl font-semibold leading-[.96] tracking-[-.055em] sm:text-7xl" data-testid="text-knowledge-hub-title">{panel.title}</h1>
+              <p className="mt-6 max-w-2xl text-base leading-7 text-white/72 sm:text-lg">{panel.description}</p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                {categories.map((category) => <Link key={category.id} href={`#knowledge-hub-${category.id}`} className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 text-sm font-bold transition hover:-translate-y-0.5 hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]" data-testid={`link-knowledge-hub-hero-${category.id}`}>{category.title}<ArrowRight size={15} aria-hidden="true" /></Link>)}
+              </div>
+            </div>
+            <div className="relative min-h-64 overflow-hidden rounded-[1.75rem] border border-white/15 bg-white/10 p-6 shadow-2xl">
+              {panel.imageUrl && <img src={panel.imageUrl} alt={panel.imageAltText} className="absolute inset-0 h-full w-full object-cover opacity-45" data-testid="img-knowledge-hub-hero" />}
+              <div className="absolute inset-0 bg-gradient-to-t from-[hsl(var(--primary))] via-[hsl(var(--primary)/.6)] to-transparent" aria-hidden="true" />
+              <div className="relative flex h-full min-h-52 flex-col justify-end">
+                <GraduationCap size={26} className="text-[hsl(var(--accent))]" aria-hidden="true" />
+                <p className="mt-5 max-w-xs font-display text-2xl leading-tight">A quieter place to find your next useful step.</p>
+                <p className="mt-3 text-xs text-white/65">Built around the questions that shape confident study.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+        {menuQuery.isError && <div className="mx-auto max-w-7xl px-6 pt-7 lg:px-10"><div role="status" className="rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-900" data-testid="status-knowledge-hub-error">The Knowledge Hub is taking a moment to load its latest settings. The category guide remains available below.</div></div>}
+        <section className="px-6 py-16 lg:px-10 lg:py-24">
+          <div className="mx-auto max-w-5xl">
+            <p className="text-xs font-bold uppercase tracking-[.2em] text-[hsl(var(--accent-foreground))]">A clear path through the noise</p>
+            <h2 className="mt-3 max-w-2xl font-display text-4xl font-semibold leading-tight tracking-[-.045em] text-[hsl(var(--primary))] sm:text-5xl">Four ways to make study feel more manageable.</h2>
+            <p className="mt-4 max-w-xl text-base leading-7 text-[hsl(var(--muted-foreground))]">Choose a category to see what is coming to the Hub. Every section will be shaped with the same practical, student-first care.</p>
+          </div>
+        </section>
+        <div className="px-6 lg:px-10">{categories.map((category) => <CategorySection key={category.id} category={category} />)}</div>
+      </main>
+      <PublicFooter settings={{ ...settings, footerText: settings.footerText || fallbackSettings.footerText }} />
+    </div>
+  );
+}

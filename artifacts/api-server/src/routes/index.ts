@@ -10,6 +10,7 @@ import uploadsRouter from "./uploads";
 import contactRouter from "./contact";
 import coursesMegaMenuRouter from "./courses-mega-menu";
 import allCoursesPageRouter from "./all-courses-page";
+import knowledgeHubMegaMenuRouter from "./knowledge-hub-mega-menu";
 
 const router: IRouter = Router();
 
@@ -20,6 +21,7 @@ router.use(facultyRouter);
 router.use(coursesRouter);
 router.use(coursesMegaMenuRouter);
 router.use(allCoursesPageRouter);
+router.use(knowledgeHubMegaMenuRouter);
 router.use(galleryRouter);
 router.use(resultsRouter);
 router.use(contactRouter);

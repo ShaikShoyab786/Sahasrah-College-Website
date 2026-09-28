@@ -8,6 +8,7 @@ import { homepagePreviewCopyDefaults } from "./homepage-preview-copy-defaults";
 import { COURSE_SEEDS, normalizeCourseHighlights, type CourseHighlight } from "./course-content";
 import { DEFAULT_COURSES_MEGA_MENU } from "./courses-mega-menu-content";
 import { DEFAULT_ALL_COURSES_PAGE } from "./all-courses-page-content";
+import { DEFAULT_KNOWLEDGE_HUB_MEGA_MENU } from "./knowledge-hub-mega-menu-content";
 
 const LEGACY_COURSE_ACTIONS = [
   { slug: "mpc", primaryActionLabel: "Explore admissions", secondaryActionLabel: "Talk to a counsellor" },
@@ -328,6 +329,15 @@ export async function initializeDatabase() {
     create: {
       id: "singleton",
       content: DEFAULT_ALL_COURSES_PAGE,
+    },
+  });
+
+  await prisma.knowledgeHubMegaMenuSettings.upsert({
+    where: { id: "singleton" },
+    update: {},
+    create: {
+      id: "singleton",
+      content: DEFAULT_KNOWLEDGE_HUB_MEGA_MENU,
     },
   });
 

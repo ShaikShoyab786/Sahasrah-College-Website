@@ -1687,6 +1687,106 @@ export const MegaMenuCtaStyle = {
   secondary: 'secondary',
 } as const;
 
+export type KnowledgeHubMenuCategory = typeof KnowledgeHubMenuCategory[keyof typeof KnowledgeHubMenuCategory];
+
+
+export const KnowledgeHubMenuCategory = {
+  articles: 'articles',
+  'video-hub': 'video-hub',
+  'study-resources': 'study-resources',
+  'exam-updates': 'exam-updates',
+} as const;
+
+export interface KnowledgeHubMenuCard {
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  id: string;
+  category: KnowledgeHubMenuCategory;
+  /**
+     * @minLength 1
+     * @maxLength 360
+     */
+  description: string;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  ctaLabel: string;
+  /**
+     * @minimum 1
+     * @maximum 4
+     */
+  displayOrder: number;
+  isVisible: boolean;
+}
+
+export interface KnowledgeHubMenuPanel {
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  eyebrow: string;
+  /**
+     * @minLength 1
+     * @maxLength 180
+     */
+  title: string;
+  /**
+     * @minLength 1
+     * @maxLength 360
+     */
+  description: string;
+  /**
+     * @maxLength 1000
+     * @nullable
+     */
+  imageUrl: string | null;
+  /** @maxLength 180 */
+  imageAltText: string;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  ctaLabel: string;
+}
+
+export interface KnowledgeHubTrendingItem {
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  id: string;
+  /**
+     * @minLength 1
+     * @maxLength 180
+     */
+  title: string;
+  /**
+     * @maxLength 500
+     * @nullable
+     */
+  href: string | null;
+  /**
+     * @minimum 1
+     * @maximum 12
+     */
+  displayOrder: number;
+  isVisible: boolean;
+}
+
+export interface KnowledgeHubMegaMenu {
+  /**
+     * @minItems 4
+     * @maxItems 4
+     */
+  cards: KnowledgeHubMenuCard[];
+  panel: KnowledgeHubMenuPanel;
+  /** @maxItems 12 */
+  trendingItems: KnowledgeHubTrendingItem[];
+}
+
 export interface CoursesMegaMenuCard {
   /**
      * @minLength 1
