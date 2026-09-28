@@ -1,0 +1,15 @@
+Replace the current Courses mega menu using the second attached image as the visual reference. The first image shows the current menu to replace. Match the reference’s overall composition and polish, while using the website’s existing branding and assets.
+
+Desktop layout
+
+Create a wide landscape panel with rounded corners, a soft shadow, and a light background.
+Add a narrow branded panel on the left with the existing Sahasrah logo, a short tagline, and a relevant campus image or subtle image treatment. Use the brand’s deep navy and red accents here.
+In the main area, add a small “Choose a pathway” eyebrow, a prominent “Regular Courses” heading, and a “Five pathways” badge.
+Show the five standard courses in a 3-column by 2-row card grid. Give cards subtle, varied pastel tints, small subject-related icons or appropriate existing images, clear titles, short descriptions, and a visible arrow or affordance. Make the whole card clickable.
+Use the sixth card for Integrated Courses. Style it as a distinct feature card with a “Coming Soon” badge; it must not navigate anywhere.
+Add a slim footer with the existing utility links and an “All Courses” button. Preserve their current destinations.
+Use navy as a brand accent in the sidebar—not as the background or text color for every card. Keep the cards light, distinctive, readable, and visually balanced. Use existing project assets where possible; don’t use either screenshot as a page asset or fill the menu with unrelated stock images.
+
+Fix the pointer issue too: keep the Courses trigger and menu within one continuous hover/focus area. The menu must stay open while the pointer is over either the trigger or the panel. Remove any gap between them, cancel a pending close when the pointer enters the panel, and close only after the pointer leaves the whole area, with a short delay. Keep click/tap and keyboard interaction working, including Escape to close.
+
+Make the layout responsive: on narrow screens, stack the brand area and course cards cleanly without horizontal overflow. Keep this change limited to the mega menu and its interaction; don’t change course-page content or enquiry handling.
