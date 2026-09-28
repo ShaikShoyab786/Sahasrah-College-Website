@@ -2825,6 +2825,7 @@ export const GetCourseBySlugResponse = zod.object({
   "primaryActionUrl": zod.string(),
   "secondaryActionLabel": zod.string(),
   "secondaryActionUrl": zod.string(),
+  "highlightsHeading": zod.string(),
   "highlights": zod.array(zod.object({
   "label": zod.string().min(1).max(getCourseBySlugResponseHighlightsItemLabelMax),
   "value": zod.string().min(1).max(getCourseBySlugResponseHighlightsItemValueMax),
@@ -2908,6 +2909,7 @@ export const GetAdminCoursesResponseItem = zod.object({
   "primaryActionUrl": zod.string(),
   "secondaryActionLabel": zod.string(),
   "secondaryActionUrl": zod.string(),
+  "highlightsHeading": zod.string(),
   "highlights": zod.array(zod.object({
   "label": zod.string().min(1).max(getAdminCoursesResponseHighlightsItemLabelMax),
   "value": zod.string().min(1).max(getAdminCoursesResponseHighlightsItemValueMax),
@@ -2963,6 +2965,8 @@ export const updateAdminCourseBodySecondaryActionLabelMax = 100;
 
 export const updateAdminCourseBodySecondaryActionUrlMax = 500;
 
+export const updateAdminCourseBodyHighlightsHeadingMax = 120;
+
 export const updateAdminCourseBodyHighlightsItemLabelMax = 80;
 
 export const updateAdminCourseBodyHighlightsItemValueMax = 180;
@@ -3013,6 +3017,7 @@ export const UpdateAdminCourseBody = zod.object({
   "primaryActionUrl": zod.string().min(1).max(updateAdminCourseBodyPrimaryActionUrlMax),
   "secondaryActionLabel": zod.string().min(1).max(updateAdminCourseBodySecondaryActionLabelMax),
   "secondaryActionUrl": zod.string().min(1).max(updateAdminCourseBodySecondaryActionUrlMax),
+  "highlightsHeading": zod.string().min(1).max(updateAdminCourseBodyHighlightsHeadingMax),
   "highlights": zod.array(zod.object({
   "label": zod.string().min(1).max(updateAdminCourseBodyHighlightsItemLabelMax),
   "value": zod.string().min(1).max(updateAdminCourseBodyHighlightsItemValueMax),
@@ -3068,6 +3073,7 @@ export const UpdateAdminCourseResponse = zod.object({
   "primaryActionUrl": zod.string(),
   "secondaryActionLabel": zod.string(),
   "secondaryActionUrl": zod.string(),
+  "highlightsHeading": zod.string(),
   "highlights": zod.array(zod.object({
   "label": zod.string().min(1).max(updateAdminCourseResponseHighlightsItemLabelMax),
   "value": zod.string().min(1).max(updateAdminCourseResponseHighlightsItemValueMax),

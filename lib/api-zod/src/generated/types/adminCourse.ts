@@ -26,6 +26,7 @@ export interface AdminCourse {
   primaryActionUrl: string;
   secondaryActionLabel: string;
   secondaryActionUrl: string;
+  highlightsHeading: string;
   highlights: CourseHighlight[];
   whyChoose: CourseReason[];
   overviewText: string;

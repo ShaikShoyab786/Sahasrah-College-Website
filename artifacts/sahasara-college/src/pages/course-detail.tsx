@@ -42,7 +42,7 @@ export default function CourseDetail() {
           enquirySettingsError={enquirySettingsQuery.isError}
           onRetryEnquirySettings={() => { void enquirySettingsQuery.refetch(); }}
         />
-        <HighlightsSection highlights={course.highlights} />
+        <HighlightsSection heading={course.highlightsHeading} highlights={course.highlights} />
         <WhyChooseSection reasons={course.whyChoose} />
         <MentorsSection mentors={course.mentors} />
         <OverviewSection text={course.overviewText} goals={course.programGoals} />

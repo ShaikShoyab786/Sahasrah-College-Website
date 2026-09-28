@@ -27,6 +27,7 @@ export interface PublicCourse {
   primaryActionUrl: string;
   secondaryActionLabel: string;
   secondaryActionUrl: string;
+  highlightsHeading: string;
   highlights: CourseHighlight[];
   whyChoose: CourseReason[];
   overviewText: string;

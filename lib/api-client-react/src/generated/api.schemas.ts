@@ -1709,6 +1709,7 @@ export interface PublicCourse {
   primaryActionUrl: string;
   secondaryActionLabel: string;
   secondaryActionUrl: string;
+  highlightsHeading: string;
   highlights: CourseHighlight[];
   whyChoose: CourseReason[];
   overviewText: string;
@@ -1741,6 +1742,7 @@ export interface AdminCourse {
   primaryActionUrl: string;
   secondaryActionLabel: string;
   secondaryActionUrl: string;
+  highlightsHeading: string;
   highlights: CourseHighlight[];
   whyChoose: CourseReason[];
   overviewText: string;
@@ -1811,6 +1813,11 @@ export interface CourseUpdate {
      * @maxLength 500
      */
   secondaryActionUrl: string;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  highlightsHeading: string;
   /**
      * @minItems 1
      * @maxItems 8

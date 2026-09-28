@@ -63,6 +63,11 @@ export interface CourseUpdate {
      */
   secondaryActionUrl: string;
   /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  highlightsHeading: string;
+  /**
      * @minItems 1
      * @maxItems 8
      */
