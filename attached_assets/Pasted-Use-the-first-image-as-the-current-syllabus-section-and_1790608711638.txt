@@ -1,0 +1,19 @@
+Use the first image as the current syllabus section and the second as the target reference:
+
+Refine only the Syllabus / Curriculum section on each standard course detail page. Match the second attached image’s layout and style. This section should appear after Faculty and directly before the sitewide footer. Don’t add any other page sections.
+
+Layout and interaction
+Use a two-column layout on desktop: subject accordions on the left and a curriculum download panel on the right. Stack the columns cleanly on mobile.
+Add a pill-style CURRICULUM eyebrow, the heading A clear path from concepts to confidence. with “confidence” in the red brand accent, and a short explanatory intro.
+Show each course subject as a numbered accordion row, with its name, a concise keyword summary, and an expand/collapse control. Open the first subject by default; allow only one subject to be expanded at a time.
+When expanded, show the syllabus topics as keywords only, arranged in balanced columns with small red bullets. Don’t add explanatory paragraphs or leave empty space where topics should appear.
+Use course-specific subjects and topics. Don’t reuse an MPC syllabus for BiPC or other pathways.
+Create a dark navy Curriculum Guide panel with a PDF icon, heading, short description, red Download Curriculum button, and file/update metadata when available.
+Beneath the download panel, add a compact Built for Competitive Success feature grid for Comprehensive Syllabus, Exam-Oriented Focus, Structured Progression, and Regular Updates. Keep these items within the Syllabus section.
+Use the reference’s light background, restrained red accents, soft borders, rounded corners, and subtle shadows. Avoid a plain list of blue divider lines.
+Admin and PDF behavior
+Keep syllabus subjects, their order, keyword summaries, topic lists, and the curriculum PDF manageable per course through the existing course admin flow. Use the existing upload and persistence patterns. The public section must use the saved course content and the correct uploaded PDF.
+
+Remove the public-facing “replaceable sample curriculum PDF” message. Don’t show a broken or fake download button: if a course has no uploaded PDF, show a clear unavailable state or hide the download action until one is added.
+
+Check before finishing: each course displays its own syllabus, accordions work by mouse and keyboard, topic previews remain keyword-only, the PDF downloads the correct file, and the section stacks properly on mobile
