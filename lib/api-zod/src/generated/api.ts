@@ -2191,6 +2191,482 @@ export const GetCoursesResponse = zod.array(GetCoursesResponseItem)
 
 
 /**
+ * @summary Read the public All Courses page content
+ */
+export const getAllCoursesPageResponseHeroEyebrowMax = 100;
+
+export const getAllCoursesPageResponseHeroTitleMax = 180;
+
+export const getAllCoursesPageResponseHeroDescriptionMax = 600;
+
+export const getAllCoursesPageResponseHeroBackgroundImageUrlMax = 1000;
+
+export const getAllCoursesPageResponseHeroBackgroundOverlayMin = 0;
+export const getAllCoursesPageResponseHeroBackgroundOverlayMax = 90;
+
+export const getAllCoursesPageResponseHeroCalloutTitleMax = 140;
+
+export const getAllCoursesPageResponseHeroCalloutDescriptionMax = 240;
+
+export const getAllCoursesPageResponseHeroFeaturesItemIdMax = 80;
+
+export const getAllCoursesPageResponseHeroFeaturesItemTitleMax = 100;
+
+export const getAllCoursesPageResponseHeroFeaturesItemDescriptionMax = 180;
+
+export const getAllCoursesPageResponseHeroFeaturesMax = 3;
+
+export const getAllCoursesPageResponseCoursePlacementsItemDisplayOrderMax = 5;
+
+export const getAllCoursesPageResponseCoursePlacementsMax = 5;
+
+export const getAllCoursesPageResponseBatchesItemIdMax = 80;
+
+export const getAllCoursesPageResponseBatchesItemDisplayOrderMax = 20;
+
+export const getAllCoursesPageResponseBatchesItemBatchNameMax = 120;
+
+export const getAllCoursesPageResponseBatchesItemStartDateMax = 10;
+
+export const getAllCoursesPageResponseBatchesItemTargetExamMax = 120;
+
+export const getAllCoursesPageResponseBatchesItemAdmissionsStatusMax = 80;
+
+export const getAllCoursesPageResponseBatchesMax = 20;
+
+export const getAllCoursesPageResponseScheduleItemIdMax = 80;
+
+export const getAllCoursesPageResponseScheduleItemDisplayOrderMax = 20;
+
+export const getAllCoursesPageResponseScheduleItemActivityMax = 140;
+
+export const getAllCoursesPageResponseScheduleItemStartTimeMax = 5;
+
+export const getAllCoursesPageResponseScheduleItemEndTimeMax = 5;
+
+export const getAllCoursesPageResponseScheduleMax = 20;
+
+export const getAllCoursesPageResponseCtaEyebrowMax = 100;
+
+export const getAllCoursesPageResponseCtaHeadingMax = 180;
+
+export const getAllCoursesPageResponseCtaDescriptionMax = 600;
+
+export const getAllCoursesPageResponseCtaButtonLabelMax = 100;
+
+export const getAllCoursesPageResponseCtaBenefitsItemIdMax = 80;
+
+export const getAllCoursesPageResponseCtaBenefitsItemTitleMax = 100;
+
+export const getAllCoursesPageResponseCtaBenefitsItemDescriptionMax = 180;
+
+export const getAllCoursesPageResponseCtaBenefitsMax = 6;
+
+
+
+export const GetAllCoursesPageResponse = zod.object({
+  "heroEyebrow": zod.string().min(1).max(getAllCoursesPageResponseHeroEyebrowMax),
+  "heroTitle": zod.string().min(1).max(getAllCoursesPageResponseHeroTitleMax),
+  "heroDescription": zod.string().min(1).max(getAllCoursesPageResponseHeroDescriptionMax),
+  "heroBackgroundImageUrl": zod.string().max(getAllCoursesPageResponseHeroBackgroundImageUrlMax).nullable(),
+  "heroBackgroundOverlay": zod.number().int().min(getAllCoursesPageResponseHeroBackgroundOverlayMin).max(getAllCoursesPageResponseHeroBackgroundOverlayMax),
+  "heroCalloutTitle": zod.string().min(1).max(getAllCoursesPageResponseHeroCalloutTitleMax),
+  "heroCalloutDescription": zod.string().min(1).max(getAllCoursesPageResponseHeroCalloutDescriptionMax),
+  "heroFeatures": zod.array(zod.object({
+  "id": zod.string().min(1).max(getAllCoursesPageResponseHeroFeaturesItemIdMax),
+  "title": zod.string().min(1).max(getAllCoursesPageResponseHeroFeaturesItemTitleMax),
+  "description": zod.string().min(1).max(getAllCoursesPageResponseHeroFeaturesItemDescriptionMax)
+})).min(1).max(getAllCoursesPageResponseHeroFeaturesMax),
+  "featuredCourseSlug": zod.enum(['mpc', 'bipc', 'mpc-iit-jee', 'bipc-neet', 'mpc-eamcet']),
+  "coursePlacements": zod.array(zod.object({
+  "courseSlug": zod.enum(['mpc', 'bipc', 'mpc-iit-jee', 'bipc-neet', 'mpc-eamcet']),
+  "displayOrder": zod.number().int().min(1).max(getAllCoursesPageResponseCoursePlacementsItemDisplayOrderMax),
+  "isVisible": zod.boolean()
+})).min(1).max(getAllCoursesPageResponseCoursePlacementsMax),
+  "batches": zod.array(zod.object({
+  "id": zod.string().min(1).max(getAllCoursesPageResponseBatchesItemIdMax),
+  "displayOrder": zod.number().int().min(1).max(getAllCoursesPageResponseBatchesItemDisplayOrderMax),
+  "batchName": zod.string().min(1).max(getAllCoursesPageResponseBatchesItemBatchNameMax),
+  "startDate": zod.string().max(getAllCoursesPageResponseBatchesItemStartDateMax),
+  "targetExam": zod.string().min(1).max(getAllCoursesPageResponseBatchesItemTargetExamMax),
+  "admissionsStatus": zod.string().max(getAllCoursesPageResponseBatchesItemAdmissionsStatusMax)
+})).max(getAllCoursesPageResponseBatchesMax),
+  "schedule": zod.array(zod.object({
+  "id": zod.string().min(1).max(getAllCoursesPageResponseScheduleItemIdMax),
+  "displayOrder": zod.number().int().min(1).max(getAllCoursesPageResponseScheduleItemDisplayOrderMax),
+  "activity": zod.string().min(1).max(getAllCoursesPageResponseScheduleItemActivityMax),
+  "startTime": zod.string().max(getAllCoursesPageResponseScheduleItemStartTimeMax),
+  "endTime": zod.string().max(getAllCoursesPageResponseScheduleItemEndTimeMax)
+})).max(getAllCoursesPageResponseScheduleMax),
+  "ctaEyebrow": zod.string().min(1).max(getAllCoursesPageResponseCtaEyebrowMax),
+  "ctaHeading": zod.string().min(1).max(getAllCoursesPageResponseCtaHeadingMax),
+  "ctaDescription": zod.string().min(1).max(getAllCoursesPageResponseCtaDescriptionMax),
+  "ctaButtonLabel": zod.string().min(1).max(getAllCoursesPageResponseCtaButtonLabelMax),
+  "ctaBenefits": zod.array(zod.object({
+  "id": zod.string().min(1).max(getAllCoursesPageResponseCtaBenefitsItemIdMax),
+  "title": zod.string().min(1).max(getAllCoursesPageResponseCtaBenefitsItemTitleMax),
+  "description": zod.string().min(1).max(getAllCoursesPageResponseCtaBenefitsItemDescriptionMax)
+})).min(1).max(getAllCoursesPageResponseCtaBenefitsMax)
+})
+
+
+/**
+ * @summary Read editable All Courses page content
+ */
+export const getAdminAllCoursesPageResponseHeroEyebrowMax = 100;
+
+export const getAdminAllCoursesPageResponseHeroTitleMax = 180;
+
+export const getAdminAllCoursesPageResponseHeroDescriptionMax = 600;
+
+export const getAdminAllCoursesPageResponseHeroBackgroundImageUrlMax = 1000;
+
+export const getAdminAllCoursesPageResponseHeroBackgroundOverlayMin = 0;
+export const getAdminAllCoursesPageResponseHeroBackgroundOverlayMax = 90;
+
+export const getAdminAllCoursesPageResponseHeroCalloutTitleMax = 140;
+
+export const getAdminAllCoursesPageResponseHeroCalloutDescriptionMax = 240;
+
+export const getAdminAllCoursesPageResponseHeroFeaturesItemIdMax = 80;
+
+export const getAdminAllCoursesPageResponseHeroFeaturesItemTitleMax = 100;
+
+export const getAdminAllCoursesPageResponseHeroFeaturesItemDescriptionMax = 180;
+
+export const getAdminAllCoursesPageResponseHeroFeaturesMax = 3;
+
+export const getAdminAllCoursesPageResponseCoursePlacementsItemDisplayOrderMax = 5;
+
+export const getAdminAllCoursesPageResponseCoursePlacementsMax = 5;
+
+export const getAdminAllCoursesPageResponseBatchesItemIdMax = 80;
+
+export const getAdminAllCoursesPageResponseBatchesItemDisplayOrderMax = 20;
+
+export const getAdminAllCoursesPageResponseBatchesItemBatchNameMax = 120;
+
+export const getAdminAllCoursesPageResponseBatchesItemStartDateMax = 10;
+
+export const getAdminAllCoursesPageResponseBatchesItemTargetExamMax = 120;
+
+export const getAdminAllCoursesPageResponseBatchesItemAdmissionsStatusMax = 80;
+
+export const getAdminAllCoursesPageResponseBatchesMax = 20;
+
+export const getAdminAllCoursesPageResponseScheduleItemIdMax = 80;
+
+export const getAdminAllCoursesPageResponseScheduleItemDisplayOrderMax = 20;
+
+export const getAdminAllCoursesPageResponseScheduleItemActivityMax = 140;
+
+export const getAdminAllCoursesPageResponseScheduleItemStartTimeMax = 5;
+
+export const getAdminAllCoursesPageResponseScheduleItemEndTimeMax = 5;
+
+export const getAdminAllCoursesPageResponseScheduleMax = 20;
+
+export const getAdminAllCoursesPageResponseCtaEyebrowMax = 100;
+
+export const getAdminAllCoursesPageResponseCtaHeadingMax = 180;
+
+export const getAdminAllCoursesPageResponseCtaDescriptionMax = 600;
+
+export const getAdminAllCoursesPageResponseCtaButtonLabelMax = 100;
+
+export const getAdminAllCoursesPageResponseCtaBenefitsItemIdMax = 80;
+
+export const getAdminAllCoursesPageResponseCtaBenefitsItemTitleMax = 100;
+
+export const getAdminAllCoursesPageResponseCtaBenefitsItemDescriptionMax = 180;
+
+export const getAdminAllCoursesPageResponseCtaBenefitsMax = 6;
+
+
+
+export const GetAdminAllCoursesPageResponse = zod.object({
+  "heroEyebrow": zod.string().min(1).max(getAdminAllCoursesPageResponseHeroEyebrowMax),
+  "heroTitle": zod.string().min(1).max(getAdminAllCoursesPageResponseHeroTitleMax),
+  "heroDescription": zod.string().min(1).max(getAdminAllCoursesPageResponseHeroDescriptionMax),
+  "heroBackgroundImageUrl": zod.string().max(getAdminAllCoursesPageResponseHeroBackgroundImageUrlMax).nullable(),
+  "heroBackgroundOverlay": zod.number().int().min(getAdminAllCoursesPageResponseHeroBackgroundOverlayMin).max(getAdminAllCoursesPageResponseHeroBackgroundOverlayMax),
+  "heroCalloutTitle": zod.string().min(1).max(getAdminAllCoursesPageResponseHeroCalloutTitleMax),
+  "heroCalloutDescription": zod.string().min(1).max(getAdminAllCoursesPageResponseHeroCalloutDescriptionMax),
+  "heroFeatures": zod.array(zod.object({
+  "id": zod.string().min(1).max(getAdminAllCoursesPageResponseHeroFeaturesItemIdMax),
+  "title": zod.string().min(1).max(getAdminAllCoursesPageResponseHeroFeaturesItemTitleMax),
+  "description": zod.string().min(1).max(getAdminAllCoursesPageResponseHeroFeaturesItemDescriptionMax)
+})).min(1).max(getAdminAllCoursesPageResponseHeroFeaturesMax),
+  "featuredCourseSlug": zod.enum(['mpc', 'bipc', 'mpc-iit-jee', 'bipc-neet', 'mpc-eamcet']),
+  "coursePlacements": zod.array(zod.object({
+  "courseSlug": zod.enum(['mpc', 'bipc', 'mpc-iit-jee', 'bipc-neet', 'mpc-eamcet']),
+  "displayOrder": zod.number().int().min(1).max(getAdminAllCoursesPageResponseCoursePlacementsItemDisplayOrderMax),
+  "isVisible": zod.boolean()
+})).min(1).max(getAdminAllCoursesPageResponseCoursePlacementsMax),
+  "batches": zod.array(zod.object({
+  "id": zod.string().min(1).max(getAdminAllCoursesPageResponseBatchesItemIdMax),
+  "displayOrder": zod.number().int().min(1).max(getAdminAllCoursesPageResponseBatchesItemDisplayOrderMax),
+  "batchName": zod.string().min(1).max(getAdminAllCoursesPageResponseBatchesItemBatchNameMax),
+  "startDate": zod.string().max(getAdminAllCoursesPageResponseBatchesItemStartDateMax),
+  "targetExam": zod.string().min(1).max(getAdminAllCoursesPageResponseBatchesItemTargetExamMax),
+  "admissionsStatus": zod.string().max(getAdminAllCoursesPageResponseBatchesItemAdmissionsStatusMax)
+})).max(getAdminAllCoursesPageResponseBatchesMax),
+  "schedule": zod.array(zod.object({
+  "id": zod.string().min(1).max(getAdminAllCoursesPageResponseScheduleItemIdMax),
+  "displayOrder": zod.number().int().min(1).max(getAdminAllCoursesPageResponseScheduleItemDisplayOrderMax),
+  "activity": zod.string().min(1).max(getAdminAllCoursesPageResponseScheduleItemActivityMax),
+  "startTime": zod.string().max(getAdminAllCoursesPageResponseScheduleItemStartTimeMax),
+  "endTime": zod.string().max(getAdminAllCoursesPageResponseScheduleItemEndTimeMax)
+})).max(getAdminAllCoursesPageResponseScheduleMax),
+  "ctaEyebrow": zod.string().min(1).max(getAdminAllCoursesPageResponseCtaEyebrowMax),
+  "ctaHeading": zod.string().min(1).max(getAdminAllCoursesPageResponseCtaHeadingMax),
+  "ctaDescription": zod.string().min(1).max(getAdminAllCoursesPageResponseCtaDescriptionMax),
+  "ctaButtonLabel": zod.string().min(1).max(getAdminAllCoursesPageResponseCtaButtonLabelMax),
+  "ctaBenefits": zod.array(zod.object({
+  "id": zod.string().min(1).max(getAdminAllCoursesPageResponseCtaBenefitsItemIdMax),
+  "title": zod.string().min(1).max(getAdminAllCoursesPageResponseCtaBenefitsItemTitleMax),
+  "description": zod.string().min(1).max(getAdminAllCoursesPageResponseCtaBenefitsItemDescriptionMax)
+})).min(1).max(getAdminAllCoursesPageResponseCtaBenefitsMax)
+})
+
+
+/**
+ * @summary Save All Courses page content
+ */
+export const updateAllCoursesPageBodyHeroEyebrowMax = 100;
+
+export const updateAllCoursesPageBodyHeroTitleMax = 180;
+
+export const updateAllCoursesPageBodyHeroDescriptionMax = 600;
+
+export const updateAllCoursesPageBodyHeroBackgroundImageUrlMax = 1000;
+
+export const updateAllCoursesPageBodyHeroBackgroundOverlayMin = 0;
+export const updateAllCoursesPageBodyHeroBackgroundOverlayMax = 90;
+
+export const updateAllCoursesPageBodyHeroCalloutTitleMax = 140;
+
+export const updateAllCoursesPageBodyHeroCalloutDescriptionMax = 240;
+
+export const updateAllCoursesPageBodyHeroFeaturesItemIdMax = 80;
+
+export const updateAllCoursesPageBodyHeroFeaturesItemTitleMax = 100;
+
+export const updateAllCoursesPageBodyHeroFeaturesItemDescriptionMax = 180;
+
+export const updateAllCoursesPageBodyHeroFeaturesMax = 3;
+
+export const updateAllCoursesPageBodyCoursePlacementsItemDisplayOrderMax = 5;
+
+export const updateAllCoursesPageBodyCoursePlacementsMax = 5;
+
+export const updateAllCoursesPageBodyBatchesItemIdMax = 80;
+
+export const updateAllCoursesPageBodyBatchesItemDisplayOrderMax = 20;
+
+export const updateAllCoursesPageBodyBatchesItemBatchNameMax = 120;
+
+export const updateAllCoursesPageBodyBatchesItemStartDateMax = 10;
+
+export const updateAllCoursesPageBodyBatchesItemTargetExamMax = 120;
+
+export const updateAllCoursesPageBodyBatchesItemAdmissionsStatusMax = 80;
+
+export const updateAllCoursesPageBodyBatchesMax = 20;
+
+export const updateAllCoursesPageBodyScheduleItemIdMax = 80;
+
+export const updateAllCoursesPageBodyScheduleItemDisplayOrderMax = 20;
+
+export const updateAllCoursesPageBodyScheduleItemActivityMax = 140;
+
+export const updateAllCoursesPageBodyScheduleItemStartTimeMax = 5;
+
+export const updateAllCoursesPageBodyScheduleItemEndTimeMax = 5;
+
+export const updateAllCoursesPageBodyScheduleMax = 20;
+
+export const updateAllCoursesPageBodyCtaEyebrowMax = 100;
+
+export const updateAllCoursesPageBodyCtaHeadingMax = 180;
+
+export const updateAllCoursesPageBodyCtaDescriptionMax = 600;
+
+export const updateAllCoursesPageBodyCtaButtonLabelMax = 100;
+
+export const updateAllCoursesPageBodyCtaBenefitsItemIdMax = 80;
+
+export const updateAllCoursesPageBodyCtaBenefitsItemTitleMax = 100;
+
+export const updateAllCoursesPageBodyCtaBenefitsItemDescriptionMax = 180;
+
+export const updateAllCoursesPageBodyCtaBenefitsMax = 6;
+
+
+
+export const UpdateAllCoursesPageBody = zod.object({
+  "heroEyebrow": zod.string().min(1).max(updateAllCoursesPageBodyHeroEyebrowMax),
+  "heroTitle": zod.string().min(1).max(updateAllCoursesPageBodyHeroTitleMax),
+  "heroDescription": zod.string().min(1).max(updateAllCoursesPageBodyHeroDescriptionMax),
+  "heroBackgroundImageUrl": zod.string().max(updateAllCoursesPageBodyHeroBackgroundImageUrlMax).nullable(),
+  "heroBackgroundOverlay": zod.number().int().min(updateAllCoursesPageBodyHeroBackgroundOverlayMin).max(updateAllCoursesPageBodyHeroBackgroundOverlayMax),
+  "heroCalloutTitle": zod.string().min(1).max(updateAllCoursesPageBodyHeroCalloutTitleMax),
+  "heroCalloutDescription": zod.string().min(1).max(updateAllCoursesPageBodyHeroCalloutDescriptionMax),
+  "heroFeatures": zod.array(zod.object({
+  "id": zod.string().min(1).max(updateAllCoursesPageBodyHeroFeaturesItemIdMax),
+  "title": zod.string().min(1).max(updateAllCoursesPageBodyHeroFeaturesItemTitleMax),
+  "description": zod.string().min(1).max(updateAllCoursesPageBodyHeroFeaturesItemDescriptionMax)
+})).min(1).max(updateAllCoursesPageBodyHeroFeaturesMax),
+  "featuredCourseSlug": zod.enum(['mpc', 'bipc', 'mpc-iit-jee', 'bipc-neet', 'mpc-eamcet']),
+  "coursePlacements": zod.array(zod.object({
+  "courseSlug": zod.enum(['mpc', 'bipc', 'mpc-iit-jee', 'bipc-neet', 'mpc-eamcet']),
+  "displayOrder": zod.number().int().min(1).max(updateAllCoursesPageBodyCoursePlacementsItemDisplayOrderMax),
+  "isVisible": zod.boolean()
+})).min(1).max(updateAllCoursesPageBodyCoursePlacementsMax),
+  "batches": zod.array(zod.object({
+  "id": zod.string().min(1).max(updateAllCoursesPageBodyBatchesItemIdMax),
+  "displayOrder": zod.number().int().min(1).max(updateAllCoursesPageBodyBatchesItemDisplayOrderMax),
+  "batchName": zod.string().min(1).max(updateAllCoursesPageBodyBatchesItemBatchNameMax),
+  "startDate": zod.string().max(updateAllCoursesPageBodyBatchesItemStartDateMax),
+  "targetExam": zod.string().min(1).max(updateAllCoursesPageBodyBatchesItemTargetExamMax),
+  "admissionsStatus": zod.string().max(updateAllCoursesPageBodyBatchesItemAdmissionsStatusMax)
+})).max(updateAllCoursesPageBodyBatchesMax),
+  "schedule": zod.array(zod.object({
+  "id": zod.string().min(1).max(updateAllCoursesPageBodyScheduleItemIdMax),
+  "displayOrder": zod.number().int().min(1).max(updateAllCoursesPageBodyScheduleItemDisplayOrderMax),
+  "activity": zod.string().min(1).max(updateAllCoursesPageBodyScheduleItemActivityMax),
+  "startTime": zod.string().max(updateAllCoursesPageBodyScheduleItemStartTimeMax),
+  "endTime": zod.string().max(updateAllCoursesPageBodyScheduleItemEndTimeMax)
+})).max(updateAllCoursesPageBodyScheduleMax),
+  "ctaEyebrow": zod.string().min(1).max(updateAllCoursesPageBodyCtaEyebrowMax),
+  "ctaHeading": zod.string().min(1).max(updateAllCoursesPageBodyCtaHeadingMax),
+  "ctaDescription": zod.string().min(1).max(updateAllCoursesPageBodyCtaDescriptionMax),
+  "ctaButtonLabel": zod.string().min(1).max(updateAllCoursesPageBodyCtaButtonLabelMax),
+  "ctaBenefits": zod.array(zod.object({
+  "id": zod.string().min(1).max(updateAllCoursesPageBodyCtaBenefitsItemIdMax),
+  "title": zod.string().min(1).max(updateAllCoursesPageBodyCtaBenefitsItemTitleMax),
+  "description": zod.string().min(1).max(updateAllCoursesPageBodyCtaBenefitsItemDescriptionMax)
+})).min(1).max(updateAllCoursesPageBodyCtaBenefitsMax)
+})
+
+export const updateAllCoursesPageResponseHeroEyebrowMax = 100;
+
+export const updateAllCoursesPageResponseHeroTitleMax = 180;
+
+export const updateAllCoursesPageResponseHeroDescriptionMax = 600;
+
+export const updateAllCoursesPageResponseHeroBackgroundImageUrlMax = 1000;
+
+export const updateAllCoursesPageResponseHeroBackgroundOverlayMin = 0;
+export const updateAllCoursesPageResponseHeroBackgroundOverlayMax = 90;
+
+export const updateAllCoursesPageResponseHeroCalloutTitleMax = 140;
+
+export const updateAllCoursesPageResponseHeroCalloutDescriptionMax = 240;
+
+export const updateAllCoursesPageResponseHeroFeaturesItemIdMax = 80;
+
+export const updateAllCoursesPageResponseHeroFeaturesItemTitleMax = 100;
+
+export const updateAllCoursesPageResponseHeroFeaturesItemDescriptionMax = 180;
+
+export const updateAllCoursesPageResponseHeroFeaturesMax = 3;
+
+export const updateAllCoursesPageResponseCoursePlacementsItemDisplayOrderMax = 5;
+
+export const updateAllCoursesPageResponseCoursePlacementsMax = 5;
+
+export const updateAllCoursesPageResponseBatchesItemIdMax = 80;
+
+export const updateAllCoursesPageResponseBatchesItemDisplayOrderMax = 20;
+
+export const updateAllCoursesPageResponseBatchesItemBatchNameMax = 120;
+
+export const updateAllCoursesPageResponseBatchesItemStartDateMax = 10;
+
+export const updateAllCoursesPageResponseBatchesItemTargetExamMax = 120;
+
+export const updateAllCoursesPageResponseBatchesItemAdmissionsStatusMax = 80;
+
+export const updateAllCoursesPageResponseBatchesMax = 20;
+
+export const updateAllCoursesPageResponseScheduleItemIdMax = 80;
+
+export const updateAllCoursesPageResponseScheduleItemDisplayOrderMax = 20;
+
+export const updateAllCoursesPageResponseScheduleItemActivityMax = 140;
+
+export const updateAllCoursesPageResponseScheduleItemStartTimeMax = 5;
+
+export const updateAllCoursesPageResponseScheduleItemEndTimeMax = 5;
+
+export const updateAllCoursesPageResponseScheduleMax = 20;
+
+export const updateAllCoursesPageResponseCtaEyebrowMax = 100;
+
+export const updateAllCoursesPageResponseCtaHeadingMax = 180;
+
+export const updateAllCoursesPageResponseCtaDescriptionMax = 600;
+
+export const updateAllCoursesPageResponseCtaButtonLabelMax = 100;
+
+export const updateAllCoursesPageResponseCtaBenefitsItemIdMax = 80;
+
+export const updateAllCoursesPageResponseCtaBenefitsItemTitleMax = 100;
+
+export const updateAllCoursesPageResponseCtaBenefitsItemDescriptionMax = 180;
+
+export const updateAllCoursesPageResponseCtaBenefitsMax = 6;
+
+
+
+export const UpdateAllCoursesPageResponse = zod.object({
+  "heroEyebrow": zod.string().min(1).max(updateAllCoursesPageResponseHeroEyebrowMax),
+  "heroTitle": zod.string().min(1).max(updateAllCoursesPageResponseHeroTitleMax),
+  "heroDescription": zod.string().min(1).max(updateAllCoursesPageResponseHeroDescriptionMax),
+  "heroBackgroundImageUrl": zod.string().max(updateAllCoursesPageResponseHeroBackgroundImageUrlMax).nullable(),
+  "heroBackgroundOverlay": zod.number().int().min(updateAllCoursesPageResponseHeroBackgroundOverlayMin).max(updateAllCoursesPageResponseHeroBackgroundOverlayMax),
+  "heroCalloutTitle": zod.string().min(1).max(updateAllCoursesPageResponseHeroCalloutTitleMax),
+  "heroCalloutDescription": zod.string().min(1).max(updateAllCoursesPageResponseHeroCalloutDescriptionMax),
+  "heroFeatures": zod.array(zod.object({
+  "id": zod.string().min(1).max(updateAllCoursesPageResponseHeroFeaturesItemIdMax),
+  "title": zod.string().min(1).max(updateAllCoursesPageResponseHeroFeaturesItemTitleMax),
+  "description": zod.string().min(1).max(updateAllCoursesPageResponseHeroFeaturesItemDescriptionMax)
+})).min(1).max(updateAllCoursesPageResponseHeroFeaturesMax),
+  "featuredCourseSlug": zod.enum(['mpc', 'bipc', 'mpc-iit-jee', 'bipc-neet', 'mpc-eamcet']),
+  "coursePlacements": zod.array(zod.object({
+  "courseSlug": zod.enum(['mpc', 'bipc', 'mpc-iit-jee', 'bipc-neet', 'mpc-eamcet']),
+  "displayOrder": zod.number().int().min(1).max(updateAllCoursesPageResponseCoursePlacementsItemDisplayOrderMax),
+  "isVisible": zod.boolean()
+})).min(1).max(updateAllCoursesPageResponseCoursePlacementsMax),
+  "batches": zod.array(zod.object({
+  "id": zod.string().min(1).max(updateAllCoursesPageResponseBatchesItemIdMax),
+  "displayOrder": zod.number().int().min(1).max(updateAllCoursesPageResponseBatchesItemDisplayOrderMax),
+  "batchName": zod.string().min(1).max(updateAllCoursesPageResponseBatchesItemBatchNameMax),
+  "startDate": zod.string().max(updateAllCoursesPageResponseBatchesItemStartDateMax),
+  "targetExam": zod.string().min(1).max(updateAllCoursesPageResponseBatchesItemTargetExamMax),
+  "admissionsStatus": zod.string().max(updateAllCoursesPageResponseBatchesItemAdmissionsStatusMax)
+})).max(updateAllCoursesPageResponseBatchesMax),
+  "schedule": zod.array(zod.object({
+  "id": zod.string().min(1).max(updateAllCoursesPageResponseScheduleItemIdMax),
+  "displayOrder": zod.number().int().min(1).max(updateAllCoursesPageResponseScheduleItemDisplayOrderMax),
+  "activity": zod.string().min(1).max(updateAllCoursesPageResponseScheduleItemActivityMax),
+  "startTime": zod.string().max(updateAllCoursesPageResponseScheduleItemStartTimeMax),
+  "endTime": zod.string().max(updateAllCoursesPageResponseScheduleItemEndTimeMax)
+})).max(updateAllCoursesPageResponseScheduleMax),
+  "ctaEyebrow": zod.string().min(1).max(updateAllCoursesPageResponseCtaEyebrowMax),
+  "ctaHeading": zod.string().min(1).max(updateAllCoursesPageResponseCtaHeadingMax),
+  "ctaDescription": zod.string().min(1).max(updateAllCoursesPageResponseCtaDescriptionMax),
+  "ctaButtonLabel": zod.string().min(1).max(updateAllCoursesPageResponseCtaButtonLabelMax),
+  "ctaBenefits": zod.array(zod.object({
+  "id": zod.string().min(1).max(updateAllCoursesPageResponseCtaBenefitsItemIdMax),
+  "title": zod.string().min(1).max(updateAllCoursesPageResponseCtaBenefitsItemTitleMax),
+  "description": zod.string().min(1).max(updateAllCoursesPageResponseCtaBenefitsItemDescriptionMax)
+})).min(1).max(updateAllCoursesPageResponseCtaBenefitsMax)
+})
+
+
+/**
  * @summary Read the public Courses mega menu
  */
 export const getCoursesMegaMenuResponseEyebrowMax = 100;

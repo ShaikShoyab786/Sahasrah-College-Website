@@ -45,6 +45,7 @@ import type {
   AdminFacultyMember,
   AdminResultsLibrary,
   AdminResultsLibraryInput,
+  AllCoursesPageSettings,
   AuthSession,
   CallbackPopupSettings,
   ContactEnquiry,
@@ -4993,6 +4994,248 @@ export function useGetCourses<TData = Awaited<ReturnType<typeof getCourses>>, TE
 
 
 
+
+export const getGetAllCoursesPageUrl = () => {
+
+
+
+
+  return `/api/all-courses-page`
+}
+
+/**
+ * @summary Read the public All Courses page content
+ */
+export const getAllCoursesPage = async ( options?: Parameters<typeof customFetch>[1]): Promise<AllCoursesPageSettings> => {
+
+  return customFetch<AllCoursesPageSettings>(getGetAllCoursesPageUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAllCoursesPageQueryKey = () => {
+    return [
+    `/api/all-courses-page`
+    ] as const;
+    }
+
+
+export const getGetAllCoursesPageQueryOptions = <TData = Awaited<ReturnType<typeof getAllCoursesPage>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAllCoursesPage>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAllCoursesPageQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAllCoursesPage>>> = ({ signal }) => getAllCoursesPage({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAllCoursesPage>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetAllCoursesPageQueryResult = NonNullable<Awaited<ReturnType<typeof getAllCoursesPage>>>
+export type GetAllCoursesPageQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Read the public All Courses page content
+ */
+
+export function useGetAllCoursesPage<TData = Awaited<ReturnType<typeof getAllCoursesPage>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAllCoursesPage>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetAllCoursesPageQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetAdminAllCoursesPageUrl = () => {
+
+
+
+
+  return `/api/admin/all-courses-page`
+}
+
+/**
+ * @summary Read editable All Courses page content
+ */
+export const getAdminAllCoursesPage = async ( options?: Parameters<typeof customFetch>[1]): Promise<AllCoursesPageSettings> => {
+
+  return customFetch<AllCoursesPageSettings>(getGetAdminAllCoursesPageUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAdminAllCoursesPageQueryKey = () => {
+    return [
+    `/api/admin/all-courses-page`
+    ] as const;
+    }
+
+
+export const getGetAdminAllCoursesPageQueryOptions = <TData = Awaited<ReturnType<typeof getAdminAllCoursesPage>>, TError = ErrorType<ErrorEnvelope>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminAllCoursesPage>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAdminAllCoursesPageQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdminAllCoursesPage>>> = ({ signal }) => getAdminAllCoursesPage({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAdminAllCoursesPage>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetAdminAllCoursesPageQueryResult = NonNullable<Awaited<ReturnType<typeof getAdminAllCoursesPage>>>
+export type GetAdminAllCoursesPageQueryError = ErrorType<ErrorEnvelope>
+
+
+/**
+ * @summary Read editable All Courses page content
+ */
+
+export function useGetAdminAllCoursesPage<TData = Awaited<ReturnType<typeof getAdminAllCoursesPage>>, TError = ErrorType<ErrorEnvelope>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminAllCoursesPage>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetAdminAllCoursesPageQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getUpdateAllCoursesPageUrl = () => {
+
+
+
+
+  return `/api/admin/all-courses-page`
+}
+
+/**
+ * @summary Save All Courses page content
+ */
+export const updateAllCoursesPage = async (allCoursesPageSettings: AllCoursesPageSettings, options?: Parameters<typeof customFetch>[1]): Promise<AllCoursesPageSettings> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<AllCoursesPageSettings>(getUpdateAllCoursesPageUrl(),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(allCoursesPageSettings)
+  }
+);}
+
+
+
+
+
+export const getUpdateAllCoursesPageMutationKey = () => ['updateAllCoursesPage'] as const;
+
+export const getUpdateAllCoursesPageMutationOptions = <TError = ErrorType<ErrorEnvelope>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAllCoursesPage>>, TError,UpdateAllCoursesPageMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateAllCoursesPage>>, TError,UpdateAllCoursesPageMutationVariables, TContext> => {
+
+const mutationKey = getUpdateAllCoursesPageMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateAllCoursesPage>>, UpdateAllCoursesPageMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  updateAllCoursesPage(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateAllCoursesPageMutationResult = NonNullable<Awaited<ReturnType<typeof updateAllCoursesPage>>>
+    export type UpdateAllCoursesPageMutationBody = BodyType<AllCoursesPageSettings>
+    export type UpdateAllCoursesPageMutationError = ErrorType<ErrorEnvelope>
+    export type UpdateAllCoursesPageMutationVariables = {data: BodyType<AllCoursesPageSettings>}
+
+    /**
+ * @summary Save All Courses page content
+ */
+export const useUpdateAllCoursesPage = <TError = ErrorType<ErrorEnvelope>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAllCoursesPage>>, TError,UpdateAllCoursesPageMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateAllCoursesPage>>,
+        TError,
+        UpdateAllCoursesPageMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateAllCoursesPageMutationOptions(options));
+    }
 
 export const getGetCoursesMegaMenuUrl = () => {
 

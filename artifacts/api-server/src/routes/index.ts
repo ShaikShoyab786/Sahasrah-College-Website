@@ -9,6 +9,7 @@ import resultsRouter from "./results";
 import uploadsRouter from "./uploads";
 import contactRouter from "./contact";
 import coursesMegaMenuRouter from "./courses-mega-menu";
+import allCoursesPageRouter from "./all-courses-page";
 
 const router: IRouter = Router();
 
@@ -18,6 +19,7 @@ router.use(contentRouter);
 router.use(facultyRouter);
 router.use(coursesRouter);
 router.use(coursesMegaMenuRouter);
+router.use(allCoursesPageRouter);
 router.use(galleryRouter);
 router.use(resultsRouter);
 router.use(contactRouter);

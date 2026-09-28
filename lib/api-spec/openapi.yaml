@@ -1294,6 +1294,65 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/CourseSummary"
+  /all-courses-page:
+    get:
+      tags: [Courses Page]
+      operationId: getAllCoursesPage
+      summary: Read the public All Courses page content
+      responses:
+        "200":
+          description: Saved All Courses page content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AllCoursesPageSettings"
+  /admin/all-courses-page:
+    get:
+      tags: [Courses Page]
+      operationId: getAdminAllCoursesPage
+      summary: Read editable All Courses page content
+      responses:
+        "200":
+          description: Editable All Courses page content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AllCoursesPageSettings"
+        "401":
+          description: Admin authentication required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+    put:
+      tags: [Courses Page]
+      operationId: updateAllCoursesPage
+      summary: Save All Courses page content
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AllCoursesPageSettings"
+      responses:
+        "200":
+          description: Saved All Courses page content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AllCoursesPageSettings"
+        "400":
+          description: Invalid All Courses page content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          description: Admin authentication required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
   /courses-mega-menu:
     get:
       tags: [Mega Menus]
@@ -4667,6 +4726,198 @@ components:
     CourseSlug:
       type: string
       enum: [mpc, bipc, mpc-iit-jee, bipc-neet, mpc-eamcet]
+
+    AllCoursesPageFeature:
+      type: object
+      properties:
+        id:
+          type: string
+          minLength: 1
+          maxLength: 80
+        title:
+          type: string
+          minLength: 1
+          maxLength: 100
+        description:
+          type: string
+          minLength: 1
+          maxLength: 180
+      required: [id, title, description]
+
+    AllCoursesCoursePlacement:
+      type: object
+      properties:
+        courseSlug:
+          $ref: "#/components/schemas/CourseSlug"
+        displayOrder:
+          type: integer
+          minimum: 1
+          maximum: 5
+        isVisible:
+          type: boolean
+      required: [courseSlug, displayOrder, isVisible]
+
+    AllCoursesBatch:
+      type: object
+      properties:
+        id:
+          type: string
+          minLength: 1
+          maxLength: 80
+        displayOrder:
+          type: integer
+          minimum: 1
+          maximum: 20
+        batchName:
+          type: string
+          minLength: 1
+          maxLength: 120
+        startDate:
+          type: string
+          maxLength: 10
+        targetExam:
+          type: string
+          minLength: 1
+          maxLength: 120
+        admissionsStatus:
+          type: string
+          maxLength: 80
+      required: [id, displayOrder, batchName, startDate, targetExam, admissionsStatus]
+
+    AllCoursesScheduleItem:
+      type: object
+      properties:
+        id:
+          type: string
+          minLength: 1
+          maxLength: 80
+        displayOrder:
+          type: integer
+          minimum: 1
+          maximum: 20
+        activity:
+          type: string
+          minLength: 1
+          maxLength: 140
+        startTime:
+          type: string
+          maxLength: 5
+        endTime:
+          type: string
+          maxLength: 5
+      required: [id, displayOrder, activity, startTime, endTime]
+
+    AllCoursesBenefit:
+      type: object
+      properties:
+        id:
+          type: string
+          minLength: 1
+          maxLength: 80
+        title:
+          type: string
+          minLength: 1
+          maxLength: 100
+        description:
+          type: string
+          minLength: 1
+          maxLength: 180
+      required: [id, title, description]
+
+    AllCoursesPageSettings:
+      type: object
+      properties:
+        heroEyebrow:
+          type: string
+          minLength: 1
+          maxLength: 100
+        heroTitle:
+          type: string
+          minLength: 1
+          maxLength: 180
+        heroDescription:
+          type: string
+          minLength: 1
+          maxLength: 600
+        heroBackgroundImageUrl:
+          type: ["string", "null"]
+          maxLength: 1000
+        heroBackgroundOverlay:
+          type: integer
+          minimum: 0
+          maximum: 90
+        heroCalloutTitle:
+          type: string
+          minLength: 1
+          maxLength: 140
+        heroCalloutDescription:
+          type: string
+          minLength: 1
+          maxLength: 240
+        heroFeatures:
+          type: array
+          minItems: 1
+          maxItems: 3
+          items:
+            $ref: "#/components/schemas/AllCoursesPageFeature"
+        featuredCourseSlug:
+          $ref: "#/components/schemas/CourseSlug"
+        coursePlacements:
+          type: array
+          minItems: 1
+          maxItems: 5
+          items:
+            $ref: "#/components/schemas/AllCoursesCoursePlacement"
+        batches:
+          type: array
+          maxItems: 20
+          items:
+            $ref: "#/components/schemas/AllCoursesBatch"
+        schedule:
+          type: array
+          maxItems: 20
+          items:
+            $ref: "#/components/schemas/AllCoursesScheduleItem"
+        ctaEyebrow:
+          type: string
+          minLength: 1
+          maxLength: 100
+        ctaHeading:
+          type: string
+          minLength: 1
+          maxLength: 180
+        ctaDescription:
+          type: string
+          minLength: 1
+          maxLength: 600
+        ctaButtonLabel:
+          type: string
+          minLength: 1
+          maxLength: 100
+        ctaBenefits:
+          type: array
+          minItems: 1
+          maxItems: 6
+          items:
+            $ref: "#/components/schemas/AllCoursesBenefit"
+      required:
+        - heroEyebrow
+        - heroTitle
+        - heroDescription
+        - heroBackgroundImageUrl
+        - heroBackgroundOverlay
+        - heroCalloutTitle
+        - heroCalloutDescription
+        - heroFeatures
+        - featuredCourseSlug
+        - coursePlacements
+        - batches
+        - schedule
+        - ctaEyebrow
+        - ctaHeading
+        - ctaDescription
+        - ctaButtonLabel
+        - ctaBenefits
 
     CourseHighlight:
       type: object

@@ -37,6 +37,7 @@ import { AdminContact, AdminContactEnquiries } from '@/pages/admin-contact';
 import AdminGallery from '@/pages/admin-gallery';
 import AdminFaculty from '@/pages/admin-faculty';
 import AdminCourses from '@/pages/admin-courses';
+import AdminAllCourses from '@/pages/admin-all-courses';
 import Courses from '@/pages/courses';
 import CourseDetail from '@/pages/course-detail';
 import IntegratedCourses from '@/pages/integrated-courses';
@@ -154,6 +155,9 @@ function Router() {
         </Route>
         <Route path="/admin/pages/courses">
           <AdminGuard><AdminCourses /></AdminGuard>
+        </Route>
+        <Route path="/admin/pages/all-courses">
+          <AdminGuard><AdminAllCourses /></AdminGuard>
         </Route>
         <Route path="/admin">
           <AdminGuard><AdminOverview /></AdminGuard>

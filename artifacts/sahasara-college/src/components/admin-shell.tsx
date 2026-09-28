@@ -81,12 +81,13 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
   const galleryPageActive = location.startsWith('/admin/pages/gallery');
   const facultyPageActive = location.startsWith('/admin/pages/faculty');
   const coursesPageActive = location.startsWith('/admin/pages/courses');
+  const allCoursesPageActive = location.startsWith('/admin/pages/all-courses');
   const resultsPageActive = location.startsWith('/admin/pages/results') || location.startsWith('/admin/results');
   const nestedHomeRoute = heroActive || aboutActive || liveUpdatesActive || statisticsActive || favoriteTopicsActive || resultsActive || ribbonActive || testimonialsActive || facultyActive || galleryActive || knowledgeHubActive || admissionsFaqActive || finalCtaActive;
   const nestedAboutRoute = aboutHeroActive || aboutStoryActive || chairmanActive || principlesActive || parentChoiceActive || leadershipActive || campusHighlightsActive || achievementsActive || faqActive || admissionCtaActive;
   const nestedResultsRoute = resultsPageActive;
   const nestedFacultyRoute = facultyPageActive;
-  const nestedCoursesRoute = coursesPageActive;
+  const nestedCoursesRoute = coursesPageActive || allCoursesPageActive;
   const [pagesOpen, setPagesOpen] = useState(false);
   const [homeOpen, setHomeOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
@@ -303,6 +304,7 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
                 </button>
                 {coursesOpen && (
                   <div className="mt-1">
+                    <PageSectionLink href="/admin/pages/all-courses" id="admin-all-courses" label="All Courses" active={allCoursesPageActive} onSelect={() => { setActiveAdminSection(''); setOpen(false); }} />
                     <PageSectionLink href="/admin/pages/courses#admin-courses-hero" id="admin-courses-hero" label="Hero" active={coursesPageActive && activeAdminSection === 'admin-courses-hero'} onSelect={() => { setActiveAdminSection('admin-courses-hero'); setOpen(false); }} />
                     <PageSectionLink href="/admin/pages/courses#admin-courses-highlights" id="admin-courses-highlights" label="Quick Course Highlights" active={coursesPageActive && activeAdminSection === 'admin-courses-highlights'} onSelect={() => { setActiveAdminSection('admin-courses-highlights'); setOpen(false); }} />
                     <PageSectionLink href="/admin/pages/courses#admin-courses-why-choose" id="admin-courses-why-choose" label="Why Choose This Pathway" active={coursesPageActive && activeAdminSection === 'admin-courses-why-choose'} onSelect={() => { setActiveAdminSection('admin-courses-why-choose'); setOpen(false); }} />

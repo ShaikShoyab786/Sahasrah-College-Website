@@ -1405,6 +1405,179 @@ export const CourseSlug = {
   'mpc-eamcet': 'mpc-eamcet',
 } as const;
 
+export interface AllCoursesPageFeature {
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  id: string;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  title: string;
+  /**
+     * @minLength 1
+     * @maxLength 180
+     */
+  description: string;
+}
+
+export interface AllCoursesCoursePlacement {
+  courseSlug: CourseSlug;
+  /**
+     * @minimum 1
+     * @maximum 5
+     */
+  displayOrder: number;
+  isVisible: boolean;
+}
+
+export interface AllCoursesBatch {
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  id: string;
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  displayOrder: number;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  batchName: string;
+  /** @maxLength 10 */
+  startDate: string;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  targetExam: string;
+  /** @maxLength 80 */
+  admissionsStatus: string;
+}
+
+export interface AllCoursesScheduleItem {
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  id: string;
+  /**
+     * @minimum 1
+     * @maximum 20
+     */
+  displayOrder: number;
+  /**
+     * @minLength 1
+     * @maxLength 140
+     */
+  activity: string;
+  /** @maxLength 5 */
+  startTime: string;
+  /** @maxLength 5 */
+  endTime: string;
+}
+
+export interface AllCoursesBenefit {
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  id: string;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  title: string;
+  /**
+     * @minLength 1
+     * @maxLength 180
+     */
+  description: string;
+}
+
+export interface AllCoursesPageSettings {
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  heroEyebrow: string;
+  /**
+     * @minLength 1
+     * @maxLength 180
+     */
+  heroTitle: string;
+  /**
+     * @minLength 1
+     * @maxLength 600
+     */
+  heroDescription: string;
+  /**
+     * @maxLength 1000
+     * @nullable
+     */
+  heroBackgroundImageUrl: string | null;
+  /**
+     * @minimum 0
+     * @maximum 90
+     */
+  heroBackgroundOverlay: number;
+  /**
+     * @minLength 1
+     * @maxLength 140
+     */
+  heroCalloutTitle: string;
+  /**
+     * @minLength 1
+     * @maxLength 240
+     */
+  heroCalloutDescription: string;
+  /**
+     * @minItems 1
+     * @maxItems 3
+     */
+  heroFeatures: AllCoursesPageFeature[];
+  featuredCourseSlug: CourseSlug;
+  /**
+     * @minItems 1
+     * @maxItems 5
+     */
+  coursePlacements: AllCoursesCoursePlacement[];
+  /** @maxItems 20 */
+  batches: AllCoursesBatch[];
+  /** @maxItems 20 */
+  schedule: AllCoursesScheduleItem[];
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  ctaEyebrow: string;
+  /**
+     * @minLength 1
+     * @maxLength 180
+     */
+  ctaHeading: string;
+  /**
+     * @minLength 1
+     * @maxLength 600
+     */
+  ctaDescription: string;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  ctaButtonLabel: string;
+  /**
+     * @minItems 1
+     * @maxItems 6
+     */
+  ctaBenefits: AllCoursesBenefit[];
+}
+
 export interface CourseHighlight {
   /**
      * @minLength 1
