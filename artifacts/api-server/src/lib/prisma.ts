@@ -1,11 +1,11 @@
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 import {
   DEFAULT_CONTACT_COURSE_OPTIONS,
   isLegacyCollapsedDefaultCourseOptions,
   parseStoredContactCourseOptions,
 } from "./contact-course-options";
 import { homepagePreviewCopyDefaults } from "./homepage-preview-copy-defaults";
-import { COURSE_SEEDS } from "./course-content";
+import { COURSE_SEEDS, normalizeCourseHighlights, type CourseHighlight } from "./course-content";
 import { DEFAULT_COURSES_MEGA_MENU } from "./courses-mega-menu-content";
 
 const LEGACY_COURSE_ACTIONS = [
@@ -227,6 +227,55 @@ async function backfillCollegeNameTypo() {
   }
 }
 
+function areCourseHighlightsNormalized(value: unknown, expected: CourseHighlight[]): boolean {
+  return Array.isArray(value) &&
+    value.length === expected.length &&
+    value.every((item, index) => {
+      if (typeof item !== "object" || item === null || Array.isArray(item)) return false;
+      const highlight = item as Record<string, unknown>;
+      return highlight.category === expected[index].category &&
+        highlight.title === expected[index].title &&
+        highlight.description === expected[index].description &&
+        highlight.displayOrder === expected[index].displayOrder;
+    });
+}
+
+async function backfillCourseHighlights() {
+  for (const seed of COURSE_SEEDS) {
+    const course = await prisma.course.findUnique({
+      where: { slug: seed.slug },
+      select: {
+        highlightsEyebrow: true,
+        highlightsHeading: true,
+        highlightsIntroduction: true,
+        highlights: true,
+      },
+    });
+    if (!course) continue;
+
+    const highlights = normalizeCourseHighlights(course.highlights, seed.highlights);
+    const highlightsEyebrow = course.highlightsEyebrow.trim() || seed.highlightsEyebrow;
+    const highlightsHeading = course.highlightsHeading.trim() || "Quick Course Highlights";
+    const highlightsIntroduction = course.highlightsIntroduction.trim() || seed.highlightsIntroduction;
+    if (
+      !areCourseHighlightsNormalized(course.highlights, highlights) ||
+      highlightsEyebrow !== course.highlightsEyebrow ||
+      highlightsHeading !== course.highlightsHeading ||
+      highlightsIntroduction !== course.highlightsIntroduction
+    ) {
+      await prisma.course.update({
+        where: { slug: seed.slug },
+        data: {
+          highlightsEyebrow,
+          highlightsHeading,
+          highlightsIntroduction,
+          highlights: highlights as unknown as Prisma.InputJsonValue,
+        },
+      });
+    }
+  }
+}
+
 export async function initializeDatabase() {
   await prisma.$connect();
   await ensureAlumniStorySchema();
@@ -240,6 +289,7 @@ export async function initializeDatabase() {
       create: course,
     });
   }
+  await backfillCourseHighlights();
 
   for (const legacy of LEGACY_COURSE_ACTIONS) {
     await prisma.course.updateMany({

@@ -11,12 +11,20 @@ export interface CourseHighlight {
      * @minLength 1
      * @maxLength 80
      */
-  label: string;
+  category: string;
   /**
      * @minLength 1
      * @maxLength 180
      */
-  value: string;
-  /** @maxLength 500 */
+  title: string;
+  /**
+     * @minLength 1
+     * @maxLength 500
+     */
   description: string;
+  /**
+     * @minimum 1
+     * @maximum 4
+     */
+  displayOrder: number;
 }

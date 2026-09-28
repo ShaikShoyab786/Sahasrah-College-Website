@@ -2792,11 +2792,16 @@ export const GetCourseBySlugParams = zod.object({
   "slug": zod.enum(['mpc', 'bipc', 'mpc-iit-jee', 'bipc-neet', 'mpc-eamcet'])
 })
 
-export const getCourseBySlugResponseHighlightsItemLabelMax = 80;
+export const getCourseBySlugResponseHighlightsItemCategoryMax = 80;
 
-export const getCourseBySlugResponseHighlightsItemValueMax = 180;
+export const getCourseBySlugResponseHighlightsItemTitleMax = 180;
 
 export const getCourseBySlugResponseHighlightsItemDescriptionMax = 500;
+
+export const getCourseBySlugResponseHighlightsItemDisplayOrderMax = 4;
+
+export const getCourseBySlugResponseHighlightsMin = 4;
+export const getCourseBySlugResponseHighlightsMax = 4;
 
 export const getCourseBySlugResponseWhyChooseItemTitleMax = 140;
 
@@ -2825,12 +2830,15 @@ export const GetCourseBySlugResponse = zod.object({
   "primaryActionUrl": zod.string(),
   "secondaryActionLabel": zod.string(),
   "secondaryActionUrl": zod.string(),
+  "highlightsEyebrow": zod.string(),
   "highlightsHeading": zod.string(),
+  "highlightsIntroduction": zod.string(),
   "highlights": zod.array(zod.object({
-  "label": zod.string().min(1).max(getCourseBySlugResponseHighlightsItemLabelMax),
-  "value": zod.string().min(1).max(getCourseBySlugResponseHighlightsItemValueMax),
-  "description": zod.string().max(getCourseBySlugResponseHighlightsItemDescriptionMax)
-})),
+  "category": zod.string().min(1).max(getCourseBySlugResponseHighlightsItemCategoryMax),
+  "title": zod.string().min(1).max(getCourseBySlugResponseHighlightsItemTitleMax),
+  "description": zod.string().min(1).max(getCourseBySlugResponseHighlightsItemDescriptionMax),
+  "displayOrder": zod.number().int().min(1).max(getCourseBySlugResponseHighlightsItemDisplayOrderMax)
+})).min(getCourseBySlugResponseHighlightsMin).max(getCourseBySlugResponseHighlightsMax),
   "whyChoose": zod.array(zod.object({
   "title": zod.string().min(1).max(getCourseBySlugResponseWhyChooseItemTitleMax),
   "description": zod.string().min(1).max(getCourseBySlugResponseWhyChooseItemDescriptionMax)
@@ -2876,11 +2884,16 @@ export const DownloadCourseCurriculumResponse = zod.unknown()
 /**
  * @summary Read editable course content
  */
-export const getAdminCoursesResponseHighlightsItemLabelMax = 80;
+export const getAdminCoursesResponseHighlightsItemCategoryMax = 80;
 
-export const getAdminCoursesResponseHighlightsItemValueMax = 180;
+export const getAdminCoursesResponseHighlightsItemTitleMax = 180;
 
 export const getAdminCoursesResponseHighlightsItemDescriptionMax = 500;
+
+export const getAdminCoursesResponseHighlightsItemDisplayOrderMax = 4;
+
+export const getAdminCoursesResponseHighlightsMin = 4;
+export const getAdminCoursesResponseHighlightsMax = 4;
 
 export const getAdminCoursesResponseWhyChooseItemTitleMax = 140;
 
@@ -2909,12 +2922,15 @@ export const GetAdminCoursesResponseItem = zod.object({
   "primaryActionUrl": zod.string(),
   "secondaryActionLabel": zod.string(),
   "secondaryActionUrl": zod.string(),
+  "highlightsEyebrow": zod.string(),
   "highlightsHeading": zod.string(),
+  "highlightsIntroduction": zod.string(),
   "highlights": zod.array(zod.object({
-  "label": zod.string().min(1).max(getAdminCoursesResponseHighlightsItemLabelMax),
-  "value": zod.string().min(1).max(getAdminCoursesResponseHighlightsItemValueMax),
-  "description": zod.string().max(getAdminCoursesResponseHighlightsItemDescriptionMax)
-})),
+  "category": zod.string().min(1).max(getAdminCoursesResponseHighlightsItemCategoryMax),
+  "title": zod.string().min(1).max(getAdminCoursesResponseHighlightsItemTitleMax),
+  "description": zod.string().min(1).max(getAdminCoursesResponseHighlightsItemDescriptionMax),
+  "displayOrder": zod.number().int().min(1).max(getAdminCoursesResponseHighlightsItemDisplayOrderMax)
+})).min(getAdminCoursesResponseHighlightsMin).max(getAdminCoursesResponseHighlightsMax),
   "whyChoose": zod.array(zod.object({
   "title": zod.string().min(1).max(getAdminCoursesResponseWhyChooseItemTitleMax),
   "description": zod.string().min(1).max(getAdminCoursesResponseWhyChooseItemDescriptionMax)
@@ -2965,15 +2981,22 @@ export const updateAdminCourseBodySecondaryActionLabelMax = 100;
 
 export const updateAdminCourseBodySecondaryActionUrlMax = 500;
 
+export const updateAdminCourseBodyHighlightsEyebrowMax = 80;
+
 export const updateAdminCourseBodyHighlightsHeadingMax = 120;
 
-export const updateAdminCourseBodyHighlightsItemLabelMax = 80;
+export const updateAdminCourseBodyHighlightsIntroductionMax = 500;
 
-export const updateAdminCourseBodyHighlightsItemValueMax = 180;
+export const updateAdminCourseBodyHighlightsItemCategoryMax = 80;
+
+export const updateAdminCourseBodyHighlightsItemTitleMax = 180;
 
 export const updateAdminCourseBodyHighlightsItemDescriptionMax = 500;
 
-export const updateAdminCourseBodyHighlightsMax = 8;
+export const updateAdminCourseBodyHighlightsItemDisplayOrderMax = 4;
+
+export const updateAdminCourseBodyHighlightsMin = 4;
+export const updateAdminCourseBodyHighlightsMax = 4;
 
 export const updateAdminCourseBodyWhyChooseItemTitleMax = 140;
 
@@ -3017,12 +3040,15 @@ export const UpdateAdminCourseBody = zod.object({
   "primaryActionUrl": zod.string().min(1).max(updateAdminCourseBodyPrimaryActionUrlMax),
   "secondaryActionLabel": zod.string().min(1).max(updateAdminCourseBodySecondaryActionLabelMax),
   "secondaryActionUrl": zod.string().min(1).max(updateAdminCourseBodySecondaryActionUrlMax),
+  "highlightsEyebrow": zod.string().min(1).max(updateAdminCourseBodyHighlightsEyebrowMax),
   "highlightsHeading": zod.string().min(1).max(updateAdminCourseBodyHighlightsHeadingMax),
+  "highlightsIntroduction": zod.string().min(1).max(updateAdminCourseBodyHighlightsIntroductionMax),
   "highlights": zod.array(zod.object({
-  "label": zod.string().min(1).max(updateAdminCourseBodyHighlightsItemLabelMax),
-  "value": zod.string().min(1).max(updateAdminCourseBodyHighlightsItemValueMax),
-  "description": zod.string().max(updateAdminCourseBodyHighlightsItemDescriptionMax)
-})).min(1).max(updateAdminCourseBodyHighlightsMax),
+  "category": zod.string().min(1).max(updateAdminCourseBodyHighlightsItemCategoryMax),
+  "title": zod.string().min(1).max(updateAdminCourseBodyHighlightsItemTitleMax),
+  "description": zod.string().min(1).max(updateAdminCourseBodyHighlightsItemDescriptionMax),
+  "displayOrder": zod.number().int().min(1).max(updateAdminCourseBodyHighlightsItemDisplayOrderMax)
+})).min(updateAdminCourseBodyHighlightsMin).max(updateAdminCourseBodyHighlightsMax),
   "whyChoose": zod.array(zod.object({
   "title": zod.string().min(1).max(updateAdminCourseBodyWhyChooseItemTitleMax),
   "description": zod.string().min(1).max(updateAdminCourseBodyWhyChooseItemDescriptionMax)
@@ -3040,11 +3066,16 @@ export const UpdateAdminCourseBody = zod.object({
   "curriculumPdfFileName": zod.string().nullable()
 })
 
-export const updateAdminCourseResponseHighlightsItemLabelMax = 80;
+export const updateAdminCourseResponseHighlightsItemCategoryMax = 80;
 
-export const updateAdminCourseResponseHighlightsItemValueMax = 180;
+export const updateAdminCourseResponseHighlightsItemTitleMax = 180;
 
 export const updateAdminCourseResponseHighlightsItemDescriptionMax = 500;
+
+export const updateAdminCourseResponseHighlightsItemDisplayOrderMax = 4;
+
+export const updateAdminCourseResponseHighlightsMin = 4;
+export const updateAdminCourseResponseHighlightsMax = 4;
 
 export const updateAdminCourseResponseWhyChooseItemTitleMax = 140;
 
@@ -3073,12 +3104,15 @@ export const UpdateAdminCourseResponse = zod.object({
   "primaryActionUrl": zod.string(),
   "secondaryActionLabel": zod.string(),
   "secondaryActionUrl": zod.string(),
+  "highlightsEyebrow": zod.string(),
   "highlightsHeading": zod.string(),
+  "highlightsIntroduction": zod.string(),
   "highlights": zod.array(zod.object({
-  "label": zod.string().min(1).max(updateAdminCourseResponseHighlightsItemLabelMax),
-  "value": zod.string().min(1).max(updateAdminCourseResponseHighlightsItemValueMax),
-  "description": zod.string().max(updateAdminCourseResponseHighlightsItemDescriptionMax)
-})),
+  "category": zod.string().min(1).max(updateAdminCourseResponseHighlightsItemCategoryMax),
+  "title": zod.string().min(1).max(updateAdminCourseResponseHighlightsItemTitleMax),
+  "description": zod.string().min(1).max(updateAdminCourseResponseHighlightsItemDescriptionMax),
+  "displayOrder": zod.number().int().min(1).max(updateAdminCourseResponseHighlightsItemDisplayOrderMax)
+})).min(updateAdminCourseResponseHighlightsMin).max(updateAdminCourseResponseHighlightsMax),
   "whyChoose": zod.array(zod.object({
   "title": zod.string().min(1).max(updateAdminCourseResponseWhyChooseItemTitleMax),
   "description": zod.string().min(1).max(updateAdminCourseResponseWhyChooseItemDescriptionMax)

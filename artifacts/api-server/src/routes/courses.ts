@@ -14,7 +14,7 @@ import {
   UpdateAdminCourseParams,
   UpdateAdminCourseResponse,
 } from "@workspace/api-zod";
-import { COURSE_SUBJECTS, normalizeTeachingSubject, type CourseSlug, type CourseSyllabus } from "../lib/course-content";
+import { COURSE_SEEDS, COURSE_SUBJECTS, normalizeCourseHighlights, normalizeTeachingSubject, type CourseSlug, type CourseSyllabus } from "../lib/course-content";
 import { prisma } from "../lib/prisma";
 import { ObjectNotFoundError, ObjectStorageService } from "../lib/objectStorage";
 import { requireAdmin } from "../middlewares/auth";
@@ -28,6 +28,7 @@ function courseDownloadUrl(slug: string) {
 }
 
 function toAdminCourse(course: Course) {
+  const seed = COURSE_SEEDS.find((item) => item.slug === course.slug);
   return {
     slug: course.slug,
     name: course.name,
@@ -43,8 +44,10 @@ function toAdminCourse(course: Course) {
     primaryActionUrl: course.primaryActionUrl,
     secondaryActionLabel: course.secondaryActionLabel,
     secondaryActionUrl: course.secondaryActionUrl,
-    highlightsHeading: course.highlightsHeading,
-    highlights: course.highlights,
+    highlightsEyebrow: course.highlightsEyebrow || seed?.highlightsEyebrow || "Quick Overview",
+    highlightsHeading: course.highlightsHeading || "Quick Course Highlights",
+    highlightsIntroduction: course.highlightsIntroduction || seed?.highlightsIntroduction || "",
+    highlights: normalizeCourseHighlights(course.highlights, seed?.highlights ?? []),
     whyChoose: course.whyChoose,
     overviewText: course.overviewText,
     programGoals: course.programGoals,
@@ -122,6 +125,12 @@ function isSafeCourseImageUrl(value: string | null) {
   } catch {
     return false;
   }
+}
+
+function hasValidCourseHighlightOrder(highlights: Array<{ displayOrder: number }>) {
+  return highlights.length === 4 &&
+    new Set(highlights.map((highlight) => highlight.displayOrder)).size === 4 &&
+    highlights.every((highlight) => Number.isInteger(highlight.displayOrder) && highlight.displayOrder >= 1 && highlight.displayOrder <= 4);
 }
 
 function isSafeObjectPath(value: string | null) {
@@ -365,6 +374,7 @@ router.put("/admin/courses/:slug", requireAdmin, async (req, res): Promise<void>
   if (
     !params.success ||
     !parsed.success ||
+    !hasValidCourseHighlightOrder(parsed.data?.highlights ?? []) ||
     !isSafeActionUrl(parsed.data?.primaryActionUrl ?? "") ||
     !isSafeActionUrl(parsed.data?.secondaryActionUrl ?? "") ||
     !isSafeCourseImageUrl(parsed.data?.heroBackgroundImageUrl ?? null) ||
@@ -408,8 +418,10 @@ router.put("/admin/courses/:slug", requireAdmin, async (req, res): Promise<void>
         primaryActionUrl: parsed.data.primaryActionUrl,
         secondaryActionLabel: parsed.data.secondaryActionLabel,
         secondaryActionUrl: parsed.data.secondaryActionUrl,
+        highlightsEyebrow: parsed.data.highlightsEyebrow,
         highlightsHeading: parsed.data.highlightsHeading,
-        highlights: parsed.data.highlights as unknown as Prisma.InputJsonValue,
+        highlightsIntroduction: parsed.data.highlightsIntroduction,
+        highlights: [...parsed.data.highlights].sort((left, right) => left.displayOrder - right.displayOrder) as unknown as Prisma.InputJsonValue,
         whyChoose: parsed.data.whyChoose as unknown as Prisma.InputJsonValue,
         overviewText: parsed.data.overviewText,
         programGoals: parsed.data.programGoals as unknown as Prisma.InputJsonValue,

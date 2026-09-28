@@ -1410,14 +1410,22 @@ export interface CourseHighlight {
      * @minLength 1
      * @maxLength 80
      */
-  label: string;
+  category: string;
   /**
      * @minLength 1
      * @maxLength 180
      */
-  value: string;
-  /** @maxLength 500 */
+  title: string;
+  /**
+     * @minLength 1
+     * @maxLength 500
+     */
   description: string;
+  /**
+     * @minimum 1
+     * @maximum 4
+     */
+  displayOrder: number;
 }
 
 export interface CourseReason {
@@ -1709,7 +1717,13 @@ export interface PublicCourse {
   primaryActionUrl: string;
   secondaryActionLabel: string;
   secondaryActionUrl: string;
+  highlightsEyebrow: string;
   highlightsHeading: string;
+  highlightsIntroduction: string;
+  /**
+     * @minItems 4
+     * @maxItems 4
+     */
   highlights: CourseHighlight[];
   whyChoose: CourseReason[];
   overviewText: string;
@@ -1742,7 +1756,13 @@ export interface AdminCourse {
   primaryActionUrl: string;
   secondaryActionLabel: string;
   secondaryActionUrl: string;
+  highlightsEyebrow: string;
   highlightsHeading: string;
+  highlightsIntroduction: string;
+  /**
+     * @minItems 4
+     * @maxItems 4
+     */
   highlights: CourseHighlight[];
   whyChoose: CourseReason[];
   overviewText: string;
@@ -1815,12 +1835,22 @@ export interface CourseUpdate {
   secondaryActionUrl: string;
   /**
      * @minLength 1
+     * @maxLength 80
+     */
+  highlightsEyebrow: string;
+  /**
+     * @minLength 1
      * @maxLength 120
      */
   highlightsHeading: string;
   /**
-     * @minItems 1
-     * @maxItems 8
+     * @minLength 1
+     * @maxLength 500
+     */
+  highlightsIntroduction: string;
+  /**
+     * @minItems 4
+     * @maxItems 4
      */
   highlights: CourseHighlight[];
   /**

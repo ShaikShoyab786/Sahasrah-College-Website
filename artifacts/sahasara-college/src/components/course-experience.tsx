@@ -109,26 +109,60 @@ export function CourseHero({
   );
 }
 
-export function HighlightsSection({ heading, highlights }: { heading: string; highlights: PublicCourse['highlights'] }) {
+function HighlightHeading({ heading }: { heading: string }) {
+  const index = heading.toLowerCase().lastIndexOf('highlights');
+  if (index < 0) return <>{heading}</>;
+  const wordEnd = index + 'highlights'.length;
+  return <>{heading.slice(0, index)}<span className="text-[hsl(var(--accent))]">{heading.slice(index, wordEnd)}</span>{heading.slice(wordEnd)}</>;
+}
+
+export function HighlightsSection({
+  eyebrow,
+  heading,
+  introduction,
+  highlights,
+}: {
+  eyebrow: string;
+  heading: string;
+  introduction: string;
+  highlights: PublicCourse['highlights'];
+}) {
+  const orderedHighlights = [...highlights].sort((left, right) => left.displayOrder - right.displayOrder);
+
   return (
-    <section className="border-b border-[hsl(var(--border))] bg-[hsl(var(--background))] px-6 py-12 lg:px-10 lg:py-14">
+    <section id="course-highlights" className="border-b border-[hsl(var(--border))] bg-[hsl(var(--background))] px-6 py-16 lg:px-10 lg:py-20" aria-labelledby="course-highlights-heading">
       <div className="mx-auto max-w-7xl">
-        <header>
-          <h2 className="font-display text-3xl font-semibold leading-tight text-[hsl(var(--primary))] md:text-4xl" data-testid="heading-course-highlights">{heading}</h2>
-          <div aria-hidden="true" className="relative mt-6 h-px w-full bg-[hsl(var(--border))]">
-            <span className="absolute inset-y-0 left-0 w-20 bg-teal-700 dark:bg-teal-300" />
+        <header className="mx-auto max-w-3xl text-center">
+          <div className="flex items-center justify-center gap-3" data-testid="text-course-highlights-eyebrow">
+            <span aria-hidden="true" className="h-px w-9 bg-[hsl(var(--accent))]" />
+            <p className="text-[10px] font-bold uppercase tracking-[.24em] text-[hsl(var(--accent))]">{eyebrow}</p>
+            <span aria-hidden="true" className="h-px w-9 bg-[hsl(var(--accent))]" />
           </div>
+          <h2 id="course-highlights-heading" className="mt-4 font-display text-3xl font-semibold leading-tight tracking-[-.035em] text-[hsl(var(--primary))] sm:text-4xl md:text-5xl" data-testid="heading-course-highlights">
+            <HighlightHeading heading={heading} />
+          </h2>
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-[hsl(var(--muted-foreground))] sm:text-base" data-testid="text-course-highlights-introduction">{introduction}</p>
         </header>
-        <div className="mt-8 grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 xl:grid-cols-4" data-testid="list-course-highlights">
-          {highlights.length ? highlights.map((item, index) => (
-            <article key={`${item.label}-${index}`} className="group relative flex min-h-56 flex-col rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 shadow-sm transition duration-300 ease-out motion-reduce:transition-none motion-safe:hover:-translate-y-1.5 hover:border-teal-700/40 dark:hover:border-teal-300/40 hover:shadow-xl" data-testid={`card-course-highlight-${index}`}>
-              <span aria-hidden="true" className="absolute inset-x-6 top-0 h-1 rounded-b-full bg-teal-700/45 transition-colors duration-300 group-hover:bg-teal-700 dark:bg-teal-300/45 dark:group-hover:bg-teal-300" />
-              <p className="text-xs font-bold uppercase tracking-[.16em] text-teal-800 dark:text-teal-300">{item.label}</p>
-              <p className="mt-3 font-display text-2xl font-semibold leading-tight text-[hsl(var(--primary))]">{item.value}</p>
-              {item.description && <p className="mt-3 text-sm leading-6 text-[hsl(var(--muted-foreground))]">{item.description}</p>}
-            </article>
-          )) : <p className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-7 text-sm text-[hsl(var(--muted-foreground))]">Course highlights will be shared here.</p>}
-        </div>
+        <ol className="relative mt-10 grid min-w-0 grid-cols-1 gap-y-5 sm:grid-cols-2 sm:gap-x-5 lg:mt-14 lg:grid-cols-4 lg:gap-x-5 lg:gap-y-0" aria-label="Quick course highlights" data-testid="list-course-highlights">
+          <span aria-hidden="true" className="pointer-events-none absolute bottom-6 left-[.625rem] top-6 w-px bg-[hsl(var(--accent)/.28)] sm:hidden" />
+          <span aria-hidden="true" className="pointer-events-none absolute left-[12.5%] right-[12.5%] top-[6.125rem] hidden h-px bg-[hsl(var(--accent)/.28)] lg:block" />
+          {orderedHighlights.map((item, index) => (
+            <li key={`${item.displayOrder}-${item.title}`} className="group relative grid min-w-0 grid-cols-[5rem_minmax(0,1fr)] items-stretch sm:block" data-testid={`card-course-highlight-${index}`}>
+              <div className="relative pr-2 sm:mx-auto sm:h-28 sm:w-full sm:pr-0">
+                <span aria-hidden="true" className="block pt-3 text-right font-display text-4xl font-semibold leading-none text-[hsl(var(--primary)/.12)] sm:absolute sm:inset-x-0 sm:top-0 sm:pt-0 sm:text-center sm:text-7xl">
+                  {String(item.displayOrder).padStart(2, '0')}
+                </span>
+                <span aria-hidden="true" className="absolute left-[.25rem] top-6 z-10 h-3 w-3 rounded-full border-2 border-[hsl(var(--accent))] bg-[hsl(var(--background))] shadow-[0_0_0_4px_hsl(var(--background))] sm:left-1/2 sm:top-auto sm:bottom-2 sm:-translate-x-1/2" />
+              </div>
+              <article className={`relative flex min-h-[15.5rem] min-w-0 flex-col rounded-2xl border border-[hsl(var(--primary)/.07)] p-5 shadow-sm transition duration-300 ease-out group-hover:-translate-y-1 group-hover:shadow-lg motion-reduce:transition-none sm:p-6 ${index % 2 === 0 ? 'bg-sky-50 dark:bg-sky-950/25' : 'bg-rose-50 dark:bg-rose-950/25'}`}>
+                <p className="text-[10px] font-bold uppercase tracking-[.17em] text-[hsl(var(--muted-foreground))]">{item.category}</p>
+                <span aria-hidden="true" className="mt-3 h-0.5 w-8 rounded-full bg-[hsl(var(--accent))]" />
+                <h3 className="mt-4 break-words font-display text-xl font-semibold leading-tight text-[hsl(var(--primary))] sm:text-[1.35rem]">{item.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-[hsl(var(--muted-foreground))]">{item.description}</p>
+              </article>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   );

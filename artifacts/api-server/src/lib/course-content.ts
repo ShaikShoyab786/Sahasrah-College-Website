@@ -1,9 +1,10 @@
 export type CourseSlug = "mpc" | "bipc" | "mpc-iit-jee" | "bipc-neet" | "mpc-eamcet";
 
 export type CourseHighlight = {
-  label: string;
-  value: string;
+  category: string;
+  title: string;
   description: string;
+  displayOrder: number;
 };
 
 export type CourseReason = {
@@ -29,6 +30,8 @@ export type CourseSeed = {
   primaryActionUrl: string;
   secondaryActionLabel: string;
   secondaryActionUrl: string;
+  highlightsEyebrow: string;
+  highlightsIntroduction: string;
   highlights: CourseHighlight[];
   whyChoose: CourseReason[];
   overviewText: string;
@@ -54,11 +57,14 @@ export const COURSE_SEEDS: CourseSeed[] = [
     primaryActionUrl: "/contact",
     secondaryActionLabel: "View Curriculum",
     secondaryActionUrl: "#course-curriculum-heading",
+    highlightsEyebrow: "Quick Overview",
+    highlightsIntroduction:
+      "Mathematics, Physics, and Chemistry come together in a pathway built around scientific thinking, quantitative ideas, and clear problem-solving.",
     highlights: [
-      { label: "Core subjects", value: "Mathematics · Physics · Chemistry", description: "Three connected disciplines in one pathway." },
-      { label: "Learning lens", value: "Concepts first", description: "Build understanding before moving to harder applications." },
-      { label: "Practice focus", value: "Reasoning and accuracy", description: "Work through ideas methodically and check each step." },
-      { label: "Good fit for", value: "Curious problem-solvers", description: "Students who like patterns, models, and quantitative questions." },
+      { category: "Core subjects", title: "Mathematics, Physics & Chemistry", description: "Work across quantitative ideas, physical systems, and chemical principles.", displayOrder: 1 },
+      { category: "Learning lens", title: "Concepts before methods", description: "Build understanding before applying formulas or multi-step procedures.", displayOrder: 2 },
+      { category: "Practice focus", title: "Reasoning with accuracy", description: "Use equations, diagrams, and clear working to explain each answer.", displayOrder: 3 },
+      { category: "Good fit for", title: "Curious problem-solvers", description: "For students drawn to patterns, models, and scientific questions.", displayOrder: 4 },
     ],
     whyChoose: [
       { title: "See how the subjects connect", description: "Mathematics gives students tools for describing patterns, while Physics and Chemistry put those tools to work in scientific settings." },
@@ -100,11 +106,14 @@ export const COURSE_SEEDS: CourseSeed[] = [
     primaryActionUrl: "/contact",
     secondaryActionLabel: "View Curriculum",
     secondaryActionUrl: "#course-curriculum-heading",
+    highlightsEyebrow: "Quick Overview",
+    highlightsIntroduction:
+      "Explore living systems through Biology, supported by Physics and Chemistry that help explain the processes shaping life and the natural world.",
     highlights: [
-      { label: "Core subjects", value: "Biology · Physics · Chemistry", description: "Life science supported by physical and chemical principles." },
-      { label: "Learning lens", value: "Observe and explain", description: "Connect structures and processes with clear scientific language." },
-      { label: "Practice focus", value: "Recall with understanding", description: "Organise detail while linking it to larger concepts." },
-      { label: "Good fit for", value: "Life-science explorers", description: "Students interested in organisms, health, and the environment." },
+      { category: "Core subjects", title: "Biology, Physics & Chemistry", description: "Study living systems alongside the physical and chemical ideas around them.", displayOrder: 1 },
+      { category: "Learning lens", title: "Organisms and their systems", description: "Connect structures, functions, and relationships across living things.", displayOrder: 2 },
+      { category: "Practice focus", title: "Careful recall and explanation", description: "Organise detailed topics and explain them with accurate scientific language.", displayOrder: 3 },
+      { category: "Good fit for", title: "Students curious about life science", description: "For learners interested in organisms, health, and the environment.", displayOrder: 4 },
     ],
     whyChoose: [
       { title: "Put living systems at the centre", description: "Biology explores how organisms are built, how they function, and how they relate to their environment." },
@@ -146,11 +155,14 @@ export const COURSE_SEEDS: CourseSeed[] = [
     primaryActionUrl: "/contact",
     secondaryActionLabel: "View Curriculum",
     secondaryActionUrl: "#course-curriculum-heading",
+    highlightsEyebrow: "Quick Overview",
+    highlightsIntroduction:
+      "Build on the MPC foundation with IIT-JEE-focused study that connects deeper subject understanding to entrance-style problem solving.",
     highlights: [
-      { label: "Core subjects", value: "Mathematics · Physics · Chemistry", description: "The PCM base remains central to the pathway." },
-      { label: "Preparation lens", value: "IIT-JEE focused", description: "Connect subject learning with entrance-style applications." },
-      { label: "Practice focus", value: "Multi-step problems", description: "Build a method for unfamiliar and layered questions." },
-      { label: "Good fit for", value: "Challenge-seeking learners", description: "Students who are willing to analyse, practise, and review." },
+      { category: "Core subjects", title: "PCM with IIT-JEE preparation", description: "Keep Mathematics, Physics, and Chemistry central while preparing for entrance questions.", displayOrder: 1 },
+      { category: "Preparation lens", title: "Layered concept application", description: "Connect ideas across subjects when a question calls for more than one step.", displayOrder: 2 },
+      { category: "Practice focus", title: "Multi-step problem solving", description: "Work through unfamiliar problems and review the reasoning behind each method.", displayOrder: 3 },
+      { category: "Good fit for", title: "Learners ready for challenge", description: "For students prepared to analyse, practise, and revisit difficult concepts.", displayOrder: 4 },
     ],
     whyChoose: [
       { title: "Connect classroom ideas to entrance questions", description: "JEE-focused work asks students to recognise which concepts apply and how they fit together." },
@@ -192,11 +204,14 @@ export const COURSE_SEEDS: CourseSeed[] = [
     primaryActionUrl: "/contact",
     secondaryActionLabel: "View Curriculum",
     secondaryActionUrl: "#course-curriculum-heading",
+    highlightsEyebrow: "Quick Overview",
+    highlightsIntroduction:
+      "Study Biology, Physics, and Chemistry alongside NEET-focused preparation, balancing detailed life-science learning with regular question practice.",
     highlights: [
-      { label: "Core subjects", value: "Biology · Physics · Chemistry", description: "The three science subjects used throughout the preparation path." },
-      { label: "Preparation lens", value: "NEET focused", description: "Relate subject knowledge to medical entrance-style questions." },
-      { label: "Practice focus", value: "Accuracy with detail", description: "Balance close reading, recall, and numerical reasoning." },
-      { label: "Good fit for", value: "Health-science aspirants", description: "Students interested in life science and sustained preparation." },
+      { category: "Core subjects", title: "Biology, Physics & Chemistry", description: "Build the subject base used across this NEET-focused pathway.", displayOrder: 1 },
+      { category: "Preparation lens", title: "Biology and NEET question styles", description: "Relate life-science concepts to the wording and demands of entrance questions.", displayOrder: 2 },
+      { category: "Practice focus", title: "Accuracy across question types", description: "Balance close reading, recall, and numerical work in Physics and Chemistry.", displayOrder: 3 },
+      { category: "Revision focus", title: "A steady review routine", description: "Return to diagrams, terminology, formulas, and question patterns as topics develop.", displayOrder: 4 },
     ],
     whyChoose: [
       { title: "Give Biology room for depth", description: "NEET-focused BiPC preparation asks students to understand detailed biological ideas and recall them accurately." },
@@ -238,11 +253,14 @@ export const COURSE_SEEDS: CourseSeed[] = [
     primaryActionUrl: "/contact",
     secondaryActionLabel: "View Curriculum",
     secondaryActionUrl: "#course-curriculum-heading",
+    highlightsEyebrow: "Quick Overview",
+    highlightsIntroduction:
+      "Strengthen Mathematics, Physics, and Chemistry alongside EAMCET-focused practice, with attention to sound methods, pacing, and regular review.",
     highlights: [
-      { label: "Core subjects", value: "Mathematics · Physics · Chemistry", description: "Build the PCM knowledge needed for the pathway." },
-      { label: "Preparation lens", value: "EAMCET focused", description: "Pair subject review with entrance-style practice." },
-      { label: "Practice focus", value: "Method and pacing", description: "Learn to select a sound approach under time constraints." },
-      { label: "Good fit for", value: "Practical planners", description: "Students who value clear goals and a repeatable study routine." },
+      { category: "Core subjects", title: "Mathematics, Physics & Chemistry", description: "Strengthen PCM foundations across the three connected subjects.", displayOrder: 1 },
+      { category: "Preparation lens", title: "EAMCET-style application", description: "Pair subject review with practice based on entrance-style questions.", displayOrder: 2 },
+      { category: "Practice focus", title: "Method and pacing", description: "Choose a sound approach and manage time without skipping key steps.", displayOrder: 3 },
+      { category: "Good fit for", title: "Students who value structure", description: "For learners who benefit from clear practice and repeatable review goals.", displayOrder: 4 },
     ],
     whyChoose: [
       { title: "Keep the PCM syllabus connected", description: "Revisiting related ideas across Mathematics, Physics, and Chemistry makes practice more purposeful than treating each chapter in isolation." },
@@ -271,6 +289,42 @@ export const COURSE_SEEDS: CourseSeed[] = [
     ],
   },
 ];
+
+function isObjectRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null && !Array.isArray(value);
+}
+
+function nonEmptyText(value: unknown): string | undefined {
+  return typeof value === "string" && value.trim().length > 0 ? value : undefined;
+}
+
+/**
+ * Converts the original label/value highlight records into the ordered timeline
+ * contract while preserving any custom copy already stored for a course.
+ */
+export function normalizeCourseHighlights(
+  value: unknown,
+  fallback: CourseHighlight[],
+): CourseHighlight[] {
+  const existing = (Array.isArray(value) ? value : [])
+    .filter(isObjectRecord)
+    .map((item, index) => ({
+      item,
+      index,
+      order: Number.isInteger(item.displayOrder) ? Number(item.displayOrder) : index + 1,
+    }))
+    .sort((left, right) => left.order - right.order || left.index - right.index);
+
+  return fallback.slice(0, 4).map((seed, index) => {
+    const item = existing[index]?.item;
+    return {
+      category: nonEmptyText(item?.category) ?? nonEmptyText(item?.label) ?? seed.category,
+      title: nonEmptyText(item?.title) ?? nonEmptyText(item?.value) ?? seed.title,
+      description: nonEmptyText(item?.description) ?? seed.description,
+      displayOrder: index + 1,
+    };
+  });
+}
 
 export const COURSE_SUBJECTS: Record<CourseSlug, string[]> = {
   mpc: ["Mathematics", "Physics", "Chemistry"],

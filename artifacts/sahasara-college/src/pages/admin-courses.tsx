@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, type ChangeEvent, type FormEvent } from 'react';
-import { BookOpen, FileCheck2, FileUp, ImagePlus, Plus, RotateCcw, Trash2 } from 'lucide-react';
+import { ArrowDown, ArrowUp, BookOpen, FileCheck2, FileUp, ImagePlus, Plus, RotateCcw, Trash2 } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   CourseSlug,
@@ -34,7 +34,9 @@ function toUpdate(course: AdminCourse): CourseUpdate {
     primaryActionUrl: course.primaryActionUrl,
     secondaryActionLabel: 'View Curriculum',
     secondaryActionUrl: '#course-curriculum-heading',
+    highlightsEyebrow: course.highlightsEyebrow,
     highlightsHeading: course.highlightsHeading,
+    highlightsIntroduction: course.highlightsIntroduction,
     highlights: course.highlights,
     whyChoose: course.whyChoose,
     overviewText: course.overviewText,
@@ -69,12 +71,62 @@ function ListEditor({ label, values, onChange, max, placeholder, testId }: { lab
   );
 }
 
-function HighlightEditor({ heading, onHeadingChange, values, onChange }: { heading: string; onHeadingChange: (heading: string) => void; values: CourseHighlight[]; onChange: (values: CourseHighlight[]) => void }) {
+function HighlightEditor({
+  eyebrow,
+  onEyebrowChange,
+  heading,
+  onHeadingChange,
+  introduction,
+  onIntroductionChange,
+  values,
+  onChange,
+}: {
+  eyebrow: string;
+  onEyebrowChange: (eyebrow: string) => void;
+  heading: string;
+  onHeadingChange: (heading: string) => void;
+  introduction: string;
+  onIntroductionChange: (introduction: string) => void;
+  values: CourseHighlight[];
+  onChange: (values: CourseHighlight[]) => void;
+}) {
+  const orderedValues = [...values].sort((left, right) => left.displayOrder - right.displayOrder);
+  const moveHighlight = (index: number, direction: -1 | 1) => {
+    const destination = index + direction;
+    if (destination < 0 || destination >= orderedValues.length) return;
+    const reordered = [...orderedValues];
+    [reordered[index], reordered[destination]] = [reordered[destination], reordered[index]];
+    onChange(reordered.map((item, itemIndex) => ({ ...item, displayOrder: itemIndex + 1 })));
+  };
+
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between gap-3"><p className="text-sm font-bold text-[hsl(var(--admin-text))]">Highlights</p><button type="button" onClick={() => onChange([...values, { label: '', value: '', description: '' }])} disabled={values.length >= 8} className="inline-flex min-h-9 items-center gap-1.5 rounded-lg border border-[hsl(var(--admin-border))] px-3 text-xs font-bold" data-testid="button-add-course-highlight"><Plus size={14} /> Add highlight</button></div>
-      <Field id="course-highlights-heading" label="Section heading" value={heading} onChange={(event) => onHeadingChange(event.target.value)} required />
-      {values.map((item, index) => <div key={`highlight-${index}`} className="rounded-xl bg-[hsl(var(--admin-surface-soft))] p-4"><div className="grid gap-4 md:grid-cols-2"><Field id={`course-highlight-${index}-label`} label="Label" value={item.label} onChange={(event) => onChange(values.map((entry, itemIndex) => itemIndex === index ? { ...entry, label: event.target.value } : entry))} required /><Field id={`course-highlight-${index}-value`} label="Value" value={item.value} onChange={(event) => onChange(values.map((entry, itemIndex) => itemIndex === index ? { ...entry, value: event.target.value } : entry))} required /></div><div className="mt-4 flex items-end gap-3"><Area id={`course-highlight-${index}-description`} label="Description" value={item.description} onChange={(event) => onChange(values.map((entry, itemIndex) => itemIndex === index ? { ...entry, description: event.target.value } : entry))} /><button type="button" onClick={() => onChange(values.filter((_, itemIndex) => itemIndex !== index))} disabled={values.length <= 1} className="mb-1 grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-[hsl(var(--admin-border))] text-[hsl(var(--admin-text-muted))] disabled:opacity-40" aria-label={`Remove highlight ${index + 1}`} data-testid={`button-remove-course-highlight-${index}`}><Trash2 size={15} /></button></div></div>)}
+    <div className="space-y-5" data-testid="editor-course-highlights">
+      <div className="grid gap-4 md:grid-cols-2">
+        <Field id="course-highlights-eyebrow" label="Section eyebrow" value={eyebrow} onChange={(event) => onEyebrowChange(event.target.value)} required />
+        <Field id="course-highlights-heading" label="Section heading" value={heading} onChange={(event) => onHeadingChange(event.target.value)} required />
+      </div>
+      <Area id="course-highlights-introduction" label="Introduction" value={introduction} onChange={(event) => onIntroductionChange(event.target.value)} required />
+      <div className="space-y-3">
+        {orderedValues.map((item, index) => (
+          <div key={`highlight-${item.displayOrder}-${index}`} className="rounded-xl bg-[hsl(var(--admin-surface-soft))] p-4" data-testid={`editor-course-highlight-${index}`}>
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+              <p className="text-sm font-bold text-[hsl(var(--admin-text))]">Highlight {String(item.displayOrder).padStart(2, '0')}</p>
+              <div className="flex items-center gap-2">
+                <span className="mr-1 text-xs font-semibold text-[hsl(var(--admin-text-muted))]">Display order</span>
+                <button type="button" onClick={() => moveHighlight(index, -1)} disabled={index === 0} aria-label={`Move highlight ${item.displayOrder} up`} className="grid h-9 w-9 place-items-center rounded-lg border border-[hsl(var(--admin-border))] text-[hsl(var(--admin-text))] disabled:opacity-35" data-testid={`button-move-course-highlight-up-${index}`}><ArrowUp size={15} aria-hidden="true" /></button>
+                <button type="button" onClick={() => moveHighlight(index, 1)} disabled={index === orderedValues.length - 1} aria-label={`Move highlight ${item.displayOrder} down`} className="grid h-9 w-9 place-items-center rounded-lg border border-[hsl(var(--admin-border))] text-[hsl(var(--admin-text))] disabled:opacity-35" data-testid={`button-move-course-highlight-down-${index}`}><ArrowDown size={15} aria-hidden="true" /></button>
+              </div>
+            </div>
+            <div className="grid gap-4 md:grid-cols-2">
+              <Field id={`course-highlight-${index}-category`} label="Category label" value={item.category} onChange={(event) => onChange(orderedValues.map((entry, itemIndex) => itemIndex === index ? { ...entry, category: event.target.value } : entry))} required />
+              <Field id={`course-highlight-${index}-title`} label="Title" value={item.title} onChange={(event) => onChange(orderedValues.map((entry, itemIndex) => itemIndex === index ? { ...entry, title: event.target.value } : entry))} required />
+            </div>
+            <div className="mt-4">
+              <Area id={`course-highlight-${index}-description`} label="Description" value={item.description} onChange={(event) => onChange(orderedValues.map((entry, itemIndex) => itemIndex === index ? { ...entry, description: event.target.value } : entry))} required />
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -242,8 +294,20 @@ export default function AdminCourses() {
               <p className="rounded-xl bg-[hsl(var(--admin-surface-soft))] px-4 py-3 text-xs leading-5 text-[hsl(var(--admin-text-muted))]">The second hero action is fixed to “View Curriculum” and scrolls to this course’s syllabus.</p>
             </div>
           </EditorCard>
+          <EditorCard title="Quick Course Highlights" description="Edit the public overview, all four highlight entries, and their displayed order.">
+            <HighlightEditor
+              eyebrow={form.highlightsEyebrow}
+              onEyebrowChange={(highlightsEyebrow) => setForm({ highlightsEyebrow })}
+              heading={form.highlightsHeading}
+              onHeadingChange={(highlightsHeading) => setForm({ highlightsHeading })}
+              introduction={form.highlightsIntroduction}
+              onIntroductionChange={(highlightsIntroduction) => setForm({ highlightsIntroduction })}
+              values={form.highlights}
+              onChange={(highlights) => setForm({ highlights })}
+            />
+          </EditorCard>
           <EditorCard title="Course story" description="Explain the pathway clearly, from its overview to the reasons families choose it.">
-            <div className="space-y-7"><Area id="course-overview" label="Overview" value={form.overviewText} onChange={(event) => setForm({ overviewText: event.target.value })} required /><HighlightEditor heading={form.highlightsHeading} onHeadingChange={(highlightsHeading) => setForm({ highlightsHeading })} values={form.highlights} onChange={(highlights) => setForm({ highlights })} /><ReasonEditor values={form.whyChoose} onChange={(whyChoose) => setForm({ whyChoose })} /></div>
+            <div className="space-y-7"><Area id="course-overview" label="Overview" value={form.overviewText} onChange={(event) => setForm({ overviewText: event.target.value })} required /><ReasonEditor values={form.whyChoose} onChange={(whyChoose) => setForm({ whyChoose })} /></div>
           </EditorCard>
           <EditorCard title="Goals and ideal profile" description="Make the fit for this pathway specific and useful for student conversations.">
             <div className="space-y-7"><ListEditor label="Program goals" values={form.programGoals} onChange={(programGoals) => setForm({ programGoals })} max={12} placeholder="A measurable learning goal" testId="program-goal" /><div className="grid gap-5 md:grid-cols-2"><Field id="course-ideal-title" label="Ideal profile title" value={form.idealProfileTitle} onChange={(event) => setForm({ idealProfileTitle: event.target.value })} required /><Area id="course-ideal-description" label="Ideal profile description" value={form.idealProfileDescription} onChange={(event) => setForm({ idealProfileDescription: event.target.value })} required /></div><ListEditor label="Ideal profile indicators" values={form.idealProfileIndicators} onChange={(idealProfileIndicators) => setForm({ idealProfileIndicators })} max={12} placeholder="A useful student indicator" testId="ideal-indicator" /></div>

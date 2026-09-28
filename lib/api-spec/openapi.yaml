@@ -4671,18 +4671,23 @@ components:
     CourseHighlight:
       type: object
       properties:
-        label:
+        category:
           type: string
           minLength: 1
           maxLength: 80
-        value:
+        title:
           type: string
           minLength: 1
           maxLength: 180
         description:
           type: string
+          minLength: 1
           maxLength: 500
-      required: [label, value, description]
+        displayOrder:
+          type: integer
+          minimum: 1
+          maximum: 4
+      required: [category, title, description, displayOrder]
 
     CourseReason:
       type: object
@@ -5001,10 +5006,16 @@ components:
           type: string
         secondaryActionUrl:
           type: string
+        highlightsEyebrow:
+          type: string
         highlightsHeading:
+          type: string
+        highlightsIntroduction:
           type: string
         highlights:
           type: array
+          minItems: 4
+          maxItems: 4
           items:
             $ref: "#/components/schemas/CourseHighlight"
         whyChoose:
@@ -5042,7 +5053,7 @@ components:
         updatedAt:
           type: string
           format: date-time
-      required: [slug, name, displayOrder, heroEyebrow, heroTitle, heroDescription, durationLabel, modeLabel, heroBackgroundImageUrl, heroBackgroundOverlay, primaryActionLabel, primaryActionUrl, secondaryActionLabel, secondaryActionUrl, highlightsHeading, highlights, whyChoose, overviewText, programGoals, idealProfileTitle, idealProfileDescription, idealProfileIndicators, syllabus, curriculumPdfFileName, curriculumPdfIsSample, curriculumDownloadUrl, mentors, updatedAt]
+      required: [slug, name, displayOrder, heroEyebrow, heroTitle, heroDescription, durationLabel, modeLabel, heroBackgroundImageUrl, heroBackgroundOverlay, primaryActionLabel, primaryActionUrl, secondaryActionLabel, secondaryActionUrl, highlightsEyebrow, highlightsHeading, highlightsIntroduction, highlights, whyChoose, overviewText, programGoals, idealProfileTitle, idealProfileDescription, idealProfileIndicators, syllabus, curriculumPdfFileName, curriculumPdfIsSample, curriculumDownloadUrl, mentors, updatedAt]
 
     AdminCourse:
       type: object
@@ -5075,10 +5086,16 @@ components:
           type: string
         secondaryActionUrl:
           type: string
+        highlightsEyebrow:
+          type: string
         highlightsHeading:
+          type: string
+        highlightsIntroduction:
           type: string
         highlights:
           type: array
+          minItems: 4
+          maxItems: 4
           items:
             $ref: "#/components/schemas/CourseHighlight"
         whyChoose:
@@ -5114,7 +5131,7 @@ components:
         updatedAt:
           type: string
           format: date-time
-      required: [slug, name, displayOrder, heroEyebrow, heroTitle, heroDescription, durationLabel, modeLabel, heroBackgroundImageUrl, heroBackgroundOverlay, primaryActionLabel, primaryActionUrl, secondaryActionLabel, secondaryActionUrl, highlightsHeading, highlights, whyChoose, overviewText, programGoals, idealProfileTitle, idealProfileDescription, idealProfileIndicators, syllabus, curriculumPdfObjectPath, curriculumPdfFileName, curriculumPdfIsSample, curriculumDownloadUrl, updatedAt]
+      required: [slug, name, displayOrder, heroEyebrow, heroTitle, heroDescription, durationLabel, modeLabel, heroBackgroundImageUrl, heroBackgroundOverlay, primaryActionLabel, primaryActionUrl, secondaryActionLabel, secondaryActionUrl, highlightsEyebrow, highlightsHeading, highlightsIntroduction, highlights, whyChoose, overviewText, programGoals, idealProfileTitle, idealProfileDescription, idealProfileIndicators, syllabus, curriculumPdfObjectPath, curriculumPdfFileName, curriculumPdfIsSample, curriculumDownloadUrl, updatedAt]
 
     CourseUpdate:
       type: object
@@ -5161,14 +5178,22 @@ components:
           type: string
           minLength: 1
           maxLength: 500
+        highlightsEyebrow:
+          type: string
+          minLength: 1
+          maxLength: 80
         highlightsHeading:
           type: string
           minLength: 1
           maxLength: 120
+        highlightsIntroduction:
+          type: string
+          minLength: 1
+          maxLength: 500
         highlights:
           type: array
-          minItems: 1
-          maxItems: 8
+          minItems: 4
+          maxItems: 4
           items:
             $ref: "#/components/schemas/CourseHighlight"
         whyChoose:
@@ -5215,7 +5240,7 @@ components:
           type: ["string", "null"]
         curriculumPdfFileName:
           type: ["string", "null"]
-      required: [heroEyebrow, heroTitle, heroDescription, durationLabel, modeLabel, heroBackgroundImageUrl, heroBackgroundOverlay, primaryActionLabel, primaryActionUrl, secondaryActionLabel, secondaryActionUrl, highlightsHeading, highlights, whyChoose, overviewText, programGoals, idealProfileTitle, idealProfileDescription, idealProfileIndicators, syllabus, curriculumPdfObjectPath, curriculumPdfFileName]
+      required: [heroEyebrow, heroTitle, heroDescription, durationLabel, modeLabel, heroBackgroundImageUrl, heroBackgroundOverlay, primaryActionLabel, primaryActionUrl, secondaryActionLabel, secondaryActionUrl, highlightsEyebrow, highlightsHeading, highlightsIntroduction, highlights, whyChoose, overviewText, programGoals, idealProfileTitle, idealProfileDescription, idealProfileIndicators, syllabus, curriculumPdfObjectPath, curriculumPdfFileName]
 
     CurriculumUploadUrlRequest:
       type: object

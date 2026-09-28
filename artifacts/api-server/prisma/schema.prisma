@@ -739,7 +739,9 @@ model Course {
   primaryActionUrl          String   @default("/contact")
   secondaryActionLabel      String   @default("Talk to a counsellor")
   secondaryActionUrl        String   @default("/contact")
+  highlightsEyebrow         String   @default("Quick Overview")
   highlightsHeading         String   @default("Quick Course Highlights")
+  highlightsIntroduction    String   @default("")
   highlights                Json     @default("[]")
   whyChoose                 Json     @default("[]")
   overviewText              String

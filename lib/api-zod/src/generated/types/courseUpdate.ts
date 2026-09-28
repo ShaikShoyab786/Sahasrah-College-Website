@@ -64,12 +64,22 @@ export interface CourseUpdate {
   secondaryActionUrl: string;
   /**
      * @minLength 1
+     * @maxLength 80
+     */
+  highlightsEyebrow: string;
+  /**
+     * @minLength 1
      * @maxLength 120
      */
   highlightsHeading: string;
   /**
-     * @minItems 1
-     * @maxItems 8
+     * @minLength 1
+     * @maxLength 500
+     */
+  highlightsIntroduction: string;
+  /**
+     * @minItems 4
+     * @maxItems 4
      */
   highlights: CourseHighlight[];
   /**
