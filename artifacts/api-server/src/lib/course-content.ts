@@ -20,6 +20,8 @@ export type CourseSeed = {
   slug: CourseSlug;
   name: string;
   displayOrder: number;
+  durationLabel: string;
+  modeLabel: string;
   heroEyebrow: string;
   heroTitle: string;
   heroDescription: string;
@@ -42,14 +44,16 @@ export const COURSE_SEEDS: CourseSeed[] = [
     slug: "mpc",
     name: "MPC (Maths, Physics, Chemistry)",
     displayOrder: 1,
+    durationLabel: "2 Years",
+    modeLabel: "Offline",
     heroEyebrow: "Science pathway · MPC",
     heroTitle: "Build a strong foundation in mathematics and science.",
     heroDescription:
       "MPC brings Mathematics, Physics, and Chemistry together for students who enjoy working with ideas, evidence, and structured problem-solving.",
     primaryActionLabel: "Explore admissions",
     primaryActionUrl: "/contact",
-    secondaryActionLabel: "Talk to a counsellor",
-    secondaryActionUrl: "/contact",
+    secondaryActionLabel: "View Curriculum",
+    secondaryActionUrl: "#course-curriculum-heading",
     highlights: [
       { label: "Core subjects", value: "Mathematics · Physics · Chemistry", description: "Three connected disciplines in one pathway." },
       { label: "Learning lens", value: "Concepts first", description: "Build understanding before moving to harder applications." },
@@ -86,14 +90,16 @@ export const COURSE_SEEDS: CourseSeed[] = [
     slug: "bipc",
     name: "BiPC (Biology, Physics, Chemistry)",
     displayOrder: 2,
+    durationLabel: "2 Years",
+    modeLabel: "Offline",
     heroEyebrow: "Life sciences pathway · BiPC",
     heroTitle: "Study living systems through biology and science.",
     heroDescription:
       "BiPC combines Biology with Physics and Chemistry for students drawn to living systems, careful observation, and the science behind health and the natural world.",
     primaryActionLabel: "Explore admissions",
     primaryActionUrl: "/contact",
-    secondaryActionLabel: "Talk to a counsellor",
-    secondaryActionUrl: "/contact",
+    secondaryActionLabel: "View Curriculum",
+    secondaryActionUrl: "#course-curriculum-heading",
     highlights: [
       { label: "Core subjects", value: "Biology · Physics · Chemistry", description: "Life science supported by physical and chemical principles." },
       { label: "Learning lens", value: "Observe and explain", description: "Connect structures and processes with clear scientific language." },
@@ -130,14 +136,16 @@ export const COURSE_SEEDS: CourseSeed[] = [
     slug: "mpc-iit-jee",
     name: "MPC + IIT-JEE",
     displayOrder: 3,
+    durationLabel: "2 Years",
+    modeLabel: "Offline",
     heroEyebrow: "Entrance preparation · IIT-JEE",
     heroTitle: "Pair PCM foundations with focused IIT-JEE preparation.",
     heroDescription:
       "This pathway combines Mathematics, Physics, and Chemistry with IIT-JEE-oriented preparation for students ready to apply concepts to challenging entrance-style problems.",
-    primaryActionLabel: "Discuss the JEE pathway",
+    primaryActionLabel: "Explore admissions",
     primaryActionUrl: "/contact",
-    secondaryActionLabel: "Ask a counsellor",
-    secondaryActionUrl: "/contact",
+    secondaryActionLabel: "View Curriculum",
+    secondaryActionUrl: "#course-curriculum-heading",
     highlights: [
       { label: "Core subjects", value: "Mathematics · Physics · Chemistry", description: "The PCM base remains central to the pathway." },
       { label: "Preparation lens", value: "IIT-JEE focused", description: "Connect subject learning with entrance-style applications." },
@@ -174,14 +182,16 @@ export const COURSE_SEEDS: CourseSeed[] = [
     slug: "bipc-neet",
     name: "BiPC + NEET",
     displayOrder: 4,
+    durationLabel: "2 Years",
+    modeLabel: "Offline",
     heroEyebrow: "Entrance preparation · NEET",
     heroTitle: "Bring Biology, Physics, and Chemistry into NEET preparation.",
     heroDescription:
       "BiPC + NEET pairs the life-science pathway with NEET-oriented preparation, balancing detailed Biology learning with the Physics and Chemistry needed for entrance questions.",
-    primaryActionLabel: "Discuss the NEET pathway",
+    primaryActionLabel: "Explore admissions",
     primaryActionUrl: "/contact",
-    secondaryActionLabel: "Ask a counsellor",
-    secondaryActionUrl: "/contact",
+    secondaryActionLabel: "View Curriculum",
+    secondaryActionUrl: "#course-curriculum-heading",
     highlights: [
       { label: "Core subjects", value: "Biology · Physics · Chemistry", description: "The three science subjects used throughout the preparation path." },
       { label: "Preparation lens", value: "NEET focused", description: "Relate subject knowledge to medical entrance-style questions." },
@@ -218,14 +228,16 @@ export const COURSE_SEEDS: CourseSeed[] = [
     slug: "mpc-eamcet",
     name: "MPC + EAMCET",
     displayOrder: 5,
+    durationLabel: "2 Years",
+    modeLabel: "Offline",
     heroEyebrow: "Entrance preparation · EAMCET",
     heroTitle: "Prepare in PCM with an EAMCET-focused study path.",
     heroDescription:
       "MPC + EAMCET combines Mathematics, Physics, and Chemistry with entrance-focused preparation for students who want to practise applying their subject knowledge in a timed format.",
-    primaryActionLabel: "Discuss the EAMCET pathway",
+    primaryActionLabel: "Explore admissions",
     primaryActionUrl: "/contact",
-    secondaryActionLabel: "Ask a counsellor",
-    secondaryActionUrl: "/contact",
+    secondaryActionLabel: "View Curriculum",
+    secondaryActionUrl: "#course-curriculum-heading",
     highlights: [
       { label: "Core subjects", value: "Mathematics · Physics · Chemistry", description: "Build the PCM knowledge needed for the pathway." },
       { label: "Preparation lens", value: "EAMCET focused", description: "Pair subject review with entrance-style practice." },

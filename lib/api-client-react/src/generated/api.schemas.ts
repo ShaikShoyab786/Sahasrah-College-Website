@@ -1477,6 +1477,11 @@ export interface PublicCourse {
   heroEyebrow: string;
   heroTitle: string;
   heroDescription: string;
+  durationLabel: string;
+  modeLabel: string;
+  /** @nullable */
+  heroBackgroundImageUrl: string | null;
+  heroBackgroundOverlay: number;
   primaryActionLabel: string;
   primaryActionUrl: string;
   secondaryActionLabel: string;
@@ -1504,6 +1509,11 @@ export interface AdminCourse {
   heroEyebrow: string;
   heroTitle: string;
   heroDescription: string;
+  durationLabel: string;
+  modeLabel: string;
+  /** @nullable */
+  heroBackgroundImageUrl: string | null;
+  heroBackgroundOverlay: number;
   primaryActionLabel: string;
   primaryActionUrl: string;
   secondaryActionLabel: string;
@@ -1541,6 +1551,23 @@ export interface CourseUpdate {
      * @maxLength 2000
      */
   heroDescription: string;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  durationLabel: string;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  modeLabel: string;
+  /** @nullable */
+  heroBackgroundImageUrl: string | null;
+  /**
+     * @minimum 0
+     * @maximum 80
+     */
+  heroBackgroundOverlay: number;
   /**
      * @minLength 1
      * @maxLength 100

@@ -17,6 +17,11 @@ export interface AdminCourse {
   heroEyebrow: string;
   heroTitle: string;
   heroDescription: string;
+  durationLabel: string;
+  modeLabel: string;
+  /** @nullable */
+  heroBackgroundImageUrl: string | null;
+  heroBackgroundOverlay: number;
   primaryActionLabel: string;
   primaryActionUrl: string;
   secondaryActionLabel: string;

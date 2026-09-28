@@ -1,7 +1,8 @@
 import { ArrowRight, BookOpen, Check, ChevronDown, Download, GraduationCap, Target } from 'lucide-react';
 import { useState } from 'react';
-import type { CourseMentor, CourseReason, CourseSyllabusSubject, PublicCourse } from '@workspace/api-client-react';
+import type { CallbackPopupSettings, CourseMentor, CourseReason, CourseSyllabusSubject, PublicCourse } from '@workspace/api-client-react';
 import { Link } from 'wouter';
+import { CallbackPopupForm } from '@/components/callback-popup';
 
 export function CourseLoadingState({ label = 'Loading course information' }: { label?: string }) {
   return (
@@ -43,26 +44,66 @@ export function CourseEmptyState({ detail = false }: { detail?: boolean }) {
   );
 }
 
-export function CourseHero({ course }: { course: PublicCourse }) {
+const courseInterestBySlug: Record<string, string> = {
+  mpc: 'MPC',
+  bipc: 'BiPC',
+  'mpc-iit-jee': 'MPC + IIT-JEE',
+  'bipc-neet': 'BiPC + NEET',
+  'mpc-eamcet': 'MPC + EAMCET',
+};
+
+export function CourseHero({
+  course,
+  enquirySettings,
+  enquirySettingsLoading,
+  enquirySettingsError,
+  onRetryEnquirySettings,
+}: {
+  course: PublicCourse;
+  enquirySettings?: CallbackPopupSettings;
+  enquirySettingsLoading: boolean;
+  enquirySettingsError: boolean;
+  onRetryEnquirySettings: () => void;
+}) {
+  const imageUrl = course.heroBackgroundImageUrl;
+  const hasImage = Boolean(imageUrl);
+  const preferredCourse = courseInterestBySlug[course.slug] ?? course.name;
+  const initialCourse = enquirySettings?.courseOptions.find(
+    (option) => option.trim().toLowerCase() === preferredCourse.toLowerCase(),
+  ) ?? '';
+
   return (
-    <section className="relative overflow-hidden bg-[hsl(var(--primary))] px-6 pb-16 pt-32 text-[hsl(var(--primary-foreground))] lg:px-10 lg:pb-24 lg:pt-48">
-      <div className="absolute -right-36 -top-20 h-[30rem] w-[30rem] rounded-full border border-[hsl(var(--accent)/.18)]" aria-hidden="true" />
-      <div className="absolute right-16 top-28 h-48 w-48 rounded-full border border-[hsl(var(--accent)/.14)]" aria-hidden="true" />
-      <div className="relative mx-auto grid max-w-7xl items-end gap-12 lg:grid-cols-[1fr_.42fr]">
-        <div>
-          <p className="text-xs font-bold uppercase tracking-[.24em] text-[hsl(var(--accent))]" data-testid="text-course-hero-eyebrow">{course.heroEyebrow}</p>
-          <h1 className="mt-6 max-w-4xl font-display text-5xl font-semibold leading-[.92] tracking-[-.06em] md:text-7xl" data-testid="text-course-hero-title">{course.heroTitle}</h1>
-          <p className="mt-7 max-w-2xl text-base leading-8 text-white/70 md:text-lg" data-testid="text-course-hero-description">{course.heroDescription}</p>
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            {course.primaryActionLabel && course.primaryActionUrl && <a href={course.primaryActionUrl} className="group inline-flex items-center justify-center rounded-full bg-[hsl(var(--accent))] px-5 py-3.5 text-sm font-bold text-[hsl(var(--primary))] shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg" data-testid="link-course-primary-action">{course.primaryActionLabel}<ArrowRight size={17} className="ml-2 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" /></a>}
-            {course.secondaryActionLabel && course.secondaryActionUrl && <a href={course.secondaryActionUrl} className="inline-flex items-center justify-center rounded-full border border-white/30 px-5 py-3.5 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-white/10" data-testid="link-course-secondary-action">{course.secondaryActionLabel}</a>}
+    <section className={`relative isolate overflow-hidden px-6 pb-12 pt-32 lg:px-10 lg:pb-16 lg:pt-44 ${hasImage ? 'bg-[hsl(var(--primary))] text-white' : 'bg-[hsl(var(--secondary))] text-[hsl(var(--primary))]'}`} aria-label={`${course.name} course introduction`}>
+      {imageUrl && <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${JSON.stringify(imageUrl)})` }} aria-hidden="true" />}
+      {hasImage
+        ? <div className="absolute inset-0" style={{ backgroundColor: `rgba(7, 25, 31, ${Math.min(80, Math.max(0, course.heroBackgroundOverlay)) / 100})` }} aria-hidden="true" />
+        : <div className="pointer-events-none absolute -right-28 -top-24 h-[26rem] w-[26rem] rounded-full border border-[hsl(var(--primary)/.08)]" aria-hidden="true" />}
+      <div className="relative mx-auto grid max-w-7xl items-center gap-8 lg:grid-cols-[minmax(0,1.05fr)_minmax(20rem,.85fr)] lg:gap-12">
+        <div className="py-2 lg:py-8">
+          <p className={`inline-flex max-w-full items-center rounded-full border px-3 py-1.5 text-[11px] font-bold uppercase tracking-[.18em] ${hasImage ? 'border-white/30 bg-black/20 text-white' : 'border-[hsl(var(--border))] bg-[hsl(var(--background)/.8)] text-[hsl(var(--primary))]'}`} data-testid="text-course-hero-eyebrow">{course.heroEyebrow}</p>
+          <h1 className={`mt-6 max-w-4xl font-display text-4xl font-semibold leading-[.98] tracking-[-.045em] sm:text-5xl md:text-6xl ${hasImage ? 'text-white' : 'text-[hsl(var(--primary))]'}`} data-testid="text-course-hero-title">{course.heroTitle}</h1>
+          <p className={`mt-6 max-w-2xl text-base leading-7 md:text-lg md:leading-8 ${hasImage ? 'text-white/85' : 'text-[hsl(var(--muted-foreground))]'}`} data-testid="text-course-hero-description">{course.heroDescription}</p>
+          <div className="mt-6 flex flex-wrap gap-2.5" aria-label="Course format">
+            <span className={`rounded-full border px-3.5 py-2 text-xs font-semibold ${hasImage ? 'border-white/25 bg-white/10 text-white' : 'border-[hsl(var(--border))] bg-[hsl(var(--background)/.85)] text-[hsl(var(--foreground))]'}`} data-testid="text-course-duration">Duration: {course.durationLabel}</span>
+            <span className={`rounded-full border px-3.5 py-2 text-xs font-semibold ${hasImage ? 'border-white/25 bg-white/10 text-white' : 'border-[hsl(var(--border))] bg-[hsl(var(--background)/.85)] text-[hsl(var(--foreground))]'}`} data-testid="text-course-mode">Mode: {course.modeLabel}</span>
+          </div>
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+            {course.primaryActionLabel && course.primaryActionUrl && <a href={course.primaryActionUrl} className="group inline-flex min-h-12 items-center justify-center rounded-full bg-[hsl(var(--accent))] px-5 py-3 text-sm font-bold text-[hsl(var(--primary))] shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))] focus-visible:ring-offset-2" data-testid="link-course-primary-action">{course.primaryActionLabel}<ArrowRight size={17} className="ml-2 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" /></a>}
+            {course.secondaryActionLabel && course.secondaryActionUrl && <a href={course.secondaryActionUrl} className={`inline-flex min-h-12 items-center justify-center rounded-full border px-5 py-3 text-sm font-bold transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))] focus-visible:ring-offset-2 ${hasImage ? 'border-white/40 text-white hover:bg-white/10' : 'border-[hsl(var(--border))] bg-[hsl(var(--background)/.75)] text-[hsl(var(--primary))] hover:border-[hsl(var(--accent))]'}`} data-testid="link-course-secondary-action">{course.secondaryActionLabel}</a>}
           </div>
         </div>
-        <div className="hidden border-l border-white/15 pl-8 lg:block">
-          <p className="text-xs font-bold uppercase tracking-[.18em] text-white/55">A clear pathway</p>
-          <p className="mt-4 font-display text-4xl font-semibold leading-tight text-[hsl(var(--accent))]">{course.name}</p>
-          <p className="mt-3 text-sm leading-6 text-white/60">Regular college learning, with the right support for the next step.</p>
-        </div>
+        <aside className="rounded-3xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5 text-[hsl(var(--card-foreground))] shadow-xl sm:p-7" aria-labelledby="course-enquiry-heading">
+          <p className="text-[10px] font-bold uppercase tracking-[.18em] text-[hsl(var(--accent-foreground))]">Course enquiry</p>
+          <h2 id="course-enquiry-heading" className="mt-2 font-display text-2xl font-semibold leading-tight tracking-[-.03em] text-[hsl(var(--primary))] sm:text-3xl">{enquirySettings?.callbackPopupHeading ?? 'Contact admissions'}</h2>
+          <p className="mt-2 text-sm leading-6 text-[hsl(var(--muted-foreground))]">{enquirySettings?.callbackPopupDescription ?? 'Share your details and the admissions team will get in touch.'}</p>
+          <div className="mt-5">
+            {enquirySettingsLoading && <p className="rounded-xl bg-[hsl(var(--secondary))] px-4 py-5 text-sm text-[hsl(var(--muted-foreground))]" role="status">Loading the enquiry form…</p>}
+            {enquirySettingsError && <div className="space-y-3 rounded-xl bg-[hsl(var(--secondary))] p-4 text-sm text-[hsl(var(--muted-foreground))]" role="alert"><p>The enquiry form is temporarily unavailable.</p><div className="flex flex-wrap gap-3"><button type="button" onClick={onRetryEnquirySettings} className="font-bold text-[hsl(var(--primary))] underline underline-offset-4">Try again</button><Link href="/contact" className="font-bold text-[hsl(var(--primary))] underline underline-offset-4">Contact admissions</Link></div></div>}
+            {!enquirySettingsLoading && !enquirySettingsError && enquirySettings && (enquirySettings.callbackPopupEnabled
+              ? <CallbackPopupForm settings={enquirySettings} initialCourse={initialCourse} variant="inline" />
+              : <p className="rounded-xl bg-[hsl(var(--secondary))] p-4 text-sm leading-6 text-[hsl(var(--muted-foreground))]">Online callback requests are currently unavailable. <Link href="/contact" className="font-bold text-[hsl(var(--primary))] underline underline-offset-4">Contact admissions</Link>.</p>)}
+          </div>
+        </aside>
       </div>
     </section>
   );

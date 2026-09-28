@@ -2221,6 +2221,10 @@ export const GetCourseBySlugResponse = zod.object({
   "heroEyebrow": zod.string(),
   "heroTitle": zod.string(),
   "heroDescription": zod.string(),
+  "durationLabel": zod.string(),
+  "modeLabel": zod.string(),
+  "heroBackgroundImageUrl": zod.string().nullable(),
+  "heroBackgroundOverlay": zod.number().int(),
   "primaryActionLabel": zod.string(),
   "primaryActionUrl": zod.string(),
   "secondaryActionLabel": zod.string(),
@@ -2300,6 +2304,10 @@ export const GetAdminCoursesResponseItem = zod.object({
   "heroEyebrow": zod.string(),
   "heroTitle": zod.string(),
   "heroDescription": zod.string(),
+  "durationLabel": zod.string(),
+  "modeLabel": zod.string(),
+  "heroBackgroundImageUrl": zod.string().nullable(),
+  "heroBackgroundOverlay": zod.number().int(),
   "primaryActionLabel": zod.string(),
   "primaryActionUrl": zod.string(),
   "secondaryActionLabel": zod.string(),
@@ -2343,6 +2351,13 @@ export const updateAdminCourseBodyHeroEyebrowMax = 100;
 export const updateAdminCourseBodyHeroTitleMax = 180;
 
 export const updateAdminCourseBodyHeroDescriptionMax = 2000;
+
+export const updateAdminCourseBodyDurationLabelMax = 100;
+
+export const updateAdminCourseBodyModeLabelMax = 100;
+
+export const updateAdminCourseBodyHeroBackgroundOverlayMin = 0;
+export const updateAdminCourseBodyHeroBackgroundOverlayMax = 80;
 
 export const updateAdminCourseBodyPrimaryActionLabelMax = 100;
 
@@ -2394,6 +2409,10 @@ export const UpdateAdminCourseBody = zod.object({
   "heroEyebrow": zod.string().min(1).max(updateAdminCourseBodyHeroEyebrowMax),
   "heroTitle": zod.string().min(1).max(updateAdminCourseBodyHeroTitleMax),
   "heroDescription": zod.string().min(1).max(updateAdminCourseBodyHeroDescriptionMax),
+  "durationLabel": zod.string().min(1).max(updateAdminCourseBodyDurationLabelMax),
+  "modeLabel": zod.string().min(1).max(updateAdminCourseBodyModeLabelMax),
+  "heroBackgroundImageUrl": zod.string().nullable(),
+  "heroBackgroundOverlay": zod.number().int().min(updateAdminCourseBodyHeroBackgroundOverlayMin).max(updateAdminCourseBodyHeroBackgroundOverlayMax),
   "primaryActionLabel": zod.string().min(1).max(updateAdminCourseBodyPrimaryActionLabelMax),
   "primaryActionUrl": zod.string().min(1).max(updateAdminCourseBodyPrimaryActionUrlMax),
   "secondaryActionLabel": zod.string().min(1).max(updateAdminCourseBodySecondaryActionLabelMax),
@@ -2445,6 +2464,10 @@ export const UpdateAdminCourseResponse = zod.object({
   "heroEyebrow": zod.string(),
   "heroTitle": zod.string(),
   "heroDescription": zod.string(),
+  "durationLabel": zod.string(),
+  "modeLabel": zod.string(),
+  "heroBackgroundImageUrl": zod.string().nullable(),
+  "heroBackgroundOverlay": zod.number().int(),
   "primaryActionLabel": zod.string(),
   "primaryActionUrl": zod.string(),
   "secondaryActionLabel": zod.string(),

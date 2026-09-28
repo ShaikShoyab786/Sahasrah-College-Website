@@ -7,6 +7,14 @@ import {
 import { homepagePreviewCopyDefaults } from "./homepage-preview-copy-defaults";
 import { COURSE_SEEDS } from "./course-content";
 
+const LEGACY_COURSE_ACTIONS = [
+  { slug: "mpc", primaryActionLabel: "Explore admissions", secondaryActionLabel: "Talk to a counsellor" },
+  { slug: "bipc", primaryActionLabel: "Explore admissions", secondaryActionLabel: "Talk to a counsellor" },
+  { slug: "mpc-iit-jee", primaryActionLabel: "Discuss the JEE pathway", secondaryActionLabel: "Ask a counsellor" },
+  { slug: "bipc-neet", primaryActionLabel: "Discuss the NEET pathway", secondaryActionLabel: "Ask a counsellor" },
+  { slug: "mpc-eamcet", primaryActionLabel: "Discuss the EAMCET pathway", secondaryActionLabel: "Ask a counsellor" },
+] as const;
+
 export const prisma = new PrismaClient();
 
 const galleryCategories = ["Campus", "Classrooms", "Sports", "Labs", "Library", "Achievements", "Events"];
@@ -231,6 +239,27 @@ export async function initializeDatabase() {
       create: course,
     });
   }
+
+  for (const legacy of LEGACY_COURSE_ACTIONS) {
+    await prisma.course.updateMany({
+      where: {
+        slug: legacy.slug,
+        primaryActionLabel: legacy.primaryActionLabel,
+        secondaryActionLabel: legacy.secondaryActionLabel,
+        secondaryActionUrl: "/contact",
+      },
+      data: {
+        primaryActionLabel: "Explore admissions",
+        secondaryActionLabel: "View Curriculum",
+        secondaryActionUrl: "#course-curriculum-heading",
+      },
+    });
+  }
+
+  await prisma.course.updateMany({
+    where: { durationLabel: "2 years" },
+    data: { durationLabel: "2 Years" },
+  });
 
   await prisma.siteSettings.upsert({
     where: { id: "singleton" },

@@ -32,6 +32,10 @@ function toAdminCourse(course: Course) {
     slug: course.slug,
     name: course.name,
     displayOrder: course.displayOrder,
+    durationLabel: course.durationLabel,
+    modeLabel: course.modeLabel,
+    heroBackgroundImageUrl: course.heroBackgroundImageUrl,
+    heroBackgroundOverlay: course.heroBackgroundOverlay,
     heroEyebrow: course.heroEyebrow,
     heroTitle: course.heroTitle,
     heroDescription: course.heroDescription,
@@ -98,10 +102,22 @@ function toPublicCourse(course: Course, mentors: FacultyMember[], slug: CourseSl
 }
 
 function isSafeActionUrl(value: string) {
+  if (/^#[a-zA-Z][a-zA-Z0-9_-]{0,79}$/.test(value)) return true;
   if (value.startsWith("/") && !value.startsWith("//")) return true;
   try {
     const url = new URL(value);
     return url.protocol === "https:" || url.protocol === "http:";
+  } catch {
+    return false;
+  }
+}
+
+function isSafeCourseImageUrl(value: string | null) {
+  if (value === null) return true;
+  if (value.startsWith("/") && !value.startsWith("//") && !value.split("/").includes("..")) return true;
+  try {
+    const url = new URL(value);
+    return (url.protocol === "https:" || url.protocol === "http:") && !url.username && !url.password;
   } catch {
     return false;
   }
@@ -350,6 +366,7 @@ router.put("/admin/courses/:slug", requireAdmin, async (req, res): Promise<void>
     !parsed.success ||
     !isSafeActionUrl(parsed.data?.primaryActionUrl ?? "") ||
     !isSafeActionUrl(parsed.data?.secondaryActionUrl ?? "") ||
+    !isSafeCourseImageUrl(parsed.data?.heroBackgroundImageUrl ?? null) ||
     !isSafeObjectPath(parsed.data?.curriculumPdfObjectPath ?? null) ||
     Boolean(parsed.data?.curriculumPdfObjectPath) !== Boolean(parsed.data?.curriculumPdfFileName) ||
     (parsed.data?.curriculumPdfFileName !== null &&
@@ -382,6 +399,10 @@ router.put("/admin/courses/:slug", requireAdmin, async (req, res): Promise<void>
         heroEyebrow: parsed.data.heroEyebrow,
         heroTitle: parsed.data.heroTitle,
         heroDescription: parsed.data.heroDescription,
+        durationLabel: parsed.data.durationLabel,
+        modeLabel: parsed.data.modeLabel,
+        heroBackgroundImageUrl: parsed.data.heroBackgroundImageUrl,
+        heroBackgroundOverlay: parsed.data.heroBackgroundOverlay,
         primaryActionLabel: parsed.data.primaryActionLabel,
         primaryActionUrl: parsed.data.primaryActionUrl,
         secondaryActionLabel: parsed.data.secondaryActionLabel,

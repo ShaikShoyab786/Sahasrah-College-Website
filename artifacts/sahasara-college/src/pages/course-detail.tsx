@@ -1,4 +1,4 @@
-import { getGetCourseBySlugQueryKey, useGetCourseBySlug, useGetSiteSettings, type CourseSlug } from '@workspace/api-client-react';
+import { getGetCallbackPopupSettingsQueryKey, getGetCourseBySlugQueryKey, useGetCallbackPopupSettings, useGetCourseBySlug, useGetSiteSettings, type CourseSlug } from '@workspace/api-client-react';
 import { PublicFooter } from '@/components/public-footer';
 import { PublicHeader } from '@/components/public-header';
 import { CourseEmptyState, CourseErrorState, CourseHero, CourseLoadingState, CurriculumSection, HighlightsSection, IdealProfileSection, MentorsSection, OverviewSection, WhyChooseSection } from '@/components/course-experience';
@@ -12,6 +12,9 @@ export default function CourseDetail() {
   const slug = params.slug as CourseSlug;
   const settingsQuery = useGetSiteSettings();
   const courseQuery = useGetCourseBySlug(slug, { query: { queryKey: getGetCourseBySlugQueryKey(slug) } });
+  const enquirySettingsQuery = useGetCallbackPopupSettings({
+    query: { queryKey: getGetCallbackPopupSettingsQueryKey() },
+  });
   const settings = settingsQuery.data;
   const publicSettings = settings ?? {
     collegeName: 'Sahsrah Junior College',
@@ -32,7 +35,13 @@ export default function CourseDetail() {
     <div className="paper-grain overflow-hidden bg-[hsl(var(--background))]" style={createPublicThemeStyle(settings?.primaryColor || DEFAULT_PRIMARY_COLOR, settings?.accentColor || DEFAULT_ACCENT_COLOR, settings?.surfaceColor || DEFAULT_SURFACE_COLOR)}>
       <PublicHeader settings={publicSettings} activePage="courses" />
       <main>
-        <CourseHero course={course} />
+        <CourseHero
+          course={course}
+          enquirySettings={enquirySettingsQuery.data}
+          enquirySettingsLoading={enquirySettingsQuery.isLoading}
+          enquirySettingsError={enquirySettingsQuery.isError}
+          onRetryEnquirySettings={() => { void enquirySettingsQuery.refetch(); }}
+        />
         <HighlightsSection highlights={course.highlights} />
         <WhyChooseSection reasons={course.whyChoose} />
         <MentorsSection mentors={course.mentors} />

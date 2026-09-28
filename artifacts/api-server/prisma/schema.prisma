@@ -728,6 +728,10 @@ model Course {
   slug                      String   @unique
   name                      String
   displayOrder              Int      @default(1)
+  durationLabel             String   @default("2 Years")
+  modeLabel                 String   @default("Offline")
+  heroBackgroundImageUrl    String?
+  heroBackgroundOverlay     Int      @default(48)
   heroEyebrow               String
   heroTitle                 String
   heroDescription           String

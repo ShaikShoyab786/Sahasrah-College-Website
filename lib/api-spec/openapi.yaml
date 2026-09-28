@@ -4713,6 +4713,14 @@ components:
           type: string
         heroDescription:
           type: string
+        durationLabel:
+          type: string
+        modeLabel:
+          type: string
+        heroBackgroundImageUrl:
+          type: ["string", "null"]
+        heroBackgroundOverlay:
+          type: integer
         primaryActionLabel:
           type: string
         primaryActionUrl:
@@ -4760,7 +4768,7 @@ components:
         updatedAt:
           type: string
           format: date-time
-      required: [slug, name, displayOrder, heroEyebrow, heroTitle, heroDescription, primaryActionLabel, primaryActionUrl, secondaryActionLabel, secondaryActionUrl, highlights, whyChoose, overviewText, programGoals, idealProfileTitle, idealProfileDescription, idealProfileIndicators, syllabus, curriculumPdfFileName, curriculumPdfIsSample, curriculumDownloadUrl, mentors, updatedAt]
+      required: [slug, name, displayOrder, heroEyebrow, heroTitle, heroDescription, durationLabel, modeLabel, heroBackgroundImageUrl, heroBackgroundOverlay, primaryActionLabel, primaryActionUrl, secondaryActionLabel, secondaryActionUrl, highlights, whyChoose, overviewText, programGoals, idealProfileTitle, idealProfileDescription, idealProfileIndicators, syllabus, curriculumPdfFileName, curriculumPdfIsSample, curriculumDownloadUrl, mentors, updatedAt]
 
     AdminCourse:
       type: object
@@ -4777,6 +4785,14 @@ components:
           type: string
         heroDescription:
           type: string
+        durationLabel:
+          type: string
+        modeLabel:
+          type: string
+        heroBackgroundImageUrl:
+          type: ["string", "null"]
+        heroBackgroundOverlay:
+          type: integer
         primaryActionLabel:
           type: string
         primaryActionUrl:
@@ -4822,7 +4838,7 @@ components:
         updatedAt:
           type: string
           format: date-time
-      required: [slug, name, displayOrder, heroEyebrow, heroTitle, heroDescription, primaryActionLabel, primaryActionUrl, secondaryActionLabel, secondaryActionUrl, highlights, whyChoose, overviewText, programGoals, idealProfileTitle, idealProfileDescription, idealProfileIndicators, syllabus, curriculumPdfObjectPath, curriculumPdfFileName, curriculumPdfIsSample, curriculumDownloadUrl, updatedAt]
+      required: [slug, name, displayOrder, heroEyebrow, heroTitle, heroDescription, durationLabel, modeLabel, heroBackgroundImageUrl, heroBackgroundOverlay, primaryActionLabel, primaryActionUrl, secondaryActionLabel, secondaryActionUrl, highlights, whyChoose, overviewText, programGoals, idealProfileTitle, idealProfileDescription, idealProfileIndicators, syllabus, curriculumPdfObjectPath, curriculumPdfFileName, curriculumPdfIsSample, curriculumDownloadUrl, updatedAt]
 
     CourseUpdate:
       type: object
@@ -4839,6 +4855,20 @@ components:
           type: string
           minLength: 1
           maxLength: 2000
+        durationLabel:
+          type: string
+          minLength: 1
+          maxLength: 100
+        modeLabel:
+          type: string
+          minLength: 1
+          maxLength: 100
+        heroBackgroundImageUrl:
+          type: ["string", "null"]
+        heroBackgroundOverlay:
+          type: integer
+          minimum: 0
+          maximum: 80
         primaryActionLabel:
           type: string
           minLength: 1
@@ -4905,7 +4935,7 @@ components:
           type: ["string", "null"]
         curriculumPdfFileName:
           type: ["string", "null"]
-      required: [heroEyebrow, heroTitle, heroDescription, primaryActionLabel, primaryActionUrl, secondaryActionLabel, secondaryActionUrl, highlights, whyChoose, overviewText, programGoals, idealProfileTitle, idealProfileDescription, idealProfileIndicators, syllabus, curriculumPdfObjectPath, curriculumPdfFileName]
+      required: [heroEyebrow, heroTitle, heroDescription, durationLabel, modeLabel, heroBackgroundImageUrl, heroBackgroundOverlay, primaryActionLabel, primaryActionUrl, secondaryActionLabel, secondaryActionUrl, highlights, whyChoose, overviewText, programGoals, idealProfileTitle, idealProfileDescription, idealProfileIndicators, syllabus, curriculumPdfObjectPath, curriculumPdfFileName]
 
     CurriculumUploadUrlRequest:
       type: object

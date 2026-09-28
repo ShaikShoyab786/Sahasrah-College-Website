@@ -29,6 +29,23 @@ export interface CourseUpdate {
      * @minLength 1
      * @maxLength 100
      */
+  durationLabel: string;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  modeLabel: string;
+  /** @nullable */
+  heroBackgroundImageUrl: string | null;
+  /**
+     * @minimum 0
+     * @maximum 80
+     */
+  heroBackgroundOverlay: number;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
   primaryActionLabel: string;
   /**
      * @minLength 1

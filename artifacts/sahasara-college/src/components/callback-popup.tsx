@@ -61,17 +61,26 @@ function safeDelay(value: number | undefined) {
   return Math.min(10, Math.max(5, delay));
 }
 
-function CallbackPopupForm({
+export function CallbackPopupForm({
   settings,
   onClose,
+  initialCourse,
+  variant = 'dialog',
 }: {
   settings: CallbackPopupSettings;
-  onClose: () => void;
+  onClose?: () => void;
+  initialCourse?: string;
+  variant?: 'dialog' | 'inline';
 }) {
   const submit = useSubmitContactEnquiry();
-  const [form, setForm] = useState<CallbackForm>(emptyForm);
+  const [form, setForm] = useState<CallbackForm>(() => ({ ...emptyForm, course: initialCourse ?? '' }));
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (!initialCourse) return;
+    setForm((current) => current.course ? current : { ...current, course: initialCourse });
+  }, [initialCourse]);
 
   const update = (field: keyof CallbackForm, value: string) => {
     setForm((current) => ({ ...current, [field]: value }));
@@ -93,7 +102,7 @@ function CallbackPopupForm({
     }, {
       onSuccess: (result) => {
         setSuccess(result.message);
-        setForm(emptyForm);
+        setForm(variant === 'inline' && initialCourse ? { ...emptyForm, course: initialCourse } : emptyForm);
       },
       onError: (requestError) => setError(errorMessage(requestError)),
     });
@@ -101,7 +110,7 @@ function CallbackPopupForm({
 
   if (success) {
     return (
-      <div className="space-y-5" data-testid="state-callback-popup-success">
+      <div className="space-y-5" data-testid={variant === 'inline' ? 'state-course-enquiry-success' : 'state-callback-popup-success'}>
         <div className="grid h-12 w-12 place-items-center rounded-full bg-[hsl(var(--accent)/.16)] text-[hsl(var(--accent-foreground))]">
           <CheckCircle2 size={24} aria-hidden="true" />
         </div>
@@ -109,20 +118,22 @@ function CallbackPopupForm({
           <p className="text-[11px] font-bold uppercase tracking-[.18em] text-[hsl(var(--eyebrow-text))]">Request received</p>
           <p className="mt-3 text-base leading-7 text-[hsl(var(--foreground))]" data-testid="text-callback-success-message">{success}</p>
         </div>
-        <DialogFooter className="flex-row justify-start">
-          <DialogClose asChild>
-            <button type="button" onClick={onClose} className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-[hsl(var(--primary))] px-5 text-sm font-bold text-[hsl(var(--primary-foreground))] transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--ring))] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(var(--card))]" data-testid="button-callback-success-close">
-              Close
-              <ArrowRight size={16} aria-hidden="true" />
-            </button>
-          </DialogClose>
-        </DialogFooter>
+        {variant === 'dialog'
+          ? <DialogFooter className="flex-row justify-start">
+              <DialogClose asChild>
+                <button type="button" onClick={onClose} className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-[hsl(var(--primary))] px-5 text-sm font-bold text-[hsl(var(--primary-foreground))] transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--ring))] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(var(--card))]" data-testid="button-callback-success-close">
+                  Close
+                  <ArrowRight size={16} aria-hidden="true" />
+                </button>
+              </DialogClose>
+            </DialogFooter>
+          : <button type="button" onClick={() => setSuccess('')} className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-[hsl(var(--border))] px-4 text-sm font-bold text-[hsl(var(--primary))] transition hover:bg-[hsl(var(--secondary))]" data-testid="button-course-enquiry-again">Send another enquiry<ArrowRight size={15} aria-hidden="true" /></button>}
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3.5" data-testid="form-callback-popup" noValidate={false}>
+    <form onSubmit={handleSubmit} className="space-y-3.5" data-testid={variant === 'inline' ? 'form-course-enquiry' : 'form-callback-popup'} noValidate={false}>
       <div className="grid gap-3 sm:grid-cols-2">
         <label className="block min-w-0 space-y-1.5">
           <span className="text-xs font-semibold text-[hsl(var(--card-foreground))] sm:text-[13px]">{settings.callbackPopupNameLabel}</span>

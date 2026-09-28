@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, type ChangeEvent, type FormEvent } from 'react';
-import { BookOpen, FileCheck2, FileUp, Plus, RotateCcw, Trash2 } from 'lucide-react';
+import { BookOpen, FileCheck2, FileUp, ImagePlus, Plus, RotateCcw, Trash2 } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   CourseSlug,
@@ -7,6 +7,7 @@ import {
   getGetCourseBySlugQueryKey,
   useGetAdminCourses,
   useRequestCourseCurriculumUploadUrl,
+  useUploadAdminImage,
   useUpdateAdminCourse,
   type AdminCourse,
   type CourseHighlight,
@@ -25,10 +26,14 @@ function toUpdate(course: AdminCourse): CourseUpdate {
     heroEyebrow: course.heroEyebrow,
     heroTitle: course.heroTitle,
     heroDescription: course.heroDescription,
+    durationLabel: course.durationLabel,
+    modeLabel: course.modeLabel,
+    heroBackgroundImageUrl: course.heroBackgroundImageUrl,
+    heroBackgroundOverlay: course.heroBackgroundOverlay,
     primaryActionLabel: course.primaryActionLabel,
     primaryActionUrl: course.primaryActionUrl,
-    secondaryActionLabel: course.secondaryActionLabel,
-    secondaryActionUrl: course.secondaryActionUrl,
+    secondaryActionLabel: 'View Curriculum',
+    secondaryActionUrl: '#course-curriculum-heading',
     highlights: course.highlights,
     whyChoose: course.whyChoose,
     overviewText: course.overviewText,
@@ -95,6 +100,7 @@ export default function AdminCourses() {
   const query = useGetAdminCourses();
   const update = useUpdateAdminCourse();
   const requestUpload = useRequestCourseCurriculumUploadUrl();
+  const imageUpload = useUploadAdminImage();
   const client = useQueryClient();
   const [activeSlug, setActiveSlug] = useState<CourseSlug>(CourseSlug.mpc);
   const [forms, setForms] = useState<Partial<Record<CourseSlug, CourseUpdate>>>({});
@@ -157,6 +163,29 @@ export default function AdminCourses() {
     }
   };
 
+  const handleHeroImage = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+      setError('Choose a JPG, PNG, or WebP image.');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setError('That image is larger than 5 MiB. Choose a smaller file.');
+      return;
+    }
+    setError('');
+    setNotice('');
+    imageUpload.mutate({ data: { file, purpose: 'hero' } }, {
+      onSuccess: (result) => {
+        setForm({ heroBackgroundImageUrl: result.url });
+        setNotice('Hero background uploaded. Save the course to publish it.');
+      },
+      onError: () => setError('The hero background could not be uploaded. Try another image.'),
+    });
+  };
+
   if (query.isLoading) return <EditorSkeleton />;
   if (query.isError && !query.data) return <LoadError onRetry={() => query.refetch()} />;
   if (!query.data?.length || !course || !form) return <LoadError onRetry={() => query.refetch()} />;
@@ -172,8 +201,44 @@ export default function AdminCourses() {
         </EditorCard>
 
         <form onSubmit={save} className="space-y-6">
-          <EditorCard title="Hero and actions" description="The opening content and links for this course page.">
-            <div className="space-y-5"><Field id="course-hero-eyebrow" label="Eyebrow" value={form.heroEyebrow} onChange={(event) => setForm({ heroEyebrow: event.target.value })} required /><Field id="course-hero-title" label="Title" value={form.heroTitle} onChange={(event) => setForm({ heroTitle: event.target.value })} required /><Area id="course-hero-description" label="Description" value={form.heroDescription} onChange={(event) => setForm({ heroDescription: event.target.value })} required /><div className="grid gap-4 md:grid-cols-2"><Field id="course-primary-label" label="Primary action label" value={form.primaryActionLabel} onChange={(event) => setForm({ primaryActionLabel: event.target.value })} required /><Field id="course-primary-url" label="Primary action URL" value={form.primaryActionUrl} onChange={(event) => setForm({ primaryActionUrl: event.target.value })} required /><Field id="course-secondary-label" label="Secondary action label" value={form.secondaryActionLabel} onChange={(event) => setForm({ secondaryActionLabel: event.target.value })} required /><Field id="course-secondary-url" label="Secondary action URL" value={form.secondaryActionUrl} onChange={(event) => setForm({ secondaryActionUrl: event.target.value })} required /></div></div>
+          <EditorCard title="Hero and actions" description="The opening copy, course details, and calls to action for this pathway.">
+            <div className="space-y-5">
+              <Field id="course-hero-eyebrow" label="Eyebrow" value={form.heroEyebrow} onChange={(event) => setForm({ heroEyebrow: event.target.value })} required />
+              <Field id="course-hero-title" label="Title" value={form.heroTitle} onChange={(event) => setForm({ heroTitle: event.target.value })} required />
+              <Area id="course-hero-description" label="Description" value={form.heroDescription} onChange={(event) => setForm({ heroDescription: event.target.value })} required />
+              <div className="grid gap-4 md:grid-cols-2">
+                <Field id="course-duration-label" label="Duration" value={form.durationLabel} onChange={(event) => setForm({ durationLabel: event.target.value })} required />
+                <Field id="course-mode-label" label="Mode" value={form.modeLabel} onChange={(event) => setForm({ modeLabel: event.target.value })} required />
+              </div>
+              <div className="space-y-4 rounded-2xl border border-[hsl(var(--admin-border))] bg-[hsl(var(--admin-surface-soft))] p-4">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div>
+                    <p className="text-sm font-bold text-[hsl(var(--admin-text))]">Hero background image</p>
+                    <p className="mt-1 text-xs leading-5 text-[hsl(var(--admin-text-muted))]">Upload a JPG, PNG, or WebP up to 5 MiB, or enter an existing image URL.</p>
+                  </div>
+                  <label className="inline-flex min-h-10 cursor-pointer items-center gap-2 rounded-xl border border-[hsl(var(--admin-border))] bg-[hsl(var(--admin-input-background))] px-4 text-xs font-bold text-[hsl(var(--admin-text))]">
+                    <input type="file" accept="image/jpeg,image/png,image/webp" onChange={handleHeroImage} disabled={imageUpload.isPending} className="sr-only" data-testid="input-course-hero-image" />
+                    <ImagePlus size={15} aria-hidden="true" />{imageUpload.isPending ? 'Uploading image…' : 'Upload image'}
+                  </label>
+                </div>
+                <Field id="course-hero-background-url" label="Background image URL" value={form.heroBackgroundImageUrl ?? ''} onChange={(event) => setForm({ heroBackgroundImageUrl: event.target.value.trim() || null })} />
+                {form.heroBackgroundImageUrl && <div className="relative aspect-[16/6] overflow-hidden rounded-xl bg-[hsl(var(--admin-border))]">
+                  <img src={form.heroBackgroundImageUrl} alt="Course hero background preview" className="h-full w-full object-cover" />
+                  <div className="absolute inset-0" style={{ backgroundColor: `rgba(7, 25, 31, ${Math.min(80, Math.max(0, form.heroBackgroundOverlay)) / 100})` }} />
+                  <button type="button" onClick={() => setForm({ heroBackgroundImageUrl: null })} className="absolute right-3 top-3 rounded-lg bg-black/70 px-3 py-2 text-xs font-bold text-white" data-testid="button-remove-course-hero-image">Remove image</button>
+                </div>}
+                <label htmlFor="course-hero-background-overlay" className="block text-sm font-semibold text-[hsl(var(--admin-text))]">
+                  Dark readability overlay: {form.heroBackgroundOverlay}%
+                  <input id="course-hero-background-overlay" type="range" min={0} max={80} step={1} value={form.heroBackgroundOverlay} onChange={(event) => setForm({ heroBackgroundOverlay: Number(event.target.value) })} className="mt-3 block w-full accent-[hsl(var(--admin-focus))]" data-testid="input-course-hero-overlay" />
+                </label>
+                <p className="text-xs leading-5 text-[hsl(var(--admin-text-muted))]">The overlay is applied only when a background image is set.</p>
+              </div>
+              <div className="grid gap-4 md:grid-cols-2">
+                <Field id="course-primary-label" label="Admissions action label" value={form.primaryActionLabel} onChange={(event) => setForm({ primaryActionLabel: event.target.value })} required />
+                <Field id="course-primary-url" label="Admissions action URL" value={form.primaryActionUrl} onChange={(event) => setForm({ primaryActionUrl: event.target.value })} required />
+              </div>
+              <p className="rounded-xl bg-[hsl(var(--admin-surface-soft))] px-4 py-3 text-xs leading-5 text-[hsl(var(--admin-text-muted))]">The second hero action is fixed to “View Curriculum” and scrolls to this course’s syllabus.</p>
+            </div>
           </EditorCard>
           <EditorCard title="Course story" description="Explain the pathway clearly, from its overview to the reasons families choose it.">
             <div className="space-y-7"><Area id="course-overview" label="Overview" value={form.overviewText} onChange={(event) => setForm({ overviewText: event.target.value })} required /><HighlightEditor values={form.highlights} onChange={(highlights) => setForm({ highlights })} /><ReasonEditor values={form.whyChoose} onChange={(whyChoose) => setForm({ whyChoose })} /></div>
