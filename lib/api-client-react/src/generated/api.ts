@@ -56,6 +56,7 @@ import type {
   CourseSlug,
   CourseSummary,
   CourseUpdate,
+  CoursesMegaMenu,
   CurriculumUploadUrlRequest,
   CurriculumUploadUrlResponse,
   DeletedFacultyMember,
@@ -4992,6 +4993,248 @@ export function useGetCourses<TData = Awaited<ReturnType<typeof getCourses>>, TE
 
 
 
+
+export const getGetCoursesMegaMenuUrl = () => {
+
+
+
+
+  return `/api/courses-mega-menu`
+}
+
+/**
+ * @summary Read the public Courses mega menu
+ */
+export const getCoursesMegaMenu = async ( options?: Parameters<typeof customFetch>[1]): Promise<CoursesMegaMenu> => {
+
+  return customFetch<CoursesMegaMenu>(getGetCoursesMegaMenuUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetCoursesMegaMenuQueryKey = () => {
+    return [
+    `/api/courses-mega-menu`
+    ] as const;
+    }
+
+
+export const getGetCoursesMegaMenuQueryOptions = <TData = Awaited<ReturnType<typeof getCoursesMegaMenu>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getCoursesMegaMenu>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetCoursesMegaMenuQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCoursesMegaMenu>>> = ({ signal }) => getCoursesMegaMenu({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getCoursesMegaMenu>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetCoursesMegaMenuQueryResult = NonNullable<Awaited<ReturnType<typeof getCoursesMegaMenu>>>
+export type GetCoursesMegaMenuQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Read the public Courses mega menu
+ */
+
+export function useGetCoursesMegaMenu<TData = Awaited<ReturnType<typeof getCoursesMegaMenu>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getCoursesMegaMenu>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetCoursesMegaMenuQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetAdminCoursesMegaMenuUrl = () => {
+
+
+
+
+  return `/api/admin/courses-mega-menu`
+}
+
+/**
+ * @summary Read editable Courses mega menu content
+ */
+export const getAdminCoursesMegaMenu = async ( options?: Parameters<typeof customFetch>[1]): Promise<CoursesMegaMenu> => {
+
+  return customFetch<CoursesMegaMenu>(getGetAdminCoursesMegaMenuUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAdminCoursesMegaMenuQueryKey = () => {
+    return [
+    `/api/admin/courses-mega-menu`
+    ] as const;
+    }
+
+
+export const getGetAdminCoursesMegaMenuQueryOptions = <TData = Awaited<ReturnType<typeof getAdminCoursesMegaMenu>>, TError = ErrorType<ErrorEnvelope>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminCoursesMegaMenu>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAdminCoursesMegaMenuQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdminCoursesMegaMenu>>> = ({ signal }) => getAdminCoursesMegaMenu({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAdminCoursesMegaMenu>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetAdminCoursesMegaMenuQueryResult = NonNullable<Awaited<ReturnType<typeof getAdminCoursesMegaMenu>>>
+export type GetAdminCoursesMegaMenuQueryError = ErrorType<ErrorEnvelope>
+
+
+/**
+ * @summary Read editable Courses mega menu content
+ */
+
+export function useGetAdminCoursesMegaMenu<TData = Awaited<ReturnType<typeof getAdminCoursesMegaMenu>>, TError = ErrorType<ErrorEnvelope>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminCoursesMegaMenu>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetAdminCoursesMegaMenuQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getUpdateCoursesMegaMenuUrl = () => {
+
+
+
+
+  return `/api/admin/courses-mega-menu`
+}
+
+/**
+ * @summary Save Courses mega menu content
+ */
+export const updateCoursesMegaMenu = async (coursesMegaMenu: CoursesMegaMenu, options?: Parameters<typeof customFetch>[1]): Promise<CoursesMegaMenu> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<CoursesMegaMenu>(getUpdateCoursesMegaMenuUrl(),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(coursesMegaMenu)
+  }
+);}
+
+
+
+
+
+export const getUpdateCoursesMegaMenuMutationKey = () => ['updateCoursesMegaMenu'] as const;
+
+export const getUpdateCoursesMegaMenuMutationOptions = <TError = ErrorType<ErrorEnvelope>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateCoursesMegaMenu>>, TError,UpdateCoursesMegaMenuMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateCoursesMegaMenu>>, TError,UpdateCoursesMegaMenuMutationVariables, TContext> => {
+
+const mutationKey = getUpdateCoursesMegaMenuMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateCoursesMegaMenu>>, UpdateCoursesMegaMenuMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  updateCoursesMegaMenu(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateCoursesMegaMenuMutationResult = NonNullable<Awaited<ReturnType<typeof updateCoursesMegaMenu>>>
+    export type UpdateCoursesMegaMenuMutationBody = BodyType<CoursesMegaMenu>
+    export type UpdateCoursesMegaMenuMutationError = ErrorType<ErrorEnvelope>
+    export type UpdateCoursesMegaMenuMutationVariables = {data: BodyType<CoursesMegaMenu>}
+
+    /**
+ * @summary Save Courses mega menu content
+ */
+export const useUpdateCoursesMegaMenu = <TError = ErrorType<ErrorEnvelope>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateCoursesMegaMenu>>, TError,UpdateCoursesMegaMenuMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateCoursesMegaMenu>>,
+        TError,
+        UpdateCoursesMegaMenuMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateCoursesMegaMenuMutationOptions(options));
+    }
 
 export const getGetCourseBySlugUrl = (slug: CourseSlug,) => {
 

@@ -15,6 +15,7 @@ import AdminGuard from '@/pages/admin-guard';
 import AdminOverview from '@/pages/admin-overview';
 import AdminDashboard from '@/pages/admin-dashboard';
 import AdminSiteSettings from '@/pages/admin-site-settings';
+import AdminMegaMenus from '@/pages/admin-mega-menus';
 import { PublicVisitIntroGate } from '@/components/public-visit-intro';
 import { CallbackPopupGate } from '@/components/callback-popup';
 import AdminHomepageHero from '@/pages/admin-homepage-hero';
@@ -162,6 +163,9 @@ function Router() {
         </Route>
         <Route path="/admin/site-settings">
           <AdminGuard><AdminSiteSettings /></AdminGuard>
+        </Route>
+        <Route path="/admin/mega-menus">
+          <AdminGuard><AdminMegaMenus /></AdminGuard>
         </Route>
         <Route path="/admin/homepage-hero">
           <AdminGuard><AdminHomepageHero /></AdminGuard>

@@ -755,6 +755,13 @@ model Course {
   @@index([displayOrder])
 }
 
+model CoursesMegaMenuSettings {
+  id        String   @id @default("singleton")
+  content   Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model FacultyImportState {
   id          String   @id @default("singleton")
   completedAt DateTime @default(now())

@@ -2190,6 +2190,602 @@ export const GetCoursesResponse = zod.array(GetCoursesResponseItem)
 
 
 /**
+ * @summary Read the public Courses mega menu
+ */
+export const getCoursesMegaMenuResponseEyebrowMax = 100;
+
+export const getCoursesMegaMenuResponseHeadingMax = 140;
+
+export const getCoursesMegaMenuResponsePathwayBadgeLabelMax = 80;
+
+export const getCoursesMegaMenuResponseSidebarBrandNameMax = 120;
+
+export const getCoursesMegaMenuResponseSidebarLogoUrlMax = 1000;
+
+export const getCoursesMegaMenuResponseSidebarLogoAltTextMax = 180;
+
+export const getCoursesMegaMenuResponseSidebarTaglineMax = 180;
+
+export const getCoursesMegaMenuResponseSidebarHeadlineMax = 180;
+
+export const getCoursesMegaMenuResponseSidebarSupportingTextMax = 240;
+
+export const getCoursesMegaMenuResponseSidebarImageUrlMax = 1000;
+
+export const getCoursesMegaMenuResponseSidebarImageAltTextMax = 180;
+
+export const getCoursesMegaMenuResponseStandardCardsItemIdMax = 80;
+
+export const getCoursesMegaMenuResponseStandardCardsItemTitleMax = 120;
+
+export const getCoursesMegaMenuResponseStandardCardsItemCategoryMax = 100;
+
+export const getCoursesMegaMenuResponseStandardCardsItemDescriptionMax = 360;
+
+export const getCoursesMegaMenuResponseStandardCardsItemImageUrlMax = 1000;
+
+export const getCoursesMegaMenuResponseStandardCardsItemImageAltTextMax = 180;
+
+
+export const getCoursesMegaMenuResponseStandardCardsItemHrefMax = 500;
+
+export const getCoursesMegaMenuResponseStandardCardsMax = 20;
+
+export const getCoursesMegaMenuResponseIntegratedCardIdMax = 80;
+
+export const getCoursesMegaMenuResponseIntegratedCardTitleMax = 120;
+
+export const getCoursesMegaMenuResponseIntegratedCardCategoryMax = 100;
+
+export const getCoursesMegaMenuResponseIntegratedCardDescriptionMax = 360;
+
+export const getCoursesMegaMenuResponseIntegratedCardImageUrlMax = 1000;
+
+export const getCoursesMegaMenuResponseIntegratedCardImageAltTextMax = 180;
+
+export const getCoursesMegaMenuResponseIntegratedCardStatusLabelMax = 80;
+
+export const getCoursesMegaMenuResponseFooterBenefitsItemIdMax = 80;
+
+export const getCoursesMegaMenuResponseFooterBenefitsItemTitleMax = 100;
+
+export const getCoursesMegaMenuResponseFooterBenefitsItemDescriptionMax = 180;
+
+
+export const getCoursesMegaMenuResponseFooterBenefitsMax = 20;
+
+export const getCoursesMegaMenuResponseUtilityLinksItemIdMax = 80;
+
+export const getCoursesMegaMenuResponseUtilityLinksItemLabelMax = 100;
+
+export const getCoursesMegaMenuResponseUtilityLinksItemHrefMax = 500;
+
+
+export const getCoursesMegaMenuResponseUtilityLinksMax = 20;
+
+export const getCoursesMegaMenuResponseCtaButtonsItemOneIdMax = 80;
+
+export const getCoursesMegaMenuResponseCtaButtonsItemOneLabelMax = 100;
+
+export const getCoursesMegaMenuResponseCtaButtonsItemOneHrefMax = 500;
+
+
+export const getCoursesMegaMenuResponseCtaButtonsMax = 10;
+
+
+
+export const GetCoursesMegaMenuResponse = zod.object({
+  "eyebrow": zod.string().min(1).max(getCoursesMegaMenuResponseEyebrowMax),
+  "heading": zod.string().min(1).max(getCoursesMegaMenuResponseHeadingMax),
+  "pathwayBadgeLabel": zod.string().min(1).max(getCoursesMegaMenuResponsePathwayBadgeLabelMax),
+  "pathwayBadgeVisible": zod.boolean(),
+  "sidebarBrandName": zod.string().min(1).max(getCoursesMegaMenuResponseSidebarBrandNameMax),
+  "sidebarLogoVisible": zod.boolean(),
+  "sidebarLogoUrl": zod.string().max(getCoursesMegaMenuResponseSidebarLogoUrlMax).nullable(),
+  "sidebarLogoAltText": zod.string().max(getCoursesMegaMenuResponseSidebarLogoAltTextMax),
+  "sidebarTagline": zod.string().min(1).max(getCoursesMegaMenuResponseSidebarTaglineMax),
+  "sidebarHeadline": zod.string().min(1).max(getCoursesMegaMenuResponseSidebarHeadlineMax),
+  "sidebarSupportingText": zod.string().min(1).max(getCoursesMegaMenuResponseSidebarSupportingTextMax),
+  "sidebarImageUrl": zod.string().max(getCoursesMegaMenuResponseSidebarImageUrlMax).nullable(),
+  "sidebarImageAltText": zod.string().max(getCoursesMegaMenuResponseSidebarImageAltTextMax),
+  "standardCards": zod.array(zod.object({
+  "id": zod.string().min(1).max(getCoursesMegaMenuResponseStandardCardsItemIdMax),
+  "title": zod.string().min(1).max(getCoursesMegaMenuResponseStandardCardsItemTitleMax),
+  "category": zod.string().min(1).max(getCoursesMegaMenuResponseStandardCardsItemCategoryMax),
+  "description": zod.string().min(1).max(getCoursesMegaMenuResponseStandardCardsItemDescriptionMax),
+  "imageUrl": zod.string().max(getCoursesMegaMenuResponseStandardCardsItemImageUrlMax).nullable(),
+  "imageAltText": zod.string().max(getCoursesMegaMenuResponseStandardCardsItemImageAltTextMax),
+  "icon": zod.enum(['atom', 'dna', 'target', 'stethoscope', 'graduation-cap', 'book-open', 'users', 'chart', 'clipboard', 'trophy']),
+  "tint": zod.enum(['sky', 'rose', 'amber', 'mint', 'violet', 'slate']),
+  "displayOrder": zod.number().int().min(1),
+  "isVisible": zod.boolean(),
+  "href": zod.string().min(1).max(getCoursesMegaMenuResponseStandardCardsItemHrefMax)
+})).max(getCoursesMegaMenuResponseStandardCardsMax),
+  "integratedCard": zod.object({
+  "id": zod.string().min(1).max(getCoursesMegaMenuResponseIntegratedCardIdMax),
+  "title": zod.string().min(1).max(getCoursesMegaMenuResponseIntegratedCardTitleMax),
+  "category": zod.string().min(1).max(getCoursesMegaMenuResponseIntegratedCardCategoryMax),
+  "description": zod.string().min(1).max(getCoursesMegaMenuResponseIntegratedCardDescriptionMax),
+  "imageUrl": zod.string().max(getCoursesMegaMenuResponseIntegratedCardImageUrlMax).nullable(),
+  "imageAltText": zod.string().max(getCoursesMegaMenuResponseIntegratedCardImageAltTextMax),
+  "icon": zod.enum(['atom', 'dna', 'target', 'stethoscope', 'graduation-cap', 'book-open', 'users', 'chart', 'clipboard', 'trophy']),
+  "statusLabel": zod.string().min(1).max(getCoursesMegaMenuResponseIntegratedCardStatusLabelMax),
+  "isVisible": zod.boolean()
+}),
+  "footerBenefits": zod.array(zod.object({
+  "id": zod.string().min(1).max(getCoursesMegaMenuResponseFooterBenefitsItemIdMax),
+  "title": zod.string().min(1).max(getCoursesMegaMenuResponseFooterBenefitsItemTitleMax),
+  "description": zod.string().min(1).max(getCoursesMegaMenuResponseFooterBenefitsItemDescriptionMax),
+  "icon": zod.enum(['atom', 'dna', 'target', 'stethoscope', 'graduation-cap', 'book-open', 'users', 'chart', 'clipboard', 'trophy']),
+  "displayOrder": zod.number().int().min(1),
+  "isVisible": zod.boolean()
+})).max(getCoursesMegaMenuResponseFooterBenefitsMax),
+  "utilityLinks": zod.array(zod.object({
+  "id": zod.string().min(1).max(getCoursesMegaMenuResponseUtilityLinksItemIdMax),
+  "label": zod.string().min(1).max(getCoursesMegaMenuResponseUtilityLinksItemLabelMax),
+  "href": zod.string().min(1).max(getCoursesMegaMenuResponseUtilityLinksItemHrefMax),
+  "displayOrder": zod.number().int().min(1),
+  "isVisible": zod.boolean()
+})).max(getCoursesMegaMenuResponseUtilityLinksMax),
+  "ctaButtons": zod.array(zod.object({
+  "id": zod.string().min(1).max(getCoursesMegaMenuResponseCtaButtonsItemOneIdMax),
+  "label": zod.string().min(1).max(getCoursesMegaMenuResponseCtaButtonsItemOneLabelMax),
+  "href": zod.string().min(1).max(getCoursesMegaMenuResponseCtaButtonsItemOneHrefMax),
+  "displayOrder": zod.number().int().min(1),
+  "isVisible": zod.boolean()
+}).and(zod.object({
+  "style": zod.enum(['primary', 'secondary'])
+}))).max(getCoursesMegaMenuResponseCtaButtonsMax)
+})
+
+
+/**
+ * @summary Read editable Courses mega menu content
+ */
+export const getAdminCoursesMegaMenuResponseEyebrowMax = 100;
+
+export const getAdminCoursesMegaMenuResponseHeadingMax = 140;
+
+export const getAdminCoursesMegaMenuResponsePathwayBadgeLabelMax = 80;
+
+export const getAdminCoursesMegaMenuResponseSidebarBrandNameMax = 120;
+
+export const getAdminCoursesMegaMenuResponseSidebarLogoUrlMax = 1000;
+
+export const getAdminCoursesMegaMenuResponseSidebarLogoAltTextMax = 180;
+
+export const getAdminCoursesMegaMenuResponseSidebarTaglineMax = 180;
+
+export const getAdminCoursesMegaMenuResponseSidebarHeadlineMax = 180;
+
+export const getAdminCoursesMegaMenuResponseSidebarSupportingTextMax = 240;
+
+export const getAdminCoursesMegaMenuResponseSidebarImageUrlMax = 1000;
+
+export const getAdminCoursesMegaMenuResponseSidebarImageAltTextMax = 180;
+
+export const getAdminCoursesMegaMenuResponseStandardCardsItemIdMax = 80;
+
+export const getAdminCoursesMegaMenuResponseStandardCardsItemTitleMax = 120;
+
+export const getAdminCoursesMegaMenuResponseStandardCardsItemCategoryMax = 100;
+
+export const getAdminCoursesMegaMenuResponseStandardCardsItemDescriptionMax = 360;
+
+export const getAdminCoursesMegaMenuResponseStandardCardsItemImageUrlMax = 1000;
+
+export const getAdminCoursesMegaMenuResponseStandardCardsItemImageAltTextMax = 180;
+
+
+export const getAdminCoursesMegaMenuResponseStandardCardsItemHrefMax = 500;
+
+export const getAdminCoursesMegaMenuResponseStandardCardsMax = 20;
+
+export const getAdminCoursesMegaMenuResponseIntegratedCardIdMax = 80;
+
+export const getAdminCoursesMegaMenuResponseIntegratedCardTitleMax = 120;
+
+export const getAdminCoursesMegaMenuResponseIntegratedCardCategoryMax = 100;
+
+export const getAdminCoursesMegaMenuResponseIntegratedCardDescriptionMax = 360;
+
+export const getAdminCoursesMegaMenuResponseIntegratedCardImageUrlMax = 1000;
+
+export const getAdminCoursesMegaMenuResponseIntegratedCardImageAltTextMax = 180;
+
+export const getAdminCoursesMegaMenuResponseIntegratedCardStatusLabelMax = 80;
+
+export const getAdminCoursesMegaMenuResponseFooterBenefitsItemIdMax = 80;
+
+export const getAdminCoursesMegaMenuResponseFooterBenefitsItemTitleMax = 100;
+
+export const getAdminCoursesMegaMenuResponseFooterBenefitsItemDescriptionMax = 180;
+
+
+export const getAdminCoursesMegaMenuResponseFooterBenefitsMax = 20;
+
+export const getAdminCoursesMegaMenuResponseUtilityLinksItemIdMax = 80;
+
+export const getAdminCoursesMegaMenuResponseUtilityLinksItemLabelMax = 100;
+
+export const getAdminCoursesMegaMenuResponseUtilityLinksItemHrefMax = 500;
+
+
+export const getAdminCoursesMegaMenuResponseUtilityLinksMax = 20;
+
+export const getAdminCoursesMegaMenuResponseCtaButtonsItemOneIdMax = 80;
+
+export const getAdminCoursesMegaMenuResponseCtaButtonsItemOneLabelMax = 100;
+
+export const getAdminCoursesMegaMenuResponseCtaButtonsItemOneHrefMax = 500;
+
+
+export const getAdminCoursesMegaMenuResponseCtaButtonsMax = 10;
+
+
+
+export const GetAdminCoursesMegaMenuResponse = zod.object({
+  "eyebrow": zod.string().min(1).max(getAdminCoursesMegaMenuResponseEyebrowMax),
+  "heading": zod.string().min(1).max(getAdminCoursesMegaMenuResponseHeadingMax),
+  "pathwayBadgeLabel": zod.string().min(1).max(getAdminCoursesMegaMenuResponsePathwayBadgeLabelMax),
+  "pathwayBadgeVisible": zod.boolean(),
+  "sidebarBrandName": zod.string().min(1).max(getAdminCoursesMegaMenuResponseSidebarBrandNameMax),
+  "sidebarLogoVisible": zod.boolean(),
+  "sidebarLogoUrl": zod.string().max(getAdminCoursesMegaMenuResponseSidebarLogoUrlMax).nullable(),
+  "sidebarLogoAltText": zod.string().max(getAdminCoursesMegaMenuResponseSidebarLogoAltTextMax),
+  "sidebarTagline": zod.string().min(1).max(getAdminCoursesMegaMenuResponseSidebarTaglineMax),
+  "sidebarHeadline": zod.string().min(1).max(getAdminCoursesMegaMenuResponseSidebarHeadlineMax),
+  "sidebarSupportingText": zod.string().min(1).max(getAdminCoursesMegaMenuResponseSidebarSupportingTextMax),
+  "sidebarImageUrl": zod.string().max(getAdminCoursesMegaMenuResponseSidebarImageUrlMax).nullable(),
+  "sidebarImageAltText": zod.string().max(getAdminCoursesMegaMenuResponseSidebarImageAltTextMax),
+  "standardCards": zod.array(zod.object({
+  "id": zod.string().min(1).max(getAdminCoursesMegaMenuResponseStandardCardsItemIdMax),
+  "title": zod.string().min(1).max(getAdminCoursesMegaMenuResponseStandardCardsItemTitleMax),
+  "category": zod.string().min(1).max(getAdminCoursesMegaMenuResponseStandardCardsItemCategoryMax),
+  "description": zod.string().min(1).max(getAdminCoursesMegaMenuResponseStandardCardsItemDescriptionMax),
+  "imageUrl": zod.string().max(getAdminCoursesMegaMenuResponseStandardCardsItemImageUrlMax).nullable(),
+  "imageAltText": zod.string().max(getAdminCoursesMegaMenuResponseStandardCardsItemImageAltTextMax),
+  "icon": zod.enum(['atom', 'dna', 'target', 'stethoscope', 'graduation-cap', 'book-open', 'users', 'chart', 'clipboard', 'trophy']),
+  "tint": zod.enum(['sky', 'rose', 'amber', 'mint', 'violet', 'slate']),
+  "displayOrder": zod.number().int().min(1),
+  "isVisible": zod.boolean(),
+  "href": zod.string().min(1).max(getAdminCoursesMegaMenuResponseStandardCardsItemHrefMax)
+})).max(getAdminCoursesMegaMenuResponseStandardCardsMax),
+  "integratedCard": zod.object({
+  "id": zod.string().min(1).max(getAdminCoursesMegaMenuResponseIntegratedCardIdMax),
+  "title": zod.string().min(1).max(getAdminCoursesMegaMenuResponseIntegratedCardTitleMax),
+  "category": zod.string().min(1).max(getAdminCoursesMegaMenuResponseIntegratedCardCategoryMax),
+  "description": zod.string().min(1).max(getAdminCoursesMegaMenuResponseIntegratedCardDescriptionMax),
+  "imageUrl": zod.string().max(getAdminCoursesMegaMenuResponseIntegratedCardImageUrlMax).nullable(),
+  "imageAltText": zod.string().max(getAdminCoursesMegaMenuResponseIntegratedCardImageAltTextMax),
+  "icon": zod.enum(['atom', 'dna', 'target', 'stethoscope', 'graduation-cap', 'book-open', 'users', 'chart', 'clipboard', 'trophy']),
+  "statusLabel": zod.string().min(1).max(getAdminCoursesMegaMenuResponseIntegratedCardStatusLabelMax),
+  "isVisible": zod.boolean()
+}),
+  "footerBenefits": zod.array(zod.object({
+  "id": zod.string().min(1).max(getAdminCoursesMegaMenuResponseFooterBenefitsItemIdMax),
+  "title": zod.string().min(1).max(getAdminCoursesMegaMenuResponseFooterBenefitsItemTitleMax),
+  "description": zod.string().min(1).max(getAdminCoursesMegaMenuResponseFooterBenefitsItemDescriptionMax),
+  "icon": zod.enum(['atom', 'dna', 'target', 'stethoscope', 'graduation-cap', 'book-open', 'users', 'chart', 'clipboard', 'trophy']),
+  "displayOrder": zod.number().int().min(1),
+  "isVisible": zod.boolean()
+})).max(getAdminCoursesMegaMenuResponseFooterBenefitsMax),
+  "utilityLinks": zod.array(zod.object({
+  "id": zod.string().min(1).max(getAdminCoursesMegaMenuResponseUtilityLinksItemIdMax),
+  "label": zod.string().min(1).max(getAdminCoursesMegaMenuResponseUtilityLinksItemLabelMax),
+  "href": zod.string().min(1).max(getAdminCoursesMegaMenuResponseUtilityLinksItemHrefMax),
+  "displayOrder": zod.number().int().min(1),
+  "isVisible": zod.boolean()
+})).max(getAdminCoursesMegaMenuResponseUtilityLinksMax),
+  "ctaButtons": zod.array(zod.object({
+  "id": zod.string().min(1).max(getAdminCoursesMegaMenuResponseCtaButtonsItemOneIdMax),
+  "label": zod.string().min(1).max(getAdminCoursesMegaMenuResponseCtaButtonsItemOneLabelMax),
+  "href": zod.string().min(1).max(getAdminCoursesMegaMenuResponseCtaButtonsItemOneHrefMax),
+  "displayOrder": zod.number().int().min(1),
+  "isVisible": zod.boolean()
+}).and(zod.object({
+  "style": zod.enum(['primary', 'secondary'])
+}))).max(getAdminCoursesMegaMenuResponseCtaButtonsMax)
+})
+
+
+/**
+ * @summary Save Courses mega menu content
+ */
+export const updateCoursesMegaMenuBodyEyebrowMax = 100;
+
+export const updateCoursesMegaMenuBodyHeadingMax = 140;
+
+export const updateCoursesMegaMenuBodyPathwayBadgeLabelMax = 80;
+
+export const updateCoursesMegaMenuBodySidebarBrandNameMax = 120;
+
+export const updateCoursesMegaMenuBodySidebarLogoUrlMax = 1000;
+
+export const updateCoursesMegaMenuBodySidebarLogoAltTextMax = 180;
+
+export const updateCoursesMegaMenuBodySidebarTaglineMax = 180;
+
+export const updateCoursesMegaMenuBodySidebarHeadlineMax = 180;
+
+export const updateCoursesMegaMenuBodySidebarSupportingTextMax = 240;
+
+export const updateCoursesMegaMenuBodySidebarImageUrlMax = 1000;
+
+export const updateCoursesMegaMenuBodySidebarImageAltTextMax = 180;
+
+export const updateCoursesMegaMenuBodyStandardCardsItemIdMax = 80;
+
+export const updateCoursesMegaMenuBodyStandardCardsItemTitleMax = 120;
+
+export const updateCoursesMegaMenuBodyStandardCardsItemCategoryMax = 100;
+
+export const updateCoursesMegaMenuBodyStandardCardsItemDescriptionMax = 360;
+
+export const updateCoursesMegaMenuBodyStandardCardsItemImageUrlMax = 1000;
+
+export const updateCoursesMegaMenuBodyStandardCardsItemImageAltTextMax = 180;
+
+
+export const updateCoursesMegaMenuBodyStandardCardsItemHrefMax = 500;
+
+export const updateCoursesMegaMenuBodyStandardCardsMax = 20;
+
+export const updateCoursesMegaMenuBodyIntegratedCardIdMax = 80;
+
+export const updateCoursesMegaMenuBodyIntegratedCardTitleMax = 120;
+
+export const updateCoursesMegaMenuBodyIntegratedCardCategoryMax = 100;
+
+export const updateCoursesMegaMenuBodyIntegratedCardDescriptionMax = 360;
+
+export const updateCoursesMegaMenuBodyIntegratedCardImageUrlMax = 1000;
+
+export const updateCoursesMegaMenuBodyIntegratedCardImageAltTextMax = 180;
+
+export const updateCoursesMegaMenuBodyIntegratedCardStatusLabelMax = 80;
+
+export const updateCoursesMegaMenuBodyFooterBenefitsItemIdMax = 80;
+
+export const updateCoursesMegaMenuBodyFooterBenefitsItemTitleMax = 100;
+
+export const updateCoursesMegaMenuBodyFooterBenefitsItemDescriptionMax = 180;
+
+
+export const updateCoursesMegaMenuBodyFooterBenefitsMax = 20;
+
+export const updateCoursesMegaMenuBodyUtilityLinksItemIdMax = 80;
+
+export const updateCoursesMegaMenuBodyUtilityLinksItemLabelMax = 100;
+
+export const updateCoursesMegaMenuBodyUtilityLinksItemHrefMax = 500;
+
+
+export const updateCoursesMegaMenuBodyUtilityLinksMax = 20;
+
+export const updateCoursesMegaMenuBodyCtaButtonsItemOneIdMax = 80;
+
+export const updateCoursesMegaMenuBodyCtaButtonsItemOneLabelMax = 100;
+
+export const updateCoursesMegaMenuBodyCtaButtonsItemOneHrefMax = 500;
+
+
+export const updateCoursesMegaMenuBodyCtaButtonsMax = 10;
+
+
+
+export const UpdateCoursesMegaMenuBody = zod.object({
+  "eyebrow": zod.string().min(1).max(updateCoursesMegaMenuBodyEyebrowMax),
+  "heading": zod.string().min(1).max(updateCoursesMegaMenuBodyHeadingMax),
+  "pathwayBadgeLabel": zod.string().min(1).max(updateCoursesMegaMenuBodyPathwayBadgeLabelMax),
+  "pathwayBadgeVisible": zod.boolean(),
+  "sidebarBrandName": zod.string().min(1).max(updateCoursesMegaMenuBodySidebarBrandNameMax),
+  "sidebarLogoVisible": zod.boolean(),
+  "sidebarLogoUrl": zod.string().max(updateCoursesMegaMenuBodySidebarLogoUrlMax).nullable(),
+  "sidebarLogoAltText": zod.string().max(updateCoursesMegaMenuBodySidebarLogoAltTextMax),
+  "sidebarTagline": zod.string().min(1).max(updateCoursesMegaMenuBodySidebarTaglineMax),
+  "sidebarHeadline": zod.string().min(1).max(updateCoursesMegaMenuBodySidebarHeadlineMax),
+  "sidebarSupportingText": zod.string().min(1).max(updateCoursesMegaMenuBodySidebarSupportingTextMax),
+  "sidebarImageUrl": zod.string().max(updateCoursesMegaMenuBodySidebarImageUrlMax).nullable(),
+  "sidebarImageAltText": zod.string().max(updateCoursesMegaMenuBodySidebarImageAltTextMax),
+  "standardCards": zod.array(zod.object({
+  "id": zod.string().min(1).max(updateCoursesMegaMenuBodyStandardCardsItemIdMax),
+  "title": zod.string().min(1).max(updateCoursesMegaMenuBodyStandardCardsItemTitleMax),
+  "category": zod.string().min(1).max(updateCoursesMegaMenuBodyStandardCardsItemCategoryMax),
+  "description": zod.string().min(1).max(updateCoursesMegaMenuBodyStandardCardsItemDescriptionMax),
+  "imageUrl": zod.string().max(updateCoursesMegaMenuBodyStandardCardsItemImageUrlMax).nullable(),
+  "imageAltText": zod.string().max(updateCoursesMegaMenuBodyStandardCardsItemImageAltTextMax),
+  "icon": zod.enum(['atom', 'dna', 'target', 'stethoscope', 'graduation-cap', 'book-open', 'users', 'chart', 'clipboard', 'trophy']),
+  "tint": zod.enum(['sky', 'rose', 'amber', 'mint', 'violet', 'slate']),
+  "displayOrder": zod.number().int().min(1),
+  "isVisible": zod.boolean(),
+  "href": zod.string().min(1).max(updateCoursesMegaMenuBodyStandardCardsItemHrefMax)
+})).max(updateCoursesMegaMenuBodyStandardCardsMax),
+  "integratedCard": zod.object({
+  "id": zod.string().min(1).max(updateCoursesMegaMenuBodyIntegratedCardIdMax),
+  "title": zod.string().min(1).max(updateCoursesMegaMenuBodyIntegratedCardTitleMax),
+  "category": zod.string().min(1).max(updateCoursesMegaMenuBodyIntegratedCardCategoryMax),
+  "description": zod.string().min(1).max(updateCoursesMegaMenuBodyIntegratedCardDescriptionMax),
+  "imageUrl": zod.string().max(updateCoursesMegaMenuBodyIntegratedCardImageUrlMax).nullable(),
+  "imageAltText": zod.string().max(updateCoursesMegaMenuBodyIntegratedCardImageAltTextMax),
+  "icon": zod.enum(['atom', 'dna', 'target', 'stethoscope', 'graduation-cap', 'book-open', 'users', 'chart', 'clipboard', 'trophy']),
+  "statusLabel": zod.string().min(1).max(updateCoursesMegaMenuBodyIntegratedCardStatusLabelMax),
+  "isVisible": zod.boolean()
+}),
+  "footerBenefits": zod.array(zod.object({
+  "id": zod.string().min(1).max(updateCoursesMegaMenuBodyFooterBenefitsItemIdMax),
+  "title": zod.string().min(1).max(updateCoursesMegaMenuBodyFooterBenefitsItemTitleMax),
+  "description": zod.string().min(1).max(updateCoursesMegaMenuBodyFooterBenefitsItemDescriptionMax),
+  "icon": zod.enum(['atom', 'dna', 'target', 'stethoscope', 'graduation-cap', 'book-open', 'users', 'chart', 'clipboard', 'trophy']),
+  "displayOrder": zod.number().int().min(1),
+  "isVisible": zod.boolean()
+})).max(updateCoursesMegaMenuBodyFooterBenefitsMax),
+  "utilityLinks": zod.array(zod.object({
+  "id": zod.string().min(1).max(updateCoursesMegaMenuBodyUtilityLinksItemIdMax),
+  "label": zod.string().min(1).max(updateCoursesMegaMenuBodyUtilityLinksItemLabelMax),
+  "href": zod.string().min(1).max(updateCoursesMegaMenuBodyUtilityLinksItemHrefMax),
+  "displayOrder": zod.number().int().min(1),
+  "isVisible": zod.boolean()
+})).max(updateCoursesMegaMenuBodyUtilityLinksMax),
+  "ctaButtons": zod.array(zod.object({
+  "id": zod.string().min(1).max(updateCoursesMegaMenuBodyCtaButtonsItemOneIdMax),
+  "label": zod.string().min(1).max(updateCoursesMegaMenuBodyCtaButtonsItemOneLabelMax),
+  "href": zod.string().min(1).max(updateCoursesMegaMenuBodyCtaButtonsItemOneHrefMax),
+  "displayOrder": zod.number().int().min(1),
+  "isVisible": zod.boolean()
+}).and(zod.object({
+  "style": zod.enum(['primary', 'secondary'])
+}))).max(updateCoursesMegaMenuBodyCtaButtonsMax)
+})
+
+export const updateCoursesMegaMenuResponseEyebrowMax = 100;
+
+export const updateCoursesMegaMenuResponseHeadingMax = 140;
+
+export const updateCoursesMegaMenuResponsePathwayBadgeLabelMax = 80;
+
+export const updateCoursesMegaMenuResponseSidebarBrandNameMax = 120;
+
+export const updateCoursesMegaMenuResponseSidebarLogoUrlMax = 1000;
+
+export const updateCoursesMegaMenuResponseSidebarLogoAltTextMax = 180;
+
+export const updateCoursesMegaMenuResponseSidebarTaglineMax = 180;
+
+export const updateCoursesMegaMenuResponseSidebarHeadlineMax = 180;
+
+export const updateCoursesMegaMenuResponseSidebarSupportingTextMax = 240;
+
+export const updateCoursesMegaMenuResponseSidebarImageUrlMax = 1000;
+
+export const updateCoursesMegaMenuResponseSidebarImageAltTextMax = 180;
+
+export const updateCoursesMegaMenuResponseStandardCardsItemIdMax = 80;
+
+export const updateCoursesMegaMenuResponseStandardCardsItemTitleMax = 120;
+
+export const updateCoursesMegaMenuResponseStandardCardsItemCategoryMax = 100;
+
+export const updateCoursesMegaMenuResponseStandardCardsItemDescriptionMax = 360;
+
+export const updateCoursesMegaMenuResponseStandardCardsItemImageUrlMax = 1000;
+
+export const updateCoursesMegaMenuResponseStandardCardsItemImageAltTextMax = 180;
+
+
+export const updateCoursesMegaMenuResponseStandardCardsItemHrefMax = 500;
+
+export const updateCoursesMegaMenuResponseStandardCardsMax = 20;
+
+export const updateCoursesMegaMenuResponseIntegratedCardIdMax = 80;
+
+export const updateCoursesMegaMenuResponseIntegratedCardTitleMax = 120;
+
+export const updateCoursesMegaMenuResponseIntegratedCardCategoryMax = 100;
+
+export const updateCoursesMegaMenuResponseIntegratedCardDescriptionMax = 360;
+
+export const updateCoursesMegaMenuResponseIntegratedCardImageUrlMax = 1000;
+
+export const updateCoursesMegaMenuResponseIntegratedCardImageAltTextMax = 180;
+
+export const updateCoursesMegaMenuResponseIntegratedCardStatusLabelMax = 80;
+
+export const updateCoursesMegaMenuResponseFooterBenefitsItemIdMax = 80;
+
+export const updateCoursesMegaMenuResponseFooterBenefitsItemTitleMax = 100;
+
+export const updateCoursesMegaMenuResponseFooterBenefitsItemDescriptionMax = 180;
+
+
+export const updateCoursesMegaMenuResponseFooterBenefitsMax = 20;
+
+export const updateCoursesMegaMenuResponseUtilityLinksItemIdMax = 80;
+
+export const updateCoursesMegaMenuResponseUtilityLinksItemLabelMax = 100;
+
+export const updateCoursesMegaMenuResponseUtilityLinksItemHrefMax = 500;
+
+
+export const updateCoursesMegaMenuResponseUtilityLinksMax = 20;
+
+export const updateCoursesMegaMenuResponseCtaButtonsItemOneIdMax = 80;
+
+export const updateCoursesMegaMenuResponseCtaButtonsItemOneLabelMax = 100;
+
+export const updateCoursesMegaMenuResponseCtaButtonsItemOneHrefMax = 500;
+
+
+export const updateCoursesMegaMenuResponseCtaButtonsMax = 10;
+
+
+
+export const UpdateCoursesMegaMenuResponse = zod.object({
+  "eyebrow": zod.string().min(1).max(updateCoursesMegaMenuResponseEyebrowMax),
+  "heading": zod.string().min(1).max(updateCoursesMegaMenuResponseHeadingMax),
+  "pathwayBadgeLabel": zod.string().min(1).max(updateCoursesMegaMenuResponsePathwayBadgeLabelMax),
+  "pathwayBadgeVisible": zod.boolean(),
+  "sidebarBrandName": zod.string().min(1).max(updateCoursesMegaMenuResponseSidebarBrandNameMax),
+  "sidebarLogoVisible": zod.boolean(),
+  "sidebarLogoUrl": zod.string().max(updateCoursesMegaMenuResponseSidebarLogoUrlMax).nullable(),
+  "sidebarLogoAltText": zod.string().max(updateCoursesMegaMenuResponseSidebarLogoAltTextMax),
+  "sidebarTagline": zod.string().min(1).max(updateCoursesMegaMenuResponseSidebarTaglineMax),
+  "sidebarHeadline": zod.string().min(1).max(updateCoursesMegaMenuResponseSidebarHeadlineMax),
+  "sidebarSupportingText": zod.string().min(1).max(updateCoursesMegaMenuResponseSidebarSupportingTextMax),
+  "sidebarImageUrl": zod.string().max(updateCoursesMegaMenuResponseSidebarImageUrlMax).nullable(),
+  "sidebarImageAltText": zod.string().max(updateCoursesMegaMenuResponseSidebarImageAltTextMax),
+  "standardCards": zod.array(zod.object({
+  "id": zod.string().min(1).max(updateCoursesMegaMenuResponseStandardCardsItemIdMax),
+  "title": zod.string().min(1).max(updateCoursesMegaMenuResponseStandardCardsItemTitleMax),
+  "category": zod.string().min(1).max(updateCoursesMegaMenuResponseStandardCardsItemCategoryMax),
+  "description": zod.string().min(1).max(updateCoursesMegaMenuResponseStandardCardsItemDescriptionMax),
+  "imageUrl": zod.string().max(updateCoursesMegaMenuResponseStandardCardsItemImageUrlMax).nullable(),
+  "imageAltText": zod.string().max(updateCoursesMegaMenuResponseStandardCardsItemImageAltTextMax),
+  "icon": zod.enum(['atom', 'dna', 'target', 'stethoscope', 'graduation-cap', 'book-open', 'users', 'chart', 'clipboard', 'trophy']),
+  "tint": zod.enum(['sky', 'rose', 'amber', 'mint', 'violet', 'slate']),
+  "displayOrder": zod.number().int().min(1),
+  "isVisible": zod.boolean(),
+  "href": zod.string().min(1).max(updateCoursesMegaMenuResponseStandardCardsItemHrefMax)
+})).max(updateCoursesMegaMenuResponseStandardCardsMax),
+  "integratedCard": zod.object({
+  "id": zod.string().min(1).max(updateCoursesMegaMenuResponseIntegratedCardIdMax),
+  "title": zod.string().min(1).max(updateCoursesMegaMenuResponseIntegratedCardTitleMax),
+  "category": zod.string().min(1).max(updateCoursesMegaMenuResponseIntegratedCardCategoryMax),
+  "description": zod.string().min(1).max(updateCoursesMegaMenuResponseIntegratedCardDescriptionMax),
+  "imageUrl": zod.string().max(updateCoursesMegaMenuResponseIntegratedCardImageUrlMax).nullable(),
+  "imageAltText": zod.string().max(updateCoursesMegaMenuResponseIntegratedCardImageAltTextMax),
+  "icon": zod.enum(['atom', 'dna', 'target', 'stethoscope', 'graduation-cap', 'book-open', 'users', 'chart', 'clipboard', 'trophy']),
+  "statusLabel": zod.string().min(1).max(updateCoursesMegaMenuResponseIntegratedCardStatusLabelMax),
+  "isVisible": zod.boolean()
+}),
+  "footerBenefits": zod.array(zod.object({
+  "id": zod.string().min(1).max(updateCoursesMegaMenuResponseFooterBenefitsItemIdMax),
+  "title": zod.string().min(1).max(updateCoursesMegaMenuResponseFooterBenefitsItemTitleMax),
+  "description": zod.string().min(1).max(updateCoursesMegaMenuResponseFooterBenefitsItemDescriptionMax),
+  "icon": zod.enum(['atom', 'dna', 'target', 'stethoscope', 'graduation-cap', 'book-open', 'users', 'chart', 'clipboard', 'trophy']),
+  "displayOrder": zod.number().int().min(1),
+  "isVisible": zod.boolean()
+})).max(updateCoursesMegaMenuResponseFooterBenefitsMax),
+  "utilityLinks": zod.array(zod.object({
+  "id": zod.string().min(1).max(updateCoursesMegaMenuResponseUtilityLinksItemIdMax),
+  "label": zod.string().min(1).max(updateCoursesMegaMenuResponseUtilityLinksItemLabelMax),
+  "href": zod.string().min(1).max(updateCoursesMegaMenuResponseUtilityLinksItemHrefMax),
+  "displayOrder": zod.number().int().min(1),
+  "isVisible": zod.boolean()
+})).max(updateCoursesMegaMenuResponseUtilityLinksMax),
+  "ctaButtons": zod.array(zod.object({
+  "id": zod.string().min(1).max(updateCoursesMegaMenuResponseCtaButtonsItemOneIdMax),
+  "label": zod.string().min(1).max(updateCoursesMegaMenuResponseCtaButtonsItemOneLabelMax),
+  "href": zod.string().min(1).max(updateCoursesMegaMenuResponseCtaButtonsItemOneHrefMax),
+  "displayOrder": zod.number().int().min(1),
+  "isVisible": zod.boolean()
+}).and(zod.object({
+  "style": zod.enum(['primary', 'secondary'])
+}))).max(updateCoursesMegaMenuResponseCtaButtonsMax)
+})
+
+
+/**
  * @summary Read a course detail page and its subject-matched mentors
  */
 export const GetCourseBySlugParams = zod.object({

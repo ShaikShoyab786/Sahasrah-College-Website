@@ -26,6 +26,7 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
     { href: '/admin/dashboard', label: 'Dashboard', icon: Gauge },
     { href: '/admin', label: 'Overview', icon: LayoutDashboard },
     { href: '/admin/site-settings', label: 'Site identity', icon: Settings2 },
+    { href: '/admin/mega-menus', label: 'Mega Menus', icon: PanelsTopLeft },
   ];
   const heroActive = location.startsWith('/admin/pages/home/hero') || location.startsWith('/admin/homepage-hero');
   const aboutActive = location.startsWith('/admin/pages/home/about-preview');

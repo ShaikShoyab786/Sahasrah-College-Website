@@ -8,6 +8,7 @@ import galleryRouter from "./gallery";
 import resultsRouter from "./results";
 import uploadsRouter from "./uploads";
 import contactRouter from "./contact";
+import coursesMegaMenuRouter from "./courses-mega-menu";
 
 const router: IRouter = Router();
 
@@ -16,6 +17,7 @@ router.use(authRouter);
 router.use(contentRouter);
 router.use(facultyRouter);
 router.use(coursesRouter);
+router.use(coursesMegaMenuRouter);
 router.use(galleryRouter);
 router.use(resultsRouter);
 router.use(contactRouter);

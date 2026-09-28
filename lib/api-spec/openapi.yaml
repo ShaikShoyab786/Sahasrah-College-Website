@@ -1294,6 +1294,65 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/CourseSummary"
+  /courses-mega-menu:
+    get:
+      tags: [Mega Menus]
+      operationId: getCoursesMegaMenu
+      summary: Read the public Courses mega menu
+      responses:
+        "200":
+          description: Saved Courses mega menu content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CoursesMegaMenu"
+  /admin/courses-mega-menu:
+    get:
+      tags: [Mega Menus]
+      operationId: getAdminCoursesMegaMenu
+      summary: Read editable Courses mega menu content
+      responses:
+        "200":
+          description: Editable Courses mega menu content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CoursesMegaMenu"
+        "401":
+          description: Admin authentication required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+    put:
+      tags: [Mega Menus]
+      operationId: updateCoursesMegaMenu
+      summary: Save Courses mega menu content
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CoursesMegaMenu"
+      responses:
+        "200":
+          description: Saved Courses mega menu content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CoursesMegaMenu"
+        "400":
+          description: Invalid mega menu content
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
+        "401":
+          description: Admin authentication required
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorEnvelope"
   /courses/{slug}:
     get:
       tags: [Courses]
@@ -4697,6 +4756,219 @@ components:
         heroDescription:
           type: string
       required: [slug, name, displayOrder, heroEyebrow, heroTitle, heroDescription]
+
+    MegaMenuIcon:
+      type: string
+      enum: [atom, dna, target, stethoscope, graduation-cap, book-open, users, chart, clipboard, trophy]
+
+    MegaMenuTint:
+      type: string
+      enum: [sky, rose, amber, mint, violet, slate]
+
+    MegaMenuCtaStyle:
+      type: string
+      enum: [primary, secondary]
+
+    CoursesMegaMenuCard:
+      type: object
+      properties:
+        id:
+          type: string
+          minLength: 1
+          maxLength: 80
+        title:
+          type: string
+          minLength: 1
+          maxLength: 120
+        category:
+          type: string
+          minLength: 1
+          maxLength: 100
+        description:
+          type: string
+          minLength: 1
+          maxLength: 360
+        imageUrl:
+          type: ["string", "null"]
+          maxLength: 1000
+        imageAltText:
+          type: string
+          maxLength: 180
+        icon:
+          $ref: "#/components/schemas/MegaMenuIcon"
+        tint:
+          $ref: "#/components/schemas/MegaMenuTint"
+        displayOrder:
+          type: integer
+          minimum: 1
+        isVisible:
+          type: boolean
+        href:
+          type: string
+          minLength: 1
+          maxLength: 500
+      required: [id, title, category, description, imageUrl, imageAltText, icon, tint, displayOrder, isVisible, href]
+
+    CoursesMegaMenuIntegratedCard:
+      type: object
+      properties:
+        id:
+          type: string
+          minLength: 1
+          maxLength: 80
+        title:
+          type: string
+          minLength: 1
+          maxLength: 120
+        category:
+          type: string
+          minLength: 1
+          maxLength: 100
+        description:
+          type: string
+          minLength: 1
+          maxLength: 360
+        imageUrl:
+          type: ["string", "null"]
+          maxLength: 1000
+        imageAltText:
+          type: string
+          maxLength: 180
+        icon:
+          $ref: "#/components/schemas/MegaMenuIcon"
+        statusLabel:
+          type: string
+          minLength: 1
+          maxLength: 80
+        isVisible:
+          type: boolean
+      required: [id, title, category, description, imageUrl, imageAltText, icon, statusLabel, isVisible]
+
+    CoursesMegaMenuBenefit:
+      type: object
+      properties:
+        id:
+          type: string
+          minLength: 1
+          maxLength: 80
+        title:
+          type: string
+          minLength: 1
+          maxLength: 100
+        description:
+          type: string
+          minLength: 1
+          maxLength: 180
+        icon:
+          $ref: "#/components/schemas/MegaMenuIcon"
+        displayOrder:
+          type: integer
+          minimum: 1
+        isVisible:
+          type: boolean
+      required: [id, title, description, icon, displayOrder, isVisible]
+
+    CoursesMegaMenuLink:
+      type: object
+      properties:
+        id:
+          type: string
+          minLength: 1
+          maxLength: 80
+        label:
+          type: string
+          minLength: 1
+          maxLength: 100
+        href:
+          type: string
+          minLength: 1
+          maxLength: 500
+        displayOrder:
+          type: integer
+          minimum: 1
+        isVisible:
+          type: boolean
+      required: [id, label, href, displayOrder, isVisible]
+
+    CoursesMegaMenuCta:
+      allOf:
+        - $ref: "#/components/schemas/CoursesMegaMenuLink"
+        - type: object
+          properties:
+            style:
+              $ref: "#/components/schemas/MegaMenuCtaStyle"
+          required: [style]
+
+    CoursesMegaMenu:
+      type: object
+      properties:
+        eyebrow:
+          type: string
+          minLength: 1
+          maxLength: 100
+        heading:
+          type: string
+          minLength: 1
+          maxLength: 140
+        pathwayBadgeLabel:
+          type: string
+          minLength: 1
+          maxLength: 80
+        pathwayBadgeVisible:
+          type: boolean
+        sidebarBrandName:
+          type: string
+          minLength: 1
+          maxLength: 120
+        sidebarLogoVisible:
+          type: boolean
+        sidebarLogoUrl:
+          type: ["string", "null"]
+          maxLength: 1000
+        sidebarLogoAltText:
+          type: string
+          maxLength: 180
+        sidebarTagline:
+          type: string
+          minLength: 1
+          maxLength: 180
+        sidebarHeadline:
+          type: string
+          minLength: 1
+          maxLength: 180
+        sidebarSupportingText:
+          type: string
+          minLength: 1
+          maxLength: 240
+        sidebarImageUrl:
+          type: ["string", "null"]
+          maxLength: 1000
+        sidebarImageAltText:
+          type: string
+          maxLength: 180
+        standardCards:
+          type: array
+          maxItems: 20
+          items:
+            $ref: "#/components/schemas/CoursesMegaMenuCard"
+        integratedCard:
+          $ref: "#/components/schemas/CoursesMegaMenuIntegratedCard"
+        footerBenefits:
+          type: array
+          maxItems: 20
+          items:
+            $ref: "#/components/schemas/CoursesMegaMenuBenefit"
+        utilityLinks:
+          type: array
+          maxItems: 20
+          items:
+            $ref: "#/components/schemas/CoursesMegaMenuLink"
+        ctaButtons:
+          type: array
+          maxItems: 10
+          items:
+            $ref: "#/components/schemas/CoursesMegaMenuCta"
+      required: [eyebrow, heading, pathwayBadgeLabel, pathwayBadgeVisible, sidebarBrandName, sidebarLogoVisible, sidebarLogoUrl, sidebarLogoAltText, sidebarTagline, sidebarHeadline, sidebarSupportingText, sidebarImageUrl, sidebarImageAltText, standardCards, integratedCard, footerBenefits, utilityLinks, ctaButtons]
 
     PublicCourse:
       type: object

@@ -1470,6 +1470,229 @@ export interface CourseSummary {
   heroDescription: string;
 }
 
+export type MegaMenuIcon = typeof MegaMenuIcon[keyof typeof MegaMenuIcon];
+
+
+export const MegaMenuIcon = {
+  atom: 'atom',
+  dna: 'dna',
+  target: 'target',
+  stethoscope: 'stethoscope',
+  'graduation-cap': 'graduation-cap',
+  'book-open': 'book-open',
+  users: 'users',
+  chart: 'chart',
+  clipboard: 'clipboard',
+  trophy: 'trophy',
+} as const;
+
+export type MegaMenuTint = typeof MegaMenuTint[keyof typeof MegaMenuTint];
+
+
+export const MegaMenuTint = {
+  sky: 'sky',
+  rose: 'rose',
+  amber: 'amber',
+  mint: 'mint',
+  violet: 'violet',
+  slate: 'slate',
+} as const;
+
+export type MegaMenuCtaStyle = typeof MegaMenuCtaStyle[keyof typeof MegaMenuCtaStyle];
+
+
+export const MegaMenuCtaStyle = {
+  primary: 'primary',
+  secondary: 'secondary',
+} as const;
+
+export interface CoursesMegaMenuCard {
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  id: string;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  title: string;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  category: string;
+  /**
+     * @minLength 1
+     * @maxLength 360
+     */
+  description: string;
+  /**
+     * @maxLength 1000
+     * @nullable
+     */
+  imageUrl: string | null;
+  /** @maxLength 180 */
+  imageAltText: string;
+  icon: MegaMenuIcon;
+  tint: MegaMenuTint;
+  /** @minimum 1 */
+  displayOrder: number;
+  isVisible: boolean;
+  /**
+     * @minLength 1
+     * @maxLength 500
+     */
+  href: string;
+}
+
+export interface CoursesMegaMenuIntegratedCard {
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  id: string;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  title: string;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  category: string;
+  /**
+     * @minLength 1
+     * @maxLength 360
+     */
+  description: string;
+  /**
+     * @maxLength 1000
+     * @nullable
+     */
+  imageUrl: string | null;
+  /** @maxLength 180 */
+  imageAltText: string;
+  icon: MegaMenuIcon;
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  statusLabel: string;
+  isVisible: boolean;
+}
+
+export interface CoursesMegaMenuBenefit {
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  id: string;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  title: string;
+  /**
+     * @minLength 1
+     * @maxLength 180
+     */
+  description: string;
+  icon: MegaMenuIcon;
+  /** @minimum 1 */
+  displayOrder: number;
+  isVisible: boolean;
+}
+
+export interface CoursesMegaMenuLink {
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  id: string;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  label: string;
+  /**
+     * @minLength 1
+     * @maxLength 500
+     */
+  href: string;
+  /** @minimum 1 */
+  displayOrder: number;
+  isVisible: boolean;
+}
+
+export type CoursesMegaMenuCta = CoursesMegaMenuLink & {
+  style: MegaMenuCtaStyle;
+};
+
+export interface CoursesMegaMenu {
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  eyebrow: string;
+  /**
+     * @minLength 1
+     * @maxLength 140
+     */
+  heading: string;
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  pathwayBadgeLabel: string;
+  pathwayBadgeVisible: boolean;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  sidebarBrandName: string;
+  sidebarLogoVisible: boolean;
+  /**
+     * @maxLength 1000
+     * @nullable
+     */
+  sidebarLogoUrl: string | null;
+  /** @maxLength 180 */
+  sidebarLogoAltText: string;
+  /**
+     * @minLength 1
+     * @maxLength 180
+     */
+  sidebarTagline: string;
+  /**
+     * @minLength 1
+     * @maxLength 180
+     */
+  sidebarHeadline: string;
+  /**
+     * @minLength 1
+     * @maxLength 240
+     */
+  sidebarSupportingText: string;
+  /**
+     * @maxLength 1000
+     * @nullable
+     */
+  sidebarImageUrl: string | null;
+  /** @maxLength 180 */
+  sidebarImageAltText: string;
+  /** @maxItems 20 */
+  standardCards: CoursesMegaMenuCard[];
+  integratedCard: CoursesMegaMenuIntegratedCard;
+  /** @maxItems 20 */
+  footerBenefits: CoursesMegaMenuBenefit[];
+  /** @maxItems 20 */
+  utilityLinks: CoursesMegaMenuLink[];
+  /** @maxItems 10 */
+  ctaButtons: CoursesMegaMenuCta[];
+}
+
 export interface PublicCourse {
   slug: CourseSlug;
   name: string;

@@ -6,6 +6,7 @@ import {
 } from "./contact-course-options";
 import { homepagePreviewCopyDefaults } from "./homepage-preview-copy-defaults";
 import { COURSE_SEEDS } from "./course-content";
+import { DEFAULT_COURSES_MEGA_MENU } from "./courses-mega-menu-content";
 
 const LEGACY_COURSE_ACTIONS = [
   { slug: "mpc", primaryActionLabel: "Explore admissions", secondaryActionLabel: "Talk to a counsellor" },
@@ -259,6 +260,15 @@ export async function initializeDatabase() {
   await prisma.course.updateMany({
     where: { durationLabel: "2 years" },
     data: { durationLabel: "2 Years" },
+  });
+
+  await prisma.coursesMegaMenuSettings.upsert({
+    where: { id: "singleton" },
+    update: {},
+    create: {
+      id: "singleton",
+      content: DEFAULT_COURSES_MEGA_MENU,
+    },
   });
 
   await prisma.siteSettings.upsert({
