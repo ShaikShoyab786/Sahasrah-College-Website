@@ -1,4 +1,4 @@
-import { ArrowRight, BookOpen, ChevronDown, Download, GraduationCap } from 'lucide-react';
+import { ArrowRight, BookOpen, ChevronDown, Download, FileText, GraduationCap, Layers3, RefreshCw, Target } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import type { CallbackPopupSettings, CourseMentor, CourseReason, CourseSyllabusSubject, PublicCourse } from '@workspace/api-client-react';
 import { Link } from 'wouter';
@@ -316,35 +316,125 @@ export function MentorsSection({ mentors }: { mentors: CourseMentor[] }) {
   );
 }
 
+const curriculumBenefits = [
+  { icon: BookOpen, title: 'Comprehensive Syllabus', description: 'Key topics organized by subject.' },
+  { icon: Target, title: 'Exam-Oriented Focus', description: 'A clear focus for each course pathway.' },
+  { icon: Layers3, title: 'Structured Progression', description: 'Move from core ideas to applications.' },
+  { icon: RefreshCw, title: 'Regular Updates', description: 'Subject details managed by the college.' },
+];
+
 export function CurriculumSection({ syllabus, fileName, isSample, downloadUrl }: { syllabus: CourseSyllabusSubject[]; fileName: string | null; isSample: boolean; downloadUrl: string }) {
-  const [openSubject, setOpenSubject] = useState<string | null>(syllabus[0]?.subject ?? null);
+  const [openSubjectIndex, setOpenSubjectIndex] = useState<number | null>(() => syllabus.length ? 0 : null);
+  const pdfAvailable = !isSample && Boolean(downloadUrl);
+
+  useEffect(() => {
+    setOpenSubjectIndex(syllabus.length ? 0 : null);
+  }, [syllabus]);
+
   return (
-    <section id="course-syllabus" className="scroll-mt-28 bg-[hsl(var(--background))] px-6 py-20 lg:px-10 lg:py-28" aria-labelledby="course-curriculum-heading" data-testid="section-course-syllabus">
-      <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1fr_.42fr] lg:gap-20">
-        <div>
+    <section id="course-syllabus" className="scroll-mt-28 bg-[hsl(var(--background))] px-6 py-16 lg:px-10 lg:py-20" aria-labelledby="course-curriculum-heading" data-testid="section-course-syllabus">
+      <div className="mx-auto grid max-w-7xl items-start gap-8 lg:grid-cols-[minmax(0,1.5fr)_minmax(19rem,.9fr)] lg:gap-10">
+        <div className="min-w-0">
           <CourseEyebrow label="Curriculum" testId="text-course-syllabus-eyebrow" />
-          <h2 id="course-curriculum-heading" className="mt-4 font-display text-4xl font-semibold leading-none tracking-[-.05em] text-[hsl(var(--primary))] md:text-6xl">The subjects, laid out clearly.</h2>
-          {syllabus.length ? <div className="mt-10 divide-y divide-[hsl(var(--border))] border-y border-[hsl(var(--border))]" data-testid="list-course-curriculum">{syllabus.map((item, index) => {
-            const open = openSubject === item.subject;
-            const panelId = `course-subject-panel-${index}`;
-            return <div key={`${item.subject}-${index}`} data-testid={`accordion-course-subject-${index}`}>
-              <button type="button" className="flex w-full items-center justify-between gap-4 py-5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[hsl(var(--accent))]" aria-expanded={open} aria-controls={panelId} onClick={() => setOpenSubject(open ? null : item.subject)} data-testid={`button-course-subject-${index}`}>
-                <span className="font-display text-2xl font-semibold text-[hsl(var(--primary))]">{item.subject}</span>
-                <ChevronDown size={20} className={`shrink-0 text-[hsl(var(--accent-foreground))] transition-transform ${open ? 'rotate-180' : ''}`} aria-hidden="true" />
-              </button>
-              <div id={panelId} hidden={!open} className="pb-5 pr-8" role="region" aria-labelledby={`button-course-subject-${index}`}>
-                <ul className="space-y-2 text-sm leading-6 text-[hsl(var(--muted-foreground))]">{item.topics.map((topic, topicIndex) => <li key={`${topic}-${topicIndex}`} className="flex gap-3" data-testid={`text-course-topic-${index}-${topicIndex}`}><span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[hsl(var(--accent))]" />{topic}</li>)}</ul>
-              </div>
-            </div>;
-          })}</div> : <div className="mt-10 rounded-2xl border border-dashed border-[hsl(var(--border))] p-6 text-sm text-[hsl(var(--muted-foreground))]" data-testid="status-course-curriculum-empty">Subject topics are being prepared.</div>}
+          <h2 id="course-curriculum-heading" className="mt-4 max-w-3xl font-display text-4xl font-semibold leading-[1.02] tracking-[-.045em] text-[hsl(var(--primary))] sm:text-5xl">
+            A clear path from concepts to <span className="text-[hsl(var(--destructive))]">confidence.</span>
+          </h2>
+          <p className="mt-4 max-w-2xl text-sm leading-6 text-[hsl(var(--muted-foreground))] sm:text-base">
+            Explore the subjects, key topics, and preparation areas covered throughout the course.
+          </p>
+
+          {syllabus.length ? (
+            <div className="mt-7 space-y-3" data-testid="list-course-curriculum">
+              {syllabus.map((item, index) => {
+                const open = openSubjectIndex === index;
+                const panelId = `course-subject-panel-${index}`;
+                const topics = item.topics.filter((topic) => topic.trim().length > 0);
+                const summary = topics.slice(0, 3).join(' · ');
+
+                return (
+                  <article key={`${item.subject}-${index}`} className={`overflow-hidden rounded-2xl border shadow-sm transition-colors ${open ? 'border-[hsl(var(--accent)/.4)] bg-[hsl(var(--card))]' : 'border-[hsl(var(--border))] bg-[hsl(var(--card)/.75)]'}`} data-testid={`accordion-course-subject-${index}`}>
+                    <h3>
+                      <button
+                        type="button"
+                        className="grid min-h-[5.25rem] w-full grid-cols-[2.8rem_minmax(0,1fr)_2.5rem] items-center gap-3 px-4 py-3 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[hsl(var(--accent))] sm:grid-cols-[3.25rem_minmax(0,1fr)_2.75rem] sm:gap-4 sm:px-5"
+                        aria-expanded={open}
+                        aria-controls={panelId}
+                        onClick={() => setOpenSubjectIndex(open ? null : index)}
+                        data-testid={`button-course-subject-${index}`}
+                      >
+                        <span aria-hidden="true" className="border-r border-[hsl(var(--border))] pr-3 font-display text-3xl font-semibold leading-none text-[hsl(var(--primary)/.28)] sm:text-4xl">{String(index + 1).padStart(2, '0')}</span>
+                        <span className="min-w-0">
+                          <span className="block truncate font-display text-lg font-semibold leading-tight text-[hsl(var(--primary))] sm:text-xl">{item.subject}</span>
+                          <span className="mt-1 block truncate text-xs leading-5 text-[hsl(var(--muted-foreground))] sm:text-sm" title={summary}>{summary || 'Topics are being prepared'}</span>
+                        </span>
+                        <span className={`grid h-9 w-9 place-items-center rounded-full transition-colors ${open ? 'bg-[hsl(var(--accent)/.14)] text-[hsl(var(--accent-foreground))]' : 'bg-[hsl(var(--secondary))] text-[hsl(var(--primary))]'}`}>
+                          <ChevronDown size={18} className={`transition-transform ${open ? 'rotate-180' : ''}`} aria-hidden="true" />
+                        </span>
+                      </button>
+                    </h3>
+                    <div id={panelId} hidden={!open} className="border-t border-[hsl(var(--border))] bg-[hsl(var(--background)/.65)] px-5 py-4 sm:px-6" role="region" aria-labelledby={`button-course-subject-${index}`}>
+                      {topics.length ? (
+                        <ul className="grid gap-x-5 gap-y-2 sm:grid-cols-2 xl:grid-cols-3" data-testid={`list-course-topics-${index}`}>
+                          {topics.map((topic, topicIndex) => (
+                            <li key={`${topic}-${topicIndex}`} className="flex min-w-0 items-start gap-2.5 text-sm leading-6 text-[hsl(var(--foreground))]" data-testid={`text-course-topic-${index}-${topicIndex}`}>
+                              <span aria-hidden="true" className="mt-[.6rem] h-1.5 w-1.5 shrink-0 rounded-full bg-[hsl(var(--destructive))]" />
+                              <span>{topic}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <p className="text-sm text-[hsl(var(--muted-foreground))]" data-testid={`status-course-topics-empty-${index}`}>Topics are being prepared.</p>
+                      )}
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="mt-7 rounded-2xl border border-dashed border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 text-sm text-[hsl(var(--muted-foreground))]" data-testid="status-course-curriculum-empty">Subject topics are being prepared.</div>
+          )}
         </div>
-        <aside className="h-fit rounded-3xl bg-[hsl(var(--primary))] p-7 text-[hsl(var(--primary-foreground))] shadow-lg lg:sticky lg:top-8" data-testid="card-course-curriculum-download">
-          <Download className="text-[hsl(var(--accent))]" size={24} aria-hidden="true" />
-          <h3 className="mt-5 font-display text-3xl font-semibold">Take the curriculum with you.</h3>
-          <p className="mt-3 text-sm leading-6 text-white/65">{fileName || 'Course curriculum PDF'}</p>
-          {isSample && <p className="mt-4 rounded-xl border border-[hsl(var(--accent)/.35)] bg-[hsl(var(--accent)/.12)] px-4 py-3 text-xs font-semibold leading-5 text-[hsl(var(--accent))]" data-testid="status-course-curriculum-sample">This is a replaceable sample curriculum PDF.</p>}
-          {downloadUrl ? <a href={downloadUrl} target="_blank" rel="noreferrer" className="mt-7 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[hsl(var(--accent))] px-5 py-3.5 text-sm font-bold text-[hsl(var(--primary))] transition hover:-translate-y-0.5" data-testid="link-course-curriculum-download">Download curriculum <Download size={16} aria-hidden="true" /></a> : <span className="mt-7 inline-flex w-full items-center justify-center rounded-full bg-white/15 px-5 py-3.5 text-sm font-bold text-white/55" data-testid="status-course-curriculum-unavailable">Curriculum download unavailable</span>}
-        </aside>
+
+        <div className="space-y-4 lg:sticky lg:top-8 lg:self-start">
+          <aside className="relative overflow-hidden rounded-3xl bg-[hsl(var(--primary))] p-6 text-[hsl(var(--primary-foreground))] shadow-xl sm:p-7" data-testid="card-course-curriculum-download">
+            <div aria-hidden="true" className="pointer-events-none absolute -bottom-16 -right-10 h-48 w-48 rounded-full border border-white/10" />
+            <div className="relative">
+              <span className="grid h-10 w-10 place-items-center rounded-xl border border-white/15 bg-white/10 text-[hsl(var(--accent))]">
+                <FileText size={20} aria-hidden="true" />
+              </span>
+              <p className="mt-4 text-[10px] font-bold uppercase tracking-[.22em] text-white/70">Curriculum Guide</p>
+              <h3 className="mt-2 max-w-xs font-display text-3xl font-semibold leading-tight">Take the curriculum with you.</h3>
+              <p className="mt-2 text-sm leading-6 text-white/70">Download the subject and topic guide for this course.</p>
+              {pdfAvailable ? (
+                <>
+                  <a href={downloadUrl} className="mt-5 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-[hsl(var(--destructive))] px-5 py-3 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:brightness-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(var(--primary))]" data-testid="link-course-curriculum-download">
+                    Download Curriculum <ArrowRight size={16} aria-hidden="true" />
+                  </a>
+                  <p className="mt-3 truncate text-xs text-white/60" data-testid="text-course-curriculum-file-meta">PDF · {fileName || 'Course curriculum'}</p>
+                </>
+              ) : (
+                <p className="mt-5 rounded-xl border border-white/15 bg-white/10 px-4 py-3 text-sm leading-5 text-white/75" role="status" data-testid="status-course-curriculum-unavailable">Curriculum PDF is not available yet.</p>
+              )}
+            </div>
+          </aside>
+
+          <div className="rounded-3xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5 shadow-sm sm:p-6" data-testid="card-course-curriculum-benefits">
+            <p className="text-[10px] font-bold uppercase tracking-[.18em] text-[hsl(var(--muted-foreground))]">Built for Competitive Success</p>
+            <div className="mt-4 grid grid-cols-2">
+              {curriculumBenefits.map(({ icon: Icon, title, description }, index) => (
+                <div key={title} className={`flex min-w-0 gap-3 py-3 ${index % 2 === 1 ? 'pl-3 sm:pl-4' : 'pr-3 sm:pr-4'} ${index > 1 ? 'border-t border-[hsl(var(--border))]' : ''} ${index % 2 === 1 ? 'border-l border-[hsl(var(--border))]' : ''}`} data-testid={`item-course-curriculum-benefit-${index}`}>
+                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[hsl(var(--accent)/.1)] text-[hsl(var(--accent-foreground))]">
+                    <Icon size={17} aria-hidden="true" />
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block text-xs font-bold leading-4 text-[hsl(var(--primary))]">{title}</span>
+                    <span className="mt-1 block text-[10px] leading-4 text-[hsl(var(--muted-foreground))]">{description}</span>
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
