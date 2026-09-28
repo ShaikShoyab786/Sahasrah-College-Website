@@ -1,0 +1,19 @@
+Refine the Faculty section on the course pages and audit the eyebrow labels across the Courses overview and all standard course detail pages.
+
+Faculty section
+Match the third reference image’s layout and polish:
+
+Add a visible pill-style eyebrow, MEET OUR FACULTY, with a pale blush background, fine red outline, small red dot or divider, and spaced uppercase text.
+Add a strong heading such as Meet the subject mentors., emphasizing “mentors” with the site’s red accent. Include a concise supporting description.
+Keep the Meet all faculty link visible on the right on desktop and easy to reach on mobile.
+Use clean, responsive faculty cards with profile photos where available, name, qualification, subject badge, and short bio. Add the large pale sequence numbers and soft card backgrounds from the reference.
+Show experience or student-count statistics only when real values exist in the faculty record. Do not invent metrics or use placeholder names; if a portrait is missing, use a neat initials fallback.
+Preserve the shared faculty logic
+Faculty profiles must continue to come from the shared Faculty records—do not create duplicate course-only faculty. Preserve the independent Show on Home and Show on Courses controls. A course page should show a faculty member only when Show on Courses is enabled and their selected teaching subjects match that course. Changing one toggle must not affect visibility on the other page. Keep the existing admin and data flow intact.
+
+Eyebrow audit across Courses pages
+Review every section eyebrow on the Courses overview and all standard course detail pages. Restyle each label consistently using the pill treatment from the second reference: clear uppercase lettering, suitable spacing, a subtle blush surface, and a restrained red accent. Preserve each label’s existing meaning—don’t replace them all with the same text. Ensure every eyebrow remains readable against its background, including on mobile.
+
+Limit other visual changes to the Faculty section and eyebrow styling. Don’t rewrite unrelated course-section content or change enquiry handling.
+
+Check before finishing: verify the faculty records are filtered correctly for Home and each matching course, the toggles remain independent, and all course-page eyebrows are visible and consistent.
