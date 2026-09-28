@@ -17,7 +17,7 @@ export function HomeLiveUpdates({ updates, eyebrow = 'From Sahsrah', heading = '
             <SectionEyebrow className="about-eyebrow">{eyebrow}</SectionEyebrow>
             <h2 id="live-updates-heading" className="mt-4 font-display text-5xl font-semibold leading-[.98] tracking-[-.05em] text-[hsl(var(--primary))] md:text-6xl">{heading}</h2>
           </div>
-           <a href={buttonHref} className="inline-flex w-fit items-center gap-2 text-sm font-bold text-[hsl(var(--primary))] transition hover:-translate-y-0.5 hover:text-[hsl(var(--accent-foreground))]" aria-label={`${buttonLabel}; the homepage shows the latest three`}>
+           <a href={buttonHref} className="inline-flex w-fit items-center gap-2 rounded-sm text-sm font-bold text-[hsl(var(--primary))] transition hover:-translate-y-0.5 hover:underline hover:underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(var(--background))]" aria-label={`${buttonLabel}; the homepage shows the latest three`}>
              {buttonLabel} <ArrowUpRight size={16} />
           </a>
         </div>
@@ -34,13 +34,13 @@ function UpdateCard({ update, index }: { update: HomepageLiveUpdate; index: numb
   const published = new Intl.DateTimeFormat('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(update.publishDate));
   return (
     <article className="home-reveal-card group flex min-h-[455px] flex-col overflow-hidden rounded-[1.5rem] border border-[hsl(var(--border))] bg-[hsl(var(--card))] shadow-sm transition duration-500 hover:-translate-y-2 hover:shadow-xl" style={{ '--home-card-delay': `${index * 90}ms` } as React.CSSProperties}>
-      <a href={update.detailUrl} className="flex h-full flex-col focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--accent)/.3)]" data-testid={`link-live-update-${index + 1}`}>
+    <a href={update.detailUrl} className="flex h-full flex-col rounded-[1.5rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(var(--background))]" data-testid={`link-live-update-${index + 1}`}>
         <div className="relative aspect-[1.55] shrink-0 overflow-hidden bg-[hsl(var(--primary))]">
           {update.imageUrl ? <img src={update.imageUrl} alt={update.imageAltText} className="h-full w-full object-cover transition duration-700 group-hover:scale-105" /> : <div className="grid h-full place-items-center bg-[radial-gradient(circle_at_70%_20%,hsl(var(--accent)/.38),transparent_35%),hsl(var(--primary))] text-[hsl(var(--primary-foreground)/.68)]"><ImageIcon size={28} /></div>}
           <div className="absolute inset-0 bg-gradient-to-t from-[hsl(var(--primary)/.76)] via-transparent to-transparent transition duration-500 group-hover:from-[hsl(var(--primary)/.9)]" />
           <div className="absolute inset-x-5 top-5 flex items-start justify-between gap-3">
-            <span className="rounded-full border border-white/25 bg-[hsl(var(--primary)/.75)] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[.16em] text-white backdrop-blur-md transition group-hover:border-[hsl(var(--accent)/.8)] group-hover:text-[hsl(var(--accent))]">{update.category}</span>
-            {update.actionBadge && <span className="rounded-full bg-[hsl(var(--accent))] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[.12em] text-[hsl(var(--primary))]">{update.actionBadge}</span>}
+            <span className="rounded-full border border-white/25 bg-[hsl(var(--primary)/.75)] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[.16em] text-[hsl(var(--primary-foreground))] backdrop-blur-md transition group-hover:border-[hsl(var(--accent)/.8)]">{update.category}</span>
+            {update.actionBadge && <span className="rounded-full bg-[hsl(var(--accent))] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[.12em] text-[hsl(var(--accent-foreground))]">{update.actionBadge}</span>}
           </div>
         </div>
         <div className="flex flex-1 flex-col p-6">

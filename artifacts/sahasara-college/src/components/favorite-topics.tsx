@@ -74,7 +74,7 @@ export function FavoriteTopics({ content }: FavoriteTopicsProps) {
           </div>
           <div className="mt-7 flex items-center justify-between gap-4">
             <div className="flex gap-1.5" aria-label="Carousel position">
-              {topics.map((topic, index) => <button key={topic.id} type="button" aria-label={`Go to ${topic.title}`} aria-current={selectedIndex === index} onClick={() => scrollToIndex(index)} className={`h-1.5 rounded-full transition-all ${selectedIndex === index ? 'w-8 bg-[hsl(var(--accent))]' : 'w-1.5 bg-[hsl(var(--border))] hover:bg-[hsl(var(--muted-foreground))]'}`} />)}
+              {topics.map((topic, index) => <button key={topic.id} type="button" aria-label={`Go to ${topic.title}`} aria-current={selectedIndex === index} onClick={() => scrollToIndex(index)} className="grid h-10 w-10 shrink-0 place-items-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(var(--background))]"><span aria-hidden="true" className={`block h-1.5 rounded-full transition-all ${selectedIndex === index ? 'w-8 bg-[hsl(var(--accent))]' : 'w-1.5 bg-[hsl(var(--primary))]'}`} /></button>)}
             </div>
             <div className="flex gap-2">
               <button type="button" aria-label="Previous program" onClick={() => scrollByCard(-1)} className="grid h-11 w-11 place-items-center rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--card))] text-[hsl(var(--primary))] transition hover:-translate-y-0.5 hover:border-[hsl(var(--accent))]" data-testid="button-topics-previous"><ChevronLeft size={18} /></button>
@@ -95,7 +95,7 @@ function TopicCard({ topic, index, buttonLabel }: { topic: HomepageFavoriteTopic
         <div className="relative aspect-[1.45] shrink-0 overflow-hidden bg-[hsl(var(--primary))]">
           {topic.imageUrl ? <img src={topic.imageUrl} alt={topic.imageAltText} className="h-full w-full object-cover transition duration-700 group-hover:scale-105" /> : <div className="grid h-full place-items-center bg-[radial-gradient(circle_at_70%_20%,hsl(var(--accent)/.38),transparent_35%),hsl(var(--primary))] text-[hsl(var(--accent))]"><Icon size={38} /></div>}
           <div className="absolute inset-0 bg-[hsl(var(--primary)/.1)] transition duration-500 group-hover:bg-[hsl(var(--primary)/.32)]" />
-          <div className="absolute bottom-5 left-5 grid h-11 w-11 place-items-center rounded-xl bg-[hsl(var(--accent))] text-[hsl(var(--primary))] shadow-lg"><Icon size={20} /></div>
+          <div className="absolute bottom-5 left-5 grid h-11 w-11 place-items-center rounded-xl bg-[hsl(var(--accent))] text-[hsl(var(--accent-foreground))] shadow-lg"><Icon size={20} aria-hidden="true" /></div>
         </div>
         <div className="flex flex-1 flex-col p-6">
           <p className="text-[10px] font-bold uppercase tracking-[.17em] text-[hsl(var(--accent-foreground))]">{topic.categoryLabel}</p>
@@ -104,7 +104,7 @@ function TopicCard({ topic, index, buttonLabel }: { topic: HomepageFavoriteTopic
           <ul className="mt-5 space-y-2.5 text-xs font-semibold text-[hsl(var(--foreground))]">
             {[topic.featureOne, topic.featureTwo, topic.featureThree].map((feature) => <li key={feature} className="flex items-start gap-2"><span className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-[hsl(var(--accent))]" /> {feature}</li>)}
           </ul>
-           <a href={topic.curriculumUrl} className="mt-auto inline-flex items-center gap-2 pt-7 text-sm font-bold text-[hsl(var(--primary))] transition group-hover:gap-3 group-hover:text-[hsl(var(--accent-foreground))]" data-testid={`link-topic-curriculum-${index + 1}`}>{buttonLabel} <ArrowRight size={16} /></a>
+           <a href={topic.curriculumUrl} className="mt-auto inline-flex items-center gap-2 rounded-sm pt-7 text-sm font-bold text-[hsl(var(--primary))] transition group-hover:gap-3 hover:underline hover:underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(var(--card))]" data-testid={`link-topic-curriculum-${index + 1}`}>{buttonLabel} <ArrowRight size={16} aria-hidden="true" /></a>
         </div>
       </article>
     </div>

@@ -122,11 +122,11 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
                   {slide.description}
                 </p>
                 <div className="mt-7 flex flex-col items-stretch gap-3 sm:mt-8 sm:flex-row sm:flex-wrap sm:items-center">
-                  <a href={slide.primaryButtonUrl || '/contact'} className="inline-flex h-13 items-center justify-center rounded-full bg-[hsl(var(--accent))] px-6 py-3.5 text-sm font-bold text-[hsl(var(--primary))] shadow-lg shadow-black/20 transition hover:-translate-y-1" data-testid={`link-hero-primary-${slide.displayOrder}`}>
+                  <a href={slide.primaryButtonUrl || '/contact'} className="inline-flex h-13 items-center justify-center rounded-full bg-[hsl(var(--accent))] px-6 py-3.5 text-sm font-bold text-[hsl(var(--accent-foreground))] shadow-lg shadow-black/20 transition hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent-foreground))] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(var(--accent))]" data-testid={`link-hero-primary-${slide.displayOrder}`}>
                     {slide.primaryButtonLabel}
                     <ArrowRight size={17} className="ml-2" />
                   </a>
-                  <a href={slide.secondaryButtonUrl || '#about-preview'} className="inline-flex h-13 items-center justify-center rounded-full border border-white/35 bg-black/10 px-5 py-3.5 text-sm font-bold text-white transition hover:bg-white/15" data-testid={`link-hero-secondary-${slide.displayOrder}`}>
+                  <a href={slide.secondaryButtonUrl || '#about-preview'} className="inline-flex h-13 items-center justify-center rounded-full border border-white/35 bg-black/10 px-5 py-3.5 text-sm font-bold text-white transition hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(var(--primary))]" data-testid={`link-hero-secondary-${slide.displayOrder}`}>
                     {slide.secondaryButtonLabel}
                   </a>
                 </div>
@@ -147,19 +147,21 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
                 aria-selected={index === activeIndex}
                 aria-label={`Show slide ${index + 1}`}
                 onClick={() => goTo(index)}
-                className={`h-2 rounded-full transition-all ${index === activeIndex ? 'w-10 bg-[hsl(var(--accent))]' : 'w-2 bg-white/55 hover:bg-white'}`}
+                className="grid h-11 w-11 shrink-0 place-items-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(var(--primary))]"
                 data-testid={`button-hero-indicator-${index + 1}`}
-              />
+              >
+                <span aria-hidden="true" className={`block h-2 rounded-full transition-all ${index === activeIndex ? 'w-10 bg-[hsl(var(--accent))]' : 'w-2 bg-white/85 hover:bg-white'}`} />
+              </button>
             ))}
           </div>
           <div className="flex items-center gap-2">
-            <button type="button" onClick={goPrevious} className="grid h-11 w-11 place-items-center rounded-full border border-white/30 bg-black/15 text-white transition hover:bg-white/15" aria-label="Previous homepage slide" data-testid="button-hero-previous">
+            <button type="button" onClick={goPrevious} className="grid h-11 w-11 place-items-center rounded-full border border-white/30 bg-black/15 text-white transition hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(var(--primary))]" aria-label="Previous homepage slide" data-testid="button-hero-previous">
               <ArrowLeft size={18} />
             </button>
-            <button type="button" onClick={goNext} className="grid h-11 w-11 place-items-center rounded-full border border-white/30 bg-black/15 text-white transition hover:bg-white/15" aria-label="Next homepage slide" data-testid="button-hero-next">
+            <button type="button" onClick={goNext} className="grid h-11 w-11 place-items-center rounded-full border border-white/30 bg-black/15 text-white transition hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(var(--primary))]" aria-label="Next homepage slide" data-testid="button-hero-next">
               <ArrowRight size={18} />
             </button>
-            <button type="button" onClick={() => setIsInteracting((current) => !current)} className="grid h-11 w-11 place-items-center rounded-full border border-white/30 bg-black/15 text-white transition hover:bg-white/15" aria-label={isInteracting ? 'Resume automatic slide rotation' : 'Pause automatic slide rotation'} data-testid="button-hero-autoplay">
+            <button type="button" onClick={() => setIsInteracting((current) => !current)} className="grid h-11 w-11 place-items-center rounded-full border border-white/30 bg-black/15 text-white transition hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(var(--primary))]" aria-label={isInteracting ? 'Resume automatic slide rotation' : 'Pause automatic slide rotation'} data-testid="button-hero-autoplay">
               {isInteracting ? <Play size={16} /> : <Pause size={16} />}
             </button>
           </div>

@@ -241,7 +241,7 @@ export default function Results() {
               aria-expanded={false}
               aria-controls="complete-merit-list"
               data-testid="button-complete-merit-list"
-              className="mx-auto mt-10 flex items-center gap-2 rounded-full bg-[hsl(var(--primary))] px-6 py-3 text-sm font-bold text-[hsl(var(--primary-foreground))] shadow-[0_10px_24px_hsl(var(--primary)/.16)] transition hover:-translate-y-0.5 hover:bg-[hsl(var(--accent))] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--accent)/.3)] motion-reduce:transition-none"
+              className="mx-auto mt-10 flex items-center gap-2 rounded-full bg-[hsl(var(--primary))] px-6 py-3 text-sm font-bold text-[hsl(var(--primary-foreground))] shadow-[0_10px_24px_hsl(var(--primary)/.16)] transition hover:-translate-y-0.5 hover:bg-[hsl(var(--accent))] hover:text-[hsl(var(--accent-foreground))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary-foreground))] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(var(--primary))] motion-reduce:transition-none"
             >
               View Complete Merit List <ArrowRight size={16} aria-hidden="true" />
             </button>

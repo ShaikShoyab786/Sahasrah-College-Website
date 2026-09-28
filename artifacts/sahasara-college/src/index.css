@@ -1012,3 +1012,76 @@ body { min-width: 320px; }
     inset: -1px;
   }
 }
+
+/* Keep focus indicators and text legible on branded public surfaces. */
+footer a:focus-visible {
+  outline: 2px solid hsl(var(--primary-foreground));
+  outline-offset: 4px;
+  border-radius: 3px;
+}
+
+footer a:hover {
+  color: hsl(var(--primary-foreground));
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.faq-contact-card :where(h2, h3, h4, p, a) {
+  color: hsl(var(--primary-foreground));
+}
+
+.faq-contact-card a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.faq-contact-card a:focus-visible {
+  outline: 2px solid hsl(var(--primary-foreground));
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+[data-testid="button-close-gallery-lightbox"]:focus-visible {
+  outline: 2px solid hsl(var(--primary-foreground));
+  outline-offset: 3px;
+}
+
+[data-testid="button-previous-gallery-image"] {
+  transition: background-color 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+
+[data-testid="button-previous-gallery-image"]:hover {
+  border-color: hsl(var(--accent));
+  background-color: hsl(var(--secondary));
+}
+
+[data-testid="button-previous-gallery-image"]:focus-visible {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 3px;
+}
+
+[data-testid="button-next-gallery-image"]:hover {
+  filter: brightness(1.12);
+}
+
+[data-testid="button-next-gallery-image"]:focus-visible {
+  outline: 2px solid hsl(var(--primary-foreground));
+  outline-offset: 3px;
+}
+
+#public-mobile-navigation {
+  color: hsl(var(--primary-foreground));
+}
+
+#public-mobile-navigation [aria-current="page"],
+#public-mobile-navigation button[aria-current="page"] {
+  color: hsl(var(--primary-foreground));
+  text-decoration-line: underline;
+  text-decoration-color: hsl(var(--accent));
+  text-underline-offset: 4px;
+}
+
+#public-mobile-navigation :focus-visible {
+  outline: 2px solid hsl(var(--primary-foreground));
+  outline-offset: 2px;
+}

@@ -1,7 +1,8 @@
-import { getGetCallbackPopupSettingsQueryKey, getGetCourseBySlugQueryKey, useGetCallbackPopupSettings, useGetCourseBySlug, useGetGalleryPage, useGetSiteSettings, type CourseSlug } from '@workspace/api-client-react';
+import { getGetCallbackPopupSettingsQueryKey, getGetCourseBySlugQueryKey, useGetCallbackPopupSettings, useGetContactSettings, useGetCourseBySlug, useGetGalleryPage, useGetSiteSettings, type CourseSlug } from '@workspace/api-client-react';
 import { PublicFooter } from '@/components/public-footer';
 import { PublicHeader } from '@/components/public-header';
 import { CourseEmptyState, CourseErrorState, CourseHero, CourseLoadingState, CurriculumSection, HighlightsSection, MentorsSection, WhyChooseSection } from '@/components/course-experience';
+import { CourseAdmissionProcess, CourseFinalAdmissionsCta } from '@/components/course-admissions';
 import { CourseCampusGallery } from '@/components/course-campus-gallery';
 import { createPublicThemeStyle, DEFAULT_ACCENT_COLOR, DEFAULT_PRIMARY_COLOR, DEFAULT_SURFACE_COLOR } from '@/lib/public-theme';
 import { useParams } from 'wouter';
@@ -16,6 +17,7 @@ export default function CourseDetail() {
   const enquirySettingsQuery = useGetCallbackPopupSettings({
     query: { queryKey: getGetCallbackPopupSettingsQueryKey() },
   });
+  const contactSettingsQuery = useGetContactSettings();
   const galleryQuery = useGetGalleryPage();
   const settings = settingsQuery.data;
   const publicSettings = settings ?? {
@@ -49,6 +51,12 @@ export default function CourseDetail() {
         <MentorsSection mentors={course.mentors} />
         <CurriculumSection syllabus={course.syllabus} fileName={course.curriculumPdfFileName} isSample={course.curriculumPdfIsSample} downloadUrl={course.curriculumDownloadUrl} />
         <CourseCampusGallery items={galleryQuery.data?.items ?? []} />
+        <CourseAdmissionProcess />
+        <CourseFinalAdmissionsCta
+          collegeName={publicSettings.collegeName}
+          enrollmentHref={course.primaryActionUrl?.trim() || '/contact'}
+          whatsappNumber={contactSettingsQuery.data?.whatsappNumber || ''}
+        />
       </main>
       <PublicFooter settings={publicSettings} />
     </div>

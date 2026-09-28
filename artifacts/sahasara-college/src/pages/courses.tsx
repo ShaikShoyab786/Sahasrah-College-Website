@@ -53,7 +53,7 @@ export default function Courses() {
             <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3" data-testid="list-course-pathways">
               {courses.map((course, index) => (
                 <Link href={`/courses/${course.slug}`} key={course.slug} className={`group relative flex min-h-[320px] flex-col overflow-hidden rounded-3xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-7 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[hsl(var(--accent)/.7)] hover:shadow-xl ${index === 0 ? 'lg:row-span-2 lg:min-h-[665px] lg:justify-end' : ''}`} data-testid={`card-course-${course.slug}`}>
-                  <div className="absolute right-7 top-7 grid h-11 w-11 place-items-center rounded-full bg-[hsl(var(--secondary))] text-[hsl(var(--primary))] transition group-hover:bg-[hsl(var(--accent))]"><ArrowRight size={18} aria-hidden="true" /></div>
+                  <div className="absolute right-7 top-7 grid h-11 w-11 place-items-center rounded-full bg-[hsl(var(--secondary))] text-[hsl(var(--primary))] transition group-hover:bg-[hsl(var(--accent))] group-hover:text-[hsl(var(--accent-foreground))]"><ArrowRight size={18} aria-hidden="true" /></div>
                   <CourseEyebrow label={course.heroEyebrow} className="w-fit max-w-[calc(100%_-_3.5rem)]" testId={`text-course-card-eyebrow-${course.slug}`} />
                   <h3 className="mt-8 max-w-xs font-display text-4xl font-semibold leading-[.94] tracking-[-.05em] text-[hsl(var(--primary))]">{course.name}</h3>
                   <p className="mt-5 max-w-sm text-sm leading-7 text-[hsl(var(--muted-foreground))]">{course.heroDescription}</p>

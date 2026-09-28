@@ -1,0 +1,25 @@
+Update the Courses page with the sections and fixes below. Preserve all existing course content and the shared Faculty data/visibility logic.
+
+Admission & Enrollment Process
+Add this section after Campus Gallery. Show four steps in this order:
+
+Campus Visit & Inquiry
+Academic Counseling
+Document Verification
+Fee Payment & Enrollment
+Match the first reference’s clean horizontal timeline: centered heading, subtle divider, four numbered circles connected by a line, and readable step titles beneath. On mobile, change it to a vertical timeline.
+
+Animate the progress line slowly from step 1 to step 4—about 8–10 seconds for the full sequence. As it reaches each step, give that step a gentle glow or pulse. Avoid rapid blinking, flashing, or distracting motion. Run the animation only while the section is visible, and respect prefers-reduced-motion. Keep every step label readable throughout the animation.
+
+Faculty section
+Fix the View All Faculty link so its text and icon stay clearly visible at rest, on hover, and while moving the cursor onto it.
+Display up to three appropriately sized faculty cards at once on desktop.
+If more than three eligible faculty match the course, add a smooth auto-advancing carousel. Include manual controls, pause autoplay on hover/focus or user interaction, and respect prefers-reduced-motion. Adapt the number of visible cards on smaller screens.
+Preserve the shared Faculty records, independent Show on Home and Show on Courses toggles, and course-subject matching. Don’t duplicate faculty records or weaken the existing visibility rules.
+Final CTA
+Add a polished final admissions CTA after the process section and before the sitewide footer, inspired by the second reference: a small admissions eyebrow, strong heading with a restrained red accent, concise supporting text, a prominent Enroll Now button, and a secondary WhatsApp Us action. Use the site’s existing destinations and contact details. Include the benefit strip only with accurate, approved content. Ensure button text and icons remain visible in every interaction state.
+
+Public-site visibility audit
+Audit text and icon contrast across the public site, including the Courses page, navigation, mega menus, links, cards, buttons, accordions, and carousel controls. Check normal, hover, focus, active, and pointer-transition states, including moving the cursor from a menu trigger into its panel. Fix actual cases where text or icons fade, disappear, blend into backgrounds, or become covered by overlays. Keep the existing brand styling; don’t redesign unrelated pages.
+
+Verify: the timeline advances slowly and clearly, three faculty cards fit at once on desktop, autoplay pauses when users interact, the CTA actions work, and text/icons remain visible across desktop and mobile interaction states.

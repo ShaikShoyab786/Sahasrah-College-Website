@@ -163,7 +163,7 @@ function MegaMenuBody({
     return (
       <div role={loading ? 'status' : 'alert'} className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 text-sm text-[hsl(var(--muted-foreground))]">
         {loading ? 'Loading course pathways…' : 'Courses menu content is unavailable right now.'}
-        {!loading && onRetry && <button type="button" onClick={onRetry} className="ml-2 font-bold text-[hsl(var(--primary))] underline underline-offset-4">Try again</button>}
+        {!loading && onRetry && <button type="button" onClick={onRetry} className="ml-2 rounded-sm font-bold text-[hsl(var(--primary))] underline underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(var(--card))]">Try again</button>}
       </div>
     );
   }
@@ -207,10 +207,10 @@ function MegaMenuBody({
         {(utilityLinks.length > 0 || ctaButtons.length > 0) && (
           <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-[hsl(var(--border))] pt-4">
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-              {utilityLinks.map((item) => <DestinationLink key={item.id} href={item.href} onClick={onClose} className="text-xs font-bold text-[hsl(var(--primary))] underline-offset-4 transition hover:text-[hsl(var(--accent-foreground))] hover:underline" data-testid={`link-mega-utility-${item.id}`}>{item.label}</DestinationLink>)}
+              {utilityLinks.map((item) => <DestinationLink key={item.id} href={item.href} onClick={onClose} className="rounded-sm text-xs font-bold text-[hsl(var(--primary))] underline-offset-4 transition hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(var(--card))]" data-testid={`link-mega-utility-${item.id}`}>{item.label}</DestinationLink>)}
             </div>
             <div className="flex flex-wrap items-center gap-2">
-              {ctaButtons.map((item) => <DestinationLink key={item.id} href={item.href} onClick={onClose} className={`inline-flex min-h-10 items-center gap-2 rounded-full px-4 text-xs font-bold transition hover:-translate-y-0.5 ${item.style === 'primary' ? 'bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))]' : 'border border-[hsl(var(--border))] bg-white text-[hsl(var(--primary))] hover:bg-[hsl(var(--secondary))]'}`} data-testid={`link-mega-cta-${item.id}`}>{item.label}<ArrowRight size={14} aria-hidden="true" /></DestinationLink>)}
+              {ctaButtons.map((item) => <DestinationLink key={item.id} href={item.href} onClick={onClose} className={`inline-flex min-h-10 items-center gap-2 rounded-full px-4 text-xs font-bold transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${item.style === 'primary' ? 'bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] focus-visible:ring-[hsl(var(--primary-foreground))] focus-visible:ring-offset-[hsl(var(--primary))]' : 'border border-[hsl(var(--border))] bg-white text-[hsl(var(--primary))] hover:bg-[hsl(var(--secondary))] focus-visible:ring-[hsl(var(--primary))] focus-visible:ring-offset-white'}`} data-testid={`link-mega-cta-${item.id}`}>{item.label}<ArrowRight size={14} aria-hidden="true" /></DestinationLink>)}
             </div>
           </div>
         )}

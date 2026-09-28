@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { CallbackPopupSettings, CourseMentor, CourseReason, CourseSyllabusSubject, PublicCourse } from '@workspace/api-client-react';
 import { Link } from 'wouter';
 import { CallbackPopupForm } from '@/components/callback-popup';
+import { CourseMentorCarousel } from '@/components/course-mentor-carousel';
 import './course-why.css';
 
 export function CourseLoadingState({ label = 'Loading course information' }: { label?: string }) {
@@ -116,7 +117,7 @@ export function CourseHero({
             <span className={`rounded-full border px-3.5 py-2 text-xs font-semibold ${hasImage ? 'border-white/25 bg-white/10 text-white' : 'border-[hsl(var(--border))] bg-[hsl(var(--background)/.85)] text-[hsl(var(--foreground))]'}`} data-testid="text-course-mode">Mode: {course.modeLabel}</span>
           </div>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            {course.primaryActionLabel && course.primaryActionUrl && <a href={course.primaryActionUrl} className="group inline-flex min-h-12 items-center justify-center rounded-full bg-[hsl(var(--accent))] px-5 py-3 text-sm font-bold text-[hsl(var(--primary))] shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))] focus-visible:ring-offset-2" data-testid="link-course-primary-action">{course.primaryActionLabel}<ArrowRight size={17} className="ml-2 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" /></a>}
+            {course.primaryActionLabel && course.primaryActionUrl && <a href={course.primaryActionUrl} className="group inline-flex min-h-12 items-center justify-center rounded-full bg-[hsl(var(--accent))] px-5 py-3 text-sm font-bold text-[hsl(var(--accent-foreground))] shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent-foreground))] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(var(--accent))]" data-testid="link-course-primary-action">{course.primaryActionLabel}<ArrowRight size={17} className="ml-2 transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" /></a>}
             {course.secondaryActionLabel && secondaryActionUrl && <a href={secondaryActionUrl} className={`inline-flex min-h-12 items-center justify-center rounded-full border px-5 py-3 text-sm font-bold transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))] focus-visible:ring-offset-2 ${hasImage ? 'border-white/40 text-white hover:bg-white/10' : 'border-[hsl(var(--border))] bg-[hsl(var(--background)/.75)] text-[hsl(var(--primary))] hover:border-[hsl(var(--accent))]'}`} data-testid="link-course-secondary-action">{course.secondaryActionLabel}</a>}
           </div>
         </div>
@@ -273,37 +274,10 @@ export function MentorsSection({ mentors }: { mentors: CourseMentor[] }) {
               Learn from experienced educators who guide, support, and inspire students through every step of their journey.
             </p>
           </div>
-          <Link href="/faculty" className="inline-flex min-h-11 shrink-0 items-center gap-2 self-start text-sm font-bold text-[hsl(var(--primary))] transition hover:text-[hsl(var(--accent-foreground))] sm:self-auto" data-testid="link-course-all-faculty">Meet all faculty <ArrowRight size={16} aria-hidden="true" /></Link>
+          <Link href="/faculty" className="inline-flex min-h-11 shrink-0 items-center gap-2 self-start rounded-sm text-sm font-bold text-[hsl(var(--primary))] transition hover:underline hover:underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))] focus-visible:ring-offset-4 focus-visible:ring-offset-[hsl(var(--background))] sm:self-auto" data-testid="link-course-all-faculty">Meet all faculty <ArrowRight size={16} aria-hidden="true" /></Link>
         </div>
         {visibleMentors.length ? (
-          <div className="mt-9 grid gap-5 md:grid-cols-2 lg:mt-12">
-            {visibleMentors.map((mentor, index) => {
-              const experience = mentor.experience.trim();
-              const qualification = mentor.qualification.trim();
-              const initials = mentor.name.trim().split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0]).join('').toUpperCase();
-              const tint = index % 2 === 0 ? 'bg-sky-50/70 dark:bg-sky-950/20' : 'bg-rose-50/65 dark:bg-rose-950/20';
-              return (
-                <article key={mentor.id} className={`relative overflow-hidden rounded-2xl border border-[hsl(var(--primary)/.09)] ${tint} shadow-sm transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-lg motion-reduce:transition-none`} data-testid={`card-course-mentor-${mentor.id}`}>
-                  <span aria-hidden="true" className="pointer-events-none absolute right-5 top-3 font-display text-6xl font-semibold leading-none text-[hsl(var(--accent)/.24)] sm:text-7xl">{String(index + 1).padStart(2, '0')}</span>
-                  <div className="flex min-h-36 items-center gap-4 p-5 pr-20 sm:gap-5 sm:p-6 sm:pr-24">
-                    {mentor.imageUrl
-                      ? <img src={mentor.imageUrl} alt={mentor.imageAltText || `${mentor.name} portrait`} className="h-24 w-24 shrink-0 rounded-2xl object-cover sm:h-28 sm:w-28" data-testid={`img-course-mentor-${mentor.id}`} />
-                      : <div className="grid h-24 w-24 shrink-0 place-items-center rounded-2xl bg-[hsl(var(--primary))] font-display text-3xl font-semibold text-[hsl(var(--accent))] sm:h-28 sm:w-28" aria-label={`${mentor.name} initials portrait`}>{initials}</div>}
-                    <div className="min-w-0">
-                      <h3 className="break-words font-display text-xl font-semibold leading-tight text-[hsl(var(--primary))] sm:text-2xl">{mentor.name}</h3>
-                      {qualification && <p className="mt-2 text-[10px] font-bold uppercase tracking-[.16em] text-[hsl(var(--muted-foreground))]">{qualification}</p>}
-                      {mentor.teachingSubjects.length > 0 && <div className="mt-3 flex flex-wrap gap-2" aria-label={`${mentor.name} teaching subjects`}>{mentor.teachingSubjects.map((subject) => <span key={subject} className="rounded-full bg-[hsl(var(--accent)/.11)] px-2.5 py-1 text-[11px] font-semibold text-[hsl(var(--primary))]" data-testid={`tag-course-mentor-subject-${mentor.id}-${subject}`}>{subject}</span>)}</div>}
-                    </div>
-                  </div>
-                  {mentor.biography.trim() && <p className="border-t border-[hsl(var(--primary)/.1)] px-5 py-4 text-sm leading-6 text-[hsl(var(--muted-foreground))] sm:px-6" data-testid={`text-course-mentor-bio-${mentor.id}`}>{mentor.biography}</p>}
-                  {experience && <div className="border-t border-[hsl(var(--primary)/.1)] px-5 py-3.5 sm:px-6">
-                    <p className="font-display text-lg font-semibold text-[hsl(var(--primary))]">{experience}</p>
-                    <p className="mt-0.5 text-[10px] font-bold uppercase tracking-[.16em] text-[hsl(var(--muted-foreground))]">Experience</p>
-                  </div>}
-                </article>
-              );
-            })}
-          </div>
+          <CourseMentorCarousel mentors={visibleMentors} />
         ) : (
           <div className="mt-12 rounded-3xl border border-dashed border-[hsl(var(--border))] bg-[hsl(var(--secondary))] px-6 py-14 text-center" data-testid="status-course-mentors-empty">
             <GraduationCap className="mx-auto text-[hsl(var(--accent-foreground))]" size={28} aria-hidden="true" />
