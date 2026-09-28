@@ -1,0 +1,34 @@
+Use the four attached images in order as references for the Hero, All Courses grid, Batch Details & Schedule, and final CTA.
+
+Update the All Courses page linked from the Courses mega menu. Add an All Courses submenu item under Courses in the admin dashboard so this page can be managed there. Keep the mega-menu link to the All Courses page working.
+
+Page sections and order
+Hero
+All Courses
+Batch Details & Schedule
+Final CTA
+Existing sitewide footer
+Don’t add other page sections.
+
+Hero
+Match the first reference’s layout: eyebrow, prominent headline, short introduction, supporting feature points, and two clear actions. Add a course-page background image upload/select control in the All Courses admin area, plus an opacity or overlay control so the image stays subtle and the text remains readable. Use the existing media upload and persistence flow; don’t hard-code a reference image.
+
+All Courses grid
+Match the second reference: a featured course card on the left and four standard course cards on the right. Use the existing five course records and their correct detail-page routes—don’t create duplicate course records or hard-code a second copy of course data. Let an admin choose the featured course, card order, and which courses appear. Keep Integrated Courses as “Coming Soon” in the mega menu; don’t treat it as a sixth active course.
+
+Batch Details & Schedule
+Match the third reference with two clear panels:
+
+Upcoming Batches: editable batch name, start date, target exam, and admissions status.
+Daily Schedule: editable activities and times.
+Manage these entries from the All Courses admin submenu. Don’t copy sample dates or statuses from the reference; show current values entered by an admin.
+
+Final CTA
+Match the fourth reference with a clear heading, concise supporting text, a prominent Talk with Admissions button, and the supporting benefit items. Keep the button linked to the existing admissions/contact flow. Don’t recreate the sitewide footer.
+
+Admin and behavior
+Add an All Courses admin submenu for editing this page’s hero copy and background image/opacity, featured course selection and card ordering, batch details, schedule, and CTA content. Save through the existing admin/API patterns and ensure changes appear on the public page. Reuse course and media records wherever they already exist.
+
+Keep the page responsive, use the site’s existing brand styles, and ensure text and icons stay readable in normal, hover, focus, and active states. Keep spacing between sections balanced and use subtle separators if needed.
+
+Verify: the mega-menu link opens the All Courses page; all five active course cards link to the correct detail pages; and edits to the hero, course display, batches, schedule, and CTA save and appear publicly.
