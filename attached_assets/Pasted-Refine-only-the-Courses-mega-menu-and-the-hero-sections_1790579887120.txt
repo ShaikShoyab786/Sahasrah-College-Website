@@ -1,0 +1,22 @@
+Refine only the Courses mega menu and the hero sections on the five standard course detail pages in this pass. Do not redesign the sections below the hero; we’ll handle those one at a time later.
+
+1. Courses mega menu
+Replace the current basic, portrait-style dropdown with a polished, wide landscape mega menu that feels professional and fits the site’s existing brand.
+Show six course entries: MPC, BiPC, MPC + IIT-JEE, BiPC + NEET, MPC + EAMCET, and Integrated Courses.
+Arrange them in a balanced, responsive card grid—such as three columns by two rows on desktop. Make the five standard courses navigable. Show Integrated Courses as the last item with a clear Coming Soon badge; it should not look like an active course link.
+Keep any existing utility links, but visually separate them from the course cards. Preserve their current destinations.
+Do not use a large solid-blue panel or blue text throughout. Use the site’s existing brand colors with a light neutral background, readable dark text, and restrained accent colors. Keep text contrast strong.
+Make opening and closing smooth. Close the menu after navigation, when clicking outside, and when pressing Escape. On small screens, adapt it into a usable stacked or accordion layout.
+2. Course detail hero sections
+Apply the same improved layout consistently to the five standard course detail pages.
+
+Use a light, appropriate background rather than a solid blue hero.
+Provide a way to upload or select a course hero background image through the existing course-admin image handling. Include an appropriate image overlay/opacity setting so the text stays readable. Reuse the current media and persistence flow; don’t replace it.
+Improve the eyebrow styling above the course title so it feels deliberate and branded, not like a basic label.
+Under the title, show two compact course-info chips, using the course’s existing values—for example, Duration: 2 Years and Mode: Offline. Don’t hard-code the same values for every course if their data differs.
+Use a two-column desktop layout: course information on the left and the enquiry form on the right. Stack these cleanly on mobile.
+Keep the existing enquiry form and its source tracking exactly as they work now. Prefill the course of interest where supported. Do not create a parallel enquiry flow or change backend enquiry handling.
+Keep the Explore Admissions button. Replace Talk to Counsellor with View Curriculum; it should scroll to the syllabus section on that same course page, without navigating away.
+Scope: Update only the mega menu and course hero sections. Do not add full Integrated Courses content yet, and do not redesign the sections after the hero. Preserve existing admin and enquiry behavior.
+
+Check before finishing: verify the menu shows all six entries with Integrated Courses marked Coming Soon, the menu is landscape on desktop and usable on mobile, each course hero displays its correct image/settings and info chips, the enquiry form still records its source, and View Curriculum reaches the syllabus section.
