@@ -13,6 +13,7 @@ import allCoursesPageRouter from "./all-courses-page";
 import knowledgeHubMegaMenuRouter from "./knowledge-hub-mega-menu";
 import knowledgeHubArticlesRouter from "./knowledge-hub-articles";
 import knowledgeHubVideoHubRouter from "./knowledge-hub-video-hub";
+import knowledgeHubResourcesRouter from "./knowledge-hub-resources";
 
 const router: IRouter = Router();
 
@@ -26,6 +27,7 @@ router.use(allCoursesPageRouter);
 router.use(knowledgeHubMegaMenuRouter);
 router.use(knowledgeHubArticlesRouter);
 router.use(knowledgeHubVideoHubRouter);
+router.use(knowledgeHubResourcesRouter);
 router.use(galleryRouter);
 router.use(resultsRouter);
 router.use(contactRouter);

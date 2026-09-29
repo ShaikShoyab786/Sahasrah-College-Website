@@ -7,3 +7,4 @@
 - [Admin theme boundary](admin-theme-boundary.md) — keep admin semantic contrast tokens separate from the public theme root and prefer configured branding assets in admin chrome.
 - [Theme in portaled dialogs](portaled-dialog-theme.md) — apply the active public theme directly to portal content outside the themed page root.
 - [Results alumni story publication](results-story-publication.md) — keep alumni stories separate from current results and never publish imported drafts without review.
+- [Resource Hub data boundary](resource-hub-data.md) — keep published resources separate from legacy homepage previews and require visible-category eligibility for featured items.

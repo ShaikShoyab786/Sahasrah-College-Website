@@ -1,6 +1,6 @@
 import { ArrowRight, BookOpen, CheckCircle2, FileText, GraduationCap, PlayCircle, Bell } from 'lucide-react';
 import { Link } from 'wouter';
-import { useGetKnowledgeHubMegaMenu, useGetKnowledgeHubVideoHubPage, useGetSiteSettings, type KnowledgeHubMainPageContent, type KnowledgeHubVideoSummary } from '@workspace/api-client-react';
+import { useGetKnowledgeHubMegaMenu, useGetKnowledgeHubResourceHubPage, useGetKnowledgeHubVideoHubPage, useGetSiteSettings, type KnowledgeHubMainPageContent, type KnowledgeHubResourceSummary, type KnowledgeHubVideoSummary } from '@workspace/api-client-react';
 import { PublicFooter } from '@/components/public-footer';
 import { PublicHeader } from '@/components/public-header';
 import { createPublicThemeStyle, DEFAULT_ACCENT_COLOR, DEFAULT_PRIMARY_COLOR, DEFAULT_SURFACE_COLOR } from '@/lib/public-theme';
@@ -30,11 +30,11 @@ const fallbackMainPage: KnowledgeHubMainPageContent = {
   heroPanelDescription: 'Built around the questions that shape confident study.',
   introEyebrow: 'A clear path through the noise',
   introTitle: 'Four ways to make study feel more manageable.',
-  introDescription: 'Explore the Articles section for practical guidance. More Knowledge Hub sections will be added in later phases.',
+  introDescription: 'Browse published articles, video sessions, and study resources, organized around the questions students and families ask most often.',
   sections: [
     { category: 'articles', eyebrow: 'Knowledge Hub', title: 'Articles', description: 'Clear guidance for the questions students and families ask most often.', statusText: 'Browse published articles for students and families.', badgeLabel: null, ctaLabel: 'Explore Articles' },
     { category: 'video-hub', eyebrow: 'Knowledge Hub', title: 'Video Hub', description: 'A future home for focused explanations and practical learning sessions.', statusText: 'This section is being prepared for students and families.', badgeLabel: 'Coming Soon', ctaLabel: null },
-    { category: 'study-resources', eyebrow: 'Knowledge Hub', title: 'Study Resources', description: 'A carefully organised shelf for notes, papers, and useful downloads.', statusText: 'This section is being prepared for students and families.', badgeLabel: 'Coming Soon', ctaLabel: null },
+    { category: 'study-resources', eyebrow: 'Knowledge Hub', title: 'Resource Hub', description: 'Find study notes, question papers, and revision materials in a searchable library.', statusText: 'Browse published resources for your next step.', badgeLabel: null, ctaLabel: 'Browse Resource Hub' },
     { category: 'exam-updates', eyebrow: 'Knowledge Hub', title: 'Exam Updates', description: 'A dependable place for dates, notifications, and official exam guidance.', statusText: 'This section is being prepared for students and families.', badgeLabel: 'Coming Soon', ctaLabel: null },
   ],
 };
@@ -50,6 +50,10 @@ function CategorySection({
   videoCount,
   videoLoading,
   videoError,
+  resourcePreview,
+  resourceCount,
+  resourceLoading,
+  resourceError,
 }: {
   category: typeof categories[number];
   section: KnowledgeHubMainPageContent['sections'][number];
@@ -57,10 +61,15 @@ function CategorySection({
   videoCount: number | null;
   videoLoading: boolean;
   videoError: boolean;
+  resourcePreview: KnowledgeHubResourceSummary | null;
+  resourceCount: number | null;
+  resourceLoading: boolean;
+  resourceError: boolean;
 }) {
   const Icon = category.icon;
   const available = category.id === 'articles';
   const isVideoHub = category.id === 'video-hub';
+  const isResourceHub = category.id === 'study-resources';
   const tint = category.tint === 'rose'
     ? 'bg-rose-50 border-rose-100 text-rose-700'
     : category.tint === 'violet'
@@ -87,9 +96,9 @@ function CategorySection({
             <p className="text-xs font-bold uppercase tracking-[.18em] text-[hsl(var(--accent-foreground))]">{section.eyebrow}</p>
             {isVideoHub && videoCount !== null
               ? <span className="rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--card))] px-3 py-1 text-[10px] font-bold uppercase tracking-[.12em] text-[hsl(var(--muted-foreground))]" data-testid="badge-knowledge-hub-video-count">{videoCount} published {videoCount === 1 ? 'session' : 'sessions'}</span>
-              : !isVideoHub && section.badgeLabel && <span className="rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--card))] px-3 py-1 text-[10px] font-bold uppercase tracking-[.12em] text-[hsl(var(--muted-foreground))]">{section.badgeLabel}</span>}
+              : !isVideoHub && !isResourceHub && section.badgeLabel && <span className="rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--card))] px-3 py-1 text-[10px] font-bold uppercase tracking-[.12em] text-[hsl(var(--muted-foreground))]">{section.badgeLabel}</span>}
           </div>
-          <h2 className="mt-3 font-display text-4xl font-semibold tracking-[-.045em] text-[hsl(var(--primary))] sm:text-5xl">{section.title}</h2>
+          <h2 className="mt-3 font-display text-4xl font-semibold tracking-[-.045em] text-[hsl(var(--primary))] sm:text-5xl">{isResourceHub ? 'Resource Hub' : section.title}</h2>
           {isVideoHub ? (
             <>
               {videoPreview ? (
@@ -105,6 +114,23 @@ function CategorySection({
                 </p>
               )}
               <Link href="/knowledge-hub/videos" className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-full bg-[hsl(var(--primary))] px-5 text-sm font-bold text-[hsl(var(--primary-foreground))] transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]" data-testid="link-knowledge-hub-videos-cta">{videoPreview ? 'Browse Video Hub' : 'Open Video Hub'} <ArrowRight size={16} aria-hidden="true" /></Link>
+            </>
+          ) : isResourceHub ? (
+            <>
+              <p className="mt-4 max-w-xl text-base leading-7 text-[hsl(var(--muted-foreground))]">{section.description}</p>
+              {resourcePreview ? (
+                <div className="mt-5 max-w-xl rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-4" data-testid="card-knowledge-hub-resource-preview">
+                  <p className="text-[10px] font-bold uppercase tracking-[.14em] text-[hsl(var(--accent-foreground))]">Featured resource</p>
+                  <h3 className="mt-2 font-display text-xl font-semibold leading-tight text-[hsl(var(--primary))]">{resourcePreview.title}</h3>
+                  <p className="mt-2 line-clamp-2 text-sm leading-6 text-[hsl(var(--muted-foreground))]">{resourcePreview.description}</p>
+                  <p className="mt-2 text-xs font-semibold text-[hsl(var(--muted-foreground))]">{resourcePreview.subject} · {resourcePreview.categoryName}</p>
+                </div>
+              ) : (
+                <p className="mt-5 flex items-center gap-2 text-sm font-semibold text-[hsl(var(--primary)/.7)]" data-testid="text-knowledge-hub-resource-count">
+                  {resourceLoading ? 'Loading published resources…' : resourceError ? 'The resource library is unavailable right now.' : resourceCount === 0 ? 'No resources have been published yet.' : `${resourceCount ?? 0} published ${resourceCount === 1 ? 'resource' : 'resources'}`}
+                </p>
+              )}
+              <Link href="/knowledge-hub/resources" className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-full bg-[hsl(var(--primary))] px-5 text-sm font-bold text-[hsl(var(--primary-foreground))] transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]" data-testid="link-knowledge-hub-resources-cta">{section.ctaLabel ?? 'Browse Resource Hub'} <ArrowRight size={16} aria-hidden="true" /></Link>
             </>
           ) : available ? (
             <>
@@ -128,11 +154,14 @@ export default function KnowledgeHub() {
   const settingsQuery = useGetSiteSettings();
   const menuQuery = useGetKnowledgeHubMegaMenu();
   const videoHubQuery = useGetKnowledgeHubVideoHubPage();
+  const resourceHubQuery = useGetKnowledgeHubResourceHubPage();
   if (settingsQuery.isLoading) return <KnowledgeHubSkeleton />;
 
   const settings = settingsQuery.data ?? fallbackSettings;
   const videoPreview = videoHubQuery.data?.featuredVideo ?? videoHubQuery.data?.relatedVideos[0] ?? null;
   const videoCount = videoHubQuery.data?.publishedVideoCount ?? null;
+  const resourcePreview = resourceHubQuery.data?.featuredResource ?? null;
+  const resourceCount = resourceHubQuery.data?.publishedResourceCount ?? null;
   const mainPage = menuQuery.data?.mainPage ?? fallbackMainPage;
   const sectionByCategory = new Map(mainPage.sections.map((section) => [section.category, section]));
   const orderedSections = categories.map((category, index) => ({
@@ -160,7 +189,7 @@ export default function KnowledgeHub() {
               <h1 className="mt-5 max-w-3xl font-display text-5xl font-semibold leading-[.96] tracking-[-.055em] sm:text-7xl" data-testid="text-knowledge-hub-title">{panel.title}</h1>
               <p className="mt-6 max-w-2xl text-base leading-7 text-white/72 sm:text-lg">{panel.description}</p>
               <div className="mt-8 flex flex-wrap gap-3">
-                {orderedSections.map(({ category, section }) => <Link key={category.id} href={category.id === 'articles' ? '/knowledge-hub/articles' : category.id === 'video-hub' ? '/knowledge-hub/videos' : `#knowledge-hub-${category.id}`} className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 text-sm font-bold transition hover:-translate-y-0.5 hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]" data-testid={`link-knowledge-hub-hero-${category.id}`}>{section.title}<ArrowRight size={15} aria-hidden="true" /></Link>)}
+                {orderedSections.map(({ category, section }) => <Link key={category.id} href={category.id === 'articles' ? '/knowledge-hub/articles' : category.id === 'video-hub' ? '/knowledge-hub/videos' : category.id === 'study-resources' ? '/knowledge-hub/resources' : `#knowledge-hub-${category.id}`} className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 text-sm font-bold transition hover:-translate-y-0.5 hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]" data-testid={`link-knowledge-hub-hero-${category.id}`}>{category.id === 'study-resources' ? 'Resource Hub' : section.title}<ArrowRight size={15} aria-hidden="true" /></Link>)}
               </div>
             </div>
             <div className="relative min-h-64 overflow-hidden rounded-[1.75rem] border border-white/15 bg-white/10 p-6 shadow-2xl">
@@ -182,7 +211,7 @@ export default function KnowledgeHub() {
             <p className="mt-4 max-w-xl text-base leading-7 text-[hsl(var(--muted-foreground))]">{mainPage.introDescription}</p>
           </div>
         </section>
-        <div className="px-6 lg:px-10">{orderedSections.map(({ category, section }) => <CategorySection key={category.id} category={category} section={section} videoPreview={videoPreview} videoCount={videoCount} videoLoading={videoHubQuery.isLoading} videoError={videoHubQuery.isError} />)}</div>
+        <div className="px-6 lg:px-10">{orderedSections.map(({ category, section }) => <CategorySection key={category.id} category={category} section={section} videoPreview={videoPreview} videoCount={videoCount} videoLoading={videoHubQuery.isLoading} videoError={videoHubQuery.isError} resourcePreview={resourcePreview} resourceCount={resourceCount} resourceLoading={resourceHubQuery.isLoading} resourceError={resourceHubQuery.isError} />)}</div>
       </main>
       <PublicFooter settings={{ ...settings, footerText: settings.footerText || fallbackSettings.footerText }} />
     </div>

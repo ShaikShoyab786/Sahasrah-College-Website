@@ -14,6 +14,7 @@ import {
   DEFAULT_KNOWLEDGE_HUB_ARTICLE_CATEGORIES,
 } from "./knowledge-hub-articles-content";
 import { DEFAULT_KNOWLEDGE_HUB_VIDEO_PAGE } from "./knowledge-hub-video-content";
+import { DEFAULT_KNOWLEDGE_HUB_RESOURCE_HUB_PAGE } from "./knowledge-hub-resource-content";
 
 const LEGACY_COURSE_ACTIONS = [
   { slug: "mpc", primaryActionLabel: "Explore admissions", secondaryActionLabel: "Talk to a counsellor" },
@@ -77,6 +78,116 @@ async function ensureAlumniStorySchema() {
     update: {},
     create: { id: "singleton", revision: 0 },
   });
+}
+
+async function ensureKnowledgeHubResourceSchema() {
+  await prisma.$executeRawUnsafe(`
+    CREATE TABLE IF NOT EXISTS "KnowledgeHubResourceCategory" (
+      "id" TEXT NOT NULL,
+      "name" TEXT NOT NULL,
+      "slug" TEXT NOT NULL,
+      "displayOrder" INTEGER NOT NULL DEFAULT 1,
+      "isVisible" BOOLEAN NOT NULL DEFAULT true,
+      "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      "updatedAt" TIMESTAMP(3) NOT NULL,
+      CONSTRAINT "KnowledgeHubResourceCategory_pkey" PRIMARY KEY ("id")
+    )
+  `);
+  await prisma.$executeRawUnsafe(`
+    CREATE UNIQUE INDEX IF NOT EXISTS "KnowledgeHubResourceCategory_slug_key"
+    ON "KnowledgeHubResourceCategory" ("slug")
+  `);
+  await prisma.$executeRawUnsafe(`
+    CREATE INDEX IF NOT EXISTS "KnowledgeHubResourceCategory_isVisible_displayOrder_idx"
+    ON "KnowledgeHubResourceCategory" ("isVisible", "displayOrder")
+  `);
+  await prisma.$executeRawUnsafe(`
+    CREATE TABLE IF NOT EXISTS "KnowledgeHubResource" (
+      "id" TEXT NOT NULL,
+      "title" TEXT NOT NULL,
+      "slug" TEXT NOT NULL,
+      "categoryId" TEXT NOT NULL,
+      "description" TEXT NOT NULL,
+      "resourceType" TEXT NOT NULL,
+      "subject" TEXT NOT NULL,
+      "exam" TEXT NOT NULL,
+      "classLevel" TEXT NOT NULL,
+      "academicYear" TEXT NOT NULL,
+      "language" TEXT NOT NULL,
+      "tags" TEXT[] NOT NULL DEFAULT ARRAY[]::TEXT[],
+      "pdfObjectPath" TEXT NOT NULL,
+      "pdfFileName" TEXT NOT NULL,
+      "coverImageObjectPath" TEXT,
+      "coverImageAltText" TEXT NOT NULL DEFAULT '',
+      "displayOrder" INTEGER NOT NULL DEFAULT 1,
+      "status" TEXT NOT NULL DEFAULT 'draft',
+      "publishedAt" TIMESTAMP(3),
+      "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      "updatedAt" TIMESTAMP(3) NOT NULL,
+      CONSTRAINT "KnowledgeHubResource_pkey" PRIMARY KEY ("id"),
+      CONSTRAINT "KnowledgeHubResource_categoryId_fkey"
+        FOREIGN KEY ("categoryId") REFERENCES "KnowledgeHubResourceCategory"("id")
+        ON DELETE RESTRICT ON UPDATE CASCADE
+    )
+  `);
+  await prisma.$executeRawUnsafe(`
+    CREATE UNIQUE INDEX IF NOT EXISTS "KnowledgeHubResource_slug_key"
+    ON "KnowledgeHubResource" ("slug")
+  `);
+  await prisma.$executeRawUnsafe(`
+    CREATE INDEX IF NOT EXISTS "KnowledgeHubResource_status_publishedAt_idx"
+    ON "KnowledgeHubResource" ("status", "publishedAt")
+  `);
+  await prisma.$executeRawUnsafe(`
+    CREATE INDEX IF NOT EXISTS "KnowledgeHubResource_categoryId_status_displayOrder_idx"
+    ON "KnowledgeHubResource" ("categoryId", "status", "displayOrder")
+  `);
+  await prisma.$executeRawUnsafe(`
+    CREATE INDEX IF NOT EXISTS "KnowledgeHubResource_resourceType_status_idx"
+    ON "KnowledgeHubResource" ("resourceType", "status")
+  `);
+  await prisma.$executeRawUnsafe(`
+    CREATE INDEX IF NOT EXISTS "KnowledgeHubResource_subject_status_idx"
+    ON "KnowledgeHubResource" ("subject", "status")
+  `);
+  await prisma.$executeRawUnsafe(`
+    CREATE INDEX IF NOT EXISTS "KnowledgeHubResource_exam_status_idx"
+    ON "KnowledgeHubResource" ("exam", "status")
+  `);
+  await prisma.$executeRawUnsafe(`
+    CREATE INDEX IF NOT EXISTS "KnowledgeHubResource_academicYear_status_idx"
+    ON "KnowledgeHubResource" ("academicYear", "status")
+  `);
+  await prisma.$executeRawUnsafe(`
+    CREATE TABLE IF NOT EXISTS "KnowledgeHubResourceHubSettings" (
+      "id" TEXT NOT NULL DEFAULT 'singleton',
+      "heroEyebrow" TEXT NOT NULL,
+      "heroHeading" TEXT NOT NULL,
+      "heroDescription" TEXT NOT NULL,
+      "heroCtaLabel" TEXT NOT NULL,
+      "heroCtaHref" TEXT NOT NULL,
+      "heroBackgroundImageObjectPath" TEXT,
+      "heroBackgroundImageAltText" TEXT NOT NULL DEFAULT '',
+      "featuredEyebrow" TEXT NOT NULL,
+      "libraryEyebrow" TEXT NOT NULL,
+      "libraryHeading" TEXT NOT NULL,
+      "libraryDescription" TEXT NOT NULL,
+      "searchPlaceholder" TEXT NOT NULL,
+      "emptyStateTitle" TEXT NOT NULL,
+      "emptyStateDescription" TEXT NOT NULL,
+      "featuredResourceId" TEXT,
+      "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      "updatedAt" TIMESTAMP(3) NOT NULL,
+      CONSTRAINT "KnowledgeHubResourceHubSettings_pkey" PRIMARY KEY ("id"),
+      CONSTRAINT "KnowledgeHubResourceHubSettings_featuredResourceId_fkey"
+        FOREIGN KEY ("featuredResourceId") REFERENCES "KnowledgeHubResource"("id")
+        ON DELETE SET NULL ON UPDATE CASCADE
+    )
+  `);
+  await prisma.$executeRawUnsafe(`
+    CREATE UNIQUE INDEX IF NOT EXISTS "KnowledgeHubResourceHubSettings_featuredResourceId_key"
+    ON "KnowledgeHubResourceHubSettings" ("featuredResourceId")
+  `);
 }
 
 class LegacyResultStoryChangedError extends Error {}
@@ -286,6 +397,7 @@ async function backfillCourseHighlights() {
 export async function initializeDatabase() {
   await prisma.$connect();
   await ensureAlumniStorySchema();
+  await ensureKnowledgeHubResourceSchema();
   await backfillLegacyResultStories();
   await backfillCollegeNameTypo();
 
@@ -297,6 +409,14 @@ export async function initializeDatabase() {
       id: "singleton",
       ...videoHubSettings,
       highlights: videoHubHighlights as Prisma.InputJsonValue,
+    },
+  });
+  await prisma.knowledgeHubResourceHubSettings.upsert({
+    where: { id: "singleton" },
+    update: {},
+    create: {
+      id: "singleton",
+      ...DEFAULT_KNOWLEDGE_HUB_RESOURCE_HUB_PAGE,
     },
   });
 

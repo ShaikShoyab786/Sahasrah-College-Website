@@ -3796,6 +3796,445 @@ export interface AdminKnowledgeHubArticles {
   articles: KnowledgeHubArticle[];
 }
 
+export type KnowledgeHubResourceType = typeof KnowledgeHubResourceType[keyof typeof KnowledgeHubResourceType];
+
+
+export const KnowledgeHubResourceType = {
+  notes: 'notes',
+  'previous-year-question-papers': 'previous-year-question-papers',
+  'sample-papers': 'sample-papers',
+  worksheets: 'worksheets',
+  'revision-guides': 'revision-guides',
+  other: 'other',
+} as const;
+
+export interface KnowledgeHubResourceHubPublicSettings {
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  heroEyebrow: string;
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  heroHeading: string;
+  /**
+     * @minLength 1
+     * @maxLength 700
+     */
+  heroDescription: string;
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  heroCtaLabel: string;
+  /**
+     * @minLength 1
+     * @maxLength 500
+     */
+  heroCtaHref: string;
+  /**
+     * @maxLength 1000
+     * @nullable
+     */
+  heroBackgroundImageUrl: string | null;
+  /** @maxLength 240 */
+  heroBackgroundImageAltText: string;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  featuredEyebrow: string;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  libraryEyebrow: string;
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  libraryHeading: string;
+  /**
+     * @minLength 1
+     * @maxLength 600
+     */
+  libraryDescription: string;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  searchPlaceholder: string;
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  emptyStateTitle: string;
+  /**
+     * @minLength 1
+     * @maxLength 500
+     */
+  emptyStateDescription: string;
+}
+
+export interface KnowledgeHubResourceHubPageInput {
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  heroEyebrow: string;
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  heroHeading: string;
+  /**
+     * @minLength 1
+     * @maxLength 700
+     */
+  heroDescription: string;
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  heroCtaLabel: string;
+  /**
+     * @minLength 1
+     * @maxLength 500
+     */
+  heroCtaHref: string;
+  /**
+     * @maxLength 100
+     * @nullable
+     */
+  heroBackgroundImageObjectPath: string | null;
+  /** @maxLength 240 */
+  heroBackgroundImageAltText: string;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  featuredEyebrow: string;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  libraryEyebrow: string;
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  libraryHeading: string;
+  /**
+     * @minLength 1
+     * @maxLength 600
+     */
+  libraryDescription: string;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  searchPlaceholder: string;
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  emptyStateTitle: string;
+  /**
+     * @minLength 1
+     * @maxLength 500
+     */
+  emptyStateDescription: string;
+  /**
+     * @maxLength 100
+     * @nullable
+     */
+  featuredResourceId: string | null;
+}
+
+export interface KnowledgeHubResourceCategory {
+  id: string;
+  name: string;
+  slug: string;
+  /** @minimum 1 */
+  displayOrder: number;
+  isVisible: boolean;
+  /** @minimum 0 */
+  resourceCount: number;
+  /** @minimum 0 */
+  publishedResourceCount: number;
+}
+
+export interface KnowledgeHubResourceCategoryInput {
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  name: string;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     * @pattern ^[a-z0-9]+(?:-[a-z0-9]+)*$
+     */
+  slug: string;
+  /**
+     * @minimum 1
+     * @maximum 500
+     */
+  displayOrder: number;
+  isVisible: boolean;
+}
+
+export interface KnowledgeHubResourceSummary {
+  id: string;
+  title: string;
+  slug: string;
+  categoryId: string;
+  categoryName: string;
+  categorySlug: string;
+  description: string;
+  resourceType: KnowledgeHubResourceType;
+  subject: string;
+  exam: string;
+  classLevel: string;
+  academicYear: string;
+  language: string;
+  /**
+     * @maxItems 20
+     * @items.maxLength 40
+     */
+  tags: string[];
+  /**
+     * @maxLength 1000
+     * @nullable
+     */
+  coverImageUrl: string | null;
+  coverImageAltText: string;
+  pdfFileName: string;
+  pdfViewUrl: string;
+  pdfDownloadUrl: string;
+  /** @minimum 1 */
+  displayOrder: number;
+  /** @nullable */
+  publishedAt: string | null;
+  updatedAt: string;
+}
+
+export type KnowledgeHubResourceRecordStatus = typeof KnowledgeHubResourceRecordStatus[keyof typeof KnowledgeHubResourceRecordStatus];
+
+
+export const KnowledgeHubResourceRecordStatus = {
+  draft: 'draft',
+  published: 'published',
+} as const;
+
+export type KnowledgeHubResourceRecord = KnowledgeHubResourceSummary & ({
+  /** @maxLength 100 */
+  pdfObjectPath: string;
+  /**
+     * @maxLength 100
+     * @nullable
+     */
+  coverImageObjectPath: string | null;
+  status: KnowledgeHubResourceRecordStatus;
+  createdAt: string;
+});
+
+export type KnowledgeHubResourceInputStatus = typeof KnowledgeHubResourceInputStatus[keyof typeof KnowledgeHubResourceInputStatus];
+
+
+export const KnowledgeHubResourceInputStatus = {
+  draft: 'draft',
+  published: 'published',
+} as const;
+
+export interface KnowledgeHubResourceInput {
+  /**
+     * @minLength 1
+     * @maxLength 180
+     */
+  title: string;
+  /**
+     * @minLength 1
+     * @maxLength 180
+     * @pattern ^[a-z0-9]+(?:-[a-z0-9]+)*$
+     */
+  slug: string;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  categoryId: string;
+  /**
+     * @minLength 1
+     * @maxLength 2000
+     */
+  description: string;
+  resourceType: KnowledgeHubResourceType;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  subject: string;
+  /** @maxLength 120 */
+  exam: string;
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  classLevel: string;
+  /** @maxLength 40 */
+  academicYear: string;
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  language: string;
+  /**
+     * @maxItems 20
+     * @items.minLength 1
+     * @items.maxLength 40
+     */
+  tags: string[];
+  /**
+     * @minLength 1
+     * @maxLength 100
+     * @pattern ^/objects/uploads/[a-f0-9-]{36}$
+     */
+  pdfObjectPath: string;
+  /**
+     * @minLength 1
+     * @maxLength 240
+     */
+  pdfFileName: string;
+  /**
+     * @maxLength 100
+     * @nullable
+     * @pattern ^/objects/uploads/[a-f0-9-]{36}$
+     */
+  coverImageObjectPath: string | null;
+  /** @maxLength 240 */
+  coverImageAltText: string;
+  /**
+     * @minimum 1
+     * @maximum 500
+     */
+  displayOrder: number;
+  status: KnowledgeHubResourceInputStatus;
+}
+
+export interface KnowledgeHubResourceHubPage {
+  settings: KnowledgeHubResourceHubPublicSettings;
+  featuredResource: KnowledgeHubResourceSummary | null;
+  /** @minimum 0 */
+  publishedResourceCount: number;
+  /** @minimum 0 */
+  publishedCategoryCount: number;
+  categories: KnowledgeHubResourceCategory[];
+}
+
+export interface KnowledgeHubResourceList {
+  items: KnowledgeHubResourceSummary[];
+  /** @minimum 0 */
+  total: number;
+  /** @minimum 0 */
+  offset: number;
+  /**
+     * @minimum 1
+     * @maximum 30
+     */
+  limit: number;
+  hasMore: boolean;
+}
+
+export interface AdminKnowledgeHubResources {
+  settings: KnowledgeHubResourceHubPageInput;
+  categories: KnowledgeHubResourceCategory[];
+  resources: KnowledgeHubResourceRecord[];
+}
+
+export type KnowledgeHubResourceUploadUrlRequestKind = typeof KnowledgeHubResourceUploadUrlRequestKind[keyof typeof KnowledgeHubResourceUploadUrlRequestKind];
+
+
+export const KnowledgeHubResourceUploadUrlRequestKind = {
+  pdf: 'pdf',
+  cover: 'cover',
+} as const;
+
+export type KnowledgeHubResourceUploadUrlRequestContentType = typeof KnowledgeHubResourceUploadUrlRequestContentType[keyof typeof KnowledgeHubResourceUploadUrlRequestContentType];
+
+
+export const KnowledgeHubResourceUploadUrlRequestContentType = {
+  'application/pdf': 'application/pdf',
+  'image/jpeg': 'image/jpeg',
+  'image/png': 'image/png',
+  'image/webp': 'image/webp',
+} as const;
+
+export interface KnowledgeHubResourceUploadUrlRequest {
+  kind: KnowledgeHubResourceUploadUrlRequestKind;
+  /**
+     * @minLength 1
+     * @maxLength 240
+     */
+  fileName: string;
+  /**
+     * @minimum 1
+     * @maximum 20971520
+     */
+  size: number;
+  contentType: KnowledgeHubResourceUploadUrlRequestContentType;
+}
+
+export type KnowledgeHubResourceUploadUrlResponseKind = typeof KnowledgeHubResourceUploadUrlResponseKind[keyof typeof KnowledgeHubResourceUploadUrlResponseKind];
+
+
+export const KnowledgeHubResourceUploadUrlResponseKind = {
+  pdf: 'pdf',
+  cover: 'cover',
+} as const;
+
+export interface KnowledgeHubResourceUploadUrlResponse {
+  kind: KnowledgeHubResourceUploadUrlResponseKind;
+  uploadURL: string;
+  /** @pattern ^/objects/uploads/[a-f0-9-]{36}$ */
+  objectPath: string;
+}
+
+export type KnowledgeHubResourceUploadCompleteRequestKind = typeof KnowledgeHubResourceUploadCompleteRequestKind[keyof typeof KnowledgeHubResourceUploadCompleteRequestKind];
+
+
+export const KnowledgeHubResourceUploadCompleteRequestKind = {
+  pdf: 'pdf',
+  cover: 'cover',
+} as const;
+
+export interface KnowledgeHubResourceUploadCompleteRequest {
+  kind: KnowledgeHubResourceUploadCompleteRequestKind;
+  /** @pattern ^/objects/uploads/[a-f0-9-]{36}$ */
+  objectPath: string;
+}
+
+export type KnowledgeHubResourceUploadCompleteResponseKind = typeof KnowledgeHubResourceUploadCompleteResponseKind[keyof typeof KnowledgeHubResourceUploadCompleteResponseKind];
+
+
+export const KnowledgeHubResourceUploadCompleteResponseKind = {
+  pdf: 'pdf',
+  cover: 'cover',
+} as const;
+
+export interface KnowledgeHubResourceUploadCompleteResponse {
+  kind: KnowledgeHubResourceUploadCompleteResponseKind;
+  /** @pattern ^/objects/uploads/[a-f0-9-]{36}$ */
+  objectPath: string;
+  /**
+     * @maxLength 1000
+     * @nullable
+     */
+  imageUrl: string | null;
+}
+
 export type ImageUploadInputPurpose = typeof ImageUploadInputPurpose[keyof typeof ImageUploadInputPurpose];
 
 
@@ -3897,6 +4336,50 @@ export type GetKnowledgeHubVideoHubVideosSort = typeof GetKnowledgeHubVideoHubVi
 
 
 export const GetKnowledgeHubVideoHubVideosSort = {
+  recent: 'recent',
+  oldest: 'oldest',
+  title: 'title',
+  displayOrder: 'displayOrder',
+} as const;
+
+export type GetKnowledgeHubResourcesParams = {
+/**
+ * @maxLength 200
+ */
+search?: string;
+resourceType?: KnowledgeHubResourceType;
+/**
+ * @maxLength 100
+ */
+category?: string;
+/**
+ * @maxLength 100
+ */
+subject?: string;
+/**
+ * @maxLength 120
+ */
+exam?: string;
+/**
+ * @maxLength 40
+ */
+academicYear?: string;
+sort?: GetKnowledgeHubResourcesSort;
+/**
+ * @minimum 0
+ */
+offset?: number;
+/**
+ * @minimum 1
+ * @maximum 30
+ */
+limit?: number;
+};
+
+export type GetKnowledgeHubResourcesSort = typeof GetKnowledgeHubResourcesSort[keyof typeof GetKnowledgeHubResourcesSort];
+
+
+export const GetKnowledgeHubResourcesSort = {
   recent: 'recent',
   oldest: 'oldest',
   title: 'title',

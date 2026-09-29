@@ -1,0 +1,17 @@
+export const DEFAULT_KNOWLEDGE_HUB_RESOURCE_HUB_PAGE = {
+  heroEyebrow: "KNOWLEDGE HUB · RESOURCES",
+  heroHeading: "Find the material for your next step.",
+  heroDescription: "Browse a focused library of study notes, practice papers, and revision resources selected for students and families.",
+  heroCtaLabel: "Browse resources",
+  heroCtaHref: "#resource-library",
+  heroBackgroundImageObjectPath: null,
+  heroBackgroundImageAltText: "",
+  featuredEyebrow: "FEATURED RESOURCE",
+  libraryEyebrow: "THE RESOURCE LIBRARY",
+  libraryHeading: "Clear resources. Focused progress.",
+  libraryDescription: "Search and filter published resources by type, subject, exam, and academic year.",
+  searchPlaceholder: "Search titles, subjects, exams, or tags",
+  emptyStateTitle: "No published resources yet",
+  emptyStateDescription: "There are no published resources in the library right now.",
+  featuredResourceId: null,
+} as const;

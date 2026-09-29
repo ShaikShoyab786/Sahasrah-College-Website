@@ -3459,6 +3459,246 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+  /knowledge-hub/resources/page:
+    get:
+      operationId: getKnowledgeHubResourceHubPage
+      tags: [public]
+      summary: Read Resource Hub page content
+      responses:
+        "200":
+          description: Public Resource Hub settings and content
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/KnowledgeHubResourceHubPage" }
+  /knowledge-hub/resources:
+    get:
+      operationId: getKnowledgeHubResources
+      tags: [public]
+      summary: Search and browse published resources
+      parameters:
+        - { in: query, name: search, schema: { type: string, maxLength: 200 } }
+        - { in: query, name: resourceType, schema: { $ref: "#/components/schemas/KnowledgeHubResourceType" } }
+        - { in: query, name: category, schema: { type: string, maxLength: 100 } }
+        - { in: query, name: subject, schema: { type: string, maxLength: 100 } }
+        - { in: query, name: exam, schema: { type: string, maxLength: 120 } }
+        - { in: query, name: academicYear, schema: { type: string, maxLength: 40 } }
+        - { in: query, name: sort, schema: { type: string, enum: [recent, oldest, title, displayOrder], default: recent } }
+        - { in: query, name: offset, schema: { type: integer, minimum: 0, default: 0 } }
+        - { in: query, name: limit, schema: { type: integer, minimum: 1, maximum: 30, default: 9 } }
+      responses:
+        "200":
+          description: A page of matching published resources
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/KnowledgeHubResourceList" }
+  /knowledge-hub/resources/assets/{assetId}:
+    get:
+      operationId: getKnowledgeHubResourceAsset
+      tags: [public]
+      summary: Serve a public Resource Hub image
+      parameters:
+        - in: path
+          name: assetId
+          required: true
+          schema: { type: string, pattern: "^[a-f0-9-]{36}$" }
+      responses:
+        "200":
+          description: Public image asset
+          content:
+            image/jpeg: { schema: { type: string, format: binary } }
+            image/png: { schema: { type: string, format: binary } }
+            image/webp: { schema: { type: string, format: binary } }
+  /knowledge-hub/resources/{slug}/pdf:
+    get:
+      operationId: getKnowledgeHubResourcePdf
+      tags: [public]
+      summary: View a published resource PDF inline
+      parameters:
+        - { in: path, name: slug, required: true, schema: { type: string, pattern: "^[a-z0-9]+(?:-[a-z0-9]+)*$" } }
+      responses:
+        "200":
+          description: Published PDF
+          content:
+            application/pdf: { schema: { type: string, format: binary } }
+  /knowledge-hub/resources/{slug}/download:
+    get:
+      operationId: downloadKnowledgeHubResourcePdf
+      tags: [public]
+      summary: Download a published resource PDF
+      parameters:
+        - { in: path, name: slug, required: true, schema: { type: string, pattern: "^[a-z0-9]+(?:-[a-z0-9]+)*$" } }
+      responses:
+        "200":
+          description: Published PDF attachment
+          content:
+            application/pdf: { schema: { type: string, format: binary } }
+  /admin/knowledge-hub/resources:
+    get:
+      operationId: getAdminKnowledgeHubResources
+      tags: [admin]
+      summary: Read Resource Hub settings, categories, and resources
+      security: [{ cookieAuth: [] }]
+      responses:
+        "200":
+          description: Resource Hub admin content
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/AdminKnowledgeHubResources" }
+    post:
+      operationId: createAdminKnowledgeHubResource
+      tags: [admin]
+      summary: Create a resource
+      security: [{ cookieAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/KnowledgeHubResourceInput" }
+      responses:
+        "201":
+          description: Created resource
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/KnowledgeHubResourceRecord" }
+  /admin/knowledge-hub/resources/page:
+    put:
+      operationId: updateAdminKnowledgeHubResourceHubPage
+      tags: [admin]
+      summary: Update Resource Hub hero, library copy, background, and featured resource
+      security: [{ cookieAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/KnowledgeHubResourceHubPageInput" }
+      responses:
+        "200":
+          description: Saved Resource Hub settings
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/KnowledgeHubResourceHubPageInput" }
+  /admin/knowledge-hub/resources/categories:
+    post:
+      operationId: createAdminKnowledgeHubResourceCategory
+      tags: [admin]
+      summary: Create a Resource Hub category
+      security: [{ cookieAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/KnowledgeHubResourceCategoryInput" }
+      responses:
+        "201":
+          description: Created category
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/KnowledgeHubResourceCategory" }
+  /admin/knowledge-hub/resources/categories/{id}:
+    put:
+      operationId: updateAdminKnowledgeHubResourceCategory
+      tags: [admin]
+      summary: Update a Resource Hub category
+      security: [{ cookieAuth: [] }]
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/KnowledgeHubResourceCategoryInput" }
+      responses:
+        "200":
+          description: Updated category
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/KnowledgeHubResourceCategory" }
+    delete:
+      operationId: deleteAdminKnowledgeHubResourceCategory
+      tags: [admin]
+      summary: Delete an unused Resource Hub category
+      security: [{ cookieAuth: [] }]
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string } }
+      responses:
+        "204": { description: Deleted category }
+  /admin/knowledge-hub/resources/{id}:
+    put:
+      operationId: updateAdminKnowledgeHubResource
+      tags: [admin]
+      summary: Update a resource record
+      security: [{ cookieAuth: [] }]
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/KnowledgeHubResourceInput" }
+      responses:
+        "200":
+          description: Updated resource
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/KnowledgeHubResourceRecord" }
+    delete:
+      operationId: deleteAdminKnowledgeHubResource
+      tags: [admin]
+      summary: Delete a Resource Hub resource
+      security: [{ cookieAuth: [] }]
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string } }
+      responses:
+        "204": { description: Deleted resource }
+  /admin/knowledge-hub/resources/upload-url:
+    post:
+      operationId: requestAdminKnowledgeHubResourceUploadUrl
+      tags: [admin]
+      summary: Request a signed upload URL for a resource PDF or cover image
+      security: [{ cookieAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/KnowledgeHubResourceUploadUrlRequest" }
+      responses:
+        "200":
+          description: Signed upload URL
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/KnowledgeHubResourceUploadUrlResponse" }
+  /admin/knowledge-hub/resources/upload-complete:
+    post:
+      operationId: completeAdminKnowledgeHubResourceUpload
+      tags: [admin]
+      summary: Validate an uploaded Resource Hub file
+      security: [{ cookieAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/KnowledgeHubResourceUploadCompleteRequest" }
+      responses:
+        "200":
+          description: Validated uploaded file
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/KnowledgeHubResourceUploadCompleteResponse" }
+  /admin/knowledge-hub/resources/assets/{assetId}:
+    get:
+      operationId: getAdminKnowledgeHubResourceAsset
+      tags: [admin]
+      summary: Preview an uploaded Resource Hub image
+      security: [{ cookieAuth: [] }]
+      parameters:
+        - { in: path, name: assetId, required: true, schema: { type: string, pattern: "^[a-f0-9-]{36}$" } }
+      responses:
+        "200":
+          description: Admin image preview
+          content:
+            image/jpeg: { schema: { type: string, format: binary } }
+            image/png: { schema: { type: string, format: binary } }
+            image/webp: { schema: { type: string, format: binary } }
 components:
   securitySchemes:
     cookieAuth:
@@ -8239,6 +8479,189 @@ components:
           type: array
           items: { $ref: "#/components/schemas/KnowledgeHubArticle" }
       required: [settings, categories, articles]
+    KnowledgeHubResourceType:
+      type: string
+      enum: [notes, previous-year-question-papers, sample-papers, worksheets, revision-guides, other]
+    KnowledgeHubResourceHubPublicSettings:
+      type: object
+      properties:
+        heroEyebrow: { type: string, minLength: 1, maxLength: 120 }
+        heroHeading: { type: string, minLength: 1, maxLength: 160 }
+        heroDescription: { type: string, minLength: 1, maxLength: 700 }
+        heroCtaLabel: { type: string, minLength: 1, maxLength: 80 }
+        heroCtaHref: { type: string, minLength: 1, maxLength: 500 }
+        heroBackgroundImageUrl: { type: ["string", "null"], maxLength: 1000 }
+        heroBackgroundImageAltText: { type: string, maxLength: 240 }
+        featuredEyebrow: { type: string, minLength: 1, maxLength: 120 }
+        libraryEyebrow: { type: string, minLength: 1, maxLength: 120 }
+        libraryHeading: { type: string, minLength: 1, maxLength: 160 }
+        libraryDescription: { type: string, minLength: 1, maxLength: 600 }
+        searchPlaceholder: { type: string, minLength: 1, maxLength: 120 }
+        emptyStateTitle: { type: string, minLength: 1, maxLength: 160 }
+        emptyStateDescription: { type: string, minLength: 1, maxLength: 500 }
+      required: [heroEyebrow, heroHeading, heroDescription, heroCtaLabel, heroCtaHref, heroBackgroundImageUrl, heroBackgroundImageAltText, featuredEyebrow, libraryEyebrow, libraryHeading, libraryDescription, searchPlaceholder, emptyStateTitle, emptyStateDescription]
+    KnowledgeHubResourceHubPageInput:
+      type: object
+      properties:
+        heroEyebrow: { type: string, minLength: 1, maxLength: 120 }
+        heroHeading: { type: string, minLength: 1, maxLength: 160 }
+        heroDescription: { type: string, minLength: 1, maxLength: 700 }
+        heroCtaLabel: { type: string, minLength: 1, maxLength: 80 }
+        heroCtaHref: { type: string, minLength: 1, maxLength: 500 }
+        heroBackgroundImageObjectPath: { type: ["string", "null"], maxLength: 100 }
+        heroBackgroundImageAltText: { type: string, maxLength: 240 }
+        featuredEyebrow: { type: string, minLength: 1, maxLength: 120 }
+        libraryEyebrow: { type: string, minLength: 1, maxLength: 120 }
+        libraryHeading: { type: string, minLength: 1, maxLength: 160 }
+        libraryDescription: { type: string, minLength: 1, maxLength: 600 }
+        searchPlaceholder: { type: string, minLength: 1, maxLength: 120 }
+        emptyStateTitle: { type: string, minLength: 1, maxLength: 160 }
+        emptyStateDescription: { type: string, minLength: 1, maxLength: 500 }
+        featuredResourceId: { type: ["string", "null"], maxLength: 100 }
+      required: [heroEyebrow, heroHeading, heroDescription, heroCtaLabel, heroCtaHref, heroBackgroundImageObjectPath, heroBackgroundImageAltText, featuredEyebrow, libraryEyebrow, libraryHeading, libraryDescription, searchPlaceholder, emptyStateTitle, emptyStateDescription, featuredResourceId]
+    KnowledgeHubResourceCategory:
+      type: object
+      properties:
+        id: { type: string }
+        name: { type: string }
+        slug: { type: string }
+        displayOrder: { type: integer, minimum: 1 }
+        isVisible: { type: boolean }
+        resourceCount: { type: integer, minimum: 0 }
+        publishedResourceCount: { type: integer, minimum: 0 }
+      required: [id, name, slug, displayOrder, isVisible, resourceCount, publishedResourceCount]
+    KnowledgeHubResourceCategoryInput:
+      type: object
+      properties:
+        name: { type: string, minLength: 1, maxLength: 80 }
+        slug: { type: string, minLength: 1, maxLength: 100, pattern: "^[a-z0-9]+(?:-[a-z0-9]+)*$" }
+        displayOrder: { type: integer, minimum: 1, maximum: 500 }
+        isVisible: { type: boolean }
+      required: [name, slug, displayOrder, isVisible]
+    KnowledgeHubResourceSummary:
+      type: object
+      properties:
+        id: { type: string }
+        title: { type: string }
+        slug: { type: string }
+        categoryId: { type: string }
+        categoryName: { type: string }
+        categorySlug: { type: string }
+        description: { type: string }
+        resourceType: { $ref: "#/components/schemas/KnowledgeHubResourceType" }
+        subject: { type: string }
+        exam: { type: string }
+        classLevel: { type: string }
+        academicYear: { type: string }
+        language: { type: string }
+        tags:
+          type: array
+          maxItems: 20
+          items: { type: string, maxLength: 40 }
+        coverImageUrl: { type: ["string", "null"], maxLength: 1000 }
+        coverImageAltText: { type: string }
+        pdfFileName: { type: string }
+        pdfViewUrl: { type: string }
+        pdfDownloadUrl: { type: string }
+        displayOrder: { type: integer, minimum: 1 }
+        publishedAt: { type: ["string", "null"], format: date-time }
+        updatedAt: { type: string, format: date-time }
+      required: [id, title, slug, categoryId, categoryName, categorySlug, description, resourceType, subject, exam, classLevel, academicYear, language, tags, coverImageUrl, coverImageAltText, pdfFileName, pdfViewUrl, pdfDownloadUrl, displayOrder, publishedAt, updatedAt]
+    KnowledgeHubResourceRecord:
+      allOf:
+        - $ref: "#/components/schemas/KnowledgeHubResourceSummary"
+        - type: object
+          properties:
+            pdfObjectPath: { type: string, maxLength: 100 }
+            coverImageObjectPath: { type: ["string", "null"], maxLength: 100 }
+            status: { type: string, enum: [draft, published] }
+            createdAt: { type: string, format: date-time }
+          required: [pdfObjectPath, coverImageObjectPath, status, createdAt]
+    KnowledgeHubResourceInput:
+      type: object
+      properties:
+        title: { type: string, minLength: 1, maxLength: 180 }
+        slug: { type: string, minLength: 1, maxLength: 180, pattern: "^[a-z0-9]+(?:-[a-z0-9]+)*$" }
+        categoryId: { type: string, minLength: 1, maxLength: 100 }
+        description: { type: string, minLength: 1, maxLength: 2000 }
+        resourceType: { $ref: "#/components/schemas/KnowledgeHubResourceType" }
+        subject: { type: string, minLength: 1, maxLength: 100 }
+        exam: { type: string, maxLength: 120 }
+        classLevel: { type: string, minLength: 1, maxLength: 80 }
+        academicYear: { type: string, maxLength: 40 }
+        language: { type: string, minLength: 1, maxLength: 80 }
+        tags:
+          type: array
+          maxItems: 20
+          items: { type: string, minLength: 1, maxLength: 40 }
+        pdfObjectPath: { type: string, minLength: 1, maxLength: 100, pattern: "^/objects/uploads/[a-f0-9-]{36}$" }
+        pdfFileName: { type: string, minLength: 1, maxLength: 240 }
+        coverImageObjectPath: { type: ["string", "null"], maxLength: 100, pattern: "^/objects/uploads/[a-f0-9-]{36}$" }
+        coverImageAltText: { type: string, maxLength: 240 }
+        displayOrder: { type: integer, minimum: 1, maximum: 500 }
+        status: { type: string, enum: [draft, published] }
+      required: [title, slug, categoryId, description, resourceType, subject, exam, classLevel, academicYear, language, tags, pdfObjectPath, pdfFileName, coverImageObjectPath, coverImageAltText, displayOrder, status]
+    KnowledgeHubResourceHubPage:
+      type: object
+      properties:
+        settings: { $ref: "#/components/schemas/KnowledgeHubResourceHubPublicSettings" }
+        featuredResource: { oneOf: [{ $ref: "#/components/schemas/KnowledgeHubResourceSummary" }, { type: "null" }] }
+        publishedResourceCount: { type: integer, minimum: 0 }
+        publishedCategoryCount: { type: integer, minimum: 0 }
+        categories:
+          type: array
+          items: { $ref: "#/components/schemas/KnowledgeHubResourceCategory" }
+      required: [settings, featuredResource, publishedResourceCount, publishedCategoryCount, categories]
+    KnowledgeHubResourceList:
+      type: object
+      properties:
+        items:
+          type: array
+          items: { $ref: "#/components/schemas/KnowledgeHubResourceSummary" }
+        total: { type: integer, minimum: 0 }
+        offset: { type: integer, minimum: 0 }
+        limit: { type: integer, minimum: 1, maximum: 30 }
+        hasMore: { type: boolean }
+      required: [items, total, offset, limit, hasMore]
+    AdminKnowledgeHubResources:
+      type: object
+      properties:
+        settings: { $ref: "#/components/schemas/KnowledgeHubResourceHubPageInput" }
+        categories:
+          type: array
+          items: { $ref: "#/components/schemas/KnowledgeHubResourceCategory" }
+        resources:
+          type: array
+          items: { $ref: "#/components/schemas/KnowledgeHubResourceRecord" }
+      required: [settings, categories, resources]
+    KnowledgeHubResourceUploadUrlRequest:
+      type: object
+      properties:
+        kind: { type: string, enum: [pdf, cover] }
+        fileName: { type: string, minLength: 1, maxLength: 240 }
+        size: { type: integer, minimum: 1, maximum: 20971520 }
+        contentType: { type: string, enum: [application/pdf, image/jpeg, image/png, image/webp] }
+      required: [kind, fileName, size, contentType]
+    KnowledgeHubResourceUploadUrlResponse:
+      type: object
+      properties:
+        kind: { type: string, enum: [pdf, cover] }
+        uploadURL: { type: string, format: uri }
+        objectPath: { type: string, pattern: "^/objects/uploads/[a-f0-9-]{36}$" }
+      required: [kind, uploadURL, objectPath]
+    KnowledgeHubResourceUploadCompleteRequest:
+      type: object
+      properties:
+        kind: { type: string, enum: [pdf, cover] }
+        objectPath: { type: string, pattern: "^/objects/uploads/[a-f0-9-]{36}$" }
+      required: [kind, objectPath]
+    KnowledgeHubResourceUploadCompleteResponse:
+      type: object
+      properties:
+        kind: { type: string, enum: [pdf, cover] }
+        objectPath: { type: string, pattern: "^/objects/uploads/[a-f0-9-]{36}$" }
+        imageUrl: { type: ["string", "null"], maxLength: 1000 }
+      required: [kind, objectPath, imageUrl]
     ImageUploadInput:
       type: object
       properties:

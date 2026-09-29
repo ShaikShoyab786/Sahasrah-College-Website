@@ -892,6 +892,74 @@ model KnowledgeHubVideo {
   @@index([status, displayOrder])
 }
 
+model KnowledgeHubResourceHubSettings {
+  id                            String               @id @default("singleton")
+  heroEyebrow                   String
+  heroHeading                   String
+  heroDescription                String
+  heroCtaLabel                   String
+  heroCtaHref                    String
+  heroBackgroundImageObjectPath String?
+  heroBackgroundImageAltText    String               @default("")
+  featuredEyebrow               String
+  libraryEyebrow                String
+  libraryHeading                String
+  libraryDescription            String
+  searchPlaceholder             String
+  emptyStateTitle               String
+  emptyStateDescription         String
+  featuredResourceId            String?              @unique
+  featuredResource              KnowledgeHubResource? @relation("KnowledgeHubFeaturedResource", fields: [featuredResourceId], references: [id], onDelete: SetNull)
+  createdAt                     DateTime             @default(now())
+  updatedAt                     DateTime             @updatedAt
+}
+
+model KnowledgeHubResourceCategory {
+  id           String                 @id @default(cuid())
+  name         String
+  slug         String                 @unique
+  displayOrder Int                    @default(1)
+  isVisible    Boolean                @default(true)
+  createdAt    DateTime               @default(now())
+  updatedAt    DateTime               @updatedAt
+  resources    KnowledgeHubResource[]
+
+  @@index([isVisible, displayOrder])
+}
+
+model KnowledgeHubResource {
+  id                  String                       @id @default(cuid())
+  title               String
+  slug                String                       @unique
+  categoryId          String
+  category            KnowledgeHubResourceCategory @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  description         String
+  resourceType        String
+  subject             String
+  exam                String
+  classLevel          String
+  academicYear        String
+  language            String
+  tags                String[]                     @default([])
+  pdfObjectPath       String
+  pdfFileName         String
+  coverImageObjectPath String?
+  coverImageAltText   String                       @default("")
+  displayOrder        Int                          @default(1)
+  status              String                       @default("draft")
+  publishedAt         DateTime?
+  featuredOnPage      KnowledgeHubResourceHubSettings? @relation("KnowledgeHubFeaturedResource")
+  createdAt           DateTime                     @default(now())
+  updatedAt           DateTime                     @updatedAt
+
+  @@index([status, publishedAt])
+  @@index([categoryId, status, displayOrder])
+  @@index([resourceType, status])
+  @@index([subject, status])
+  @@index([exam, status])
+  @@index([academicYear, status])
+}
+
 model FacultyImportState {
   id          String   @id @default("singleton")
   completedAt DateTime @default(now())

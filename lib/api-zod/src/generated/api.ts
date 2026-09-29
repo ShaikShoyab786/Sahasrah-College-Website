@@ -7204,3 +7204,821 @@ export const CompleteAdminKnowledgeHubVideoImageUploadResponse = zod.object({
 })
 
 
+/**
+ * @summary Read Resource Hub page content
+ */
+export const getKnowledgeHubResourceHubPageResponseSettingsHeroEyebrowMax = 120;
+
+export const getKnowledgeHubResourceHubPageResponseSettingsHeroHeadingMax = 160;
+
+export const getKnowledgeHubResourceHubPageResponseSettingsHeroDescriptionMax = 700;
+
+export const getKnowledgeHubResourceHubPageResponseSettingsHeroCtaLabelMax = 80;
+
+export const getKnowledgeHubResourceHubPageResponseSettingsHeroCtaHrefMax = 500;
+
+export const getKnowledgeHubResourceHubPageResponseSettingsHeroBackgroundImageUrlMax = 1000;
+
+export const getKnowledgeHubResourceHubPageResponseSettingsHeroBackgroundImageAltTextMax = 240;
+
+export const getKnowledgeHubResourceHubPageResponseSettingsFeaturedEyebrowMax = 120;
+
+export const getKnowledgeHubResourceHubPageResponseSettingsLibraryEyebrowMax = 120;
+
+export const getKnowledgeHubResourceHubPageResponseSettingsLibraryHeadingMax = 160;
+
+export const getKnowledgeHubResourceHubPageResponseSettingsLibraryDescriptionMax = 600;
+
+export const getKnowledgeHubResourceHubPageResponseSettingsSearchPlaceholderMax = 120;
+
+export const getKnowledgeHubResourceHubPageResponseSettingsEmptyStateTitleMax = 160;
+
+export const getKnowledgeHubResourceHubPageResponseSettingsEmptyStateDescriptionMax = 500;
+
+export const getKnowledgeHubResourceHubPageResponseFeaturedResourceOneTagsItemMax = 40;
+
+export const getKnowledgeHubResourceHubPageResponseFeaturedResourceOneTagsMax = 20;
+
+export const getKnowledgeHubResourceHubPageResponseFeaturedResourceOneCoverImageUrlMax = 1000;
+
+
+export const getKnowledgeHubResourceHubPageResponsePublishedResourceCountMin = 0;
+
+export const getKnowledgeHubResourceHubPageResponsePublishedCategoryCountMin = 0;
+
+
+export const getKnowledgeHubResourceHubPageResponseCategoriesItemResourceCountMin = 0;
+
+export const getKnowledgeHubResourceHubPageResponseCategoriesItemPublishedResourceCountMin = 0;
+
+
+
+export const GetKnowledgeHubResourceHubPageResponse = zod.object({
+  "settings": zod.object({
+  "heroEyebrow": zod.string().min(1).max(getKnowledgeHubResourceHubPageResponseSettingsHeroEyebrowMax),
+  "heroHeading": zod.string().min(1).max(getKnowledgeHubResourceHubPageResponseSettingsHeroHeadingMax),
+  "heroDescription": zod.string().min(1).max(getKnowledgeHubResourceHubPageResponseSettingsHeroDescriptionMax),
+  "heroCtaLabel": zod.string().min(1).max(getKnowledgeHubResourceHubPageResponseSettingsHeroCtaLabelMax),
+  "heroCtaHref": zod.string().min(1).max(getKnowledgeHubResourceHubPageResponseSettingsHeroCtaHrefMax),
+  "heroBackgroundImageUrl": zod.string().max(getKnowledgeHubResourceHubPageResponseSettingsHeroBackgroundImageUrlMax).nullable(),
+  "heroBackgroundImageAltText": zod.string().max(getKnowledgeHubResourceHubPageResponseSettingsHeroBackgroundImageAltTextMax),
+  "featuredEyebrow": zod.string().min(1).max(getKnowledgeHubResourceHubPageResponseSettingsFeaturedEyebrowMax),
+  "libraryEyebrow": zod.string().min(1).max(getKnowledgeHubResourceHubPageResponseSettingsLibraryEyebrowMax),
+  "libraryHeading": zod.string().min(1).max(getKnowledgeHubResourceHubPageResponseSettingsLibraryHeadingMax),
+  "libraryDescription": zod.string().min(1).max(getKnowledgeHubResourceHubPageResponseSettingsLibraryDescriptionMax),
+  "searchPlaceholder": zod.string().min(1).max(getKnowledgeHubResourceHubPageResponseSettingsSearchPlaceholderMax),
+  "emptyStateTitle": zod.string().min(1).max(getKnowledgeHubResourceHubPageResponseSettingsEmptyStateTitleMax),
+  "emptyStateDescription": zod.string().min(1).max(getKnowledgeHubResourceHubPageResponseSettingsEmptyStateDescriptionMax)
+}),
+  "featuredResource": zod.union([zod.object({
+  "id": zod.string(),
+  "title": zod.string(),
+  "slug": zod.string(),
+  "categoryId": zod.string(),
+  "categoryName": zod.string(),
+  "categorySlug": zod.string(),
+  "description": zod.string(),
+  "resourceType": zod.enum(['notes', 'previous-year-question-papers', 'sample-papers', 'worksheets', 'revision-guides', 'other']),
+  "subject": zod.string(),
+  "exam": zod.string(),
+  "classLevel": zod.string(),
+  "academicYear": zod.string(),
+  "language": zod.string(),
+  "tags": zod.array(zod.string().max(getKnowledgeHubResourceHubPageResponseFeaturedResourceOneTagsItemMax)).max(getKnowledgeHubResourceHubPageResponseFeaturedResourceOneTagsMax),
+  "coverImageUrl": zod.string().max(getKnowledgeHubResourceHubPageResponseFeaturedResourceOneCoverImageUrlMax).nullable(),
+  "coverImageAltText": zod.string(),
+  "pdfFileName": zod.string(),
+  "pdfViewUrl": zod.string(),
+  "pdfDownloadUrl": zod.string(),
+  "displayOrder": zod.number().int().min(1),
+  "publishedAt": zod.coerce.date().nullable(),
+  "updatedAt": zod.coerce.date()
+}),zod.null()]),
+  "publishedResourceCount": zod.number().int().min(getKnowledgeHubResourceHubPageResponsePublishedResourceCountMin),
+  "publishedCategoryCount": zod.number().int().min(getKnowledgeHubResourceHubPageResponsePublishedCategoryCountMin),
+  "categories": zod.array(zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "slug": zod.string(),
+  "displayOrder": zod.number().int().min(1),
+  "isVisible": zod.boolean(),
+  "resourceCount": zod.number().int().min(getKnowledgeHubResourceHubPageResponseCategoriesItemResourceCountMin),
+  "publishedResourceCount": zod.number().int().min(getKnowledgeHubResourceHubPageResponseCategoriesItemPublishedResourceCountMin)
+}))
+})
+
+
+/**
+ * @summary Search and browse published resources
+ */
+export const getKnowledgeHubResourcesQuerySearchMax = 200;
+
+export const getKnowledgeHubResourcesQueryCategoryMax = 100;
+
+export const getKnowledgeHubResourcesQuerySubjectMax = 100;
+
+export const getKnowledgeHubResourcesQueryExamMax = 120;
+
+export const getKnowledgeHubResourcesQueryAcademicYearMax = 40;
+
+export const getKnowledgeHubResourcesQuerySortDefault = `recent`;
+export const getKnowledgeHubResourcesQueryOffsetDefault = 0;
+export const getKnowledgeHubResourcesQueryOffsetMin = 0;
+
+export const getKnowledgeHubResourcesQueryLimitDefault = 9;
+export const getKnowledgeHubResourcesQueryLimitMax = 30;
+
+
+
+export const GetKnowledgeHubResourcesQueryParams = zod.object({
+  "search": zod.coerce.string().max(getKnowledgeHubResourcesQuerySearchMax).optional(),
+  "resourceType": zod.enum(['notes', 'previous-year-question-papers', 'sample-papers', 'worksheets', 'revision-guides', 'other']).optional(),
+  "category": zod.coerce.string().max(getKnowledgeHubResourcesQueryCategoryMax).optional(),
+  "subject": zod.coerce.string().max(getKnowledgeHubResourcesQuerySubjectMax).optional(),
+  "exam": zod.coerce.string().max(getKnowledgeHubResourcesQueryExamMax).optional(),
+  "academicYear": zod.coerce.string().max(getKnowledgeHubResourcesQueryAcademicYearMax).optional(),
+  "sort": zod.enum(['recent', 'oldest', 'title', 'displayOrder']).default(getKnowledgeHubResourcesQuerySortDefault),
+  "offset": zod.coerce.number().int().min(getKnowledgeHubResourcesQueryOffsetMin).default(getKnowledgeHubResourcesQueryOffsetDefault),
+  "limit": zod.coerce.number().int().min(1).max(getKnowledgeHubResourcesQueryLimitMax).default(getKnowledgeHubResourcesQueryLimitDefault)
+})
+
+export const getKnowledgeHubResourcesResponseItemsItemTagsItemMax = 40;
+
+export const getKnowledgeHubResourcesResponseItemsItemTagsMax = 20;
+
+export const getKnowledgeHubResourcesResponseItemsItemCoverImageUrlMax = 1000;
+
+
+export const getKnowledgeHubResourcesResponseTotalMin = 0;
+
+export const getKnowledgeHubResourcesResponseOffsetMin = 0;
+
+export const getKnowledgeHubResourcesResponseLimitMax = 30;
+
+
+
+export const GetKnowledgeHubResourcesResponse = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string(),
+  "title": zod.string(),
+  "slug": zod.string(),
+  "categoryId": zod.string(),
+  "categoryName": zod.string(),
+  "categorySlug": zod.string(),
+  "description": zod.string(),
+  "resourceType": zod.enum(['notes', 'previous-year-question-papers', 'sample-papers', 'worksheets', 'revision-guides', 'other']),
+  "subject": zod.string(),
+  "exam": zod.string(),
+  "classLevel": zod.string(),
+  "academicYear": zod.string(),
+  "language": zod.string(),
+  "tags": zod.array(zod.string().max(getKnowledgeHubResourcesResponseItemsItemTagsItemMax)).max(getKnowledgeHubResourcesResponseItemsItemTagsMax),
+  "coverImageUrl": zod.string().max(getKnowledgeHubResourcesResponseItemsItemCoverImageUrlMax).nullable(),
+  "coverImageAltText": zod.string(),
+  "pdfFileName": zod.string(),
+  "pdfViewUrl": zod.string(),
+  "pdfDownloadUrl": zod.string(),
+  "displayOrder": zod.number().int().min(1),
+  "publishedAt": zod.coerce.date().nullable(),
+  "updatedAt": zod.coerce.date()
+})),
+  "total": zod.number().int().min(getKnowledgeHubResourcesResponseTotalMin),
+  "offset": zod.number().int().min(getKnowledgeHubResourcesResponseOffsetMin),
+  "limit": zod.number().int().min(1).max(getKnowledgeHubResourcesResponseLimitMax),
+  "hasMore": zod.boolean()
+})
+
+
+/**
+ * @summary Serve a public Resource Hub image
+ */
+export const getKnowledgeHubResourceAssetPathAssetIdRegExp = new RegExp('^[a-f0-9-]{36}$');
+
+
+export const GetKnowledgeHubResourceAssetParams = zod.object({
+  "assetId": zod.coerce.string().regex(getKnowledgeHubResourceAssetPathAssetIdRegExp)
+})
+
+export const GetKnowledgeHubResourceAssetResponse = zod.unknown()
+
+
+/**
+ * @summary View a published resource PDF inline
+ */
+export const getKnowledgeHubResourcePdfPathSlugRegExp = new RegExp('^[a-z0-9]+(?:-[a-z0-9]+)*$');
+
+
+export const GetKnowledgeHubResourcePdfParams = zod.object({
+  "slug": zod.coerce.string().regex(getKnowledgeHubResourcePdfPathSlugRegExp)
+})
+
+export const GetKnowledgeHubResourcePdfResponse = zod.unknown()
+
+
+/**
+ * @summary Download a published resource PDF
+ */
+export const downloadKnowledgeHubResourcePdfPathSlugRegExp = new RegExp('^[a-z0-9]+(?:-[a-z0-9]+)*$');
+
+
+export const DownloadKnowledgeHubResourcePdfParams = zod.object({
+  "slug": zod.coerce.string().regex(downloadKnowledgeHubResourcePdfPathSlugRegExp)
+})
+
+export const DownloadKnowledgeHubResourcePdfResponse = zod.unknown()
+
+
+/**
+ * @summary Read Resource Hub settings, categories, and resources
+ */
+export const getAdminKnowledgeHubResourcesResponseSettingsHeroEyebrowMax = 120;
+
+export const getAdminKnowledgeHubResourcesResponseSettingsHeroHeadingMax = 160;
+
+export const getAdminKnowledgeHubResourcesResponseSettingsHeroDescriptionMax = 700;
+
+export const getAdminKnowledgeHubResourcesResponseSettingsHeroCtaLabelMax = 80;
+
+export const getAdminKnowledgeHubResourcesResponseSettingsHeroCtaHrefMax = 500;
+
+export const getAdminKnowledgeHubResourcesResponseSettingsHeroBackgroundImageObjectPathMax = 100;
+
+export const getAdminKnowledgeHubResourcesResponseSettingsHeroBackgroundImageAltTextMax = 240;
+
+export const getAdminKnowledgeHubResourcesResponseSettingsFeaturedEyebrowMax = 120;
+
+export const getAdminKnowledgeHubResourcesResponseSettingsLibraryEyebrowMax = 120;
+
+export const getAdminKnowledgeHubResourcesResponseSettingsLibraryHeadingMax = 160;
+
+export const getAdminKnowledgeHubResourcesResponseSettingsLibraryDescriptionMax = 600;
+
+export const getAdminKnowledgeHubResourcesResponseSettingsSearchPlaceholderMax = 120;
+
+export const getAdminKnowledgeHubResourcesResponseSettingsEmptyStateTitleMax = 160;
+
+export const getAdminKnowledgeHubResourcesResponseSettingsEmptyStateDescriptionMax = 500;
+
+export const getAdminKnowledgeHubResourcesResponseSettingsFeaturedResourceIdMax = 100;
+
+
+export const getAdminKnowledgeHubResourcesResponseCategoriesItemResourceCountMin = 0;
+
+export const getAdminKnowledgeHubResourcesResponseCategoriesItemPublishedResourceCountMin = 0;
+
+export const getAdminKnowledgeHubResourcesResponseResourcesItemOneTagsItemMax = 40;
+
+export const getAdminKnowledgeHubResourcesResponseResourcesItemOneTagsMax = 20;
+
+export const getAdminKnowledgeHubResourcesResponseResourcesItemOneCoverImageUrlMax = 1000;
+
+
+export const getAdminKnowledgeHubResourcesResponseResourcesItemTwoPdfObjectPathMax = 100;
+
+export const getAdminKnowledgeHubResourcesResponseResourcesItemTwoCoverImageObjectPathMax = 100;
+
+
+
+export const GetAdminKnowledgeHubResourcesResponse = zod.object({
+  "settings": zod.object({
+  "heroEyebrow": zod.string().min(1).max(getAdminKnowledgeHubResourcesResponseSettingsHeroEyebrowMax),
+  "heroHeading": zod.string().min(1).max(getAdminKnowledgeHubResourcesResponseSettingsHeroHeadingMax),
+  "heroDescription": zod.string().min(1).max(getAdminKnowledgeHubResourcesResponseSettingsHeroDescriptionMax),
+  "heroCtaLabel": zod.string().min(1).max(getAdminKnowledgeHubResourcesResponseSettingsHeroCtaLabelMax),
+  "heroCtaHref": zod.string().min(1).max(getAdminKnowledgeHubResourcesResponseSettingsHeroCtaHrefMax),
+  "heroBackgroundImageObjectPath": zod.string().max(getAdminKnowledgeHubResourcesResponseSettingsHeroBackgroundImageObjectPathMax).nullable(),
+  "heroBackgroundImageAltText": zod.string().max(getAdminKnowledgeHubResourcesResponseSettingsHeroBackgroundImageAltTextMax),
+  "featuredEyebrow": zod.string().min(1).max(getAdminKnowledgeHubResourcesResponseSettingsFeaturedEyebrowMax),
+  "libraryEyebrow": zod.string().min(1).max(getAdminKnowledgeHubResourcesResponseSettingsLibraryEyebrowMax),
+  "libraryHeading": zod.string().min(1).max(getAdminKnowledgeHubResourcesResponseSettingsLibraryHeadingMax),
+  "libraryDescription": zod.string().min(1).max(getAdminKnowledgeHubResourcesResponseSettingsLibraryDescriptionMax),
+  "searchPlaceholder": zod.string().min(1).max(getAdminKnowledgeHubResourcesResponseSettingsSearchPlaceholderMax),
+  "emptyStateTitle": zod.string().min(1).max(getAdminKnowledgeHubResourcesResponseSettingsEmptyStateTitleMax),
+  "emptyStateDescription": zod.string().min(1).max(getAdminKnowledgeHubResourcesResponseSettingsEmptyStateDescriptionMax),
+  "featuredResourceId": zod.string().max(getAdminKnowledgeHubResourcesResponseSettingsFeaturedResourceIdMax).nullable()
+}),
+  "categories": zod.array(zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "slug": zod.string(),
+  "displayOrder": zod.number().int().min(1),
+  "isVisible": zod.boolean(),
+  "resourceCount": zod.number().int().min(getAdminKnowledgeHubResourcesResponseCategoriesItemResourceCountMin),
+  "publishedResourceCount": zod.number().int().min(getAdminKnowledgeHubResourcesResponseCategoriesItemPublishedResourceCountMin)
+})),
+  "resources": zod.array(zod.object({
+  "id": zod.string(),
+  "title": zod.string(),
+  "slug": zod.string(),
+  "categoryId": zod.string(),
+  "categoryName": zod.string(),
+  "categorySlug": zod.string(),
+  "description": zod.string(),
+  "resourceType": zod.enum(['notes', 'previous-year-question-papers', 'sample-papers', 'worksheets', 'revision-guides', 'other']),
+  "subject": zod.string(),
+  "exam": zod.string(),
+  "classLevel": zod.string(),
+  "academicYear": zod.string(),
+  "language": zod.string(),
+  "tags": zod.array(zod.string().max(getAdminKnowledgeHubResourcesResponseResourcesItemOneTagsItemMax)).max(getAdminKnowledgeHubResourcesResponseResourcesItemOneTagsMax),
+  "coverImageUrl": zod.string().max(getAdminKnowledgeHubResourcesResponseResourcesItemOneCoverImageUrlMax).nullable(),
+  "coverImageAltText": zod.string(),
+  "pdfFileName": zod.string(),
+  "pdfViewUrl": zod.string(),
+  "pdfDownloadUrl": zod.string(),
+  "displayOrder": zod.number().int().min(1),
+  "publishedAt": zod.coerce.date().nullable(),
+  "updatedAt": zod.coerce.date()
+}).and(zod.object({
+  "pdfObjectPath": zod.string().max(getAdminKnowledgeHubResourcesResponseResourcesItemTwoPdfObjectPathMax),
+  "coverImageObjectPath": zod.string().max(getAdminKnowledgeHubResourcesResponseResourcesItemTwoCoverImageObjectPathMax).nullable(),
+  "status": zod.enum(['draft', 'published']),
+  "createdAt": zod.coerce.date()
+})))
+})
+
+
+/**
+ * @summary Create a resource
+ */
+export const createAdminKnowledgeHubResourceBodyTitleMax = 180;
+
+export const createAdminKnowledgeHubResourceBodySlugMax = 180;
+
+
+export const createAdminKnowledgeHubResourceBodySlugRegExp = new RegExp('^[a-z0-9]+(?:-[a-z0-9]+)*$');
+export const createAdminKnowledgeHubResourceBodyCategoryIdMax = 100;
+
+export const createAdminKnowledgeHubResourceBodyDescriptionMax = 2000;
+
+export const createAdminKnowledgeHubResourceBodySubjectMax = 100;
+
+export const createAdminKnowledgeHubResourceBodyExamMax = 120;
+
+export const createAdminKnowledgeHubResourceBodyClassLevelMax = 80;
+
+export const createAdminKnowledgeHubResourceBodyAcademicYearMax = 40;
+
+export const createAdminKnowledgeHubResourceBodyLanguageMax = 80;
+
+export const createAdminKnowledgeHubResourceBodyTagsItemMax = 40;
+
+export const createAdminKnowledgeHubResourceBodyTagsMax = 20;
+
+export const createAdminKnowledgeHubResourceBodyPdfObjectPathMax = 100;
+
+
+export const createAdminKnowledgeHubResourceBodyPdfObjectPathRegExp = new RegExp('^/objects/uploads/[a-f0-9-]{36}$');
+export const createAdminKnowledgeHubResourceBodyPdfFileNameMax = 240;
+
+export const createAdminKnowledgeHubResourceBodyCoverImageObjectPathMax = 100;
+
+
+export const createAdminKnowledgeHubResourceBodyCoverImageObjectPathRegExp = new RegExp('^/objects/uploads/[a-f0-9-]{36}$');
+export const createAdminKnowledgeHubResourceBodyCoverImageAltTextMax = 240;
+
+export const createAdminKnowledgeHubResourceBodyDisplayOrderMax = 500;
+
+
+
+export const CreateAdminKnowledgeHubResourceBody = zod.object({
+  "title": zod.string().min(1).max(createAdminKnowledgeHubResourceBodyTitleMax),
+  "slug": zod.string().min(1).max(createAdminKnowledgeHubResourceBodySlugMax).regex(createAdminKnowledgeHubResourceBodySlugRegExp),
+  "categoryId": zod.string().min(1).max(createAdminKnowledgeHubResourceBodyCategoryIdMax),
+  "description": zod.string().min(1).max(createAdminKnowledgeHubResourceBodyDescriptionMax),
+  "resourceType": zod.enum(['notes', 'previous-year-question-papers', 'sample-papers', 'worksheets', 'revision-guides', 'other']),
+  "subject": zod.string().min(1).max(createAdminKnowledgeHubResourceBodySubjectMax),
+  "exam": zod.string().max(createAdminKnowledgeHubResourceBodyExamMax),
+  "classLevel": zod.string().min(1).max(createAdminKnowledgeHubResourceBodyClassLevelMax),
+  "academicYear": zod.string().max(createAdminKnowledgeHubResourceBodyAcademicYearMax),
+  "language": zod.string().min(1).max(createAdminKnowledgeHubResourceBodyLanguageMax),
+  "tags": zod.array(zod.string().min(1).max(createAdminKnowledgeHubResourceBodyTagsItemMax)).max(createAdminKnowledgeHubResourceBodyTagsMax),
+  "pdfObjectPath": zod.string().min(1).max(createAdminKnowledgeHubResourceBodyPdfObjectPathMax).regex(createAdminKnowledgeHubResourceBodyPdfObjectPathRegExp),
+  "pdfFileName": zod.string().min(1).max(createAdminKnowledgeHubResourceBodyPdfFileNameMax),
+  "coverImageObjectPath": zod.string().max(createAdminKnowledgeHubResourceBodyCoverImageObjectPathMax).regex(createAdminKnowledgeHubResourceBodyCoverImageObjectPathRegExp).nullable(),
+  "coverImageAltText": zod.string().max(createAdminKnowledgeHubResourceBodyCoverImageAltTextMax),
+  "displayOrder": zod.number().int().min(1).max(createAdminKnowledgeHubResourceBodyDisplayOrderMax),
+  "status": zod.enum(['draft', 'published'])
+})
+
+export const createAdminKnowledgeHubResourceResponseOneTagsItemMax = 40;
+
+export const createAdminKnowledgeHubResourceResponseOneTagsMax = 20;
+
+export const createAdminKnowledgeHubResourceResponseOneCoverImageUrlMax = 1000;
+
+
+export const createAdminKnowledgeHubResourceResponseTwoPdfObjectPathMax = 100;
+
+export const createAdminKnowledgeHubResourceResponseTwoCoverImageObjectPathMax = 100;
+
+
+
+export const CreateAdminKnowledgeHubResourceResponse = zod.object({
+  "id": zod.string(),
+  "title": zod.string(),
+  "slug": zod.string(),
+  "categoryId": zod.string(),
+  "categoryName": zod.string(),
+  "categorySlug": zod.string(),
+  "description": zod.string(),
+  "resourceType": zod.enum(['notes', 'previous-year-question-papers', 'sample-papers', 'worksheets', 'revision-guides', 'other']),
+  "subject": zod.string(),
+  "exam": zod.string(),
+  "classLevel": zod.string(),
+  "academicYear": zod.string(),
+  "language": zod.string(),
+  "tags": zod.array(zod.string().max(createAdminKnowledgeHubResourceResponseOneTagsItemMax)).max(createAdminKnowledgeHubResourceResponseOneTagsMax),
+  "coverImageUrl": zod.string().max(createAdminKnowledgeHubResourceResponseOneCoverImageUrlMax).nullable(),
+  "coverImageAltText": zod.string(),
+  "pdfFileName": zod.string(),
+  "pdfViewUrl": zod.string(),
+  "pdfDownloadUrl": zod.string(),
+  "displayOrder": zod.number().int().min(1),
+  "publishedAt": zod.coerce.date().nullable(),
+  "updatedAt": zod.coerce.date()
+}).and(zod.object({
+  "pdfObjectPath": zod.string().max(createAdminKnowledgeHubResourceResponseTwoPdfObjectPathMax),
+  "coverImageObjectPath": zod.string().max(createAdminKnowledgeHubResourceResponseTwoCoverImageObjectPathMax).nullable(),
+  "status": zod.enum(['draft', 'published']),
+  "createdAt": zod.coerce.date()
+}))
+
+
+/**
+ * @summary Update Resource Hub hero, library copy, background, and featured resource
+ */
+export const updateAdminKnowledgeHubResourceHubPageBodyHeroEyebrowMax = 120;
+
+export const updateAdminKnowledgeHubResourceHubPageBodyHeroHeadingMax = 160;
+
+export const updateAdminKnowledgeHubResourceHubPageBodyHeroDescriptionMax = 700;
+
+export const updateAdminKnowledgeHubResourceHubPageBodyHeroCtaLabelMax = 80;
+
+export const updateAdminKnowledgeHubResourceHubPageBodyHeroCtaHrefMax = 500;
+
+export const updateAdminKnowledgeHubResourceHubPageBodyHeroBackgroundImageObjectPathMax = 100;
+
+export const updateAdminKnowledgeHubResourceHubPageBodyHeroBackgroundImageAltTextMax = 240;
+
+export const updateAdminKnowledgeHubResourceHubPageBodyFeaturedEyebrowMax = 120;
+
+export const updateAdminKnowledgeHubResourceHubPageBodyLibraryEyebrowMax = 120;
+
+export const updateAdminKnowledgeHubResourceHubPageBodyLibraryHeadingMax = 160;
+
+export const updateAdminKnowledgeHubResourceHubPageBodyLibraryDescriptionMax = 600;
+
+export const updateAdminKnowledgeHubResourceHubPageBodySearchPlaceholderMax = 120;
+
+export const updateAdminKnowledgeHubResourceHubPageBodyEmptyStateTitleMax = 160;
+
+export const updateAdminKnowledgeHubResourceHubPageBodyEmptyStateDescriptionMax = 500;
+
+export const updateAdminKnowledgeHubResourceHubPageBodyFeaturedResourceIdMax = 100;
+
+
+
+export const UpdateAdminKnowledgeHubResourceHubPageBody = zod.object({
+  "heroEyebrow": zod.string().min(1).max(updateAdminKnowledgeHubResourceHubPageBodyHeroEyebrowMax),
+  "heroHeading": zod.string().min(1).max(updateAdminKnowledgeHubResourceHubPageBodyHeroHeadingMax),
+  "heroDescription": zod.string().min(1).max(updateAdminKnowledgeHubResourceHubPageBodyHeroDescriptionMax),
+  "heroCtaLabel": zod.string().min(1).max(updateAdminKnowledgeHubResourceHubPageBodyHeroCtaLabelMax),
+  "heroCtaHref": zod.string().min(1).max(updateAdminKnowledgeHubResourceHubPageBodyHeroCtaHrefMax),
+  "heroBackgroundImageObjectPath": zod.string().max(updateAdminKnowledgeHubResourceHubPageBodyHeroBackgroundImageObjectPathMax).nullable(),
+  "heroBackgroundImageAltText": zod.string().max(updateAdminKnowledgeHubResourceHubPageBodyHeroBackgroundImageAltTextMax),
+  "featuredEyebrow": zod.string().min(1).max(updateAdminKnowledgeHubResourceHubPageBodyFeaturedEyebrowMax),
+  "libraryEyebrow": zod.string().min(1).max(updateAdminKnowledgeHubResourceHubPageBodyLibraryEyebrowMax),
+  "libraryHeading": zod.string().min(1).max(updateAdminKnowledgeHubResourceHubPageBodyLibraryHeadingMax),
+  "libraryDescription": zod.string().min(1).max(updateAdminKnowledgeHubResourceHubPageBodyLibraryDescriptionMax),
+  "searchPlaceholder": zod.string().min(1).max(updateAdminKnowledgeHubResourceHubPageBodySearchPlaceholderMax),
+  "emptyStateTitle": zod.string().min(1).max(updateAdminKnowledgeHubResourceHubPageBodyEmptyStateTitleMax),
+  "emptyStateDescription": zod.string().min(1).max(updateAdminKnowledgeHubResourceHubPageBodyEmptyStateDescriptionMax),
+  "featuredResourceId": zod.string().max(updateAdminKnowledgeHubResourceHubPageBodyFeaturedResourceIdMax).nullable()
+})
+
+export const updateAdminKnowledgeHubResourceHubPageResponseHeroEyebrowMax = 120;
+
+export const updateAdminKnowledgeHubResourceHubPageResponseHeroHeadingMax = 160;
+
+export const updateAdminKnowledgeHubResourceHubPageResponseHeroDescriptionMax = 700;
+
+export const updateAdminKnowledgeHubResourceHubPageResponseHeroCtaLabelMax = 80;
+
+export const updateAdminKnowledgeHubResourceHubPageResponseHeroCtaHrefMax = 500;
+
+export const updateAdminKnowledgeHubResourceHubPageResponseHeroBackgroundImageObjectPathMax = 100;
+
+export const updateAdminKnowledgeHubResourceHubPageResponseHeroBackgroundImageAltTextMax = 240;
+
+export const updateAdminKnowledgeHubResourceHubPageResponseFeaturedEyebrowMax = 120;
+
+export const updateAdminKnowledgeHubResourceHubPageResponseLibraryEyebrowMax = 120;
+
+export const updateAdminKnowledgeHubResourceHubPageResponseLibraryHeadingMax = 160;
+
+export const updateAdminKnowledgeHubResourceHubPageResponseLibraryDescriptionMax = 600;
+
+export const updateAdminKnowledgeHubResourceHubPageResponseSearchPlaceholderMax = 120;
+
+export const updateAdminKnowledgeHubResourceHubPageResponseEmptyStateTitleMax = 160;
+
+export const updateAdminKnowledgeHubResourceHubPageResponseEmptyStateDescriptionMax = 500;
+
+export const updateAdminKnowledgeHubResourceHubPageResponseFeaturedResourceIdMax = 100;
+
+
+
+export const UpdateAdminKnowledgeHubResourceHubPageResponse = zod.object({
+  "heroEyebrow": zod.string().min(1).max(updateAdminKnowledgeHubResourceHubPageResponseHeroEyebrowMax),
+  "heroHeading": zod.string().min(1).max(updateAdminKnowledgeHubResourceHubPageResponseHeroHeadingMax),
+  "heroDescription": zod.string().min(1).max(updateAdminKnowledgeHubResourceHubPageResponseHeroDescriptionMax),
+  "heroCtaLabel": zod.string().min(1).max(updateAdminKnowledgeHubResourceHubPageResponseHeroCtaLabelMax),
+  "heroCtaHref": zod.string().min(1).max(updateAdminKnowledgeHubResourceHubPageResponseHeroCtaHrefMax),
+  "heroBackgroundImageObjectPath": zod.string().max(updateAdminKnowledgeHubResourceHubPageResponseHeroBackgroundImageObjectPathMax).nullable(),
+  "heroBackgroundImageAltText": zod.string().max(updateAdminKnowledgeHubResourceHubPageResponseHeroBackgroundImageAltTextMax),
+  "featuredEyebrow": zod.string().min(1).max(updateAdminKnowledgeHubResourceHubPageResponseFeaturedEyebrowMax),
+  "libraryEyebrow": zod.string().min(1).max(updateAdminKnowledgeHubResourceHubPageResponseLibraryEyebrowMax),
+  "libraryHeading": zod.string().min(1).max(updateAdminKnowledgeHubResourceHubPageResponseLibraryHeadingMax),
+  "libraryDescription": zod.string().min(1).max(updateAdminKnowledgeHubResourceHubPageResponseLibraryDescriptionMax),
+  "searchPlaceholder": zod.string().min(1).max(updateAdminKnowledgeHubResourceHubPageResponseSearchPlaceholderMax),
+  "emptyStateTitle": zod.string().min(1).max(updateAdminKnowledgeHubResourceHubPageResponseEmptyStateTitleMax),
+  "emptyStateDescription": zod.string().min(1).max(updateAdminKnowledgeHubResourceHubPageResponseEmptyStateDescriptionMax),
+  "featuredResourceId": zod.string().max(updateAdminKnowledgeHubResourceHubPageResponseFeaturedResourceIdMax).nullable()
+})
+
+
+/**
+ * @summary Create a Resource Hub category
+ */
+export const createAdminKnowledgeHubResourceCategoryBodyNameMax = 80;
+
+export const createAdminKnowledgeHubResourceCategoryBodySlugMax = 100;
+
+
+export const createAdminKnowledgeHubResourceCategoryBodySlugRegExp = new RegExp('^[a-z0-9]+(?:-[a-z0-9]+)*$');
+export const createAdminKnowledgeHubResourceCategoryBodyDisplayOrderMax = 500;
+
+
+
+export const CreateAdminKnowledgeHubResourceCategoryBody = zod.object({
+  "name": zod.string().min(1).max(createAdminKnowledgeHubResourceCategoryBodyNameMax),
+  "slug": zod.string().min(1).max(createAdminKnowledgeHubResourceCategoryBodySlugMax).regex(createAdminKnowledgeHubResourceCategoryBodySlugRegExp),
+  "displayOrder": zod.number().int().min(1).max(createAdminKnowledgeHubResourceCategoryBodyDisplayOrderMax),
+  "isVisible": zod.boolean()
+})
+
+
+export const createAdminKnowledgeHubResourceCategoryResponseResourceCountMin = 0;
+
+export const createAdminKnowledgeHubResourceCategoryResponsePublishedResourceCountMin = 0;
+
+
+
+export const CreateAdminKnowledgeHubResourceCategoryResponse = zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "slug": zod.string(),
+  "displayOrder": zod.number().int().min(1),
+  "isVisible": zod.boolean(),
+  "resourceCount": zod.number().int().min(createAdminKnowledgeHubResourceCategoryResponseResourceCountMin),
+  "publishedResourceCount": zod.number().int().min(createAdminKnowledgeHubResourceCategoryResponsePublishedResourceCountMin)
+})
+
+
+/**
+ * @summary Update a Resource Hub category
+ */
+export const UpdateAdminKnowledgeHubResourceCategoryParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const updateAdminKnowledgeHubResourceCategoryBodyNameMax = 80;
+
+export const updateAdminKnowledgeHubResourceCategoryBodySlugMax = 100;
+
+
+export const updateAdminKnowledgeHubResourceCategoryBodySlugRegExp = new RegExp('^[a-z0-9]+(?:-[a-z0-9]+)*$');
+export const updateAdminKnowledgeHubResourceCategoryBodyDisplayOrderMax = 500;
+
+
+
+export const UpdateAdminKnowledgeHubResourceCategoryBody = zod.object({
+  "name": zod.string().min(1).max(updateAdminKnowledgeHubResourceCategoryBodyNameMax),
+  "slug": zod.string().min(1).max(updateAdminKnowledgeHubResourceCategoryBodySlugMax).regex(updateAdminKnowledgeHubResourceCategoryBodySlugRegExp),
+  "displayOrder": zod.number().int().min(1).max(updateAdminKnowledgeHubResourceCategoryBodyDisplayOrderMax),
+  "isVisible": zod.boolean()
+})
+
+
+export const updateAdminKnowledgeHubResourceCategoryResponseResourceCountMin = 0;
+
+export const updateAdminKnowledgeHubResourceCategoryResponsePublishedResourceCountMin = 0;
+
+
+
+export const UpdateAdminKnowledgeHubResourceCategoryResponse = zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "slug": zod.string(),
+  "displayOrder": zod.number().int().min(1),
+  "isVisible": zod.boolean(),
+  "resourceCount": zod.number().int().min(updateAdminKnowledgeHubResourceCategoryResponseResourceCountMin),
+  "publishedResourceCount": zod.number().int().min(updateAdminKnowledgeHubResourceCategoryResponsePublishedResourceCountMin)
+})
+
+
+/**
+ * @summary Delete an unused Resource Hub category
+ */
+export const DeleteAdminKnowledgeHubResourceCategoryParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const DeleteAdminKnowledgeHubResourceCategoryResponse = zod.void()
+
+
+/**
+ * @summary Update a resource record
+ */
+export const UpdateAdminKnowledgeHubResourceParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const updateAdminKnowledgeHubResourceBodyTitleMax = 180;
+
+export const updateAdminKnowledgeHubResourceBodySlugMax = 180;
+
+
+export const updateAdminKnowledgeHubResourceBodySlugRegExp = new RegExp('^[a-z0-9]+(?:-[a-z0-9]+)*$');
+export const updateAdminKnowledgeHubResourceBodyCategoryIdMax = 100;
+
+export const updateAdminKnowledgeHubResourceBodyDescriptionMax = 2000;
+
+export const updateAdminKnowledgeHubResourceBodySubjectMax = 100;
+
+export const updateAdminKnowledgeHubResourceBodyExamMax = 120;
+
+export const updateAdminKnowledgeHubResourceBodyClassLevelMax = 80;
+
+export const updateAdminKnowledgeHubResourceBodyAcademicYearMax = 40;
+
+export const updateAdminKnowledgeHubResourceBodyLanguageMax = 80;
+
+export const updateAdminKnowledgeHubResourceBodyTagsItemMax = 40;
+
+export const updateAdminKnowledgeHubResourceBodyTagsMax = 20;
+
+export const updateAdminKnowledgeHubResourceBodyPdfObjectPathMax = 100;
+
+
+export const updateAdminKnowledgeHubResourceBodyPdfObjectPathRegExp = new RegExp('^/objects/uploads/[a-f0-9-]{36}$');
+export const updateAdminKnowledgeHubResourceBodyPdfFileNameMax = 240;
+
+export const updateAdminKnowledgeHubResourceBodyCoverImageObjectPathMax = 100;
+
+
+export const updateAdminKnowledgeHubResourceBodyCoverImageObjectPathRegExp = new RegExp('^/objects/uploads/[a-f0-9-]{36}$');
+export const updateAdminKnowledgeHubResourceBodyCoverImageAltTextMax = 240;
+
+export const updateAdminKnowledgeHubResourceBodyDisplayOrderMax = 500;
+
+
+
+export const UpdateAdminKnowledgeHubResourceBody = zod.object({
+  "title": zod.string().min(1).max(updateAdminKnowledgeHubResourceBodyTitleMax),
+  "slug": zod.string().min(1).max(updateAdminKnowledgeHubResourceBodySlugMax).regex(updateAdminKnowledgeHubResourceBodySlugRegExp),
+  "categoryId": zod.string().min(1).max(updateAdminKnowledgeHubResourceBodyCategoryIdMax),
+  "description": zod.string().min(1).max(updateAdminKnowledgeHubResourceBodyDescriptionMax),
+  "resourceType": zod.enum(['notes', 'previous-year-question-papers', 'sample-papers', 'worksheets', 'revision-guides', 'other']),
+  "subject": zod.string().min(1).max(updateAdminKnowledgeHubResourceBodySubjectMax),
+  "exam": zod.string().max(updateAdminKnowledgeHubResourceBodyExamMax),
+  "classLevel": zod.string().min(1).max(updateAdminKnowledgeHubResourceBodyClassLevelMax),
+  "academicYear": zod.string().max(updateAdminKnowledgeHubResourceBodyAcademicYearMax),
+  "language": zod.string().min(1).max(updateAdminKnowledgeHubResourceBodyLanguageMax),
+  "tags": zod.array(zod.string().min(1).max(updateAdminKnowledgeHubResourceBodyTagsItemMax)).max(updateAdminKnowledgeHubResourceBodyTagsMax),
+  "pdfObjectPath": zod.string().min(1).max(updateAdminKnowledgeHubResourceBodyPdfObjectPathMax).regex(updateAdminKnowledgeHubResourceBodyPdfObjectPathRegExp),
+  "pdfFileName": zod.string().min(1).max(updateAdminKnowledgeHubResourceBodyPdfFileNameMax),
+  "coverImageObjectPath": zod.string().max(updateAdminKnowledgeHubResourceBodyCoverImageObjectPathMax).regex(updateAdminKnowledgeHubResourceBodyCoverImageObjectPathRegExp).nullable(),
+  "coverImageAltText": zod.string().max(updateAdminKnowledgeHubResourceBodyCoverImageAltTextMax),
+  "displayOrder": zod.number().int().min(1).max(updateAdminKnowledgeHubResourceBodyDisplayOrderMax),
+  "status": zod.enum(['draft', 'published'])
+})
+
+export const updateAdminKnowledgeHubResourceResponseOneTagsItemMax = 40;
+
+export const updateAdminKnowledgeHubResourceResponseOneTagsMax = 20;
+
+export const updateAdminKnowledgeHubResourceResponseOneCoverImageUrlMax = 1000;
+
+
+export const updateAdminKnowledgeHubResourceResponseTwoPdfObjectPathMax = 100;
+
+export const updateAdminKnowledgeHubResourceResponseTwoCoverImageObjectPathMax = 100;
+
+
+
+export const UpdateAdminKnowledgeHubResourceResponse = zod.object({
+  "id": zod.string(),
+  "title": zod.string(),
+  "slug": zod.string(),
+  "categoryId": zod.string(),
+  "categoryName": zod.string(),
+  "categorySlug": zod.string(),
+  "description": zod.string(),
+  "resourceType": zod.enum(['notes', 'previous-year-question-papers', 'sample-papers', 'worksheets', 'revision-guides', 'other']),
+  "subject": zod.string(),
+  "exam": zod.string(),
+  "classLevel": zod.string(),
+  "academicYear": zod.string(),
+  "language": zod.string(),
+  "tags": zod.array(zod.string().max(updateAdminKnowledgeHubResourceResponseOneTagsItemMax)).max(updateAdminKnowledgeHubResourceResponseOneTagsMax),
+  "coverImageUrl": zod.string().max(updateAdminKnowledgeHubResourceResponseOneCoverImageUrlMax).nullable(),
+  "coverImageAltText": zod.string(),
+  "pdfFileName": zod.string(),
+  "pdfViewUrl": zod.string(),
+  "pdfDownloadUrl": zod.string(),
+  "displayOrder": zod.number().int().min(1),
+  "publishedAt": zod.coerce.date().nullable(),
+  "updatedAt": zod.coerce.date()
+}).and(zod.object({
+  "pdfObjectPath": zod.string().max(updateAdminKnowledgeHubResourceResponseTwoPdfObjectPathMax),
+  "coverImageObjectPath": zod.string().max(updateAdminKnowledgeHubResourceResponseTwoCoverImageObjectPathMax).nullable(),
+  "status": zod.enum(['draft', 'published']),
+  "createdAt": zod.coerce.date()
+}))
+
+
+/**
+ * @summary Delete a Resource Hub resource
+ */
+export const DeleteAdminKnowledgeHubResourceParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const DeleteAdminKnowledgeHubResourceResponse = zod.void()
+
+
+/**
+ * @summary Request a signed upload URL for a resource PDF or cover image
+ */
+export const requestAdminKnowledgeHubResourceUploadUrlBodyFileNameMax = 240;
+
+export const requestAdminKnowledgeHubResourceUploadUrlBodySizeMax = 20971520;
+
+
+
+export const RequestAdminKnowledgeHubResourceUploadUrlBody = zod.object({
+  "kind": zod.enum(['pdf', 'cover']),
+  "fileName": zod.string().min(1).max(requestAdminKnowledgeHubResourceUploadUrlBodyFileNameMax),
+  "size": zod.number().int().min(1).max(requestAdminKnowledgeHubResourceUploadUrlBodySizeMax),
+  "contentType": zod.enum(['application/pdf', 'image/jpeg', 'image/png', 'image/webp'])
+})
+
+export const requestAdminKnowledgeHubResourceUploadUrlResponseObjectPathRegExp = new RegExp('^/objects/uploads/[a-f0-9-]{36}$');
+
+
+export const RequestAdminKnowledgeHubResourceUploadUrlResponse = zod.object({
+  "kind": zod.enum(['pdf', 'cover']),
+  "uploadURL": zod.string().url(),
+  "objectPath": zod.string().regex(requestAdminKnowledgeHubResourceUploadUrlResponseObjectPathRegExp)
+})
+
+
+/**
+ * @summary Validate an uploaded Resource Hub file
+ */
+export const completeAdminKnowledgeHubResourceUploadBodyObjectPathRegExp = new RegExp('^/objects/uploads/[a-f0-9-]{36}$');
+
+
+export const CompleteAdminKnowledgeHubResourceUploadBody = zod.object({
+  "kind": zod.enum(['pdf', 'cover']),
+  "objectPath": zod.string().regex(completeAdminKnowledgeHubResourceUploadBodyObjectPathRegExp)
+})
+
+export const completeAdminKnowledgeHubResourceUploadResponseObjectPathRegExp = new RegExp('^/objects/uploads/[a-f0-9-]{36}$');
+export const completeAdminKnowledgeHubResourceUploadResponseImageUrlMax = 1000;
+
+
+
+export const CompleteAdminKnowledgeHubResourceUploadResponse = zod.object({
+  "kind": zod.enum(['pdf', 'cover']),
+  "objectPath": zod.string().regex(completeAdminKnowledgeHubResourceUploadResponseObjectPathRegExp),
+  "imageUrl": zod.string().max(completeAdminKnowledgeHubResourceUploadResponseImageUrlMax).nullable()
+})
+
+
+/**
+ * @summary Preview an uploaded Resource Hub image
+ */
+export const getAdminKnowledgeHubResourceAssetPathAssetIdRegExp = new RegExp('^[a-f0-9-]{36}$');
+
+
+export const GetAdminKnowledgeHubResourceAssetParams = zod.object({
+  "assetId": zod.coerce.string().regex(getAdminKnowledgeHubResourceAssetPathAssetIdRegExp)
+})
+
+export const GetAdminKnowledgeHubResourceAssetResponse = zod.unknown()
+
+
