@@ -5512,6 +5512,67 @@ components:
           type: boolean
       required: [id, title, href, displayOrder, isVisible]
 
+    KnowledgeHubMainPageSection:
+      type: object
+      properties:
+        category:
+          type: string
+          enum: [articles, video-hub, study-resources, exam-updates]
+        eyebrow:
+          type: string
+          minLength: 1
+          maxLength: 100
+        title:
+          type: string
+          minLength: 1
+          maxLength: 180
+        description:
+          type: string
+          minLength: 1
+          maxLength: 360
+        statusText:
+          type: string
+          minLength: 1
+          maxLength: 240
+        badgeLabel:
+          type: ["string", "null"]
+          maxLength: 100
+        ctaLabel:
+          type: ["string", "null"]
+          maxLength: 100
+      required: [category, eyebrow, title, description, statusText, badgeLabel, ctaLabel]
+
+    KnowledgeHubMainPageContent:
+      type: object
+      properties:
+        heroPanelTitle:
+          type: string
+          minLength: 1
+          maxLength: 180
+        heroPanelDescription:
+          type: string
+          minLength: 1
+          maxLength: 360
+        introEyebrow:
+          type: string
+          minLength: 1
+          maxLength: 100
+        introTitle:
+          type: string
+          minLength: 1
+          maxLength: 180
+        introDescription:
+          type: string
+          minLength: 1
+          maxLength: 360
+        sections:
+          type: array
+          minItems: 4
+          maxItems: 4
+          items:
+            $ref: "#/components/schemas/KnowledgeHubMainPageSection"
+      required: [heroPanelTitle, heroPanelDescription, introEyebrow, introTitle, introDescription, sections]
+
     KnowledgeHubMegaMenu:
       type: object
       properties:
@@ -5528,7 +5589,9 @@ components:
           maxItems: 12
           items:
             $ref: "#/components/schemas/KnowledgeHubTrendingItem"
-      required: [cards, panel, trendingItems]
+        mainPage:
+          $ref: "#/components/schemas/KnowledgeHubMainPageContent"
+      required: [cards, panel, trendingItems, mainPage]
 
     CoursesMegaMenuCard:
       type: object

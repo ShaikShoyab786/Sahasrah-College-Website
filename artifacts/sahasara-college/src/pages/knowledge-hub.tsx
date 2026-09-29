@@ -1,6 +1,6 @@
 import { ArrowRight, BookOpen, CheckCircle2, FileText, GraduationCap, PlayCircle, Bell } from 'lucide-react';
 import { Link } from 'wouter';
-import { useGetKnowledgeHubMegaMenu, useGetSiteSettings } from '@workspace/api-client-react';
+import { useGetKnowledgeHubMegaMenu, useGetSiteSettings, type KnowledgeHubMainPageContent } from '@workspace/api-client-react';
 import { PublicFooter } from '@/components/public-footer';
 import { PublicHeader } from '@/components/public-header';
 import { createPublicThemeStyle, DEFAULT_ACCENT_COLOR, DEFAULT_PRIMARY_COLOR, DEFAULT_SURFACE_COLOR } from '@/lib/public-theme';
@@ -19,17 +19,31 @@ const fallbackSettings = {
 };
 
 const categories = [
-  { id: 'articles', title: 'Articles', icon: FileText, tint: 'rose', description: 'Clear guidance for the questions students and families ask most often.' },
-  { id: 'video-hub', title: 'Video Hub', icon: PlayCircle, tint: 'violet', description: 'A future home for focused explanations and practical learning sessions.' },
-  { id: 'study-resources', title: 'Study Resources', icon: BookOpen, tint: 'emerald', description: 'A carefully organised shelf for notes, papers, and useful downloads.' },
-  { id: 'exam-updates', title: 'Exam Updates', icon: Bell, tint: 'amber', description: 'A dependable place for dates, notifications, and official exam guidance.' },
+  { id: 'articles', label: 'Articles', icon: FileText, tint: 'rose' },
+  { id: 'video-hub', label: 'Video Hub', icon: PlayCircle, tint: 'violet' },
+  { id: 'study-resources', label: 'Study Resources', icon: BookOpen, tint: 'emerald' },
+  { id: 'exam-updates', label: 'Exam Updates', icon: Bell, tint: 'amber' },
 ] as const;
+
+const fallbackMainPage: KnowledgeHubMainPageContent = {
+  heroPanelTitle: 'A quieter place to find your next useful step.',
+  heroPanelDescription: 'Built around the questions that shape confident study.',
+  introEyebrow: 'A clear path through the noise',
+  introTitle: 'Four ways to make study feel more manageable.',
+  introDescription: 'Explore the Articles section for practical guidance. More Knowledge Hub sections will be added in later phases.',
+  sections: [
+    { category: 'articles', eyebrow: 'Knowledge Hub', title: 'Articles', description: 'Clear guidance for the questions students and families ask most often.', statusText: 'Browse published articles for students and families.', badgeLabel: null, ctaLabel: 'Explore Articles' },
+    { category: 'video-hub', eyebrow: 'Knowledge Hub', title: 'Video Hub', description: 'A future home for focused explanations and practical learning sessions.', statusText: 'This section is being prepared for students and families.', badgeLabel: 'Coming Soon', ctaLabel: null },
+    { category: 'study-resources', eyebrow: 'Knowledge Hub', title: 'Study Resources', description: 'A carefully organised shelf for notes, papers, and useful downloads.', statusText: 'This section is being prepared for students and families.', badgeLabel: 'Coming Soon', ctaLabel: null },
+    { category: 'exam-updates', eyebrow: 'Knowledge Hub', title: 'Exam Updates', description: 'A dependable place for dates, notifications, and official exam guidance.', statusText: 'This section is being prepared for students and families.', badgeLabel: 'Coming Soon', ctaLabel: null },
+  ],
+};
 
 function KnowledgeHubSkeleton() {
   return <div className="min-h-[100dvh] bg-[hsl(var(--background))] p-6"><div className="mx-auto max-w-6xl animate-pulse space-y-5"><div className="h-10 w-56 rounded-full bg-[hsl(var(--muted))]" /><div className="h-72 rounded-[2rem] bg-[hsl(var(--muted))]" /><div className="grid gap-4 md:grid-cols-4">{categories.map((category) => <div key={category.id} className="h-48 rounded-2xl bg-[hsl(var(--muted))]" />)}</div></div></div>;
 }
 
-function CategorySection({ category }: { category: typeof categories[number] }) {
+function CategorySection({ category, section }: { category: typeof categories[number]; section: KnowledgeHubMainPageContent['sections'][number] }) {
   const Icon = category.icon;
   const available = category.id === 'articles';
   const tint = category.tint === 'rose'
@@ -48,18 +62,18 @@ function CategorySection({ category }: { category: typeof categories[number] }) 
         </div>
         <div>
           <div className="flex flex-wrap items-center gap-3">
-            <p className="text-xs font-bold uppercase tracking-[.18em] text-[hsl(var(--accent-foreground))]">Knowledge Hub</p>
-            {!available && <span className="rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--card))] px-3 py-1 text-[10px] font-bold uppercase tracking-[.12em] text-[hsl(var(--muted-foreground))]">Coming Soon</span>}
+            <p className="text-xs font-bold uppercase tracking-[.18em] text-[hsl(var(--accent-foreground))]">{section.eyebrow}</p>
+            {section.badgeLabel && <span className="rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--card))] px-3 py-1 text-[10px] font-bold uppercase tracking-[.12em] text-[hsl(var(--muted-foreground))]">{section.badgeLabel}</span>}
           </div>
-          <h2 className="mt-3 font-display text-4xl font-semibold tracking-[-.045em] text-[hsl(var(--primary))] sm:text-5xl">{category.title}</h2>
-          <p className="mt-4 max-w-xl text-base leading-7 text-[hsl(var(--muted-foreground))]">{category.description}</p>
+          <h2 className="mt-3 font-display text-4xl font-semibold tracking-[-.045em] text-[hsl(var(--primary))] sm:text-5xl">{section.title}</h2>
+          <p className="mt-4 max-w-xl text-base leading-7 text-[hsl(var(--muted-foreground))]">{section.description}</p>
           {available ? (
             <>
-              <p className="mt-5 flex items-center gap-2 text-sm font-semibold text-[hsl(var(--primary)/.7)]"><CheckCircle2 size={17} className="text-[hsl(var(--accent-foreground))]" /> Browse published articles for students and families.</p>
-              <Link href="/knowledge-hub/articles" className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-full bg-[hsl(var(--primary))] px-5 text-sm font-bold text-[hsl(var(--primary-foreground))] transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]" data-testid="link-knowledge-hub-articles-cta">Explore Articles <ArrowRight size={16} aria-hidden="true" /></Link>
+              <p className="mt-5 flex items-center gap-2 text-sm font-semibold text-[hsl(var(--primary)/.7)]"><CheckCircle2 size={17} className="text-[hsl(var(--accent-foreground))]" /> {section.statusText}</p>
+              <Link href="/knowledge-hub/articles" className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-full bg-[hsl(var(--primary))] px-5 text-sm font-bold text-[hsl(var(--primary-foreground))] transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]" data-testid="link-knowledge-hub-articles-cta">{section.ctaLabel ?? 'Explore Articles'} <ArrowRight size={16} aria-hidden="true" /></Link>
             </>
           ) : (
-            <p className="mt-5 flex items-center gap-2 text-sm font-semibold text-[hsl(var(--primary)/.7)]"><CheckCircle2 size={17} className="text-[hsl(var(--accent-foreground))]" /> This section is being prepared for students and families.</p>
+            <p className="mt-5 flex items-center gap-2 text-sm font-semibold text-[hsl(var(--primary)/.7)]"><CheckCircle2 size={17} className="text-[hsl(var(--accent-foreground))]" /> {section.statusText}</p>
           )}
         </div>
       </div>
@@ -73,6 +87,12 @@ export default function KnowledgeHub() {
   if (settingsQuery.isLoading) return <KnowledgeHubSkeleton />;
 
   const settings = settingsQuery.data ?? fallbackSettings;
+  const mainPage = menuQuery.data?.mainPage ?? fallbackMainPage;
+  const sectionByCategory = new Map(mainPage.sections.map((section) => [section.category, section]));
+  const orderedSections = categories.map((category, index) => ({
+    category,
+    section: sectionByCategory.get(category.id) ?? fallbackMainPage.sections[index],
+  }));
   const panel = menuQuery.data?.panel ?? {
     eyebrow: 'SAHSRAH KNOWLEDGE HUB',
     title: 'Learn with more clarity.',
@@ -94,7 +114,7 @@ export default function KnowledgeHub() {
               <h1 className="mt-5 max-w-3xl font-display text-5xl font-semibold leading-[.96] tracking-[-.055em] sm:text-7xl" data-testid="text-knowledge-hub-title">{panel.title}</h1>
               <p className="mt-6 max-w-2xl text-base leading-7 text-white/72 sm:text-lg">{panel.description}</p>
               <div className="mt-8 flex flex-wrap gap-3">
-                {categories.map((category) => <Link key={category.id} href={category.id === 'articles' ? '/knowledge-hub/articles' : `#knowledge-hub-${category.id}`} className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 text-sm font-bold transition hover:-translate-y-0.5 hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]" data-testid={`link-knowledge-hub-hero-${category.id}`}>{category.title}<ArrowRight size={15} aria-hidden="true" /></Link>)}
+                {orderedSections.map(({ category, section }) => <Link key={category.id} href={category.id === 'articles' ? '/knowledge-hub/articles' : `#knowledge-hub-${category.id}`} className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 text-sm font-bold transition hover:-translate-y-0.5 hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]" data-testid={`link-knowledge-hub-hero-${category.id}`}>{section.title}<ArrowRight size={15} aria-hidden="true" /></Link>)}
               </div>
             </div>
             <div className="relative min-h-64 overflow-hidden rounded-[1.75rem] border border-white/15 bg-white/10 p-6 shadow-2xl">
@@ -102,8 +122,8 @@ export default function KnowledgeHub() {
               <div className="absolute inset-0 bg-gradient-to-t from-[hsl(var(--primary))] via-[hsl(var(--primary)/.6)] to-transparent" aria-hidden="true" />
               <div className="relative flex h-full min-h-52 flex-col justify-end">
                 <GraduationCap size={26} className="text-[hsl(var(--accent))]" aria-hidden="true" />
-                <p className="mt-5 max-w-xs font-display text-2xl leading-tight">A quieter place to find your next useful step.</p>
-                <p className="mt-3 text-xs text-white/65">Built around the questions that shape confident study.</p>
+                <p className="mt-5 max-w-xs font-display text-2xl leading-tight">{mainPage.heroPanelTitle}</p>
+                <p className="mt-3 text-xs text-white/65">{mainPage.heroPanelDescription}</p>
               </div>
             </div>
           </div>
@@ -111,12 +131,12 @@ export default function KnowledgeHub() {
         {menuQuery.isError && <div className="mx-auto max-w-7xl px-6 pt-7 lg:px-10"><div role="status" className="rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-900" data-testid="status-knowledge-hub-error">The Knowledge Hub is taking a moment to load its latest settings. The category guide remains available below.</div></div>}
         <section className="px-6 py-16 lg:px-10 lg:py-24">
           <div className="mx-auto max-w-5xl">
-            <p className="text-xs font-bold uppercase tracking-[.2em] text-[hsl(var(--accent-foreground))]">A clear path through the noise</p>
-            <h2 className="mt-3 max-w-2xl font-display text-4xl font-semibold leading-tight tracking-[-.045em] text-[hsl(var(--primary))] sm:text-5xl">Four ways to make study feel more manageable.</h2>
-            <p className="mt-4 max-w-xl text-base leading-7 text-[hsl(var(--muted-foreground))]">Explore the Articles section for practical guidance. More Knowledge Hub sections will be added in later phases.</p>
+            <p className="text-xs font-bold uppercase tracking-[.2em] text-[hsl(var(--accent-foreground))]">{mainPage.introEyebrow}</p>
+            <h2 className="mt-3 max-w-2xl font-display text-4xl font-semibold leading-tight tracking-[-.045em] text-[hsl(var(--primary))] sm:text-5xl">{mainPage.introTitle}</h2>
+            <p className="mt-4 max-w-xl text-base leading-7 text-[hsl(var(--muted-foreground))]">{mainPage.introDescription}</p>
           </div>
         </section>
-        <div className="px-6 lg:px-10">{categories.map((category) => <CategorySection key={category.id} category={category} />)}</div>
+        <div className="px-6 lg:px-10">{orderedSections.map(({ category, section }) => <CategorySection key={category.id} category={category} section={section} />)}</div>
       </main>
       <PublicFooter settings={{ ...settings, footerText: settings.footerText || fallbackSettings.footerText }} />
     </div>

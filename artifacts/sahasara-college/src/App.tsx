@@ -170,6 +170,9 @@ function Router() {
         <Route path="/admin/pages/knowledge-hub/articles">
           <AdminGuard><AdminKnowledgeHubArticles /></AdminGuard>
         </Route>
+        <Route path="/admin/pages/knowledge-hub/main">
+          <AdminGuard><AdminKnowledgeHubMegaMenu /></AdminGuard>
+        </Route>
         <Route path="/admin">
           <AdminGuard><AdminOverview /></AdminGuard>
         </Route>

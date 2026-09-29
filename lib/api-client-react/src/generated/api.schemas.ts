@@ -1776,6 +1776,83 @@ export interface KnowledgeHubTrendingItem {
   isVisible: boolean;
 }
 
+export type KnowledgeHubMainPageSectionCategory = typeof KnowledgeHubMainPageSectionCategory[keyof typeof KnowledgeHubMainPageSectionCategory];
+
+
+export const KnowledgeHubMainPageSectionCategory = {
+  articles: 'articles',
+  'video-hub': 'video-hub',
+  'study-resources': 'study-resources',
+  'exam-updates': 'exam-updates',
+} as const;
+
+export interface KnowledgeHubMainPageSection {
+  category: KnowledgeHubMainPageSectionCategory;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  eyebrow: string;
+  /**
+     * @minLength 1
+     * @maxLength 180
+     */
+  title: string;
+  /**
+     * @minLength 1
+     * @maxLength 360
+     */
+  description: string;
+  /**
+     * @minLength 1
+     * @maxLength 240
+     */
+  statusText: string;
+  /**
+     * @maxLength 100
+     * @nullable
+     */
+  badgeLabel: string | null;
+  /**
+     * @maxLength 100
+     * @nullable
+     */
+  ctaLabel: string | null;
+}
+
+export interface KnowledgeHubMainPageContent {
+  /**
+     * @minLength 1
+     * @maxLength 180
+     */
+  heroPanelTitle: string;
+  /**
+     * @minLength 1
+     * @maxLength 360
+     */
+  heroPanelDescription: string;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  introEyebrow: string;
+  /**
+     * @minLength 1
+     * @maxLength 180
+     */
+  introTitle: string;
+  /**
+     * @minLength 1
+     * @maxLength 360
+     */
+  introDescription: string;
+  /**
+     * @minItems 4
+     * @maxItems 4
+     */
+  sections: KnowledgeHubMainPageSection[];
+}
+
 export interface KnowledgeHubMegaMenu {
   /**
      * @minItems 4
@@ -1785,6 +1862,7 @@ export interface KnowledgeHubMegaMenu {
   panel: KnowledgeHubMenuPanel;
   /** @maxItems 12 */
   trendingItems: KnowledgeHubTrendingItem[];
+  mainPage: KnowledgeHubMainPageContent;
 }
 
 export interface CoursesMegaMenuCard {

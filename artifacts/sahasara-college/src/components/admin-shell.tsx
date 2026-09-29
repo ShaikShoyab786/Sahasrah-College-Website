@@ -53,7 +53,7 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
     { href: '/admin', label: 'Overview', icon: LayoutDashboard },
     { href: '/admin/site-settings', label: 'Site identity', icon: Settings2 },
   ];
-  const megaMenusActive = location.startsWith('/admin/mega-menus') || location.startsWith('/admin/knowledge-hub-mega-menu');
+  const megaMenusActive = location.startsWith('/admin/mega-menus');
   const heroActive = location.startsWith('/admin/pages/home/hero') || location.startsWith('/admin/homepage-hero');
   const aboutActive = location.startsWith('/admin/pages/home/about-preview');
   const liveUpdatesActive = location.startsWith('/admin/pages/home/live-updates');
@@ -82,8 +82,9 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
   const facultyPageActive = location.startsWith('/admin/pages/faculty');
   const coursesPageActive = location.startsWith('/admin/pages/courses');
   const allCoursesPageActive = location.startsWith('/admin/pages/all-courses');
+  const knowledgeHubMainPageActive = location.startsWith('/admin/pages/knowledge-hub/main') || location.startsWith('/admin/knowledge-hub-mega-menu');
   const knowledgeHubArticlesActive = location.startsWith('/admin/pages/knowledge-hub/articles');
-  const nestedKnowledgeHubArticlesRoute = knowledgeHubArticlesActive;
+  const nestedKnowledgeHubRoute = knowledgeHubMainPageActive || knowledgeHubArticlesActive;
   const resultsPageActive = location.startsWith('/admin/pages/results') || location.startsWith('/admin/results');
   const nestedHomeRoute = heroActive || aboutActive || liveUpdatesActive || statisticsActive || favoriteTopicsActive || resultsActive || ribbonActive || testimonialsActive || facultyActive || galleryActive || knowledgeHubActive || admissionsFaqActive || finalCtaActive;
   const nestedAboutRoute = aboutHeroActive || aboutStoryActive || chairmanActive || principlesActive || parentChoiceActive || leadershipActive || campusHighlightsActive || achievementsActive || faqActive || admissionCtaActive;
@@ -122,7 +123,7 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
     } else if (nestedCoursesRoute) {
       setPagesOpen(true);
       setCoursesOpen(true);
-    } else if (nestedKnowledgeHubArticlesRoute) {
+    } else if (nestedKnowledgeHubRoute) {
       setPagesOpen(true);
       setKnowledgeHubOpen(true);
     } else if (contactActive || galleryPageActive) {
@@ -136,7 +137,7 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
       setCoursesOpen(false);
       setKnowledgeHubOpen(false);
     }
-  }, [location, contactActive, galleryPageActive, megaMenusActive, nestedAboutRoute, nestedHomeRoute, nestedCoursesRoute, nestedFacultyRoute, nestedKnowledgeHubArticlesRoute, nestedResultsRoute]);
+  }, [location, contactActive, galleryPageActive, megaMenusActive, nestedAboutRoute, nestedHomeRoute, nestedCoursesRoute, nestedFacultyRoute, nestedKnowledgeHubRoute, nestedResultsRoute]);
 
   useEffect(() => {
     const syncHash = () => setActiveAdminSection(window.location.hash.slice(1));
@@ -235,12 +236,11 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
             {megaMenusOpen && (
               <div className="mt-2 rounded-2xl bg-[hsl(var(--sidebar-accent)/.55)] p-2">
                 <PageSectionLink href="/admin/mega-menus" id="courses-mega-menu" label="Courses Mega Menu" active={location.startsWith('/admin/mega-menus')} onSelect={() => setOpen(false)} />
-                <PageSectionLink href="/admin/knowledge-hub-mega-menu" id="knowledge-hub-mega-menu" label="Knowledge Hub Mega Menu" active={location.startsWith('/admin/knowledge-hub-mega-menu')} onSelect={() => setOpen(false)} />
               </div>
             )}
           </div>
           <div className="mt-5">
-            <button type="button" onClick={() => setPagesOpen((current) => !current)} aria-expanded={pagesOpen} className={`flex w-full items-center justify-between rounded-xl px-3 py-3 text-xs font-bold uppercase tracking-[.16em] transition ${pagesOpen || nestedHomeRoute || nestedKnowledgeHubArticlesRoute ? 'text-[hsl(var(--sidebar-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.45)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="button-admin-pages-toggle">
+            <button type="button" onClick={() => setPagesOpen((current) => !current)} aria-expanded={pagesOpen} className={`flex w-full items-center justify-between rounded-xl px-3 py-3 text-xs font-bold uppercase tracking-[.16em] transition ${pagesOpen || nestedHomeRoute || nestedKnowledgeHubRoute ? 'text-[hsl(var(--sidebar-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.45)] hover:bg-[hsl(var(--sidebar-accent))] hover:text-[hsl(var(--sidebar-foreground))]'}`} data-testid="button-admin-pages-toggle">
               <span className="flex items-center gap-2"><FileText size={14} /> Pages</span>
               <ChevronDown size={15} className={`transition-transform ${pagesOpen ? 'rotate-180' : ''}`} />
             </button>
@@ -341,12 +341,13 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
             )}
             {pagesOpen && (
               <div className="mt-2 rounded-2xl bg-[hsl(var(--sidebar-accent)/.55)] p-2">
-                <button type="button" onClick={() => setKnowledgeHubOpen((current) => !current)} aria-expanded={knowledgeHubOpen} className={`flex w-full items-center justify-between rounded-xl px-2 py-2 text-xs font-bold transition ${knowledgeHubOpen || nestedKnowledgeHubArticlesRoute ? 'text-[hsl(var(--sidebar-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.65)] hover:bg-[hsl(var(--sidebar-accent))]'}`} data-testid="button-admin-knowledge-hub-pages-toggle">
+                <button type="button" onClick={() => setKnowledgeHubOpen((current) => !current)} aria-expanded={knowledgeHubOpen} className={`flex w-full items-center justify-between rounded-xl px-2 py-2 text-xs font-bold transition ${knowledgeHubOpen || nestedKnowledgeHubRoute ? 'text-[hsl(var(--sidebar-foreground))]' : 'text-[hsl(var(--sidebar-foreground)/.65)] hover:bg-[hsl(var(--sidebar-accent))]'}`} data-testid="button-admin-knowledge-hub-pages-toggle">
                   <span className="flex items-center gap-2"><BookOpen size={15} /> Knowledge Hub</span>
                   <ChevronDown size={14} className={`transition-transform ${knowledgeHubOpen ? 'rotate-180' : ''}`} />
                 </button>
                 {knowledgeHubOpen && (
                   <div className="mt-1">
+                    <PageSectionLink href="/admin/pages/knowledge-hub/main" id="knowledge-hub-main-page" label="Hub Main Page" active={knowledgeHubMainPageActive} onSelect={() => { setActiveAdminSection(''); setOpen(false); }} />
                     <PageSectionLink href="/admin/pages/knowledge-hub/articles" id="knowledge-hub-articles" label="Articles" active={knowledgeHubArticlesActive} onSelect={() => { setActiveAdminSection(''); setOpen(false); }} />
                   </div>
                 )}

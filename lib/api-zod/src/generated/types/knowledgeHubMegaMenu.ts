@@ -5,6 +5,7 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
+import type { KnowledgeHubMainPageContent } from './knowledgeHubMainPageContent';
 import type { KnowledgeHubMenuCard } from './knowledgeHubMenuCard';
 import type { KnowledgeHubMenuPanel } from './knowledgeHubMenuPanel';
 import type { KnowledgeHubTrendingItem } from './knowledgeHubTrendingItem';
@@ -18,4 +19,5 @@ export interface KnowledgeHubMegaMenu {
   panel: KnowledgeHubMenuPanel;
   /** @maxItems 12 */
   trendingItems: KnowledgeHubTrendingItem[];
+  mainPage: KnowledgeHubMainPageContent;
 }

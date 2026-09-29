@@ -40,6 +40,10 @@ function cloneContent(content: KnowledgeHubMegaMenu): KnowledgeHubMegaMenu {
   const byCategory = new Map(content.cards.map((card) => [card.category, card]));
   return {
     panel: { ...content.panel },
+    mainPage: {
+      ...content.mainPage,
+      sections: content.mainPage.sections.map((section) => ({ ...section })),
+    },
     cards: categoryOrder.map((category, index) => {
       const card = byCategory.get(category);
       return {
@@ -64,7 +68,7 @@ function ItemActions({ index, count, label, onMove, onRemove }: { index: number;
 }
 
 function ImageControl({ panel, uploading, onChange, onUpload }: { panel: KnowledgeHubMegaMenu['panel']; uploading: boolean; onChange: (patch: Partial<KnowledgeHubMegaMenu['panel']>) => void; onUpload: (event: ChangeEvent<HTMLInputElement>) => void }) {
-  return <div className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--background))] p-4"><div className="flex items-center justify-between gap-3"><p className="text-sm font-bold">Panel image</p><label htmlFor="knowledge-panel-upload" className="inline-flex min-h-9 cursor-pointer items-center gap-2 rounded-lg border border-[hsl(var(--border))] bg-[hsl(var(--card))] px-3 text-xs font-bold hover:border-[hsl(var(--accent))]"><ImagePlus size={15} aria-hidden="true" />{uploading ? 'Uploading…' : 'Upload image'}<input id="knowledge-panel-upload" type="file" accept="image/png,image/jpeg,image/webp" disabled={uploading} onChange={onUpload} className="sr-only" /></label></div>{panel.imageUrl && <img src={panel.imageUrl} alt={panel.imageAltText} className="mt-3 h-36 w-full rounded-xl object-cover" data-testid="img-admin-knowledge-panel" />}<div className="mt-4 space-y-4"><Field id="knowledge-panel-url" label="Image URL" value={panel.imageUrl ?? ''} onChange={(event) => onChange({ imageUrl: event.target.value.trim() || null })} /><Field id="knowledge-panel-alt" label="Image alt text" value={panel.imageAltText} onChange={(event) => onChange({ imageAltText: event.target.value })} required={Boolean(panel.imageUrl)} /></div></div>;
+  return <div className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--background))] p-4"><div className="flex items-center justify-between gap-3"><p className="text-sm font-bold">Hero image</p><label htmlFor="knowledge-panel-upload" className="inline-flex min-h-9 cursor-pointer items-center gap-2 rounded-lg border border-[hsl(var(--border))] bg-[hsl(var(--card))] px-3 text-xs font-bold hover:border-[hsl(var(--accent))]"><ImagePlus size={15} aria-hidden="true" />{uploading ? 'Uploading…' : 'Upload image'}<input id="knowledge-panel-upload" type="file" accept="image/png,image/jpeg,image/webp" disabled={uploading} onChange={onUpload} className="sr-only" /></label></div>{panel.imageUrl && <img src={panel.imageUrl} alt={panel.imageAltText} className="mt-3 h-36 w-full rounded-xl object-cover" data-testid="img-admin-knowledge-panel" />}<div className="mt-4 space-y-4"><Field id="knowledge-panel-url" label="Image URL" value={panel.imageUrl ?? ''} onChange={(event) => onChange({ imageUrl: event.target.value.trim() || null })} /><Field id="knowledge-panel-alt" label="Image alt text" value={panel.imageAltText} onChange={(event) => onChange({ imageAltText: event.target.value })} required={Boolean(panel.imageUrl)} /></div></div>;
 }
 
 export default function AdminKnowledgeHubMegaMenu() {
@@ -83,6 +87,8 @@ export default function AdminKnowledgeHubMegaMenu() {
 
   const setField = <K extends keyof KnowledgeHubMegaMenu>(key: K, value: KnowledgeHubMegaMenu[K]) => setForm((current) => current ? { ...current, [key]: value } : current);
   const setPanel = (patch: Partial<KnowledgeHubMegaMenu['panel']>) => setForm((current) => current ? { ...current, panel: { ...current.panel, ...patch } } : current);
+  const setMainPage = (patch: Partial<KnowledgeHubMegaMenu['mainPage']>) => setForm((current) => current ? { ...current, mainPage: { ...current.mainPage, ...patch } } : current);
+  const setMainPageSection = (index: number, patch: Partial<KnowledgeHubMegaMenu['mainPage']['sections'][number]>) => setForm((current) => current ? { ...current, mainPage: { ...current.mainPage, sections: current.mainPage.sections.map((section, itemIndex) => itemIndex === index ? { ...section, ...patch } : section) } } : current);
   const setCard = (index: number, patch: Partial<KnowledgeHubMegaMenu['cards'][number]>) => setForm((current) => current ? { ...current, cards: current.cards.map((card, itemIndex) => itemIndex === index ? { ...card, ...patch } : card) } : current);
   const setTrending = (index: number, patch: Partial<KnowledgeHubMegaMenu['trendingItems'][number]>) => setForm((current) => current ? { ...current, trendingItems: current.trendingItems.map((item, itemIndex) => itemIndex === index ? { ...item, ...patch } : item) } : current);
 
@@ -98,7 +104,7 @@ export default function AdminKnowledgeHubMegaMenu() {
     setNotice('');
     setUploading(true);
     upload.mutate({ data: { file, purpose: 'hero' } }, {
-      onSuccess: (result) => { setPanel({ imageUrl: result.url }); setUploading(false); setNotice('Image uploaded. Save the menu to publish it.'); },
+      onSuccess: (result) => { setPanel({ imageUrl: result.url }); setUploading(false); setNotice('Image uploaded. Save the page to publish it.'); },
       onError: () => { setUploading(false); setError('That image could not be uploaded. Please try again.'); },
     });
   };
@@ -119,9 +125,9 @@ export default function AdminKnowledgeHubMegaMenu() {
         setForm(next);
         queryClient.setQueryData(getGetAdminKnowledgeHubMegaMenuQueryKey(), next);
         queryClient.setQueryData(getGetKnowledgeHubMegaMenuQueryKey(), next);
-        setNotice('Knowledge Hub menu saved and visible on the website.');
+        setNotice('Knowledge Hub main page saved and visible on the website.');
       },
-      onError: () => setError('We could not save the menu. Check the copy, image alt text, and trending links.'),
+      onError: () => setError('We could not save the Knowledge Hub main page. Check the copy, image alt text, and menu links.'),
     });
   };
 
@@ -134,15 +140,31 @@ export default function AdminKnowledgeHubMegaMenu() {
   const addTrending = () => setField('trendingItems', [...form.trendingItems, { id: crypto.randomUUID(), title: '', href: null, displayOrder: form.trendingItems.length + 1, isVisible: false }]);
 
   return (
-    <EditorFrame eyebrow="Mega Menus / Knowledge Hub" title="Shape the Knowledge Hub menu." description="Keep the four learning pathways clear, current, and useful for students and families." previewHref="/knowledge-hub">
+    <EditorFrame eyebrow="Pages / Knowledge Hub / Hub Main Page" title="Edit the Knowledge Hub main page." description="Update the existing /knowledge-hub page. The Explore Knowledge Hub link continues to open this page." previewHref="/knowledge-hub">
       <form onSubmit={submit} className="mt-10 space-y-6">
-        <EditorCard icon={<BookOpen size={19} />} title="Branded panel" description="The fixed right-hand panel introduces the Knowledge Hub and links to its landing page.">
+        <EditorCard icon={<BookOpen size={19} />} title="Main page hero" description="Edit the heading, introduction, and artwork shown at the top of the public Knowledge Hub page.">
           <div className="grid gap-5 lg:grid-cols-2">
             <Field id="knowledge-panel-eyebrow" label="Eyebrow" value={form.panel.eyebrow} onChange={(event) => setPanel({ eyebrow: event.target.value })} required />
             <Field id="knowledge-panel-title" label="Title" value={form.panel.title} onChange={(event) => setPanel({ title: event.target.value })} required />
             <Area id="knowledge-panel-description" label="Description" value={form.panel.description} onChange={(event) => setPanel({ description: event.target.value })} required />
-            <Field id="knowledge-panel-cta" label="CTA label" value={form.panel.ctaLabel} onChange={(event) => setPanel({ ctaLabel: event.target.value })} required />
+            <Field id="knowledge-panel-cta" label="Explore button label" value={form.panel.ctaLabel} onChange={(event) => setPanel({ ctaLabel: event.target.value })} required />
             <div className="lg:col-span-2"><ImageControl panel={form.panel} uploading={uploading} onChange={setPanel} onUpload={uploadPanelImage} /></div>
+          </div>
+        </EditorCard>
+
+        <EditorCard icon={<BookOpen size={19} />} title="Page introduction" description="These fields control the supporting copy shown beneath the main hero.">
+          <div className="grid gap-5 lg:grid-cols-2">
+            <Field id="knowledge-main-page-panel-title" label="Hero panel title" value={form.mainPage.heroPanelTitle} onChange={(event) => setMainPage({ heroPanelTitle: event.target.value })} required />
+            <Area id="knowledge-main-page-panel-description" label="Hero panel supporting text" value={form.mainPage.heroPanelDescription} onChange={(event) => setMainPage({ heroPanelDescription: event.target.value })} required />
+            <Field id="knowledge-main-page-intro-eyebrow" label="Introduction eyebrow" value={form.mainPage.introEyebrow} onChange={(event) => setMainPage({ introEyebrow: event.target.value })} required />
+            <Field id="knowledge-main-page-intro-title" label="Introduction heading" value={form.mainPage.introTitle} onChange={(event) => setMainPage({ introTitle: event.target.value })} required />
+            <div className="lg:col-span-2"><Area id="knowledge-main-page-intro-description" label="Introduction text" value={form.mainPage.introDescription} onChange={(event) => setMainPage({ introDescription: event.target.value })} required /></div>
+          </div>
+        </EditorCard>
+
+        <EditorCard icon={<BookOpen size={19} />} title="Main page sections" description="Edit the copy on the four sections of the public Knowledge Hub page. Section links and availability stay unchanged.">
+          <div className="space-y-4">
+            {form.mainPage.sections.map((section, index) => <section key={section.category} className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5"><div className="mb-5"><p className="text-sm font-bold">{categoryLabels[section.category]}</p></div><div className="grid gap-5 md:grid-cols-2"><Field id={`knowledge-main-page-${section.category}-eyebrow`} label="Eyebrow" value={section.eyebrow} onChange={(event) => setMainPageSection(index, { eyebrow: event.target.value })} required /><Field id={`knowledge-main-page-${section.category}-title`} label="Section title" value={section.title} onChange={(event) => setMainPageSection(index, { title: event.target.value })} required /><Area id={`knowledge-main-page-${section.category}-description`} label="Description" value={section.description} onChange={(event) => setMainPageSection(index, { description: event.target.value })} required /><Area id={`knowledge-main-page-${section.category}-status`} label="Supporting status text" value={section.statusText} onChange={(event) => setMainPageSection(index, { statusText: event.target.value })} required />{section.category === 'articles' ? <Field id={`knowledge-main-page-${section.category}-cta`} label="Articles button label" value={section.ctaLabel ?? ''} onChange={(event) => setMainPageSection(index, { ctaLabel: event.target.value })} required /> : <Field id={`knowledge-main-page-${section.category}-badge`} label="Status badge" value={section.badgeLabel ?? ''} onChange={(event) => setMainPageSection(index, { badgeLabel: event.target.value.trim() || null })} placeholder="Leave blank to hide" />}</div></section>)}
           </div>
         </EditorCard>
 
@@ -160,7 +182,7 @@ export default function AdminKnowledgeHubMegaMenu() {
         </EditorCard>
 
         <SaveStatus error={error} notice={notice} />
-        <div className="flex justify-end border-t border-[hsl(var(--border))] pt-5"><button type="submit" disabled={update.isPending || uploading} className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-[hsl(var(--admin-accent))] px-6 text-sm font-bold text-[hsl(var(--admin-on-accent))] shadow-sm transition hover:-translate-y-0.5 disabled:cursor-wait disabled:opacity-60" data-testid="button-save-knowledge-hub-mega-menu"><Save size={17} aria-hidden="true" />{update.isPending ? 'Saving menu…' : 'Save Knowledge Hub Menu'}</button></div>
+        <div className="flex justify-end border-t border-[hsl(var(--border))] pt-5"><button type="submit" disabled={update.isPending || uploading} className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-[hsl(var(--admin-accent))] px-6 text-sm font-bold text-[hsl(var(--admin-on-accent))] shadow-sm transition hover:-translate-y-0.5 disabled:cursor-wait disabled:opacity-60" data-testid="button-save-knowledge-hub-main-page"><Save size={17} aria-hidden="true" />{update.isPending ? 'Saving page…' : 'Save Hub Main Page'}</button></div>
       </form>
     </EditorFrame>
   );

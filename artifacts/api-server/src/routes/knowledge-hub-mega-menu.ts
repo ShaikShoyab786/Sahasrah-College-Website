@@ -5,6 +5,7 @@ import {
   GetKnowledgeHubMegaMenuResponse,
   UpdateKnowledgeHubMegaMenuBody,
 } from "@workspace/api-zod";
+import { DEFAULT_KNOWLEDGE_HUB_MEGA_MENU } from "../lib/knowledge-hub-mega-menu-content";
 import { prisma } from "../lib/prisma";
 import { requireAdmin } from "../middlewares/auth";
 
@@ -38,16 +39,30 @@ function hasUniqueIdsAndOrders(items: Array<{ id: string; displayOrder: number }
     && new Set(items.map((item) => item.displayOrder)).size === items.length;
 }
 
+function withMainPageDefaults(content: Prisma.JsonValue) {
+  if (content === null || typeof content !== "object" || Array.isArray(content)) return content;
+  const saved = content as Prisma.JsonObject;
+  return {
+    ...saved,
+    mainPage: saved.mainPage ?? DEFAULT_KNOWLEDGE_HUB_MEGA_MENU.mainPage,
+  };
+}
+
 function isValidContent(content: {
   cards: Array<{ id: string; category: string; displayOrder: number; isVisible: boolean }>;
   panel: { imageUrl: string | null; imageAltText: string };
   trendingItems: Array<{ id: string; displayOrder: number; href: string | null }>;
+  mainPage: { sections: Array<{ category: string }> };
 }) {
   const cardCategories = new Set(content.cards.map((card) => card.category));
   const hasEveryCategory = cardCategories.size === categories.size
     && [...categories].every((category) => cardCategories.has(category));
+  const mainPageCategories = new Set(content.mainPage.sections.map((section) => section.category));
+  const hasEveryMainPageCategory = mainPageCategories.size === categories.size
+    && [...categories].every((category) => mainPageCategories.has(category));
 
   return hasEveryCategory
+    && hasEveryMainPageCategory
     && hasUniqueIdsAndOrders(content.cards)
     && content.cards.every((card) => categories.has(card.category))
     && isSafeImageUrl(content.panel.imageUrl)
@@ -63,7 +78,7 @@ router.get("/knowledge-hub-mega-menu", async (_req, res): Promise<void> => {
     res.status(503).json({ error: "Knowledge Hub mega menu content is not available." });
     return;
   }
-  res.json(GetKnowledgeHubMegaMenuResponse.parse(settings.content));
+  res.json(GetKnowledgeHubMegaMenuResponse.parse(withMainPageDefaults(settings.content)));
 });
 
 router.get("/admin/knowledge-hub-mega-menu", requireAdmin, async (_req, res): Promise<void> => {
@@ -72,7 +87,7 @@ router.get("/admin/knowledge-hub-mega-menu", requireAdmin, async (_req, res): Pr
     res.status(503).json({ error: "Knowledge Hub mega menu content is not available." });
     return;
   }
-  res.json(GetAdminKnowledgeHubMegaMenuResponse.parse(settings.content));
+  res.json(GetAdminKnowledgeHubMegaMenuResponse.parse(withMainPageDefaults(settings.content)));
 });
 
 router.put("/admin/knowledge-hub-mega-menu", requireAdmin, async (req, res): Promise<void> => {
@@ -82,7 +97,7 @@ router.put("/admin/knowledge-hub-mega-menu", requireAdmin, async (req, res): Pro
     return;
   }
   if (!isValidContent(parsed.data)) {
-    res.status(400).json({ error: "Check the four categories, image text, trending links, and item order before saving." });
+    res.status(400).json({ error: "Check the four page sections and menu categories, image text, trending links, and item order before saving." });
     return;
   }
 
