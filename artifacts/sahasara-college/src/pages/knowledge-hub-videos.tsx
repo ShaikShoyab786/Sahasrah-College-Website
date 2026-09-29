@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ArrowRight, CheckCircle2, ChevronDown, Clock3, ExternalLink, Play, Search, SlidersHorizontal, Video, X } from 'lucide-react';
+import { ArrowRight, CheckCircle2, ChevronDown, Clock3, ExternalLink, MessageCircle, Play, Search, SlidersHorizontal, Video, X } from 'lucide-react';
 import { Link } from 'wouter';
 import { useGetKnowledgeHubVideoHubPage, useGetKnowledgeHubVideoHubVideos, useGetSiteSettings, type KnowledgeHubVideoSummary } from '@workspace/api-client-react';
 import { PublicFooter } from '@/components/public-footer';
@@ -243,6 +243,26 @@ export default function KnowledgeHubVideos() {
                 {loadedVideos.length > videoBatchSize && <button type="button" onClick={() => { setOffset(0); setLoadedVideos((current) => current.slice(0, videoBatchSize)); }} className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-[hsl(var(--primary)/.22)] bg-[hsl(var(--card))] px-5 text-sm font-bold text-[hsl(var(--primary))] transition hover:-translate-y-0.5 hover:border-[hsl(var(--accent))]" data-testid="button-view-less-video-hub">View Less <ChevronDown size={16} className="rotate-180" /></button>}
               </div>
             )}
+          </div>
+        </section>
+        <section className="px-6 py-14 sm:py-20 lg:px-10" data-testid="section-video-hub-contact-cta">
+          <div className="relative isolate mx-auto max-w-7xl overflow-hidden rounded-[2rem] bg-[hsl(var(--primary))] px-7 py-9 text-[hsl(var(--primary-foreground))] shadow-[var(--shadow-lg)] sm:px-10 sm:py-12 lg:px-14 lg:py-14">
+            <div className="absolute -right-16 -top-28 h-72 w-72 rounded-full border border-white/10" aria-hidden="true" />
+            <div className="absolute -right-2 -top-12 h-44 w-44 rounded-full border border-white/[.08]" aria-hidden="true" />
+            <div className="absolute -bottom-24 left-[42%] h-48 w-48 rounded-full bg-[hsl(var(--accent)/.16)] blur-3xl" aria-hidden="true" />
+            <div className="relative flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+              <div className="max-w-2xl">
+                <p className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[.07] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[.18em] text-white/85">
+                  <MessageCircle size={14} className="text-[hsl(var(--accent))]" aria-hidden="true" />
+                  Guidance for your next step
+                </p>
+                <h2 className="mt-5 font-display text-3xl font-semibold leading-tight tracking-[-.04em] sm:text-4xl lg:text-5xl">Ready to plan what comes next?</h2>
+                <p className="mt-4 max-w-xl text-sm leading-6 text-white/70 sm:text-base sm:leading-7">Talk with our admissions team about courses, eligibility, and the right next step for your goals.</p>
+              </div>
+              <Link href="/contact" className="group inline-flex min-h-12 shrink-0 items-center justify-center gap-3 rounded-xl bg-[hsl(var(--accent))] px-5 text-sm font-bold text-[hsl(var(--accent-foreground))] shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(var(--primary))]" data-testid="link-video-hub-contact-cta">
+                Talk to Admissions <ArrowRight size={17} className="transition-transform group-hover:translate-x-1" aria-hidden="true" />
+              </Link>
+            </div>
           </div>
         </section>
       </main>

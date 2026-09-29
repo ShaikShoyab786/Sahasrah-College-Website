@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState, type ChangeEvent, type FormEvent } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
-import { FileImage, Layers3, Pencil, Plus, Save, Trash2, UploadCloud, X } from 'lucide-react';
+import { FileImage, FileVideo2, Layers3, Pencil, PlayCircle, Plus, Save, Trash2, UploadCloud, X } from 'lucide-react';
 import {
   getGetAdminKnowledgeHubVideoHubQueryKey,
   getGetKnowledgeHubVideoHubPageQueryKey,
@@ -147,6 +147,9 @@ export default function AdminKnowledgeHubVideos() {
 
   const categories = useMemo(() => [...(hubQuery.data?.categories ?? [])].sort((a, b) => a.displayOrder - b.displayOrder), [hubQuery.data?.categories]);
   const videos = useMemo(() => [...(hubQuery.data?.videos ?? [])].sort((a, b) => a.displayOrder - b.displayOrder), [hubQuery.data?.videos]);
+  const visibleCategoryIds = new Set(categories.filter((category) => category.isVisible).map((category) => category.id));
+  const publishedVideoCount = videos.filter((video) => video.status === 'published' && visibleCategoryIds.has(video.categoryId)).length;
+  const draftVideoCount = videos.filter((video) => video.status === 'draft').length;
   const selectedVideo = selectedVideoId ? videos.find((video) => video.id === selectedVideoId) : null;
   const invalidateAll = () => {
     queryClient.invalidateQueries({ queryKey: getGetAdminKnowledgeHubVideoHubQueryKey() });
@@ -211,6 +214,28 @@ export default function AdminKnowledgeHubVideos() {
   return (
     <EditorFrame eyebrow="Pages / Knowledge Hub / Videos" title="A library students can return to." description="Edit the Video Hub page, publish real YouTube sessions, and keep the shelf in a clear order." previewHref="/knowledge-hub/videos">
       <div className="mt-8 space-y-7">
+        <section aria-labelledby="video-hub-admin-snapshot-title" data-testid="video-hub-admin-snapshot">
+          <div className="mb-4">
+            <h2 id="video-hub-admin-snapshot-title" className="font-display text-2xl font-semibold tracking-[-.035em] text-[hsl(var(--admin-text))]">Publishing snapshot</h2>
+            <p className="mt-1 text-sm text-[hsl(var(--admin-muted))]">A quick view of what students can currently see.</p>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-3">
+            {[
+              { label: 'Published sessions', value: publishedVideoCount, detail: 'Visible on the public library', icon: PlayCircle },
+              { label: 'Draft sessions', value: draftVideoCount, detail: 'Not shown to visitors yet', icon: FileVideo2 },
+              { label: 'Visible subjects', value: visibleCategoryIds.size, detail: 'Available in the library filters', icon: Layers3 },
+            ].map(({ label, value, detail, icon: Icon }) => (
+              <article key={label} className="rounded-2xl border border-[hsl(var(--admin-border))] bg-[hsl(var(--admin-surface))] p-4 sm:p-5">
+                <div className="flex items-center justify-between gap-3">
+                  <p className="text-sm font-semibold text-[hsl(var(--admin-muted))]">{label}</p>
+                  <span className="grid h-9 w-9 place-items-center rounded-xl bg-[hsl(var(--admin-accent)/.14)] text-[hsl(var(--admin-accent))]"><Icon size={18} strokeWidth={1.8} aria-hidden="true" /></span>
+                </div>
+                <p className="mt-3 font-display text-3xl font-semibold tracking-tight text-[hsl(var(--admin-text))]" data-testid={`metric-video-hub-${label.toLowerCase().replaceAll(' ', '-')}`}>{value}</p>
+                <p className="mt-1 text-xs leading-5 text-[hsl(var(--admin-muted))]">{detail}</p>
+              </article>
+            ))}
+          </div>
+        </section>
         <form onSubmit={saveSettings} className="space-y-6">
           <EditorCard title="Page settings" description="Shape the public introduction, featured session label, search language, and empty state without touching the rest of Knowledge Hub.">
             <SectionTitle eyebrow="Public copy" title="Set the tone before the first play." description="The accent text is shown on its own line in the public hero." />
