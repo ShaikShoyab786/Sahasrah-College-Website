@@ -1,5 +1,5 @@
 export const DEFAULT_KNOWLEDGE_HUB_ARTICLES_PAGE = {
-  heroEyebrow: "SAHSRAH ARTICLE HUB",
+  heroEyebrow: "SAHASRAH ARTICLE HUB",
   heroTitle: "Ideas that make learning",
   heroAccentText: "clearer.",
   heroDescription: "Practical guidance, subject insights, and study strategies to help students and families move forward with confidence.",

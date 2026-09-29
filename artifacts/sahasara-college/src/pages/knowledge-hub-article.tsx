@@ -49,11 +49,17 @@ export default function KnowledgeHubArticle() {
         <section className="relative overflow-hidden bg-[hsl(var(--primary))] px-6 pb-12 pt-36 text-[hsl(var(--primary-foreground))] sm:pb-16 sm:pt-44 lg:px-10">
           <div className="absolute inset-0 opacity-75" aria-hidden="true" style={{ backgroundImage: 'radial-gradient(circle at 85% 15%, hsl(var(--accent) / .26), transparent 28%), linear-gradient(125deg, transparent 0 70%, hsl(var(--accent) / .1) 70.2%, transparent 70.7%)' }} />
           <div className="relative mx-auto max-w-5xl">
-            <Link href="/knowledge-hub/articles" className="inline-flex items-center gap-2 text-sm font-bold text-white/70 transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]" data-testid="link-back-knowledge-articles"><ArrowLeft size={16} /> All articles</Link>
-            <div className="mt-10 flex flex-wrap items-center gap-3 text-xs font-bold uppercase tracking-[.15em]"><span className="rounded-full border border-[hsl(var(--accent)/.42)] bg-[hsl(var(--accent)/.14)] px-3 py-1.5 text-[hsl(var(--accent))]" data-testid="text-knowledge-article-category">{category?.name ?? article.categoryName}</span><span className="text-white/45">•</span><span className="inline-flex items-center gap-1.5 text-white/65"><Clock3 size={14} /> {article.readTimeMinutes} minute read</span><span className="text-white/45">•</span><span className="inline-flex items-center gap-1.5 text-white/65"><CalendarDays size={14} /> {dateLabel(article.publishedAt)}</span></div>
+            <Link href="/knowledge-hub/articles" className="inline-flex items-center gap-2 text-sm font-bold text-[hsl(var(--primary-foreground)/.88)] transition hover:text-[hsl(var(--primary-foreground))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]" data-testid="link-back-knowledge-articles"><ArrowLeft size={16} /> All articles</Link>
+            <div className="mt-10 flex flex-wrap items-center gap-3 text-xs font-bold uppercase tracking-[.15em]">
+              <span className="rounded-full border border-[hsl(var(--accent))] bg-[hsl(var(--accent))] px-3 py-1.5 text-[hsl(var(--accent-foreground))]" data-testid="text-knowledge-article-category">{category?.name ?? article.categoryName}</span>
+              <span className="text-[hsl(var(--primary-foreground)/.58)]" aria-hidden="true">•</span>
+              <span className="inline-flex items-center gap-1.5 text-[hsl(var(--primary-foreground)/.84)]"><Clock3 size={14} /> {article.readTimeMinutes} minute read</span>
+              <span className="text-[hsl(var(--primary-foreground)/.58)]" aria-hidden="true">•</span>
+              <span className="inline-flex items-center gap-1.5 text-[hsl(var(--primary-foreground)/.84)]"><CalendarDays size={14} /> {dateLabel(article.publishedAt)}</span>
+            </div>
             <h1 className="mt-6 max-w-4xl font-display text-5xl font-semibold leading-[.96] tracking-[-.06em] sm:text-7xl" data-testid="text-knowledge-article-title">{article.title}</h1>
-            <p className="mt-6 max-w-3xl text-lg leading-8 text-white/72" data-testid="text-knowledge-article-excerpt">{article.excerpt}</p>
-            <p className="mt-6 text-sm font-semibold text-white/60" data-testid="text-knowledge-article-author">Written by {article.author}</p>
+            <p className="mt-6 max-w-3xl text-lg leading-8 text-[hsl(var(--primary-foreground)/.9)]" data-testid="text-knowledge-article-excerpt">{article.excerpt}</p>
+            <p className="mt-6 text-sm font-semibold text-[hsl(var(--primary-foreground)/.8)]" data-testid="text-knowledge-article-author">Written by {article.author}</p>
           </div>
         </section>
 
@@ -66,11 +72,11 @@ export default function KnowledgeHubArticle() {
         <section className="px-6 py-14 sm:py-20 lg:px-10">
           <div className="mx-auto grid max-w-5xl gap-10 lg:grid-cols-[minmax(0,1fr)_15rem]">
             <article className="min-w-0">
-              <div className="whitespace-pre-wrap text-[1.05rem] leading-[1.9] text-[hsl(var(--foreground)/.84)]" data-testid="text-knowledge-article-body">{article.body}</div>
-              <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-[hsl(var(--border))] pt-6"><Link href="/knowledge-hub/articles" className="inline-flex items-center gap-2 text-sm font-bold text-[hsl(var(--primary))]" data-testid="link-knowledge-article-library"><ArrowLeft size={16} /> Browse all guidance</Link><Link href="/contact" className="inline-flex items-center gap-2 text-sm font-bold text-[hsl(var(--accent-foreground))]" data-testid="link-knowledge-article-contact">Talk to admissions <ArrowRight size={16} /></Link></div>
+              <div className="whitespace-pre-wrap text-[1.05rem] leading-[1.9] text-[hsl(var(--foreground))]" data-testid="text-knowledge-article-body">{article.body}</div>
+              <div className="mt-12 flex flex-wrap items-center justify-between gap-4 border-t border-[hsl(var(--border))] pt-6"><Link href="/knowledge-hub/articles" className="inline-flex items-center gap-2 text-sm font-bold text-[hsl(var(--primary))]" data-testid="link-knowledge-article-library"><ArrowLeft size={16} /> Browse all guidance</Link><Link href="/contact" className="inline-flex items-center gap-2 text-sm font-bold text-[hsl(var(--primary))] underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))]" data-testid="link-knowledge-article-contact">Talk to admissions <ArrowRight size={16} /></Link></div>
             </article>
             <aside className="h-fit rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--secondary))] p-5 lg:sticky lg:top-28" data-testid="panel-knowledge-article-meta">
-              <p className="text-xs font-bold uppercase tracking-[.16em] text-[hsl(var(--accent-foreground))]">Article notes</p>
+              <p className="inline-flex rounded-full border border-[hsl(var(--accent)/.22)] bg-[hsl(var(--accent)/.08)] px-2.5 py-1 text-xs font-bold uppercase tracking-[.16em] text-[hsl(var(--primary))]">ARTICLE NOTES</p>
               <div className="mt-5 space-y-4 text-sm"><div><p className="text-[hsl(var(--muted-foreground))]">Topic</p><p className="mt-1 font-bold text-[hsl(var(--primary))]">{article.categoryName}</p></div><div><p className="text-[hsl(var(--muted-foreground))]">Published</p><p className="mt-1 font-bold text-[hsl(var(--primary))]">{dateLabel(article.publishedAt)}</p></div><div><p className="text-[hsl(var(--muted-foreground))]">Reading time</p><p className="mt-1 font-bold text-[hsl(var(--primary))]">{article.readTimeMinutes} minutes</p></div></div>
             </aside>
           </div>

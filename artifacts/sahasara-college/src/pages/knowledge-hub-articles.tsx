@@ -80,7 +80,7 @@ function ArticleCard({ article }: { article: KnowledgeHubArticleSummary }) {
 function EmptyArticles({ searched }: { searched: boolean }) {
   return (
     <div className="rounded-[1.75rem] border border-dashed border-[hsl(var(--border))] bg-[hsl(var(--secondary)/.62)] px-6 py-14 text-center" data-testid="empty-knowledge-hub-articles">
-      <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-[hsl(var(--accent)/.12)] text-[hsl(var(--accent-foreground))]"><BookOpen size={25} /></div>
+      <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))]"><BookOpen size={25} /></div>
       <h3 className="mt-5 font-display text-3xl font-semibold tracking-[-.03em] text-[hsl(var(--primary))]">{searched ? 'No articles match that search.' : 'The first articles are being prepared.'}</h3>
       <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-[hsl(var(--muted-foreground))]">{searched ? 'Try another phrase or choose a different topic. Published guidance will appear here as it is approved.' : 'There are no published articles in the Knowledge Hub yet. Check back soon for practical guidance from the college.'}</p>
     </div>
@@ -188,11 +188,11 @@ export default function KnowledgeHubArticles() {
               <p className="mt-6 max-w-2xl text-base leading-7 text-[hsl(var(--muted-foreground))] sm:text-lg" data-testid="text-articles-hero-description">{settings.heroDescription}</p>
               <div className="mt-7 flex max-w-xl flex-col border-y border-[hsl(var(--border))] sm:flex-row">
                 <div className="flex items-center gap-3 py-4 sm:min-w-44 sm:flex-1 sm:pr-5" data-testid="metric-published-articles">
-                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[hsl(var(--accent)/.09)] text-[hsl(var(--accent-foreground))]"><BookOpen size={18} aria-hidden="true" /></span>
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))]"><BookOpen size={18} aria-hidden="true" /></span>
                   <span><span className="block font-display text-2xl font-semibold leading-none text-[hsl(var(--primary))]">{pageData.publishedArticleCount}</span><span className="mt-1 block text-xs text-[hsl(var(--muted-foreground))]">{settings.articlesMetricLabel}</span></span>
                 </div>
                 <div className="flex items-center gap-3 border-t border-[hsl(var(--border))] py-4 sm:min-w-52 sm:flex-1 sm:border-l sm:border-t-0 sm:pl-5" data-testid="metric-expert-insights">
-                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[hsl(var(--accent)/.09)] text-[hsl(var(--accent-foreground))]"><Sparkles size={18} aria-hidden="true" /></span>
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))]"><Sparkles size={18} aria-hidden="true" /></span>
                   <span><span className="block text-sm font-bold text-[hsl(var(--primary))]">{settings.expertsMetricTitle}</span><span className="mt-1 block text-xs text-[hsl(var(--muted-foreground))]">{settings.expertsMetricDescription}</span></span>
                 </div>
               </div>
@@ -212,10 +212,19 @@ export default function KnowledgeHubArticles() {
         {featured && (
           <section className="px-6 py-14 sm:py-20 lg:px-10">
             <div className="mx-auto max-w-7xl">
-              <p className="text-xs font-bold uppercase tracking-[.2em] text-[hsl(var(--accent-foreground))]">{settings.featuredEyebrow}</p>
+              <p className="text-xs font-bold uppercase tracking-[.2em] text-[hsl(var(--primary))]">{settings.featuredEyebrow}</p>
               <Link href={`/knowledge-hub/articles/${featured.slug}`} className="knowledge-featured group mt-5 grid overflow-hidden rounded-[1.8rem] border border-[hsl(var(--border))] bg-[hsl(var(--secondary))] shadow-[var(--shadow)] transition hover:-translate-y-1 hover:shadow-[var(--shadow-xl)] md:grid-cols-[.9fr_1.1fr]" data-testid="link-knowledge-featured-article">
                 <div className="relative min-h-64 overflow-hidden bg-[hsl(var(--primary))] md:min-h-80">{featured.coverImageUrl ? <img src={featured.coverImageUrl} alt={featured.coverImageAltText} className="h-full w-full object-cover transition duration-700 group-hover:scale-105" data-testid="img-knowledge-featured-article" /> : <div className="grid h-full place-items-center"><BookOpen size={64} strokeWidth={1} className="text-[hsl(var(--accent))]" /></div>}</div>
-                <div className="flex flex-col justify-center p-7 sm:p-10"><div className="flex flex-wrap items-center gap-3 text-[11px] font-bold uppercase tracking-[.14em] text-[hsl(var(--muted-foreground))]"><span className="text-[hsl(var(--accent-foreground))]">{featured.categoryName}</span><span>•</span><span>{featured.readTimeMinutes} min read</span></div><h2 className="mt-5 max-w-2xl font-display text-4xl font-semibold leading-tight tracking-[-.045em] text-[hsl(var(--primary))] sm:text-5xl">{featured.title}</h2><p className="mt-4 max-w-xl text-base leading-7 text-[hsl(var(--muted-foreground))]">{featured.excerpt}</p><span className="mt-7 inline-flex items-center gap-2 text-sm font-bold text-[hsl(var(--primary))]">Open featured article <ArrowRight size={17} className="transition-transform group-hover:translate-x-1" /></span></div>
+                <div className="flex flex-col justify-center p-7 sm:p-10">
+                  <div className="flex flex-wrap items-center gap-3 text-[11px] font-bold uppercase tracking-[.14em] text-[hsl(var(--muted-foreground))]">
+                    <span className="rounded-full bg-[hsl(var(--accent))] px-3 py-1.5 text-[hsl(var(--accent-foreground))]">{featured.categoryName}</span>
+                    <span aria-hidden="true">•</span>
+                    <span>{featured.readTimeMinutes} min read</span>
+                  </div>
+                  <h2 className="mt-5 max-w-2xl font-display text-3xl font-semibold leading-[1.08] tracking-[-.04em] text-[hsl(var(--primary))] sm:text-4xl lg:text-[2.8rem]">{featured.title}</h2>
+                  <p className="mt-4 max-w-xl text-base leading-7 text-[hsl(var(--muted-foreground))]">{featured.excerpt}</p>
+                  <span className="mt-7 inline-flex items-center gap-2 text-sm font-bold text-[hsl(var(--primary))]">Open featured article <ArrowRight size={17} className="transition-transform group-hover:translate-x-1" /></span>
+                </div>
               </Link>
             </div>
           </section>
@@ -223,14 +232,14 @@ export default function KnowledgeHubArticles() {
 
         <section className="home-paper-grid border-y border-[hsl(var(--border))] px-6 py-16 sm:py-20 lg:px-10" id="articles-list">
           <div className="mx-auto max-w-7xl">
-            <div className="max-w-2xl"><p className="text-xs font-bold uppercase tracking-[.2em] text-[hsl(var(--accent-foreground))]">{settings.articlesEyebrow}</p><h2 className="mt-3 font-display text-4xl font-semibold leading-tight tracking-[-.05em] text-[hsl(var(--primary))] sm:text-5xl" data-testid="text-articles-heading">{settings.articlesHeading}</h2><p className="mt-4 text-base leading-7 text-[hsl(var(--muted-foreground))]">{settings.articlesDescription}</p></div>
+            <div className="max-w-2xl"><p className="text-xs font-bold uppercase tracking-[.2em] text-[hsl(var(--primary))]">{settings.articlesEyebrow}</p><h2 className="mt-3 font-display text-4xl font-semibold leading-tight tracking-[-.05em] text-[hsl(var(--primary))] sm:text-5xl" data-testid="text-articles-heading">{settings.articlesHeading}</h2><p className="mt-4 text-base leading-7 text-[hsl(var(--muted-foreground))]">{settings.articlesDescription}</p></div>
             <div className="mt-9 grid items-start gap-7 lg:grid-cols-[minmax(0,1fr)_19rem]">
               <div className="min-w-0">
             <div className="mt-0 flex flex-col gap-3 rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card)/.86)] p-3 shadow-[var(--shadow-xs)] sm:flex-row">
               <label className="relative flex min-h-12 flex-1 items-center"><Search size={18} className="absolute left-4 text-[hsl(var(--muted-foreground))]" /><span className="sr-only">Search articles</span><input type="search" value={search} onChange={(event) => setSearch(event.target.value)} placeholder={settings.searchPlaceholder} className="h-12 w-full rounded-xl bg-transparent pl-11 pr-4 text-sm outline-none placeholder:text-[hsl(var(--muted-foreground))]" data-testid="input-knowledge-article-search" /></label>
               <select value={sort} onChange={(event) => setSort(event.target.value as typeof sort)} className="min-h-12 min-w-36 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] px-4 text-sm font-semibold text-[hsl(var(--foreground))] outline-none" aria-label="Sort articles" data-testid="select-knowledge-article-sort"><option value="recent">Most recent</option><option value="oldest">Oldest first</option><option value="title">Title A–Z</option></select>
             </div>
-            <div className="mt-8 flex items-center justify-between gap-4 text-xs font-bold uppercase tracking-[.15em] text-[hsl(var(--muted-foreground))]"><span data-testid="text-knowledge-article-result-count">{articlesQuery.data?.total ?? 0} published {articlesQuery.data?.total === 1 ? 'article' : 'articles'}</span>{(search || category) && <button type="button" onClick={() => { setSearch(''); setCategory(''); }} className="text-[hsl(var(--accent-foreground))] hover:underline" data-testid="button-clear-knowledge-article-filters">Clear filters</button>}</div>
+            <div className="mt-8 flex items-center justify-between gap-4 text-xs font-bold uppercase tracking-[.15em] text-[hsl(var(--muted-foreground))]"><span data-testid="text-knowledge-article-result-count">{articlesQuery.data?.total ?? 0} published {articlesQuery.data?.total === 1 ? 'article' : 'articles'}</span>{(search || category) && <button type="button" onClick={() => { setSearch(''); setCategory(''); }} className="text-[hsl(var(--primary))] underline-offset-2 hover:underline" data-testid="button-clear-knowledge-article-filters">Clear filters</button>}</div>
             <div className="mt-5">{articlesQuery.isLoading ? <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3"><div className="h-96 animate-pulse rounded-[1.45rem] bg-[hsl(var(--muted))]" /><div className="h-96 animate-pulse rounded-[1.45rem] bg-[hsl(var(--muted))]" /><div className="h-96 animate-pulse rounded-[1.45rem] bg-[hsl(var(--muted))]" /></div> : articlesQuery.isError ? <ErrorState retry={() => { void articlesQuery.refetch(); }} /> : articles.length === 0 ? <EmptyArticles searched={Boolean(search || category)} /> : <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">{articles.map((article) => <ArticleCard key={article.id} article={article} />)}</div>}</div>
             {!articlesQuery.isLoading && !articlesQuery.isError && articles.length > 0 && articlesQuery.data?.hasMore && <div className="mt-9 text-center"><button type="button" onClick={() => setOffset((current) => current + limit)} className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-[hsl(var(--primary)/.22)] bg-[hsl(var(--card))] px-5 text-sm font-bold text-[hsl(var(--primary))] transition hover:-translate-y-0.5 hover:border-[hsl(var(--accent))]" data-testid="button-load-more-knowledge-articles">Load more articles <ArrowRight size={16} /></button></div>}
               </div>
