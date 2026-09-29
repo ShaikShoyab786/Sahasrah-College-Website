@@ -56,6 +56,15 @@ function youtube(value: string) {
     return `https://www.youtube.com/watch?v=${id}`;
   } catch { return null; }
 }
+function uniqueVideos<T extends { id: string; youtubeUrl: string }>(videos: T[]) {
+  const seen = new Set<string>();
+  return videos.filter((video) => {
+    const key = youtube(video.youtubeUrl) ?? video.id;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
 function summary(video: any) {
   return {
     id: video.id, title: video.title, slug: video.slug, categoryId: video.categoryId,
@@ -108,25 +117,24 @@ function parseQuery(req: any) {
 
 router.get("/knowledge-hub/video-hub/page", async (req, res): Promise<void> => {
   try {
-    const [settings, cats] = await Promise.all([
+    const where: Prisma.KnowledgeHubVideoWhereInput = { status: "published", category: { isVisible: true } };
+    const [settings, cats, videoRows] = await Promise.all([
       prisma.knowledgeHubVideoHubSettings.findUnique({ where: { id: "singleton" } }),
       categories(true),
+      prisma.knowledgeHubVideo.findMany({ where, include, orderBy: [{ displayOrder: "asc" }, { publishedAt: "desc" }] }),
     ]);
-    const where: Prisma.KnowledgeHubVideoWhereInput = { status: "published", category: { isVisible: true } };
-    const [videos, count] = await Promise.all([
-      prisma.knowledgeHubVideo.findMany({ where, include, orderBy: [{ displayOrder: "asc" }, { publishedAt: "desc" }], take: 5 }),
-      prisma.knowledgeHubVideo.count({ where }),
-    ]);
+    const videos = uniqueVideos(videoRows);
     let featured = null;
     if (settings?.featuredVideoId) {
       const found = await prisma.knowledgeHubVideo.findFirst({ where: { id: settings.featuredVideoId, ...where }, include });
       if (found) featured = summary(found);
     }
-    const related = videos.filter((v) => v.id !== featured?.id).slice(0, 4).map(summary);
+    const featuredIdentity = featured ? youtube(featured.youtubeUrl) ?? featured.id : null;
+    const related = videos.filter((video) => video.id !== featured?.id && (youtube(video.youtubeUrl) ?? video.id) !== featuredIdentity).slice(0, 4).map(summary);
     const { heroBackgroundImageObjectPath: _privateHeroImagePath, ...publicSettings } = pageSettings(settings);
     res.json(GetKnowledgeHubVideoHubPageResponse.parse({
       settings: { ...publicSettings, heroBackgroundImageUrl: assetUrl(settings?.heroBackgroundImageObjectPath ?? null) },
-      featuredVideo: featured, relatedVideos: related, publishedVideoCount: count, categories: cats,
+      featuredVideo: featured, relatedVideos: related, publishedVideoCount: videos.length, categories: cats,
     }));
   } catch (error) {
     req.log.error({ err: error }, "Unable to read Video Hub page");
@@ -142,11 +150,11 @@ router.get("/knowledge-hub/video-hub/videos", async (req, res): Promise<void> =>
     ...(data.search ? { OR: [{ title: { contains: data.search, mode: "insensitive" } }, { description: { contains: data.search, mode: "insensitive" } }, { instructor: { contains: data.search, mode: "insensitive" } }, { category: { name: { contains: data.search, mode: "insensitive" } } }] } : {}) };
   const orderBy: Prisma.KnowledgeHubVideoOrderByWithRelationInput[] = data.sort === "title" ? [{ title: "asc" }, { id: "asc" }] : data.sort === "oldest" ? [{ publishedAt: "asc" }, { id: "asc" }] : data.sort === "displayOrder" ? [{ displayOrder: "asc" }, { id: "asc" }] : [{ publishedAt: "desc" }, { id: "asc" }];
   try {
-    const [videos, total] = await Promise.all([
-      prisma.knowledgeHubVideo.findMany({ where, include, orderBy, skip: data.offset, take: data.limit }),
-      prisma.knowledgeHubVideo.count({ where }),
-    ]);
-    res.json(GetKnowledgeHubVideoHubVideosResponse.parse({ items: videos.map(summary), total, offset: data.offset, limit: data.limit, hasMore: data.offset + videos.length < total }));
+    const rows = await prisma.knowledgeHubVideo.findMany({ where, include, orderBy });
+    const videos = uniqueVideos(rows);
+    const total = videos.length;
+    const page = videos.slice(data.offset, data.offset + data.limit);
+    res.json(GetKnowledgeHubVideoHubVideosResponse.parse({ items: page.map(summary), total, offset: data.offset, limit: data.limit, hasMore: data.offset + page.length < total }));
   } catch (error) { req.log.error({ err: error }, "Unable to search Video Hub"); res.status(500).json({ error: "Unable to load videos." }); }
 });
 

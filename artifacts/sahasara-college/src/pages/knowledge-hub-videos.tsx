@@ -15,20 +15,36 @@ const fallbackSettings = {
   footerText: 'A public college for curious minds and purposeful lives.',
 };
 
-function isYoutubeUrl(value: string) {
+const videoBatchSize = 6;
+
+function youtubeVideoId(value: string) {
   try {
     const url = new URL(value);
-    if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password || url.port) return false;
+    if (!['http:', 'https:'].includes(url.protocol) || url.username || url.password || url.port) return null;
     const pathParts = url.pathname.split('/').filter(Boolean);
     const id = url.hostname === 'youtu.be'
       ? pathParts.length === 1 ? pathParts[0] : ''
       : ['youtube.com', 'www.youtube.com', 'm.youtube.com'].includes(url.hostname)
         ? url.pathname === '/watch' ? url.searchParams.get('v') : pathParts.length === 2 && ['shorts', 'embed', 'live', 'v'].includes(pathParts[0]) ? pathParts[1] : ''
         : '';
-    return /^[A-Za-z0-9_-]{11}$/.test(id || '');
+    return /^[A-Za-z0-9_-]{11}$/.test(id || '') ? id : null;
   } catch {
-    return false;
+    return null;
   }
+}
+
+function isYoutubeUrl(value: string) {
+  return youtubeVideoId(value) !== null;
+}
+
+function uniqueVideos(videos: KnowledgeHubVideoSummary[]) {
+  const seen = new Set<string>();
+  return videos.filter((video) => {
+    const key = youtubeVideoId(video.youtubeUrl) ?? video.id;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 }
 
 function dateLabel(value?: string | null) {
@@ -70,6 +86,17 @@ function VideoCard({ video }: { video: KnowledgeHubVideoSummary }) {
   );
 }
 
+function EmptyVideoLibrary({ searched, title, description, onClear }: { searched: boolean; title: string; description: string; onClear: () => void }) {
+  return (
+    <div className="mt-8 rounded-[1.5rem] border border-dashed border-[hsl(var(--border))] bg-[hsl(var(--card))] px-6 py-16 text-center" data-testid="empty-video-library">
+      <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-[hsl(var(--accent)/.17)] text-[hsl(var(--primary))]"><Search size={22} /></div>
+      <h3 className="mt-5 font-display text-3xl font-semibold text-[hsl(var(--primary))]">{searched ? 'No sessions match that search.' : title}</h3>
+      <p className="mx-auto mt-3 max-w-lg text-sm leading-6 text-[hsl(var(--muted-foreground))]">{searched ? 'Try a different subject or clear the search to browse every published session.' : description}</p>
+      {searched && <button type="button" onClick={onClear} className="mt-6 inline-flex h-10 items-center gap-2 rounded-lg bg-[hsl(var(--primary))] px-4 text-xs font-bold text-[hsl(var(--primary-foreground))]" data-testid="button-reset-video-filters">Clear filters <X size={14} /></button>}
+    </div>
+  );
+}
+
 function FeaturedSession({ video, relatedVideos, eyebrow, onSelect }: { video: KnowledgeHubVideoSummary; relatedVideos: KnowledgeHubVideoSummary[]; eyebrow: string; onSelect: (video: KnowledgeHubVideoSummary) => void }) {
   return (
     <section className="px-6 py-14 sm:py-20 lg:px-10" data-testid="section-featured-video">
@@ -102,17 +129,30 @@ export default function KnowledgeHubVideos() {
   const [category, setCategory] = useState('');
   const [sort, setSort] = useState<'displayOrder' | 'recent' | 'oldest' | 'title'>('displayOrder');
   const [offset, setOffset] = useState(0);
+  const [loadedVideos, setLoadedVideos] = useState<KnowledgeHubVideoSummary[]>([]);
+  const [libraryTotal, setLibraryTotal] = useState<number | null>(null);
   const [activeFeaturedId, setActiveFeaturedId] = useState<string | null>(null);
-  const params = useMemo(() => ({ ...(search.trim() ? { search: search.trim() } : {}), ...(category ? { category } : {}), sort, offset, limit: 9 }), [search, category, sort, offset]);
+  const params = useMemo(() => ({ ...(search.trim() ? { search: search.trim() } : {}), ...(category ? { category } : {}), sort, offset, limit: videoBatchSize }), [search, category, sort, offset]);
   const videosQuery = useGetKnowledgeHubVideoHubVideos(params);
   const settings = siteQuery.data ?? fallbackSettings;
   const page = pageQuery.data;
-  const videos = videosQuery.data?.items ?? [];
-  const validVideos = videos.filter((video) => isYoutubeUrl(video.youtubeUrl));
+  const validVideos = uniqueVideos(loadedVideos).filter((video) => isYoutubeUrl(video.youtubeUrl));
   const visibleCategories = page?.categories?.filter((item) => item.isVisible) ?? [];
-  const featuredCandidates = page ? [...(page.featuredVideo ? [page.featuredVideo] : []), ...page.relatedVideos] : [];
+  const featuredCandidates = page ? uniqueVideos([...(page.featuredVideo ? [page.featuredVideo] : []), ...page.relatedVideos]) : [];
   const activeFeaturedVideo = featuredCandidates.find((video) => video.id === activeFeaturedId) ?? page?.featuredVideo ?? page?.relatedVideos[0] ?? null;
   const otherFeaturedVideos = featuredCandidates.filter((video) => video.id !== activeFeaturedVideo?.id);
+
+  useEffect(() => {
+    if (!videosQuery.data) return;
+    setLoadedVideos((current) => uniqueVideos(videosQuery.data.offset === 0 ? videosQuery.data.items : [...current, ...videosQuery.data.items]));
+    setLibraryTotal(videosQuery.data.total);
+  }, [videosQuery.data]);
+
+  const resetLibrary = () => {
+    setOffset(0);
+    setLoadedVideos([]);
+    setLibraryTotal(null);
+  };
 
   useEffect(() => {
     setActiveFeaturedId(null);
@@ -151,7 +191,7 @@ export default function KnowledgeHubVideos() {
 
   if (pageQuery.isLoading || siteQuery.isLoading) return <PublicSkeleton />;
   if (pageQuery.isError || !page) {
-    return <main className="grid min-h-[100dvh] place-items-center bg-[hsl(var(--background))] px-6"><div className="max-w-lg text-center" role="alert" data-testid="status-video-hub-error"><p className="text-xs font-bold uppercase tracking-[.2em] text-[hsl(var(--accent-foreground))]">Video Hub unavailable</p><h1 className="mt-4 font-display text-4xl font-semibold text-[hsl(var(--primary))]">The library could not be loaded.</h1><p className="mt-4 text-sm leading-6 text-[hsl(var(--muted-foreground))]">Please try again shortly.</p><button type="button" onClick={() => pageQuery.refetch()} className="mt-6 inline-flex h-11 items-center rounded-xl bg-[hsl(var(--primary))] px-5 text-sm font-bold text-[hsl(var(--primary-foreground))]" data-testid="button-retry-video-hub">Try again</button></div></main>;
+    return <main className="grid min-h-[100dvh] place-items-center bg-[hsl(var(--background))] px-6"><div className="max-w-lg text-center" role="alert" data-testid="status-video-hub-error"><p className="text-xs font-bold uppercase tracking-[.2em] text-[hsl(var(--primary))]">Video Hub unavailable</p><h1 className="mt-4 font-display text-4xl font-semibold text-[hsl(var(--primary))]">The library could not be loaded.</h1><p className="mt-4 text-sm leading-6 text-[hsl(var(--muted-foreground))]">Please try again shortly.</p><button type="button" onClick={() => pageQuery.refetch()} className="mt-6 inline-flex h-11 items-center rounded-xl bg-[hsl(var(--primary))] px-5 text-sm font-bold text-[hsl(var(--primary-foreground))]" data-testid="button-retry-video-hub">Try again</button></div></main>;
   }
 
   return (
@@ -164,7 +204,7 @@ export default function KnowledgeHubVideos() {
           <div className="absolute -right-20 top-12 -z-10 h-80 w-80 rounded-full border border-[hsl(var(--accent)/.35)] opacity-70" aria-hidden="true" />
           <div className="mx-auto max-w-7xl">
             <div className="max-w-3xl">
-              <p className="results-hero-eyebrow inline-flex items-center gap-2 rounded-full border border-[hsl(var(--accent)/.4)] bg-[hsl(var(--accent)/.1)] px-3 py-2 text-xs font-bold uppercase tracking-[.18em] text-[hsl(var(--accent))]" data-testid="text-video-hub-hero-eyebrow"><Play size={14} fill="currentColor" />{page.settings.heroEyebrow}</p>
+              <p className="results-hero-eyebrow inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-3 py-2 text-xs font-bold uppercase tracking-[.18em] text-[hsl(var(--primary-foreground))]" data-testid="text-video-hub-hero-eyebrow"><Play size={14} fill="currentColor" className="text-[hsl(var(--accent))]" />{page.settings.heroEyebrow}</p>
               <h1 className="results-hero-heading mt-6 max-w-3xl font-display text-5xl font-semibold leading-[.98] tracking-[-.055em] sm:text-7xl" data-testid="text-video-hub-hero-title">{page.settings.heroTitle}{page.settings.heroAccentText && <span className="block text-[hsl(var(--accent))]">{page.settings.heroAccentText}</span>}</h1>
               <p className="results-hero-description mt-6 max-w-2xl text-base leading-7 text-white/75 sm:text-lg">{page.settings.heroDescription}</p>
               <a href="#video-library" className="mt-8 inline-flex min-h-12 items-center gap-2 rounded-xl bg-[hsl(var(--accent))] px-5 text-sm font-bold text-[hsl(var(--accent-foreground))] transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white" data-testid="link-video-hub-hero-cta">{page.settings.heroCtaLabel} <ArrowRight size={17} /></a>
@@ -175,11 +215,34 @@ export default function KnowledgeHubVideos() {
         {activeFeaturedVideo && isYoutubeUrl(activeFeaturedVideo.youtubeUrl) && <FeaturedSession video={activeFeaturedVideo} relatedVideos={otherFeaturedVideos} onSelect={(video) => setActiveFeaturedId(video.id)} eyebrow={page.settings.featuredEyebrow} />}
         <section id="video-library" className="bg-[hsl(var(--secondary))] px-6 py-14 sm:py-20 lg:px-10" data-testid="section-video-library">
           <div className="mx-auto max-w-7xl">
-            <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end"><div><p className="text-xs font-bold uppercase tracking-[.2em] text-[hsl(var(--accent-foreground))]">{page.settings.libraryEyebrow}</p><h2 className="mt-3 max-w-3xl font-display text-4xl font-semibold leading-tight tracking-[-.045em] text-[hsl(var(--primary))] sm:text-5xl" data-testid="text-video-library-title">{page.settings.libraryTitle}</h2><p className="mt-4 max-w-2xl text-sm leading-7 text-[hsl(var(--muted-foreground))]">{page.settings.libraryDescription}</p></div><div className="flex items-center gap-2 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] px-4 py-3 text-sm font-semibold text-[hsl(var(--muted-foreground))]" data-testid="text-video-count"><Video size={16} /> {page.publishedVideoCount} published {page.publishedVideoCount === 1 ? 'session' : 'sessions'}</div></div>
-            <div className="mt-9 rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-3 shadow-[var(--shadow-xs)]"><div className="flex flex-col gap-3 lg:flex-row"><label className="flex min-h-12 flex-1 items-center gap-3 rounded-xl bg-[hsl(var(--secondary))] px-4"><Search size={18} className="text-[hsl(var(--muted-foreground))]" /><span className="sr-only">Search videos</span><input value={search} onChange={(event) => { setSearch(event.target.value); setOffset(0); }} placeholder={page.settings.searchPlaceholder} className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-[hsl(var(--muted-foreground))]" data-testid="input-search-videos" />{search && <button type="button" onClick={() => { setSearch(''); setOffset(0); }} className="rounded-full p-1 text-[hsl(var(--muted-foreground))] hover:bg-[hsl(var(--muted))]" aria-label="Clear search" data-testid="button-clear-video-search"><X size={16} /></button>}</label><div className="flex gap-3"><label className="flex min-h-12 flex-1 items-center gap-2 rounded-xl border border-[hsl(var(--border))] px-3 lg:w-48"><SlidersHorizontal size={16} className="text-[hsl(var(--muted-foreground))]" /><span className="sr-only">Sort videos</span><select value={sort} onChange={(event) => { setSort(event.target.value as typeof sort); setOffset(0); }} className="w-full bg-transparent text-sm font-semibold outline-none" data-testid="select-video-sort"><option value="displayOrder">Curated order</option><option value="recent">Latest first</option><option value="oldest">Oldest first</option><option value="title">Title A–Z</option></select></label><label className="flex min-h-12 flex-1 items-center gap-2 rounded-xl border border-[hsl(var(--border))] px-3 lg:w-52"><ChevronDown size={16} className="text-[hsl(var(--muted-foreground))]" /><span className="sr-only">Filter videos</span><select value={category} onChange={(event) => { setCategory(event.target.value); setOffset(0); }} className="w-full bg-transparent text-sm font-semibold outline-none" data-testid="select-video-category"><option value="">All subjects</option>{visibleCategories.map((item) => <option key={item.id} value={item.slug}>{item.name}</option>)}</select></label></div></div></div>
-            {videosQuery.isError ? <div className="mt-8 rounded-2xl border border-[hsl(var(--destructive)/.25)] bg-[hsl(var(--destructive)/.06)] p-7 text-center" role="alert" data-testid="status-video-library-error"><p className="text-sm font-bold text-[hsl(var(--destructive))]">The sessions could not be loaded.</p><button type="button" onClick={() => videosQuery.refetch()} className="mt-4 inline-flex h-10 items-center rounded-lg bg-[hsl(var(--primary))] px-4 text-xs font-bold text-[hsl(var(--primary-foreground))]" data-testid="button-retry-video-library">Try again</button></div> : videosQuery.isLoading ? <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3"><div className="h-80 animate-pulse rounded-2xl bg-[hsl(var(--muted))]" /><div className="h-80 rounded-2xl bg-[hsl(var(--muted))]" /><div className="h-80 rounded-2xl bg-[hsl(var(--muted))]" /></div> : validVideos.length > 0 ? <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">{validVideos.map((video) => <VideoCard key={video.id} video={video} />)}</div> : <div className="mt-8 rounded-[1.5rem] border border-dashed border-[hsl(var(--border))] bg-[hsl(var(--card))] px-6 py-16 text-center" data-testid="empty-video-library"><div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-[hsl(var(--accent)/.17)] text-[hsl(var(--accent-foreground))]"><Search size={22} /></div><h3 className="mt-5 font-display text-3xl font-semibold text-[hsl(var(--primary))]">{search || category ? 'No sessions match that search.' : page.settings.emptyStateTitle}</h3><p className="mx-auto mt-3 max-w-lg text-sm leading-6 text-[hsl(var(--muted-foreground))]">{search || category ? 'Try a different subject or clear the search to browse every published session.' : page.settings.emptyStateDescription}</p>{(search || category) && <button type="button" onClick={() => { setSearch(''); setCategory(''); setOffset(0); }} className="mt-6 inline-flex h-10 items-center gap-2 rounded-lg bg-[hsl(var(--primary))] px-4 text-xs font-bold text-[hsl(var(--primary-foreground))]" data-testid="button-reset-video-filters">Clear filters <X size={14} /></button>}</div>}
-            {videosQuery.isError ? <div className="mt-8 rounded-2xl border border-[hsl(var(--destructive)/.25)] bg-[hsl(var(--destructive)/.06)] p-7 text-center" role="alert" data-testid="status-video-library-error"><p className="text-sm font-bold text-[hsl(var(--destructive))]">The sessions could not be loaded.</p><button type="button" onClick={() => videosQuery.refetch()} className="mt-4 inline-flex h-10 items-center rounded-lg bg-[hsl(var(--primary))] px-4 text-xs font-bold text-[hsl(var(--primary-foreground))]" data-testid="button-retry-video-library">Try again</button></div> : videosQuery.isLoading ? <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3"><div className="h-80 animate-pulse rounded-2xl bg-[hsl(var(--muted))]" /><div className="h-80 rounded-2xl bg-[hsl(var(--muted))]" /><div className="h-80 rounded-2xl bg-[hsl(var(--muted))]" /></div> : validVideos.length > 0 ? <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">{validVideos.map((video) => <VideoCard key={video.id} video={video} />)}</div> : <div className="mt-8 rounded-[1.5rem] border border-dashed border-[hsl(var(--border))] bg-[hsl(var(--card))] px-6 py-16 text-center" data-testid="empty-video-library"><div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-[hsl(var(--accent)/.17)] text-[hsl(var(--accent-foreground))]"><Search size={22} /></div><h3 className="mt-5 font-display text-3xl font-semibold text-[hsl(var(--primary))]">{search || category ? 'No sessions match that search.' : page.settings.emptyStateTitle}</h3><p className="mx-auto mt-3 max-w-lg text-sm leading-6 text-[hsl(var(--muted-foreground))]">{search || category ? 'Try a different subject or clear the search to browse every published session.' : page.settings.emptyStateDescription}</p>{(search || category) && <button type="button" onClick={() => { setSearch(''); setCategory(''); setOffset(0); }} className="mt-6 inline-flex h-10 items-center gap-2 rounded-lg bg-[hsl(var(--primary))] px-4 text-xs font-bold text-[hsl(var(--primary-foreground))]" data-testid="button-reset-video-filters">Clear filters <X size={14} /></button>}</div>}
-            {!videosQuery.isError && videosQuery.data && videosQuery.data.total > videosQuery.data.limit && <nav className="mt-8 flex flex-col items-center justify-between gap-4 border-t border-[hsl(var(--border))] pt-6 sm:flex-row" aria-label="Video library pages" data-testid="video-library-pagination"><p className="text-sm text-[hsl(var(--muted-foreground))]">Showing {videosQuery.data.total === 0 ? 0 : offset + 1}–{Math.min(offset + videosQuery.data.items.length, videosQuery.data.total)} of {videosQuery.data.total}</p><div className="flex gap-2"><button type="button" onClick={() => setOffset((current) => Math.max(0, current - videosQuery.data!.limit))} disabled={offset === 0 || videosQuery.isFetching} className="inline-flex h-10 items-center rounded-lg border border-[hsl(var(--border))] px-4 text-sm font-semibold text-[hsl(var(--primary))] disabled:opacity-45" data-testid="button-video-page-previous">Previous</button><button type="button" onClick={() => setOffset((current) => current + videosQuery.data!.limit)} disabled={!videosQuery.data.hasMore || videosQuery.isFetching} className="inline-flex h-10 items-center gap-2 rounded-lg bg-[hsl(var(--primary))] px-4 text-sm font-semibold text-[hsl(var(--primary-foreground))] disabled:opacity-45" data-testid="button-video-page-next">Next <ArrowRight size={15} /></button></div></nav>}
+            <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end"><div><p className="text-xs font-bold uppercase tracking-[.2em] text-[hsl(var(--primary))]" data-testid="text-video-hub-library-eyebrow">{page.settings.libraryEyebrow}</p><h2 className="mt-3 max-w-3xl font-display text-4xl font-semibold leading-tight tracking-[-.045em] text-[hsl(var(--primary))] sm:text-5xl" data-testid="text-video-library-title">{page.settings.libraryTitle}</h2><p className="mt-4 max-w-2xl text-sm leading-7 text-[hsl(var(--muted-foreground))]">{page.settings.libraryDescription}</p></div><div className="flex items-center gap-2 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] px-4 py-3 text-sm font-semibold text-[hsl(var(--muted-foreground))]" data-testid="text-video-count"><Video size={16} /> {page.publishedVideoCount} published {page.publishedVideoCount === 1 ? 'session' : 'sessions'}</div></div>
+            <div className="mt-9 rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-3 shadow-[var(--shadow-xs)]"><div className="flex flex-col gap-3 lg:flex-row"><label className="flex min-h-12 flex-1 items-center gap-3 rounded-xl bg-[hsl(var(--secondary))] px-4"><Search size={18} className="text-[hsl(var(--muted-foreground))]" /><span className="sr-only">Search videos</span><input value={search} onChange={(event) => { setSearch(event.target.value); resetLibrary(); }} placeholder={page.settings.searchPlaceholder} className="min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-[hsl(var(--muted-foreground))]" data-testid="input-search-videos" />{search && <button type="button" onClick={() => { setSearch(''); resetLibrary(); }} className="rounded-full p-1 text-[hsl(var(--muted-foreground))] hover:bg-[hsl(var(--muted))]" aria-label="Clear search" data-testid="button-clear-video-search"><X size={16} /></button>}</label><div className="flex gap-3"><label className="flex min-h-12 flex-1 items-center gap-2 rounded-xl border border-[hsl(var(--border))] px-3 lg:w-48"><SlidersHorizontal size={16} className="text-[hsl(var(--muted-foreground))]" /><span className="sr-only">Sort videos</span><select value={sort} onChange={(event) => { setSort(event.target.value as typeof sort); resetLibrary(); }} className="w-full bg-transparent text-sm font-semibold outline-none" data-testid="select-video-sort"><option value="displayOrder">Curated order</option><option value="recent">Latest first</option><option value="oldest">Oldest first</option><option value="title">Title A–Z</option></select></label><label className="flex min-h-12 flex-1 items-center gap-2 rounded-xl border border-[hsl(var(--border))] px-3 lg:w-52"><ChevronDown size={16} className="text-[hsl(var(--muted-foreground))]" /><span className="sr-only">Filter videos</span><select value={category} onChange={(event) => { setCategory(event.target.value); resetLibrary(); }} className="w-full bg-transparent text-sm font-semibold outline-none" data-testid="select-video-category"><option value="">All subjects</option>{visibleCategories.map((item) => <option key={item.id} value={item.slug}>{item.name}</option>)}</select></label></div></div></div>
+            <div className="mt-8" aria-live="polite">
+              {videosQuery.isError && loadedVideos.length === 0 ? (
+                <div className="rounded-2xl border border-[hsl(var(--destructive)/.25)] bg-[hsl(var(--destructive)/.06)] p-7 text-center" role="alert" data-testid="status-video-library-error">
+                  <p className="text-sm font-bold text-[hsl(var(--destructive))]">The sessions could not be loaded.</p>
+                  <button type="button" onClick={() => videosQuery.refetch()} className="mt-4 inline-flex h-10 items-center rounded-lg bg-[hsl(var(--primary))] px-4 text-xs font-bold text-[hsl(var(--primary-foreground))]" data-testid="button-retry-video-library">Try again</button>
+                </div>
+              ) : videosQuery.isLoading && loadedVideos.length === 0 ? (
+                <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+                  {Array.from({ length: videoBatchSize }, (_, index) => <div key={index} className="h-80 animate-pulse rounded-2xl bg-[hsl(var(--muted))]" />)}
+                </div>
+              ) : validVideos.length > 0 ? (
+                <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3" data-testid="video-library-grid">
+                  {validVideos.map((video) => <VideoCard key={video.id} video={video} />)}
+                </div>
+              ) : (
+                <EmptyVideoLibrary searched={Boolean(search || category)} title={page.settings.emptyStateTitle} description={page.settings.emptyStateDescription} onClear={() => { setSearch(''); setCategory(''); resetLibrary(); }} />
+              )}
+              {videosQuery.isFetching && loadedVideos.length > 0 && <p className="mt-4 text-center text-sm text-[hsl(var(--muted-foreground))]" role="status">Loading more sessions…</p>}
+              {videosQuery.isError && loadedVideos.length > 0 && <p className="mt-4 text-center text-sm text-[hsl(var(--destructive))]" role="alert">The next sessions could not be loaded. <button type="button" onClick={() => videosQuery.refetch()} className="font-bold underline underline-offset-2">Retry</button></p>}
+            </div>
+            {libraryTotal !== null && libraryTotal > videoBatchSize && (
+              <div className="mt-8 flex flex-wrap items-center justify-center gap-3" data-testid="video-library-controls">
+                {loadedVideos.length < libraryTotal && <button type="button" onClick={() => setOffset((current) => current + videoBatchSize)} disabled={videosQuery.isFetching} className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-[hsl(var(--primary)/.22)] bg-[hsl(var(--card))] px-5 text-sm font-bold text-[hsl(var(--primary))] transition hover:-translate-y-0.5 hover:border-[hsl(var(--accent))] disabled:opacity-50" data-testid="button-load-more-video-hub">{videosQuery.isFetching ? 'Loading…' : 'Load More'} <ArrowRight size={16} /></button>}
+                {loadedVideos.length > videoBatchSize && <button type="button" onClick={() => { setOffset(0); setLoadedVideos((current) => current.slice(0, videoBatchSize)); }} className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-[hsl(var(--primary)/.22)] bg-[hsl(var(--card))] px-5 text-sm font-bold text-[hsl(var(--primary))] transition hover:-translate-y-0.5 hover:border-[hsl(var(--accent))]" data-testid="button-view-less-video-hub">View Less <ChevronDown size={16} className="rotate-180" /></button>}
+              </div>
+            )}
           </div>
         </section>
       </main>
