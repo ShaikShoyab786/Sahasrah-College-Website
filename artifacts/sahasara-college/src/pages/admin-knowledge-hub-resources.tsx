@@ -82,6 +82,17 @@ function blankResource(categoryId = '', order = 1): KnowledgeHubResourceInput {
   };
 }
 
+function normalizeResourceSlug(value: string) {
+  return value
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 180)
+    .replace(/-+$/g, '');
+}
+
 function objectPreviewUrl(objectPath: string | null) {
   if (!objectPath?.startsWith('/objects/uploads/')) return null;
   const assetId = objectPath.split('/').pop();
@@ -297,8 +308,11 @@ export default function AdminKnowledgeHubResources() {
 
   const saveResource = (event: FormEvent) => {
     event.preventDefault(); setError(''); setNotice('');
-    if (!resourceForm.title.trim() || !resourceForm.slug.trim() || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(resourceForm.slug) || !resourceForm.categoryId || !resourceForm.description.trim() || !resourceForm.subject.trim() || !resourceForm.classLevel.trim() || !resourceForm.language.trim() || !resourceForm.pdfObjectPath || !resourceForm.pdfFileName || (resourceForm.coverImageObjectPath && !resourceForm.coverImageAltText.trim()) || resourceForm.displayOrder < 1) { setError('Complete the required resource fields, including a valid uploaded PDF.'); return; }
-    const data = { ...resourceForm, tags: tagsText.split(',').map((tag) => tag.trim()).filter(Boolean).slice(0, 20) };
+    const slug = normalizeResourceSlug(resourceForm.slug || resourceForm.title);
+    if (!slug) { setError('Enter a title or slug that can be converted into a lowercase URL slug.'); return; }
+    if (slug !== resourceForm.slug) setResourceForm((current) => ({ ...current, slug }));
+    if (!resourceForm.title.trim() || !resourceForm.categoryId || !resourceForm.description.trim() || !resourceForm.subject.trim() || !resourceForm.classLevel.trim() || !resourceForm.language.trim() || !resourceForm.pdfObjectPath || !resourceForm.pdfFileName || (resourceForm.coverImageObjectPath && !resourceForm.coverImageAltText.trim()) || resourceForm.displayOrder < 1) { setError('Complete the required resource fields, including a valid uploaded PDF.'); return; }
+    const data = { ...resourceForm, slug, tags: tagsText.split(',').map((tag) => tag.trim()).filter(Boolean).slice(0, 20) };
     const done = (saved: KnowledgeHubResourceRecord) => { clearUnavailableFeaturedResource(saved); setResources((current) => resourceId ? current.map((item) => item.id === saved.id ? saved : item) : [...current, saved]); setResourceId(saved.id); setResourceForm(resourceToInput(saved)); setTagsText(saved.tags.join(', ')); invalidateAll(); showSuccess(resourceId ? 'Resource updated.' : 'Resource created.'); };
     if (resourceId) updateResource.mutate({ id: resourceId, data }, { onSuccess: done, onError: mutationError });
     else createResource.mutate({ data }, { onSuccess: done, onError: mutationError });
