@@ -74,7 +74,12 @@ function CategorySection({
       <div className="mx-auto grid max-w-5xl gap-7 md:grid-cols-[minmax(0,.65fr)_minmax(0,1fr)] md:items-center">
         <div className={`relative grid min-h-40 place-items-center overflow-hidden rounded-[1.75rem] border ${tint}`}>
           {isVideoHub && videoPreview?.thumbnailImageUrl
-            ? <img src={videoPreview.thumbnailImageUrl} alt={videoPreview.thumbnailImageAltText || videoPreview.title} className="absolute inset-0 h-full w-full object-cover" data-testid="img-knowledge-hub-video-preview" />
+            ? <>
+                <img src={videoPreview.thumbnailImageUrl} alt={videoPreview.thumbnailImageAltText || videoPreview.title} className="absolute inset-0 h-full w-full object-cover" data-testid="img-knowledge-hub-video-preview" />
+                <span className="absolute inset-0 grid place-items-center bg-gradient-to-t from-[hsl(var(--primary)/.42)] to-transparent" aria-hidden="true">
+                  <span className="grid h-14 w-14 place-items-center rounded-full bg-[hsl(var(--accent))] text-[hsl(var(--accent-foreground))] shadow-lg"><PlayCircle size={32} strokeWidth={1.7} /></span>
+                </span>
+              </>
             : <Icon size={54} strokeWidth={1.2} aria-hidden="true" />}
         </div>
         <div>
