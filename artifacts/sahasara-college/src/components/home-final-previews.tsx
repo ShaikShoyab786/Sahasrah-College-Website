@@ -8,6 +8,7 @@ import type {
 import { SectionEyebrow } from '@/components/section-eyebrow';
 
 const knowledgeCategories = ['Physics', 'Chemistry', 'Mathematics', 'Previous Papers', 'DPP', 'Mock Tests', 'NCERT', 'Formula Sheets'];
+const RESOURCE_HUB_HREF = '/knowledge-hub/resources';
 
 export const fallbackKnowledgeHub: HomepageKnowledgeHub = {
   id: 'fallback-knowledge-hub',
@@ -105,7 +106,7 @@ export function HomeKnowledgeHub({ content }: { content: HomepageKnowledgeHub })
         </div>
 
         <div className="mt-9 text-center">
-           <a href={content.buttonHref || '/#home-knowledge-hub'} className="group inline-flex items-center gap-2 rounded-full border border-[hsl(var(--primary)/.2)] bg-[hsl(var(--card))] px-5 py-3.5 text-sm font-bold text-[hsl(var(--primary))] shadow-sm transition hover:-translate-y-0.5 hover:border-[hsl(var(--accent))] hover:shadow-md focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--accent)/.28)]">
+           <a href={RESOURCE_HUB_HREF} className="group inline-flex items-center gap-2 rounded-full border border-[hsl(var(--primary)/.2)] bg-[hsl(var(--card))] px-5 py-3.5 text-sm font-bold text-[hsl(var(--primary))] shadow-sm transition hover:-translate-y-0.5 hover:border-[hsl(var(--accent))] hover:shadow-md focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--accent)/.28)]">
              {content.buttonLabel || 'View All Resources'} <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
           </a>
         </div>
@@ -125,7 +126,7 @@ function ResourceFeatured({ resource }: { resource: HomepageKnowledgeHub['resour
             <h3 className="mt-3 max-w-md font-display text-3xl font-semibold leading-tight text-[hsl(var(--primary))] md:text-4xl">{resource.title}</h3>
             <p className="mt-4 max-w-md text-sm leading-6 text-[hsl(var(--muted-foreground))]">{resource.description}</p>
           </div>
-          <a href={resource.resourceUrl} {...linkProps(resource.resourceUrl)} className="group mt-7 inline-flex w-fit items-center gap-2 rounded-xl bg-[hsl(var(--primary))] px-4 py-3 text-sm font-bold text-[hsl(var(--primary-foreground))] transition hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--accent)/.3)]">
+          <a href={RESOURCE_HUB_HREF} className="group mt-7 inline-flex w-fit items-center gap-2 rounded-xl bg-[hsl(var(--primary))] px-4 py-3 text-sm font-bold text-[hsl(var(--primary-foreground))] transition hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--accent)/.3)]">
             <Download size={15} aria-hidden="true" /> View Resource <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
           </a>
         </div>
@@ -157,7 +158,7 @@ function ResourceCard({ resource, index }: { resource: HomepageKnowledgeHub['res
             {resource.downloadCount !== null && resource.downloadCount !== undefined && <span>{resource.downloadCount.toLocaleString()} downloads</span>}
             {resource.updatedLabel && <span>{resource.updatedLabel}</span>}
           </div>
-          <a href={resource.resourceUrl} {...linkProps(resource.resourceUrl)} className="group/link mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-[hsl(var(--primary))] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--accent)/.3)]">
+          <a href={RESOURCE_HUB_HREF} className="group/link mt-4 inline-flex items-center gap-1.5 text-xs font-bold text-[hsl(var(--primary))] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[hsl(var(--accent)/.3)]">
             View Resource <ArrowRight size={13} className="transition-transform group-hover/link:translate-x-1" />
           </a>
         </div>
