@@ -93,7 +93,11 @@ function CategoryCard({
 }) {
   const meta = categoryMeta[card.category];
   const Icon = meta.icon;
-  const href = card.category === 'articles' ? '/knowledge-hub/articles' : `/knowledge-hub#knowledge-hub-${card.category}`;
+  const href = card.category === 'articles'
+    ? '/knowledge-hub/articles'
+    : card.category === 'video-hub'
+      ? '/knowledge-hub/videos'
+      : `/knowledge-hub#knowledge-hub-${card.category}`;
 
   return (
     <MenuDestination
@@ -108,7 +112,7 @@ function CategoryCard({
       </div>
       <span className={`${compact ? 'mt-2' : 'mt-4'} font-display text-[1.08rem] font-semibold tracking-[-.025em] text-[hsl(var(--primary))]`}>{meta.label}</span>
       <span className={`${compact ? 'mt-1 min-h-8' : 'mt-1.5 min-h-10'} text-[11px] leading-4 text-[hsl(var(--muted-foreground))]`}>{card.description}</span>
-      <span className={`${compact ? 'mt-1.5' : 'mt-2'} inline-flex w-fit rounded-full bg-[hsl(var(--secondary))] px-2.5 py-1 text-[9px] font-bold uppercase tracking-[.1em] text-[hsl(var(--muted-foreground))]`}>{card.category === 'articles' ? 'Now Available' : 'Coming Soon'}</span>
+      <span className={`${compact ? 'mt-1.5' : 'mt-2'} inline-flex w-fit rounded-full bg-[hsl(var(--secondary))] px-2.5 py-1 text-[9px] font-bold uppercase tracking-[.1em] text-[hsl(var(--muted-foreground))]`}>{card.category === 'articles' ? 'Now Available' : card.category === 'video-hub' ? 'Open Library' : 'Coming Soon'}</span>
       <ul className={`${compact ? 'mt-2 grid grid-cols-2 gap-x-2 gap-y-1 pt-2' : 'mt-3 space-y-1.5 pt-3'} border-t border-[hsl(var(--primary)/.08)] text-[10px] leading-4 text-[hsl(var(--muted-foreground))]`}>
         {meta.bullets.map((bullet) => (
           <li key={bullet} className="flex items-center gap-2">

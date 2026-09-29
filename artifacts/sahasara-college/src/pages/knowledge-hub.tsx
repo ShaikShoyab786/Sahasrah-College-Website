@@ -1,6 +1,6 @@
 import { ArrowRight, BookOpen, CheckCircle2, FileText, GraduationCap, PlayCircle, Bell } from 'lucide-react';
 import { Link } from 'wouter';
-import { useGetKnowledgeHubMegaMenu, useGetSiteSettings, type KnowledgeHubMainPageContent } from '@workspace/api-client-react';
+import { useGetKnowledgeHubMegaMenu, useGetKnowledgeHubVideoHubPage, useGetSiteSettings, type KnowledgeHubMainPageContent, type KnowledgeHubVideoSummary } from '@workspace/api-client-react';
 import { PublicFooter } from '@/components/public-footer';
 import { PublicHeader } from '@/components/public-header';
 import { createPublicThemeStyle, DEFAULT_ACCENT_COLOR, DEFAULT_PRIMARY_COLOR, DEFAULT_SURFACE_COLOR } from '@/lib/public-theme';
@@ -43,9 +43,24 @@ function KnowledgeHubSkeleton() {
   return <div className="min-h-[100dvh] bg-[hsl(var(--background))] p-6"><div className="mx-auto max-w-6xl animate-pulse space-y-5"><div className="h-10 w-56 rounded-full bg-[hsl(var(--muted))]" /><div className="h-72 rounded-[2rem] bg-[hsl(var(--muted))]" /><div className="grid gap-4 md:grid-cols-4">{categories.map((category) => <div key={category.id} className="h-48 rounded-2xl bg-[hsl(var(--muted))]" />)}</div></div></div>;
 }
 
-function CategorySection({ category, section }: { category: typeof categories[number]; section: KnowledgeHubMainPageContent['sections'][number] }) {
+function CategorySection({
+  category,
+  section,
+  videoPreview,
+  videoCount,
+  videoLoading,
+  videoError,
+}: {
+  category: typeof categories[number];
+  section: KnowledgeHubMainPageContent['sections'][number];
+  videoPreview: KnowledgeHubVideoSummary | null;
+  videoCount: number | null;
+  videoLoading: boolean;
+  videoError: boolean;
+}) {
   const Icon = category.icon;
   const available = category.id === 'articles';
+  const isVideoHub = category.id === 'video-hub';
   const tint = category.tint === 'rose'
     ? 'bg-rose-50 border-rose-100 text-rose-700'
     : category.tint === 'violet'
@@ -57,23 +72,46 @@ function CategorySection({ category, section }: { category: typeof categories[nu
   return (
     <section id={`knowledge-hub-${category.id}`} className="scroll-mt-28 border-t border-[hsl(var(--border))] py-16 sm:py-20" data-testid={`section-knowledge-hub-${category.id}`}>
       <div className="mx-auto grid max-w-5xl gap-7 md:grid-cols-[minmax(0,.65fr)_minmax(0,1fr)] md:items-center">
-        <div className={`grid min-h-40 place-items-center rounded-[1.75rem] border ${tint}`}>
-          <Icon size={54} strokeWidth={1.2} aria-hidden="true" />
+        <div className={`relative grid min-h-40 place-items-center overflow-hidden rounded-[1.75rem] border ${tint}`}>
+          {isVideoHub && videoPreview?.thumbnailImageUrl
+            ? <img src={videoPreview.thumbnailImageUrl} alt={videoPreview.thumbnailImageAltText || videoPreview.title} className="absolute inset-0 h-full w-full object-cover" data-testid="img-knowledge-hub-video-preview" />
+            : <Icon size={54} strokeWidth={1.2} aria-hidden="true" />}
         </div>
         <div>
           <div className="flex flex-wrap items-center gap-3">
             <p className="text-xs font-bold uppercase tracking-[.18em] text-[hsl(var(--accent-foreground))]">{section.eyebrow}</p>
-            {section.badgeLabel && <span className="rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--card))] px-3 py-1 text-[10px] font-bold uppercase tracking-[.12em] text-[hsl(var(--muted-foreground))]">{section.badgeLabel}</span>}
+            {isVideoHub && videoCount !== null
+              ? <span className="rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--card))] px-3 py-1 text-[10px] font-bold uppercase tracking-[.12em] text-[hsl(var(--muted-foreground))]" data-testid="badge-knowledge-hub-video-count">{videoCount} published {videoCount === 1 ? 'session' : 'sessions'}</span>
+              : !isVideoHub && section.badgeLabel && <span className="rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--card))] px-3 py-1 text-[10px] font-bold uppercase tracking-[.12em] text-[hsl(var(--muted-foreground))]">{section.badgeLabel}</span>}
           </div>
           <h2 className="mt-3 font-display text-4xl font-semibold tracking-[-.045em] text-[hsl(var(--primary))] sm:text-5xl">{section.title}</h2>
-          <p className="mt-4 max-w-xl text-base leading-7 text-[hsl(var(--muted-foreground))]">{section.description}</p>
-          {available ? (
+          {isVideoHub ? (
             <>
+              {videoPreview ? (
+                <div className="mt-4 max-w-xl" data-testid="card-knowledge-hub-video-preview">
+                  <p className="text-xs font-bold uppercase tracking-[.14em] text-[hsl(var(--accent-foreground))]">Featured session</p>
+                  <h3 className="mt-2 font-display text-2xl font-semibold leading-tight text-[hsl(var(--primary))]">{videoPreview.title}</h3>
+                  <p className="mt-3 text-base leading-7 text-[hsl(var(--muted-foreground))]">{videoPreview.description}</p>
+                  <p className="mt-3 text-xs font-semibold text-[hsl(var(--muted-foreground))]">{videoPreview.categoryName} · {videoPreview.instructor} · {videoPreview.duration}</p>
+                </div>
+              ) : (
+                <p className="mt-4 max-w-xl text-base leading-7 text-[hsl(var(--muted-foreground))]" data-testid="text-knowledge-hub-video-empty">
+                  {videoLoading ? 'Loading published sessions…' : videoError ? 'The video library is unavailable right now.' : 'No video sessions have been published yet.'}
+                </p>
+              )}
+              <Link href="/knowledge-hub/videos" className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-full bg-[hsl(var(--primary))] px-5 text-sm font-bold text-[hsl(var(--primary-foreground))] transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]" data-testid="link-knowledge-hub-videos-cta">{videoPreview ? 'Browse Video Hub' : 'Open Video Hub'} <ArrowRight size={16} aria-hidden="true" /></Link>
+            </>
+          ) : available ? (
+            <>
+              <p className="mt-4 max-w-xl text-base leading-7 text-[hsl(var(--muted-foreground))]">{section.description}</p>
               <p className="mt-5 flex items-center gap-2 text-sm font-semibold text-[hsl(var(--primary)/.7)]"><CheckCircle2 size={17} className="text-[hsl(var(--accent-foreground))]" /> {section.statusText}</p>
               <Link href="/knowledge-hub/articles" className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-full bg-[hsl(var(--primary))] px-5 text-sm font-bold text-[hsl(var(--primary-foreground))] transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]" data-testid="link-knowledge-hub-articles-cta">{section.ctaLabel ?? 'Explore Articles'} <ArrowRight size={16} aria-hidden="true" /></Link>
             </>
           ) : (
-            <p className="mt-5 flex items-center gap-2 text-sm font-semibold text-[hsl(var(--primary)/.7)]"><CheckCircle2 size={17} className="text-[hsl(var(--accent-foreground))]" /> {section.statusText}</p>
+            <>
+              <p className="mt-4 max-w-xl text-base leading-7 text-[hsl(var(--muted-foreground))]">{section.description}</p>
+              <p className="mt-5 flex items-center gap-2 text-sm font-semibold text-[hsl(var(--primary)/.7)]"><CheckCircle2 size={17} className="text-[hsl(var(--accent-foreground))]" /> {section.statusText}</p>
+            </>
           )}
         </div>
       </div>
@@ -84,9 +122,12 @@ function CategorySection({ category, section }: { category: typeof categories[nu
 export default function KnowledgeHub() {
   const settingsQuery = useGetSiteSettings();
   const menuQuery = useGetKnowledgeHubMegaMenu();
+  const videoHubQuery = useGetKnowledgeHubVideoHubPage();
   if (settingsQuery.isLoading) return <KnowledgeHubSkeleton />;
 
   const settings = settingsQuery.data ?? fallbackSettings;
+  const videoPreview = videoHubQuery.data?.featuredVideo ?? videoHubQuery.data?.relatedVideos[0] ?? null;
+  const videoCount = videoHubQuery.data?.publishedVideoCount ?? null;
   const mainPage = menuQuery.data?.mainPage ?? fallbackMainPage;
   const sectionByCategory = new Map(mainPage.sections.map((section) => [section.category, section]));
   const orderedSections = categories.map((category, index) => ({
@@ -114,7 +155,7 @@ export default function KnowledgeHub() {
               <h1 className="mt-5 max-w-3xl font-display text-5xl font-semibold leading-[.96] tracking-[-.055em] sm:text-7xl" data-testid="text-knowledge-hub-title">{panel.title}</h1>
               <p className="mt-6 max-w-2xl text-base leading-7 text-white/72 sm:text-lg">{panel.description}</p>
               <div className="mt-8 flex flex-wrap gap-3">
-                {orderedSections.map(({ category, section }) => <Link key={category.id} href={category.id === 'articles' ? '/knowledge-hub/articles' : `#knowledge-hub-${category.id}`} className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 text-sm font-bold transition hover:-translate-y-0.5 hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]" data-testid={`link-knowledge-hub-hero-${category.id}`}>{section.title}<ArrowRight size={15} aria-hidden="true" /></Link>)}
+                {orderedSections.map(({ category, section }) => <Link key={category.id} href={category.id === 'articles' ? '/knowledge-hub/articles' : category.id === 'video-hub' ? '/knowledge-hub/videos' : `#knowledge-hub-${category.id}`} className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 text-sm font-bold transition hover:-translate-y-0.5 hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]" data-testid={`link-knowledge-hub-hero-${category.id}`}>{section.title}<ArrowRight size={15} aria-hidden="true" /></Link>)}
               </div>
             </div>
             <div className="relative min-h-64 overflow-hidden rounded-[1.75rem] border border-white/15 bg-white/10 p-6 shadow-2xl">
@@ -136,7 +177,7 @@ export default function KnowledgeHub() {
             <p className="mt-4 max-w-xl text-base leading-7 text-[hsl(var(--muted-foreground))]">{mainPage.introDescription}</p>
           </div>
         </section>
-        <div className="px-6 lg:px-10">{orderedSections.map(({ category, section }) => <CategorySection key={category.id} category={category} section={section} />)}</div>
+        <div className="px-6 lg:px-10">{orderedSections.map(({ category, section }) => <CategorySection key={category.id} category={category} section={section} videoPreview={videoPreview} videoCount={videoCount} videoLoading={videoHubQuery.isLoading} videoError={videoHubQuery.isError} />)}</div>
       </main>
       <PublicFooter settings={{ ...settings, footerText: settings.footerText || fallbackSettings.footerText }} />
     </div>
