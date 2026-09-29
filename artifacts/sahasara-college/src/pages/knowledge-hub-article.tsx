@@ -52,9 +52,9 @@ export default function KnowledgeHubArticle() {
             <Link href="/knowledge-hub/articles" className="inline-flex items-center gap-2 text-sm font-bold text-[hsl(var(--primary-foreground)/.88)] transition hover:text-[hsl(var(--primary-foreground))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]" data-testid="link-back-knowledge-articles"><ArrowLeft size={16} /> All articles</Link>
             <div className="mt-10 flex flex-wrap items-center gap-3 text-xs font-bold uppercase tracking-[.15em]">
               <span className="rounded-full border border-[hsl(var(--accent))] bg-[hsl(var(--accent))] px-3 py-1.5 text-[hsl(var(--accent-foreground))]" data-testid="text-knowledge-article-category">{category?.name ?? article.categoryName}</span>
-              <span className="text-[hsl(var(--primary-foreground)/.58)]" aria-hidden="true">•</span>
+              <span className="hidden text-[hsl(var(--primary-foreground)/.58)] sm:inline" aria-hidden="true">•</span>
               <span className="inline-flex items-center gap-1.5 text-[hsl(var(--primary-foreground)/.84)]"><Clock3 size={14} /> {article.readTimeMinutes} minute read</span>
-              <span className="text-[hsl(var(--primary-foreground)/.58)]" aria-hidden="true">•</span>
+              <span className="hidden text-[hsl(var(--primary-foreground)/.58)] sm:inline" aria-hidden="true">•</span>
               <span className="inline-flex items-center gap-1.5 text-[hsl(var(--primary-foreground)/.84)]"><CalendarDays size={14} /> {dateLabel(article.publishedAt)}</span>
             </div>
             <h1 className="mt-6 max-w-4xl font-display text-5xl font-semibold leading-[.96] tracking-[-.06em] sm:text-7xl" data-testid="text-knowledge-article-title">{article.title}</h1>
