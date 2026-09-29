@@ -1,4 +1,4 @@
-import { ArrowRight, BookOpen, Clock3, Compass, FlaskConical, GraduationCap, HeartPulse, Lightbulb, Search, Sparkles, Stethoscope, Target, type LucideIcon } from 'lucide-react';
+import { ArrowRight, BookOpen, ChevronUp, Clock3, Compass, FlaskConical, GraduationCap, HeartPulse, Lightbulb, Search, Sparkles, Stethoscope, Target, type LucideIcon } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'wouter';
 import {
@@ -241,7 +241,12 @@ export default function KnowledgeHubArticles() {
             </div>
             <div className="mt-8 flex items-center justify-between gap-4 text-xs font-bold uppercase tracking-[.15em] text-[hsl(var(--muted-foreground))]"><span data-testid="text-knowledge-article-result-count">{articlesQuery.data?.total ?? 0} published {articlesQuery.data?.total === 1 ? 'article' : 'articles'}</span>{(search || category) && <button type="button" onClick={() => { setSearch(''); setCategory(''); }} className="text-[hsl(var(--primary))] underline-offset-2 hover:underline" data-testid="button-clear-knowledge-article-filters">Clear filters</button>}</div>
             <div className="mt-5">{articlesQuery.isLoading ? <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3"><div className="h-96 animate-pulse rounded-[1.45rem] bg-[hsl(var(--muted))]" /><div className="h-96 animate-pulse rounded-[1.45rem] bg-[hsl(var(--muted))]" /><div className="h-96 animate-pulse rounded-[1.45rem] bg-[hsl(var(--muted))]" /></div> : articlesQuery.isError ? <ErrorState retry={() => { void articlesQuery.refetch(); }} /> : articles.length === 0 ? <EmptyArticles searched={Boolean(search || category)} /> : <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">{articles.map((article) => <ArticleCard key={article.id} article={article} />)}</div>}</div>
-            {!articlesQuery.isLoading && !articlesQuery.isError && articles.length > 0 && articlesQuery.data?.hasMore && <div className="mt-9 text-center"><button type="button" onClick={() => setOffset((current) => current + limit)} className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-[hsl(var(--primary)/.22)] bg-[hsl(var(--card))] px-5 text-sm font-bold text-[hsl(var(--primary))] transition hover:-translate-y-0.5 hover:border-[hsl(var(--accent))]" data-testid="button-load-more-knowledge-articles">Load more articles <ArrowRight size={16} /></button></div>}
+            {!articlesQuery.isLoading && !articlesQuery.isError && articles.length > 0 && (articlesQuery.data?.hasMore || articles.length > limit) && (
+              <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
+                {articlesQuery.data?.hasMore && <button type="button" onClick={() => setOffset((current) => current + limit)} className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-[hsl(var(--primary)/.22)] bg-[hsl(var(--card))] px-5 text-sm font-bold text-[hsl(var(--primary))] transition hover:-translate-y-0.5 hover:border-[hsl(var(--accent))]" data-testid="button-load-more-knowledge-articles">Load more articles <ArrowRight size={16} /></button>}
+                {articles.length > limit && <button type="button" onClick={() => { setOffset(0); setLoadedArticles((current) => current.slice(0, limit)); }} className="inline-flex min-h-12 items-center gap-2 rounded-xl border border-[hsl(var(--primary)/.22)] bg-[hsl(var(--card))] px-5 text-sm font-bold text-[hsl(var(--primary))] transition hover:-translate-y-0.5 hover:border-[hsl(var(--accent))]" data-testid="button-view-less-knowledge-articles">View less <ChevronUp size={16} /></button>}
+              </div>
+            )}
               </div>
               <CategorySidebar categories={categories} selected={category} total={pageData.publishedArticleCount} onSelect={setCategory} settings={settings} />
             </div>
