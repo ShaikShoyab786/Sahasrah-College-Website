@@ -1,0 +1,21 @@
+export const DEFAULT_KNOWLEDGE_HUB_VIDEO_PAGE = {
+  heroEyebrow: "SAHASRAH VIDEO HUB",
+  heroTitle: "Learn from the people who",
+  heroAccentText: "teach it best.",
+  heroDescription: "Concept lessons, exam guidance, study strategies, and academic sessions designed to help students learn beyond the classroom.",
+  heroCtaLabel: "Explore Videos",
+  heroBackgroundImageObjectPath: null,
+  heroBackgroundImageAltText: "",
+  highlights: [
+    { label: "Curated Content", description: "Focused lessons chosen for students and families." },
+    { label: "Expert Faculty Sessions", description: "Learn from teachers who know the subjects." },
+    { label: "Multiple Academic Streams", description: "Find guidance across subjects and study goals." },
+  ],
+  featuredEyebrow: "Featured Session",
+  libraryEyebrow: "Explore the Hub",
+  libraryTitle: "Something worth watching.",
+  libraryDescription: "Concept lessons, exam strategies, study tips, and expert sessions to help you learn better.",
+  searchPlaceholder: "Search videos by topic, subject, or keyword",
+  emptyStateTitle: "Videos are on the way.",
+  emptyStateDescription: "Published sessions will appear here once they are ready to watch.",
+} as const;

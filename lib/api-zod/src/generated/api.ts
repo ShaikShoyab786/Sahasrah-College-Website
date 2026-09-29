@@ -6478,3 +6478,729 @@ export const DeleteAdminKnowledgeHubArticleParams = zod.object({
 export const DeleteAdminKnowledgeHubArticleResponse = zod.void()
 
 
+/**
+ * @summary Read public Video Hub settings, featured session, and categories
+ */
+export const getKnowledgeHubVideoHubPageResponseSettingsHeroEyebrowMax = 120;
+
+export const getKnowledgeHubVideoHubPageResponseSettingsHeroTitleMax = 160;
+
+export const getKnowledgeHubVideoHubPageResponseSettingsHeroAccentTextMax = 80;
+
+export const getKnowledgeHubVideoHubPageResponseSettingsHeroDescriptionMax = 700;
+
+export const getKnowledgeHubVideoHubPageResponseSettingsHeroCtaLabelMax = 80;
+
+export const getKnowledgeHubVideoHubPageResponseSettingsHeroBackgroundImageUrlMax = 1000;
+
+export const getKnowledgeHubVideoHubPageResponseSettingsHeroBackgroundImageAltTextMax = 240;
+
+export const getKnowledgeHubVideoHubPageResponseSettingsHighlightsItemLabelMax = 80;
+
+export const getKnowledgeHubVideoHubPageResponseSettingsHighlightsItemDescriptionMax = 180;
+
+export const getKnowledgeHubVideoHubPageResponseSettingsHighlightsMax = 6;
+
+export const getKnowledgeHubVideoHubPageResponseSettingsFeaturedEyebrowMax = 120;
+
+export const getKnowledgeHubVideoHubPageResponseSettingsLibraryEyebrowMax = 120;
+
+export const getKnowledgeHubVideoHubPageResponseSettingsLibraryTitleMax = 160;
+
+export const getKnowledgeHubVideoHubPageResponseSettingsLibraryDescriptionMax = 600;
+
+export const getKnowledgeHubVideoHubPageResponseSettingsSearchPlaceholderMax = 120;
+
+export const getKnowledgeHubVideoHubPageResponseSettingsEmptyStateTitleMax = 160;
+
+export const getKnowledgeHubVideoHubPageResponseSettingsEmptyStateDescriptionMax = 500;
+
+export const getKnowledgeHubVideoHubPageResponseFeaturedVideoOneThumbnailImageUrlMax = 1000;
+
+
+export const getKnowledgeHubVideoHubPageResponseRelatedVideosItemThumbnailImageUrlMax = 1000;
+
+
+export const getKnowledgeHubVideoHubPageResponsePublishedVideoCountMin = 0;
+
+export const getKnowledgeHubVideoHubPageResponseCategoriesItemPublishedVideoCountMin = 0;
+
+
+
+export const GetKnowledgeHubVideoHubPageResponse = zod.object({
+  "settings": zod.object({
+  "heroEyebrow": zod.string().min(1).max(getKnowledgeHubVideoHubPageResponseSettingsHeroEyebrowMax),
+  "heroTitle": zod.string().min(1).max(getKnowledgeHubVideoHubPageResponseSettingsHeroTitleMax),
+  "heroAccentText": zod.string().min(1).max(getKnowledgeHubVideoHubPageResponseSettingsHeroAccentTextMax),
+  "heroDescription": zod.string().min(1).max(getKnowledgeHubVideoHubPageResponseSettingsHeroDescriptionMax),
+  "heroCtaLabel": zod.string().min(1).max(getKnowledgeHubVideoHubPageResponseSettingsHeroCtaLabelMax),
+  "heroBackgroundImageUrl": zod.string().max(getKnowledgeHubVideoHubPageResponseSettingsHeroBackgroundImageUrlMax).nullable(),
+  "heroBackgroundImageAltText": zod.string().max(getKnowledgeHubVideoHubPageResponseSettingsHeroBackgroundImageAltTextMax),
+  "highlights": zod.array(zod.object({
+  "label": zod.string().min(1).max(getKnowledgeHubVideoHubPageResponseSettingsHighlightsItemLabelMax),
+  "description": zod.string().min(1).max(getKnowledgeHubVideoHubPageResponseSettingsHighlightsItemDescriptionMax)
+})).min(1).max(getKnowledgeHubVideoHubPageResponseSettingsHighlightsMax),
+  "featuredEyebrow": zod.string().min(1).max(getKnowledgeHubVideoHubPageResponseSettingsFeaturedEyebrowMax),
+  "libraryEyebrow": zod.string().min(1).max(getKnowledgeHubVideoHubPageResponseSettingsLibraryEyebrowMax),
+  "libraryTitle": zod.string().min(1).max(getKnowledgeHubVideoHubPageResponseSettingsLibraryTitleMax),
+  "libraryDescription": zod.string().min(1).max(getKnowledgeHubVideoHubPageResponseSettingsLibraryDescriptionMax),
+  "searchPlaceholder": zod.string().min(1).max(getKnowledgeHubVideoHubPageResponseSettingsSearchPlaceholderMax),
+  "emptyStateTitle": zod.string().min(1).max(getKnowledgeHubVideoHubPageResponseSettingsEmptyStateTitleMax),
+  "emptyStateDescription": zod.string().min(1).max(getKnowledgeHubVideoHubPageResponseSettingsEmptyStateDescriptionMax)
+}),
+  "featuredVideo": zod.union([zod.object({
+  "id": zod.string(),
+  "title": zod.string(),
+  "slug": zod.string(),
+  "categoryId": zod.string(),
+  "categoryName": zod.string(),
+  "categorySlug": zod.string(),
+  "categoryIcon": zod.string(),
+  "description": zod.string(),
+  "instructor": zod.string(),
+  "duration": zod.string(),
+  "youtubeUrl": zod.string().url(),
+  "thumbnailImageUrl": zod.string().max(getKnowledgeHubVideoHubPageResponseFeaturedVideoOneThumbnailImageUrlMax).nullable(),
+  "thumbnailImageAltText": zod.string(),
+  "displayOrder": zod.number().int().min(1),
+  "publishedAt": zod.coerce.date().nullable()
+}),zod.null()]),
+  "relatedVideos": zod.array(zod.object({
+  "id": zod.string(),
+  "title": zod.string(),
+  "slug": zod.string(),
+  "categoryId": zod.string(),
+  "categoryName": zod.string(),
+  "categorySlug": zod.string(),
+  "categoryIcon": zod.string(),
+  "description": zod.string(),
+  "instructor": zod.string(),
+  "duration": zod.string(),
+  "youtubeUrl": zod.string().url(),
+  "thumbnailImageUrl": zod.string().max(getKnowledgeHubVideoHubPageResponseRelatedVideosItemThumbnailImageUrlMax).nullable(),
+  "thumbnailImageAltText": zod.string(),
+  "displayOrder": zod.number().int().min(1),
+  "publishedAt": zod.coerce.date().nullable()
+})),
+  "publishedVideoCount": zod.number().int().min(getKnowledgeHubVideoHubPageResponsePublishedVideoCountMin),
+  "categories": zod.array(zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "slug": zod.string(),
+  "icon": zod.string(),
+  "displayOrder": zod.number().int(),
+  "isVisible": zod.boolean(),
+  "publishedVideoCount": zod.number().int().min(getKnowledgeHubVideoHubPageResponseCategoriesItemPublishedVideoCountMin)
+}))
+})
+
+
+/**
+ * @summary Search and browse published Knowledge Hub videos
+ */
+export const getKnowledgeHubVideoHubVideosQuerySearchMax = 200;
+
+export const getKnowledgeHubVideoHubVideosQueryCategoryMax = 100;
+
+export const getKnowledgeHubVideoHubVideosQuerySortDefault = `recent`;
+export const getKnowledgeHubVideoHubVideosQueryOffsetDefault = 0;
+export const getKnowledgeHubVideoHubVideosQueryOffsetMin = 0;
+
+export const getKnowledgeHubVideoHubVideosQueryLimitDefault = 9;
+export const getKnowledgeHubVideoHubVideosQueryLimitMax = 30;
+
+
+
+export const GetKnowledgeHubVideoHubVideosQueryParams = zod.object({
+  "search": zod.coerce.string().max(getKnowledgeHubVideoHubVideosQuerySearchMax).optional(),
+  "category": zod.coerce.string().max(getKnowledgeHubVideoHubVideosQueryCategoryMax).optional(),
+  "sort": zod.enum(['recent', 'oldest', 'title', 'displayOrder']).default(getKnowledgeHubVideoHubVideosQuerySortDefault),
+  "offset": zod.coerce.number().int().min(getKnowledgeHubVideoHubVideosQueryOffsetMin).default(getKnowledgeHubVideoHubVideosQueryOffsetDefault),
+  "limit": zod.coerce.number().int().min(1).max(getKnowledgeHubVideoHubVideosQueryLimitMax).default(getKnowledgeHubVideoHubVideosQueryLimitDefault)
+})
+
+export const getKnowledgeHubVideoHubVideosResponseItemsItemThumbnailImageUrlMax = 1000;
+
+
+export const getKnowledgeHubVideoHubVideosResponseTotalMin = 0;
+
+export const getKnowledgeHubVideoHubVideosResponseOffsetMin = 0;
+
+export const getKnowledgeHubVideoHubVideosResponseLimitMax = 30;
+
+
+
+export const GetKnowledgeHubVideoHubVideosResponse = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string(),
+  "title": zod.string(),
+  "slug": zod.string(),
+  "categoryId": zod.string(),
+  "categoryName": zod.string(),
+  "categorySlug": zod.string(),
+  "categoryIcon": zod.string(),
+  "description": zod.string(),
+  "instructor": zod.string(),
+  "duration": zod.string(),
+  "youtubeUrl": zod.string().url(),
+  "thumbnailImageUrl": zod.string().max(getKnowledgeHubVideoHubVideosResponseItemsItemThumbnailImageUrlMax).nullable(),
+  "thumbnailImageAltText": zod.string(),
+  "displayOrder": zod.number().int().min(1),
+  "publishedAt": zod.coerce.date().nullable()
+})),
+  "total": zod.number().int().min(getKnowledgeHubVideoHubVideosResponseTotalMin),
+  "offset": zod.number().int().min(getKnowledgeHubVideoHubVideosResponseOffsetMin),
+  "limit": zod.number().int().min(1).max(getKnowledgeHubVideoHubVideosResponseLimitMax),
+  "hasMore": zod.boolean()
+})
+
+
+/**
+ * @summary Serve a public Video Hub image uploaded through the admin
+ */
+export const getKnowledgeHubVideoHubAssetPathAssetIdRegExp = new RegExp('^[a-f0-9-]{36}$');
+
+
+export const GetKnowledgeHubVideoHubAssetParams = zod.object({
+  "assetId": zod.coerce.string().regex(getKnowledgeHubVideoHubAssetPathAssetIdRegExp)
+})
+
+export const GetKnowledgeHubVideoHubAssetResponse = zod.unknown()
+
+
+/**
+ * @summary Read Video Hub settings, categories, and all videos
+ */
+export const getAdminKnowledgeHubVideoHubResponseSettingsOneHeroEyebrowMax = 120;
+
+export const getAdminKnowledgeHubVideoHubResponseSettingsOneHeroTitleMax = 160;
+
+export const getAdminKnowledgeHubVideoHubResponseSettingsOneHeroAccentTextMax = 80;
+
+export const getAdminKnowledgeHubVideoHubResponseSettingsOneHeroDescriptionMax = 700;
+
+export const getAdminKnowledgeHubVideoHubResponseSettingsOneHeroCtaLabelMax = 80;
+
+export const getAdminKnowledgeHubVideoHubResponseSettingsOneHeroBackgroundImageObjectPathMax = 100;
+
+export const getAdminKnowledgeHubVideoHubResponseSettingsOneHeroBackgroundImageAltTextMax = 240;
+
+export const getAdminKnowledgeHubVideoHubResponseSettingsOneHighlightsItemLabelMax = 80;
+
+export const getAdminKnowledgeHubVideoHubResponseSettingsOneHighlightsItemDescriptionMax = 180;
+
+export const getAdminKnowledgeHubVideoHubResponseSettingsOneHighlightsMax = 6;
+
+export const getAdminKnowledgeHubVideoHubResponseSettingsOneFeaturedEyebrowMax = 120;
+
+export const getAdminKnowledgeHubVideoHubResponseSettingsOneLibraryEyebrowMax = 120;
+
+export const getAdminKnowledgeHubVideoHubResponseSettingsOneLibraryTitleMax = 160;
+
+export const getAdminKnowledgeHubVideoHubResponseSettingsOneLibraryDescriptionMax = 600;
+
+export const getAdminKnowledgeHubVideoHubResponseSettingsOneSearchPlaceholderMax = 120;
+
+export const getAdminKnowledgeHubVideoHubResponseSettingsOneEmptyStateTitleMax = 160;
+
+export const getAdminKnowledgeHubVideoHubResponseSettingsOneEmptyStateDescriptionMax = 500;
+
+export const getAdminKnowledgeHubVideoHubResponseSettingsTwoFeaturedVideoIdMax = 100;
+
+export const getAdminKnowledgeHubVideoHubResponseCategoriesItemPublishedVideoCountMin = 0;
+
+export const getAdminKnowledgeHubVideoHubResponseVideosItemOneThumbnailImageUrlMax = 1000;
+
+
+export const getAdminKnowledgeHubVideoHubResponseVideosItemTwoThumbnailObjectPathMax = 100;
+
+
+
+export const GetAdminKnowledgeHubVideoHubResponse = zod.object({
+  "settings": zod.object({
+  "heroEyebrow": zod.string().min(1).max(getAdminKnowledgeHubVideoHubResponseSettingsOneHeroEyebrowMax),
+  "heroTitle": zod.string().min(1).max(getAdminKnowledgeHubVideoHubResponseSettingsOneHeroTitleMax),
+  "heroAccentText": zod.string().min(1).max(getAdminKnowledgeHubVideoHubResponseSettingsOneHeroAccentTextMax),
+  "heroDescription": zod.string().min(1).max(getAdminKnowledgeHubVideoHubResponseSettingsOneHeroDescriptionMax),
+  "heroCtaLabel": zod.string().min(1).max(getAdminKnowledgeHubVideoHubResponseSettingsOneHeroCtaLabelMax),
+  "heroBackgroundImageObjectPath": zod.string().max(getAdminKnowledgeHubVideoHubResponseSettingsOneHeroBackgroundImageObjectPathMax).nullable(),
+  "heroBackgroundImageAltText": zod.string().max(getAdminKnowledgeHubVideoHubResponseSettingsOneHeroBackgroundImageAltTextMax),
+  "highlights": zod.array(zod.object({
+  "label": zod.string().min(1).max(getAdminKnowledgeHubVideoHubResponseSettingsOneHighlightsItemLabelMax),
+  "description": zod.string().min(1).max(getAdminKnowledgeHubVideoHubResponseSettingsOneHighlightsItemDescriptionMax)
+})).min(1).max(getAdminKnowledgeHubVideoHubResponseSettingsOneHighlightsMax),
+  "featuredEyebrow": zod.string().min(1).max(getAdminKnowledgeHubVideoHubResponseSettingsOneFeaturedEyebrowMax),
+  "libraryEyebrow": zod.string().min(1).max(getAdminKnowledgeHubVideoHubResponseSettingsOneLibraryEyebrowMax),
+  "libraryTitle": zod.string().min(1).max(getAdminKnowledgeHubVideoHubResponseSettingsOneLibraryTitleMax),
+  "libraryDescription": zod.string().min(1).max(getAdminKnowledgeHubVideoHubResponseSettingsOneLibraryDescriptionMax),
+  "searchPlaceholder": zod.string().min(1).max(getAdminKnowledgeHubVideoHubResponseSettingsOneSearchPlaceholderMax),
+  "emptyStateTitle": zod.string().min(1).max(getAdminKnowledgeHubVideoHubResponseSettingsOneEmptyStateTitleMax),
+  "emptyStateDescription": zod.string().min(1).max(getAdminKnowledgeHubVideoHubResponseSettingsOneEmptyStateDescriptionMax)
+}).and(zod.object({
+  "featuredVideoId": zod.string().max(getAdminKnowledgeHubVideoHubResponseSettingsTwoFeaturedVideoIdMax).nullable()
+})),
+  "categories": zod.array(zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "slug": zod.string(),
+  "icon": zod.string(),
+  "displayOrder": zod.number().int(),
+  "isVisible": zod.boolean(),
+  "publishedVideoCount": zod.number().int().min(getAdminKnowledgeHubVideoHubResponseCategoriesItemPublishedVideoCountMin)
+})),
+  "videos": zod.array(zod.object({
+  "id": zod.string(),
+  "title": zod.string(),
+  "slug": zod.string(),
+  "categoryId": zod.string(),
+  "categoryName": zod.string(),
+  "categorySlug": zod.string(),
+  "categoryIcon": zod.string(),
+  "description": zod.string(),
+  "instructor": zod.string(),
+  "duration": zod.string(),
+  "youtubeUrl": zod.string().url(),
+  "thumbnailImageUrl": zod.string().max(getAdminKnowledgeHubVideoHubResponseVideosItemOneThumbnailImageUrlMax).nullable(),
+  "thumbnailImageAltText": zod.string(),
+  "displayOrder": zod.number().int().min(1),
+  "publishedAt": zod.coerce.date().nullable()
+}).and(zod.object({
+  "thumbnailObjectPath": zod.string().max(getAdminKnowledgeHubVideoHubResponseVideosItemTwoThumbnailObjectPathMax).nullable(),
+  "status": zod.enum(['draft', 'published']),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})))
+})
+
+
+/**
+ * @summary Update Video Hub page copy, highlights, background, and featured session
+ */
+export const updateAdminKnowledgeHubVideoHubPageBodyOneHeroEyebrowMax = 120;
+
+export const updateAdminKnowledgeHubVideoHubPageBodyOneHeroTitleMax = 160;
+
+export const updateAdminKnowledgeHubVideoHubPageBodyOneHeroAccentTextMax = 80;
+
+export const updateAdminKnowledgeHubVideoHubPageBodyOneHeroDescriptionMax = 700;
+
+export const updateAdminKnowledgeHubVideoHubPageBodyOneHeroCtaLabelMax = 80;
+
+export const updateAdminKnowledgeHubVideoHubPageBodyOneHeroBackgroundImageObjectPathMax = 100;
+
+export const updateAdminKnowledgeHubVideoHubPageBodyOneHeroBackgroundImageAltTextMax = 240;
+
+export const updateAdminKnowledgeHubVideoHubPageBodyOneHighlightsItemLabelMax = 80;
+
+export const updateAdminKnowledgeHubVideoHubPageBodyOneHighlightsItemDescriptionMax = 180;
+
+export const updateAdminKnowledgeHubVideoHubPageBodyOneHighlightsMax = 6;
+
+export const updateAdminKnowledgeHubVideoHubPageBodyOneFeaturedEyebrowMax = 120;
+
+export const updateAdminKnowledgeHubVideoHubPageBodyOneLibraryEyebrowMax = 120;
+
+export const updateAdminKnowledgeHubVideoHubPageBodyOneLibraryTitleMax = 160;
+
+export const updateAdminKnowledgeHubVideoHubPageBodyOneLibraryDescriptionMax = 600;
+
+export const updateAdminKnowledgeHubVideoHubPageBodyOneSearchPlaceholderMax = 120;
+
+export const updateAdminKnowledgeHubVideoHubPageBodyOneEmptyStateTitleMax = 160;
+
+export const updateAdminKnowledgeHubVideoHubPageBodyOneEmptyStateDescriptionMax = 500;
+
+export const updateAdminKnowledgeHubVideoHubPageBodyTwoFeaturedVideoIdMax = 100;
+
+
+
+export const UpdateAdminKnowledgeHubVideoHubPageBody = zod.object({
+  "heroEyebrow": zod.string().min(1).max(updateAdminKnowledgeHubVideoHubPageBodyOneHeroEyebrowMax),
+  "heroTitle": zod.string().min(1).max(updateAdminKnowledgeHubVideoHubPageBodyOneHeroTitleMax),
+  "heroAccentText": zod.string().min(1).max(updateAdminKnowledgeHubVideoHubPageBodyOneHeroAccentTextMax),
+  "heroDescription": zod.string().min(1).max(updateAdminKnowledgeHubVideoHubPageBodyOneHeroDescriptionMax),
+  "heroCtaLabel": zod.string().min(1).max(updateAdminKnowledgeHubVideoHubPageBodyOneHeroCtaLabelMax),
+  "heroBackgroundImageObjectPath": zod.string().max(updateAdminKnowledgeHubVideoHubPageBodyOneHeroBackgroundImageObjectPathMax).nullable(),
+  "heroBackgroundImageAltText": zod.string().max(updateAdminKnowledgeHubVideoHubPageBodyOneHeroBackgroundImageAltTextMax),
+  "highlights": zod.array(zod.object({
+  "label": zod.string().min(1).max(updateAdminKnowledgeHubVideoHubPageBodyOneHighlightsItemLabelMax),
+  "description": zod.string().min(1).max(updateAdminKnowledgeHubVideoHubPageBodyOneHighlightsItemDescriptionMax)
+})).min(1).max(updateAdminKnowledgeHubVideoHubPageBodyOneHighlightsMax),
+  "featuredEyebrow": zod.string().min(1).max(updateAdminKnowledgeHubVideoHubPageBodyOneFeaturedEyebrowMax),
+  "libraryEyebrow": zod.string().min(1).max(updateAdminKnowledgeHubVideoHubPageBodyOneLibraryEyebrowMax),
+  "libraryTitle": zod.string().min(1).max(updateAdminKnowledgeHubVideoHubPageBodyOneLibraryTitleMax),
+  "libraryDescription": zod.string().min(1).max(updateAdminKnowledgeHubVideoHubPageBodyOneLibraryDescriptionMax),
+  "searchPlaceholder": zod.string().min(1).max(updateAdminKnowledgeHubVideoHubPageBodyOneSearchPlaceholderMax),
+  "emptyStateTitle": zod.string().min(1).max(updateAdminKnowledgeHubVideoHubPageBodyOneEmptyStateTitleMax),
+  "emptyStateDescription": zod.string().min(1).max(updateAdminKnowledgeHubVideoHubPageBodyOneEmptyStateDescriptionMax)
+}).and(zod.object({
+  "featuredVideoId": zod.string().max(updateAdminKnowledgeHubVideoHubPageBodyTwoFeaturedVideoIdMax).nullable()
+}))
+
+export const updateAdminKnowledgeHubVideoHubPageResponseOneHeroEyebrowMax = 120;
+
+export const updateAdminKnowledgeHubVideoHubPageResponseOneHeroTitleMax = 160;
+
+export const updateAdminKnowledgeHubVideoHubPageResponseOneHeroAccentTextMax = 80;
+
+export const updateAdminKnowledgeHubVideoHubPageResponseOneHeroDescriptionMax = 700;
+
+export const updateAdminKnowledgeHubVideoHubPageResponseOneHeroCtaLabelMax = 80;
+
+export const updateAdminKnowledgeHubVideoHubPageResponseOneHeroBackgroundImageObjectPathMax = 100;
+
+export const updateAdminKnowledgeHubVideoHubPageResponseOneHeroBackgroundImageAltTextMax = 240;
+
+export const updateAdminKnowledgeHubVideoHubPageResponseOneHighlightsItemLabelMax = 80;
+
+export const updateAdminKnowledgeHubVideoHubPageResponseOneHighlightsItemDescriptionMax = 180;
+
+export const updateAdminKnowledgeHubVideoHubPageResponseOneHighlightsMax = 6;
+
+export const updateAdminKnowledgeHubVideoHubPageResponseOneFeaturedEyebrowMax = 120;
+
+export const updateAdminKnowledgeHubVideoHubPageResponseOneLibraryEyebrowMax = 120;
+
+export const updateAdminKnowledgeHubVideoHubPageResponseOneLibraryTitleMax = 160;
+
+export const updateAdminKnowledgeHubVideoHubPageResponseOneLibraryDescriptionMax = 600;
+
+export const updateAdminKnowledgeHubVideoHubPageResponseOneSearchPlaceholderMax = 120;
+
+export const updateAdminKnowledgeHubVideoHubPageResponseOneEmptyStateTitleMax = 160;
+
+export const updateAdminKnowledgeHubVideoHubPageResponseOneEmptyStateDescriptionMax = 500;
+
+export const updateAdminKnowledgeHubVideoHubPageResponseTwoFeaturedVideoIdMax = 100;
+
+
+
+export const UpdateAdminKnowledgeHubVideoHubPageResponse = zod.object({
+  "heroEyebrow": zod.string().min(1).max(updateAdminKnowledgeHubVideoHubPageResponseOneHeroEyebrowMax),
+  "heroTitle": zod.string().min(1).max(updateAdminKnowledgeHubVideoHubPageResponseOneHeroTitleMax),
+  "heroAccentText": zod.string().min(1).max(updateAdminKnowledgeHubVideoHubPageResponseOneHeroAccentTextMax),
+  "heroDescription": zod.string().min(1).max(updateAdminKnowledgeHubVideoHubPageResponseOneHeroDescriptionMax),
+  "heroCtaLabel": zod.string().min(1).max(updateAdminKnowledgeHubVideoHubPageResponseOneHeroCtaLabelMax),
+  "heroBackgroundImageObjectPath": zod.string().max(updateAdminKnowledgeHubVideoHubPageResponseOneHeroBackgroundImageObjectPathMax).nullable(),
+  "heroBackgroundImageAltText": zod.string().max(updateAdminKnowledgeHubVideoHubPageResponseOneHeroBackgroundImageAltTextMax),
+  "highlights": zod.array(zod.object({
+  "label": zod.string().min(1).max(updateAdminKnowledgeHubVideoHubPageResponseOneHighlightsItemLabelMax),
+  "description": zod.string().min(1).max(updateAdminKnowledgeHubVideoHubPageResponseOneHighlightsItemDescriptionMax)
+})).min(1).max(updateAdminKnowledgeHubVideoHubPageResponseOneHighlightsMax),
+  "featuredEyebrow": zod.string().min(1).max(updateAdminKnowledgeHubVideoHubPageResponseOneFeaturedEyebrowMax),
+  "libraryEyebrow": zod.string().min(1).max(updateAdminKnowledgeHubVideoHubPageResponseOneLibraryEyebrowMax),
+  "libraryTitle": zod.string().min(1).max(updateAdminKnowledgeHubVideoHubPageResponseOneLibraryTitleMax),
+  "libraryDescription": zod.string().min(1).max(updateAdminKnowledgeHubVideoHubPageResponseOneLibraryDescriptionMax),
+  "searchPlaceholder": zod.string().min(1).max(updateAdminKnowledgeHubVideoHubPageResponseOneSearchPlaceholderMax),
+  "emptyStateTitle": zod.string().min(1).max(updateAdminKnowledgeHubVideoHubPageResponseOneEmptyStateTitleMax),
+  "emptyStateDescription": zod.string().min(1).max(updateAdminKnowledgeHubVideoHubPageResponseOneEmptyStateDescriptionMax)
+}).and(zod.object({
+  "featuredVideoId": zod.string().max(updateAdminKnowledgeHubVideoHubPageResponseTwoFeaturedVideoIdMax).nullable()
+}))
+
+
+/**
+ * @summary Create a Video Hub session
+ */
+export const createAdminKnowledgeHubVideoBodyTitleMax = 180;
+
+export const createAdminKnowledgeHubVideoBodySlugMax = 180;
+
+
+export const createAdminKnowledgeHubVideoBodySlugRegExp = new RegExp('^[a-z0-9]+(?:-[a-z0-9]+)*$');
+export const createAdminKnowledgeHubVideoBodyCategoryIdMax = 100;
+
+export const createAdminKnowledgeHubVideoBodyDescriptionMax = 2000;
+
+export const createAdminKnowledgeHubVideoBodyInstructorMax = 120;
+
+export const createAdminKnowledgeHubVideoBodyDurationMax = 60;
+
+export const createAdminKnowledgeHubVideoBodyYoutubeUrlMax = 500;
+
+export const createAdminKnowledgeHubVideoBodyThumbnailObjectPathMax = 100;
+
+export const createAdminKnowledgeHubVideoBodyThumbnailImageAltTextMax = 240;
+
+export const createAdminKnowledgeHubVideoBodyDisplayOrderMax = 500;
+
+
+
+export const CreateAdminKnowledgeHubVideoBody = zod.object({
+  "title": zod.string().min(1).max(createAdminKnowledgeHubVideoBodyTitleMax),
+  "slug": zod.string().min(1).max(createAdminKnowledgeHubVideoBodySlugMax).regex(createAdminKnowledgeHubVideoBodySlugRegExp),
+  "categoryId": zod.string().min(1).max(createAdminKnowledgeHubVideoBodyCategoryIdMax),
+  "description": zod.string().min(1).max(createAdminKnowledgeHubVideoBodyDescriptionMax),
+  "instructor": zod.string().min(1).max(createAdminKnowledgeHubVideoBodyInstructorMax),
+  "duration": zod.string().min(1).max(createAdminKnowledgeHubVideoBodyDurationMax),
+  "youtubeUrl": zod.string().url().min(1).max(createAdminKnowledgeHubVideoBodyYoutubeUrlMax),
+  "thumbnailObjectPath": zod.string().max(createAdminKnowledgeHubVideoBodyThumbnailObjectPathMax).nullable(),
+  "thumbnailImageAltText": zod.string().max(createAdminKnowledgeHubVideoBodyThumbnailImageAltTextMax),
+  "displayOrder": zod.number().int().min(1).max(createAdminKnowledgeHubVideoBodyDisplayOrderMax),
+  "status": zod.enum(['draft', 'published'])
+})
+
+export const createAdminKnowledgeHubVideoResponseOneThumbnailImageUrlMax = 1000;
+
+
+export const createAdminKnowledgeHubVideoResponseTwoThumbnailObjectPathMax = 100;
+
+
+
+export const CreateAdminKnowledgeHubVideoResponse = zod.object({
+  "id": zod.string(),
+  "title": zod.string(),
+  "slug": zod.string(),
+  "categoryId": zod.string(),
+  "categoryName": zod.string(),
+  "categorySlug": zod.string(),
+  "categoryIcon": zod.string(),
+  "description": zod.string(),
+  "instructor": zod.string(),
+  "duration": zod.string(),
+  "youtubeUrl": zod.string().url(),
+  "thumbnailImageUrl": zod.string().max(createAdminKnowledgeHubVideoResponseOneThumbnailImageUrlMax).nullable(),
+  "thumbnailImageAltText": zod.string(),
+  "displayOrder": zod.number().int().min(1),
+  "publishedAt": zod.coerce.date().nullable()
+}).and(zod.object({
+  "thumbnailObjectPath": zod.string().max(createAdminKnowledgeHubVideoResponseTwoThumbnailObjectPathMax).nullable(),
+  "status": zod.enum(['draft', 'published']),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+}))
+
+
+/**
+ * @summary Update a Video Hub session
+ */
+
+
+
+export const UpdateAdminKnowledgeHubVideoParams = zod.object({
+  "id": zod.coerce.string().min(1)
+})
+
+export const updateAdminKnowledgeHubVideoBodyTitleMax = 180;
+
+export const updateAdminKnowledgeHubVideoBodySlugMax = 180;
+
+
+export const updateAdminKnowledgeHubVideoBodySlugRegExp = new RegExp('^[a-z0-9]+(?:-[a-z0-9]+)*$');
+export const updateAdminKnowledgeHubVideoBodyCategoryIdMax = 100;
+
+export const updateAdminKnowledgeHubVideoBodyDescriptionMax = 2000;
+
+export const updateAdminKnowledgeHubVideoBodyInstructorMax = 120;
+
+export const updateAdminKnowledgeHubVideoBodyDurationMax = 60;
+
+export const updateAdminKnowledgeHubVideoBodyYoutubeUrlMax = 500;
+
+export const updateAdminKnowledgeHubVideoBodyThumbnailObjectPathMax = 100;
+
+export const updateAdminKnowledgeHubVideoBodyThumbnailImageAltTextMax = 240;
+
+export const updateAdminKnowledgeHubVideoBodyDisplayOrderMax = 500;
+
+
+
+export const UpdateAdminKnowledgeHubVideoBody = zod.object({
+  "title": zod.string().min(1).max(updateAdminKnowledgeHubVideoBodyTitleMax),
+  "slug": zod.string().min(1).max(updateAdminKnowledgeHubVideoBodySlugMax).regex(updateAdminKnowledgeHubVideoBodySlugRegExp),
+  "categoryId": zod.string().min(1).max(updateAdminKnowledgeHubVideoBodyCategoryIdMax),
+  "description": zod.string().min(1).max(updateAdminKnowledgeHubVideoBodyDescriptionMax),
+  "instructor": zod.string().min(1).max(updateAdminKnowledgeHubVideoBodyInstructorMax),
+  "duration": zod.string().min(1).max(updateAdminKnowledgeHubVideoBodyDurationMax),
+  "youtubeUrl": zod.string().url().min(1).max(updateAdminKnowledgeHubVideoBodyYoutubeUrlMax),
+  "thumbnailObjectPath": zod.string().max(updateAdminKnowledgeHubVideoBodyThumbnailObjectPathMax).nullable(),
+  "thumbnailImageAltText": zod.string().max(updateAdminKnowledgeHubVideoBodyThumbnailImageAltTextMax),
+  "displayOrder": zod.number().int().min(1).max(updateAdminKnowledgeHubVideoBodyDisplayOrderMax),
+  "status": zod.enum(['draft', 'published'])
+})
+
+export const updateAdminKnowledgeHubVideoResponseOneThumbnailImageUrlMax = 1000;
+
+
+export const updateAdminKnowledgeHubVideoResponseTwoThumbnailObjectPathMax = 100;
+
+
+
+export const UpdateAdminKnowledgeHubVideoResponse = zod.object({
+  "id": zod.string(),
+  "title": zod.string(),
+  "slug": zod.string(),
+  "categoryId": zod.string(),
+  "categoryName": zod.string(),
+  "categorySlug": zod.string(),
+  "categoryIcon": zod.string(),
+  "description": zod.string(),
+  "instructor": zod.string(),
+  "duration": zod.string(),
+  "youtubeUrl": zod.string().url(),
+  "thumbnailImageUrl": zod.string().max(updateAdminKnowledgeHubVideoResponseOneThumbnailImageUrlMax).nullable(),
+  "thumbnailImageAltText": zod.string(),
+  "displayOrder": zod.number().int().min(1),
+  "publishedAt": zod.coerce.date().nullable()
+}).and(zod.object({
+  "thumbnailObjectPath": zod.string().max(updateAdminKnowledgeHubVideoResponseTwoThumbnailObjectPathMax).nullable(),
+  "status": zod.enum(['draft', 'published']),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+}))
+
+
+/**
+ * @summary Delete a Video Hub session
+ */
+
+
+
+export const DeleteAdminKnowledgeHubVideoParams = zod.object({
+  "id": zod.coerce.string().min(1)
+})
+
+export const DeleteAdminKnowledgeHubVideoResponse = zod.void()
+
+
+/**
+ * @summary Create a Video Hub category
+ */
+export const createAdminKnowledgeHubVideoCategoryBodyNameMax = 80;
+
+export const createAdminKnowledgeHubVideoCategoryBodySlugMax = 100;
+
+
+export const createAdminKnowledgeHubVideoCategoryBodySlugRegExp = new RegExp('^[a-z0-9]+(?:-[a-z0-9]+)*$');
+export const createAdminKnowledgeHubVideoCategoryBodyIconMax = 50;
+
+export const createAdminKnowledgeHubVideoCategoryBodyDisplayOrderMax = 500;
+
+
+
+export const CreateAdminKnowledgeHubVideoCategoryBody = zod.object({
+  "name": zod.string().min(1).max(createAdminKnowledgeHubVideoCategoryBodyNameMax),
+  "slug": zod.string().min(1).max(createAdminKnowledgeHubVideoCategoryBodySlugMax).regex(createAdminKnowledgeHubVideoCategoryBodySlugRegExp),
+  "icon": zod.string().min(1).max(createAdminKnowledgeHubVideoCategoryBodyIconMax),
+  "displayOrder": zod.number().int().min(1).max(createAdminKnowledgeHubVideoCategoryBodyDisplayOrderMax),
+  "isVisible": zod.boolean()
+})
+
+export const createAdminKnowledgeHubVideoCategoryResponsePublishedVideoCountMin = 0;
+
+
+
+export const CreateAdminKnowledgeHubVideoCategoryResponse = zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "slug": zod.string(),
+  "icon": zod.string(),
+  "displayOrder": zod.number().int(),
+  "isVisible": zod.boolean(),
+  "publishedVideoCount": zod.number().int().min(createAdminKnowledgeHubVideoCategoryResponsePublishedVideoCountMin)
+})
+
+
+/**
+ * @summary Update a Video Hub category
+ */
+
+
+
+export const UpdateAdminKnowledgeHubVideoCategoryParams = zod.object({
+  "id": zod.coerce.string().min(1)
+})
+
+export const updateAdminKnowledgeHubVideoCategoryBodyNameMax = 80;
+
+export const updateAdminKnowledgeHubVideoCategoryBodySlugMax = 100;
+
+
+export const updateAdminKnowledgeHubVideoCategoryBodySlugRegExp = new RegExp('^[a-z0-9]+(?:-[a-z0-9]+)*$');
+export const updateAdminKnowledgeHubVideoCategoryBodyIconMax = 50;
+
+export const updateAdminKnowledgeHubVideoCategoryBodyDisplayOrderMax = 500;
+
+
+
+export const UpdateAdminKnowledgeHubVideoCategoryBody = zod.object({
+  "name": zod.string().min(1).max(updateAdminKnowledgeHubVideoCategoryBodyNameMax),
+  "slug": zod.string().min(1).max(updateAdminKnowledgeHubVideoCategoryBodySlugMax).regex(updateAdminKnowledgeHubVideoCategoryBodySlugRegExp),
+  "icon": zod.string().min(1).max(updateAdminKnowledgeHubVideoCategoryBodyIconMax),
+  "displayOrder": zod.number().int().min(1).max(updateAdminKnowledgeHubVideoCategoryBodyDisplayOrderMax),
+  "isVisible": zod.boolean()
+})
+
+export const updateAdminKnowledgeHubVideoCategoryResponsePublishedVideoCountMin = 0;
+
+
+
+export const UpdateAdminKnowledgeHubVideoCategoryResponse = zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "slug": zod.string(),
+  "icon": zod.string(),
+  "displayOrder": zod.number().int(),
+  "isVisible": zod.boolean(),
+  "publishedVideoCount": zod.number().int().min(updateAdminKnowledgeHubVideoCategoryResponsePublishedVideoCountMin)
+})
+
+
+/**
+ * @summary Delete an unused Video Hub category
+ */
+
+
+
+export const DeleteAdminKnowledgeHubVideoCategoryParams = zod.object({
+  "id": zod.coerce.string().min(1)
+})
+
+export const DeleteAdminKnowledgeHubVideoCategoryResponse = zod.void()
+
+
+/**
+ * @summary Request a persistent image upload URL for Video Hub content
+ */
+export const requestAdminKnowledgeHubVideoImageUploadUrlBodyFileNameMax = 240;
+
+export const requestAdminKnowledgeHubVideoImageUploadUrlBodySizeMax = 5242880;
+
+
+
+export const RequestAdminKnowledgeHubVideoImageUploadUrlBody = zod.object({
+  "fileName": zod.string().min(1).max(requestAdminKnowledgeHubVideoImageUploadUrlBodyFileNameMax),
+  "size": zod.number().int().min(1).max(requestAdminKnowledgeHubVideoImageUploadUrlBodySizeMax),
+  "contentType": zod.enum(['image/jpeg', 'image/png', 'image/webp'])
+})
+
+export const requestAdminKnowledgeHubVideoImageUploadUrlResponseObjectPathRegExp = new RegExp('^/objects/uploads/[a-f0-9-]{36}$');
+
+
+export const RequestAdminKnowledgeHubVideoImageUploadUrlResponse = zod.object({
+  "uploadURL": zod.string().url(),
+  "objectPath": zod.string().regex(requestAdminKnowledgeHubVideoImageUploadUrlResponseObjectPathRegExp)
+})
+
+
+/**
+ * @summary Make an uploaded Video Hub image publicly readable
+ */
+export const completeAdminKnowledgeHubVideoImageUploadBodyObjectPathRegExp = new RegExp('^/objects/uploads/[a-f0-9-]{36}$');
+
+
+export const CompleteAdminKnowledgeHubVideoImageUploadBody = zod.object({
+  "objectPath": zod.string().regex(completeAdminKnowledgeHubVideoImageUploadBodyObjectPathRegExp)
+})
+
+export const completeAdminKnowledgeHubVideoImageUploadResponseObjectPathRegExp = new RegExp('^/objects/uploads/[a-f0-9-]{36}$');
+export const completeAdminKnowledgeHubVideoImageUploadResponseImageUrlMax = 1000;
+
+
+
+export const CompleteAdminKnowledgeHubVideoImageUploadResponse = zod.object({
+  "objectPath": zod.string().regex(completeAdminKnowledgeHubVideoImageUploadResponseObjectPathRegExp),
+  "imageUrl": zod.string().max(completeAdminKnowledgeHubVideoImageUploadResponseImageUrlMax)
+})
+
+

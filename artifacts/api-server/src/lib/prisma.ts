@@ -13,6 +13,7 @@ import {
   DEFAULT_KNOWLEDGE_HUB_ARTICLES_PAGE,
   DEFAULT_KNOWLEDGE_HUB_ARTICLE_CATEGORIES,
 } from "./knowledge-hub-articles-content";
+import { DEFAULT_KNOWLEDGE_HUB_VIDEO_PAGE } from "./knowledge-hub-video-content";
 
 const LEGACY_COURSE_ACTIONS = [
   { slug: "mpc", primaryActionLabel: "Explore admissions", secondaryActionLabel: "Talk to a counsellor" },
@@ -287,6 +288,17 @@ export async function initializeDatabase() {
   await ensureAlumniStorySchema();
   await backfillLegacyResultStories();
   await backfillCollegeNameTypo();
+
+  const { highlights: videoHubHighlights, ...videoHubSettings } = DEFAULT_KNOWLEDGE_HUB_VIDEO_PAGE;
+  await prisma.knowledgeHubVideoHubSettings.upsert({
+    where: { id: "singleton" },
+    update: {},
+    create: {
+      id: "singleton",
+      ...videoHubSettings,
+      highlights: videoHubHighlights as Prisma.InputJsonValue,
+    },
+  });
 
   for (const course of COURSE_SEEDS) {
     await prisma.course.upsert({

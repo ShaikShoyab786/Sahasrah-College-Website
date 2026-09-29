@@ -3410,6 +3410,386 @@ export interface KnowledgeHubArticlesList {
   hasMore: boolean;
 }
 
+export interface KnowledgeHubVideoHighlight {
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  label: string;
+  /**
+     * @minLength 1
+     * @maxLength 180
+     */
+  description: string;
+}
+
+export interface KnowledgeHubVideoHubPublicSettings {
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  heroEyebrow: string;
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  heroTitle: string;
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  heroAccentText: string;
+  /**
+     * @minLength 1
+     * @maxLength 700
+     */
+  heroDescription: string;
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  heroCtaLabel: string;
+  /**
+     * @maxLength 1000
+     * @nullable
+     */
+  heroBackgroundImageUrl: string | null;
+  /** @maxLength 240 */
+  heroBackgroundImageAltText: string;
+  /**
+     * @minItems 1
+     * @maxItems 6
+     */
+  highlights: KnowledgeHubVideoHighlight[];
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  featuredEyebrow: string;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  libraryEyebrow: string;
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  libraryTitle: string;
+  /**
+     * @minLength 1
+     * @maxLength 600
+     */
+  libraryDescription: string;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  searchPlaceholder: string;
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  emptyStateTitle: string;
+  /**
+     * @minLength 1
+     * @maxLength 500
+     */
+  emptyStateDescription: string;
+}
+
+export interface KnowledgeHubVideoHubPageSettings {
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  heroEyebrow: string;
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  heroTitle: string;
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  heroAccentText: string;
+  /**
+     * @minLength 1
+     * @maxLength 700
+     */
+  heroDescription: string;
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  heroCtaLabel: string;
+  /**
+     * @maxLength 100
+     * @nullable
+     */
+  heroBackgroundImageObjectPath: string | null;
+  /** @maxLength 240 */
+  heroBackgroundImageAltText: string;
+  /**
+     * @minItems 1
+     * @maxItems 6
+     */
+  highlights: KnowledgeHubVideoHighlight[];
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  featuredEyebrow: string;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  libraryEyebrow: string;
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  libraryTitle: string;
+  /**
+     * @minLength 1
+     * @maxLength 600
+     */
+  libraryDescription: string;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  searchPlaceholder: string;
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  emptyStateTitle: string;
+  /**
+     * @minLength 1
+     * @maxLength 500
+     */
+  emptyStateDescription: string;
+}
+
+export type KnowledgeHubVideoHubPageInput = KnowledgeHubVideoHubPageSettings & ({
+  /**
+     * @maxLength 100
+     * @nullable
+     */
+  featuredVideoId: string | null;
+});
+
+export interface KnowledgeHubVideoCategory {
+  id: string;
+  name: string;
+  slug: string;
+  icon: string;
+  displayOrder: number;
+  isVisible: boolean;
+  /** @minimum 0 */
+  publishedVideoCount: number;
+}
+
+export interface KnowledgeHubVideoCategoryInput {
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  name: string;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     * @pattern ^[a-z0-9]+(?:-[a-z0-9]+)*$
+     */
+  slug: string;
+  /**
+     * @minLength 1
+     * @maxLength 50
+     */
+  icon: string;
+  /**
+     * @minimum 1
+     * @maximum 500
+     */
+  displayOrder: number;
+  isVisible: boolean;
+}
+
+export interface KnowledgeHubVideoSummary {
+  id: string;
+  title: string;
+  slug: string;
+  categoryId: string;
+  categoryName: string;
+  categorySlug: string;
+  categoryIcon: string;
+  description: string;
+  instructor: string;
+  duration: string;
+  youtubeUrl: string;
+  /**
+     * @maxLength 1000
+     * @nullable
+     */
+  thumbnailImageUrl: string | null;
+  thumbnailImageAltText: string;
+  /** @minimum 1 */
+  displayOrder: number;
+  /** @nullable */
+  publishedAt: string | null;
+}
+
+export type KnowledgeHubVideoRecordStatus = typeof KnowledgeHubVideoRecordStatus[keyof typeof KnowledgeHubVideoRecordStatus];
+
+
+export const KnowledgeHubVideoRecordStatus = {
+  draft: 'draft',
+  published: 'published',
+} as const;
+
+export type KnowledgeHubVideoRecord = KnowledgeHubVideoSummary & ({
+  /**
+     * @maxLength 100
+     * @nullable
+     */
+  thumbnailObjectPath: string | null;
+  status: KnowledgeHubVideoRecordStatus;
+  createdAt: string;
+  updatedAt: string;
+});
+
+export type KnowledgeHubVideoInputStatus = typeof KnowledgeHubVideoInputStatus[keyof typeof KnowledgeHubVideoInputStatus];
+
+
+export const KnowledgeHubVideoInputStatus = {
+  draft: 'draft',
+  published: 'published',
+} as const;
+
+export interface KnowledgeHubVideoInput {
+  /**
+     * @minLength 1
+     * @maxLength 180
+     */
+  title: string;
+  /**
+     * @minLength 1
+     * @maxLength 180
+     * @pattern ^[a-z0-9]+(?:-[a-z0-9]+)*$
+     */
+  slug: string;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  categoryId: string;
+  /**
+     * @minLength 1
+     * @maxLength 2000
+     */
+  description: string;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  instructor: string;
+  /**
+     * @minLength 1
+     * @maxLength 60
+     */
+  duration: string;
+  /**
+     * @minLength 1
+     * @maxLength 500
+     */
+  youtubeUrl: string;
+  /**
+     * @maxLength 100
+     * @nullable
+     */
+  thumbnailObjectPath: string | null;
+  /** @maxLength 240 */
+  thumbnailImageAltText: string;
+  /**
+     * @minimum 1
+     * @maximum 500
+     */
+  displayOrder: number;
+  status: KnowledgeHubVideoInputStatus;
+}
+
+export interface KnowledgeHubVideoHubPage {
+  settings: KnowledgeHubVideoHubPublicSettings;
+  featuredVideo: KnowledgeHubVideoSummary | null;
+  relatedVideos: KnowledgeHubVideoSummary[];
+  /** @minimum 0 */
+  publishedVideoCount: number;
+  categories: KnowledgeHubVideoCategory[];
+}
+
+export interface KnowledgeHubVideoList {
+  items: KnowledgeHubVideoSummary[];
+  /** @minimum 0 */
+  total: number;
+  /** @minimum 0 */
+  offset: number;
+  /**
+     * @minimum 1
+     * @maximum 30
+     */
+  limit: number;
+  hasMore: boolean;
+}
+
+export interface AdminKnowledgeHubVideoHub {
+  settings: KnowledgeHubVideoHubPageInput;
+  categories: KnowledgeHubVideoCategory[];
+  videos: KnowledgeHubVideoRecord[];
+}
+
+export type VideoHubImageUploadUrlRequestContentType = typeof VideoHubImageUploadUrlRequestContentType[keyof typeof VideoHubImageUploadUrlRequestContentType];
+
+
+export const VideoHubImageUploadUrlRequestContentType = {
+  'image/jpeg': 'image/jpeg',
+  'image/png': 'image/png',
+  'image/webp': 'image/webp',
+} as const;
+
+export interface VideoHubImageUploadUrlRequest {
+  /**
+     * @minLength 1
+     * @maxLength 240
+     */
+  fileName: string;
+  /**
+     * @minimum 1
+     * @maximum 5242880
+     */
+  size: number;
+  contentType: VideoHubImageUploadUrlRequestContentType;
+}
+
+export interface VideoHubImageUploadUrlResponse {
+  uploadURL: string;
+  /** @pattern ^/objects/uploads/[a-f0-9-]{36}$ */
+  objectPath: string;
+}
+
+export interface VideoHubImageUploadCompleteRequest {
+  /** @pattern ^/objects/uploads/[a-f0-9-]{36}$ */
+  objectPath: string;
+}
+
+export interface VideoHubImageUploadCompleteResponse {
+  /** @pattern ^/objects/uploads/[a-f0-9-]{36}$ */
+  objectPath: string;
+  /** @maxLength 1000 */
+  imageUrl: string;
+}
+
 export interface AdminKnowledgeHubArticles {
   settings: KnowledgeHubArticlesPageInput;
   categories: KnowledgeHubArticleCategory[];
@@ -3490,5 +3870,36 @@ export const GetKnowledgeHubArticlesSort = {
   recent: 'recent',
   oldest: 'oldest',
   title: 'title',
+} as const;
+
+export type GetKnowledgeHubVideoHubVideosParams = {
+/**
+ * @maxLength 200
+ */
+search?: string;
+/**
+ * @maxLength 100
+ */
+category?: string;
+sort?: GetKnowledgeHubVideoHubVideosSort;
+/**
+ * @minimum 0
+ */
+offset?: number;
+/**
+ * @minimum 1
+ * @maximum 30
+ */
+limit?: number;
+};
+
+export type GetKnowledgeHubVideoHubVideosSort = typeof GetKnowledgeHubVideoHubVideosSort[keyof typeof GetKnowledgeHubVideoHubVideosSort];
+
+
+export const GetKnowledgeHubVideoHubVideosSort = {
+  recent: 'recent',
+  oldest: 'oldest',
+  title: 'title',
+  displayOrder: 'displayOrder',
 } as const;
 

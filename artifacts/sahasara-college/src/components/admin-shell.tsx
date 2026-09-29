@@ -84,7 +84,8 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
   const allCoursesPageActive = location.startsWith('/admin/pages/all-courses');
   const knowledgeHubMainPageActive = location.startsWith('/admin/pages/knowledge-hub/main') || location.startsWith('/admin/knowledge-hub-mega-menu');
   const knowledgeHubArticlesActive = location.startsWith('/admin/pages/knowledge-hub/articles');
-  const nestedKnowledgeHubRoute = knowledgeHubMainPageActive || knowledgeHubArticlesActive;
+  const knowledgeHubVideosActive = location.startsWith('/admin/pages/knowledge-hub/videos');
+  const nestedKnowledgeHubRoute = knowledgeHubMainPageActive || knowledgeHubArticlesActive || knowledgeHubVideosActive;
   const resultsPageActive = location.startsWith('/admin/pages/results') || location.startsWith('/admin/results');
   const nestedHomeRoute = heroActive || aboutActive || liveUpdatesActive || statisticsActive || favoriteTopicsActive || resultsActive || ribbonActive || testimonialsActive || facultyActive || galleryActive || knowledgeHubActive || admissionsFaqActive || finalCtaActive;
   const nestedAboutRoute = aboutHeroActive || aboutStoryActive || chairmanActive || principlesActive || parentChoiceActive || leadershipActive || campusHighlightsActive || achievementsActive || faqActive || admissionCtaActive;
@@ -349,6 +350,7 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
                   <div className="mt-1">
                     <PageSectionLink href="/admin/pages/knowledge-hub/main" id="knowledge-hub-main-page" label="Hub Main Page" active={knowledgeHubMainPageActive} onSelect={() => { setActiveAdminSection(''); setOpen(false); }} />
                     <PageSectionLink href="/admin/pages/knowledge-hub/articles" id="knowledge-hub-articles" label="Articles" active={knowledgeHubArticlesActive} onSelect={() => { setActiveAdminSection(''); setOpen(false); }} />
+                    <PageSectionLink href="/admin/pages/knowledge-hub/videos" id="knowledge-hub-videos" label="Video Hub" active={knowledgeHubVideosActive} onSelect={() => { setActiveAdminSection(''); setOpen(false); }} />
                   </div>
                 )}
               </div>

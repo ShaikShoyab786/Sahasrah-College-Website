@@ -44,6 +44,7 @@ import type {
   AdminFacultyCollection,
   AdminFacultyMember,
   AdminKnowledgeHubArticles,
+  AdminKnowledgeHubVideoHub,
   AdminResultsLibrary,
   AdminResultsLibraryInput,
   AllCoursesPageSettings,
@@ -75,6 +76,7 @@ import type {
   GalleryPageSettings,
   GalleryPageSettingsInput,
   GetKnowledgeHubArticlesParams,
+  GetKnowledgeHubVideoHubVideosParams,
   HealthStatus,
   HomepageAboutPreview,
   HomepageAboutPreviewInput,
@@ -112,12 +114,23 @@ import type {
   KnowledgeHubArticlesPage,
   KnowledgeHubArticlesPageInput,
   KnowledgeHubMegaMenu,
+  KnowledgeHubVideoCategory,
+  KnowledgeHubVideoCategoryInput,
+  KnowledgeHubVideoHubPage,
+  KnowledgeHubVideoHubPageInput,
+  KnowledgeHubVideoInput,
+  KnowledgeHubVideoList,
+  KnowledgeHubVideoRecord,
   LoginInput,
   MessageResponse,
   PublicCourse,
   ResultsPageData,
   SiteSettings,
-  SiteSettingsInput
+  SiteSettingsInput,
+  VideoHubImageUploadCompleteRequest,
+  VideoHubImageUploadCompleteResponse,
+  VideoHubImageUploadUrlRequest,
+  VideoHubImageUploadUrlResponse
 } from './api.schemas';
 
 import { customFetch } from '../custom-fetch';
@@ -10273,5 +10286,1086 @@ export const useDeleteAdminKnowledgeHubArticle = <TError = ErrorType<ErrorRespon
         TContext
       > => {
       return useMutation(getDeleteAdminKnowledgeHubArticleMutationOptions(options));
+    }
+
+export const getGetKnowledgeHubVideoHubPageUrl = () => {
+
+
+
+
+  return `/api/knowledge-hub/video-hub/page`
+}
+
+/**
+ * @summary Read public Video Hub settings, featured session, and categories
+ */
+export const getKnowledgeHubVideoHubPage = async ( options?: Parameters<typeof customFetch>[1]): Promise<KnowledgeHubVideoHubPage> => {
+
+  return customFetch<KnowledgeHubVideoHubPage>(getGetKnowledgeHubVideoHubPageUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetKnowledgeHubVideoHubPageQueryKey = () => {
+    return [
+    `/api/knowledge-hub/video-hub/page`
+    ] as const;
+    }
+
+
+export const getGetKnowledgeHubVideoHubPageQueryOptions = <TData = Awaited<ReturnType<typeof getKnowledgeHubVideoHubPage>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getKnowledgeHubVideoHubPage>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetKnowledgeHubVideoHubPageQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getKnowledgeHubVideoHubPage>>> = ({ signal }) => getKnowledgeHubVideoHubPage({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getKnowledgeHubVideoHubPage>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetKnowledgeHubVideoHubPageQueryResult = NonNullable<Awaited<ReturnType<typeof getKnowledgeHubVideoHubPage>>>
+export type GetKnowledgeHubVideoHubPageQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Read public Video Hub settings, featured session, and categories
+ */
+
+export function useGetKnowledgeHubVideoHubPage<TData = Awaited<ReturnType<typeof getKnowledgeHubVideoHubPage>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getKnowledgeHubVideoHubPage>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetKnowledgeHubVideoHubPageQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetKnowledgeHubVideoHubVideosUrl = (params?: GetKnowledgeHubVideoHubVideosParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/knowledge-hub/video-hub/videos?${stringifiedParams}` : `/api/knowledge-hub/video-hub/videos`
+}
+
+/**
+ * @summary Search and browse published Knowledge Hub videos
+ */
+export const getKnowledgeHubVideoHubVideos = async (params?: GetKnowledgeHubVideoHubVideosParams, options?: Parameters<typeof customFetch>[1]): Promise<KnowledgeHubVideoList> => {
+
+  return customFetch<KnowledgeHubVideoList>(getGetKnowledgeHubVideoHubVideosUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetKnowledgeHubVideoHubVideosQueryKey = (params?: GetKnowledgeHubVideoHubVideosParams,) => {
+    return [
+    `/api/knowledge-hub/video-hub/videos`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetKnowledgeHubVideoHubVideosQueryOptions = <TData = Awaited<ReturnType<typeof getKnowledgeHubVideoHubVideos>>, TError = ErrorType<unknown>>(params?: GetKnowledgeHubVideoHubVideosParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getKnowledgeHubVideoHubVideos>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetKnowledgeHubVideoHubVideosQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getKnowledgeHubVideoHubVideos>>> = ({ signal }) => getKnowledgeHubVideoHubVideos(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getKnowledgeHubVideoHubVideos>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetKnowledgeHubVideoHubVideosQueryResult = NonNullable<Awaited<ReturnType<typeof getKnowledgeHubVideoHubVideos>>>
+export type GetKnowledgeHubVideoHubVideosQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Search and browse published Knowledge Hub videos
+ */
+
+export function useGetKnowledgeHubVideoHubVideos<TData = Awaited<ReturnType<typeof getKnowledgeHubVideoHubVideos>>, TError = ErrorType<unknown>>(
+ params?: GetKnowledgeHubVideoHubVideosParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getKnowledgeHubVideoHubVideos>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetKnowledgeHubVideoHubVideosQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetKnowledgeHubVideoHubAssetUrl = (assetId: string,) => {
+
+
+
+
+  return `/api/knowledge-hub/video-hub/assets/${assetId}`
+}
+
+/**
+ * @summary Serve a public Video Hub image uploaded through the admin
+ */
+export const getKnowledgeHubVideoHubAsset = async (assetId: string, options?: Parameters<typeof customFetch>[1]): Promise<Blob> => {
+
+  return customFetch<Blob>(getGetKnowledgeHubVideoHubAssetUrl(assetId),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetKnowledgeHubVideoHubAssetQueryKey = (assetId: string,) => {
+    return [
+    `/api/knowledge-hub/video-hub/assets/${assetId}`
+    ] as const;
+    }
+
+
+export const getGetKnowledgeHubVideoHubAssetQueryOptions = <TData = Awaited<ReturnType<typeof getKnowledgeHubVideoHubAsset>>, TError = ErrorType<ErrorResponse>>(assetId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getKnowledgeHubVideoHubAsset>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetKnowledgeHubVideoHubAssetQueryKey(assetId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getKnowledgeHubVideoHubAsset>>> = ({ signal }) => getKnowledgeHubVideoHubAsset(assetId, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: assetId !== null && assetId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getKnowledgeHubVideoHubAsset>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetKnowledgeHubVideoHubAssetQueryResult = NonNullable<Awaited<ReturnType<typeof getKnowledgeHubVideoHubAsset>>>
+export type GetKnowledgeHubVideoHubAssetQueryError = ErrorType<ErrorResponse>
+
+
+/**
+ * @summary Serve a public Video Hub image uploaded through the admin
+ */
+
+export function useGetKnowledgeHubVideoHubAsset<TData = Awaited<ReturnType<typeof getKnowledgeHubVideoHubAsset>>, TError = ErrorType<ErrorResponse>>(
+ assetId: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getKnowledgeHubVideoHubAsset>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetKnowledgeHubVideoHubAssetQueryOptions(assetId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetAdminKnowledgeHubVideoHubUrl = () => {
+
+
+
+
+  return `/api/admin/knowledge-hub/video-hub`
+}
+
+/**
+ * @summary Read Video Hub settings, categories, and all videos
+ */
+export const getAdminKnowledgeHubVideoHub = async ( options?: Parameters<typeof customFetch>[1]): Promise<AdminKnowledgeHubVideoHub> => {
+
+  return customFetch<AdminKnowledgeHubVideoHub>(getGetAdminKnowledgeHubVideoHubUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAdminKnowledgeHubVideoHubQueryKey = () => {
+    return [
+    `/api/admin/knowledge-hub/video-hub`
+    ] as const;
+    }
+
+
+export const getGetAdminKnowledgeHubVideoHubQueryOptions = <TData = Awaited<ReturnType<typeof getAdminKnowledgeHubVideoHub>>, TError = ErrorType<ErrorResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminKnowledgeHubVideoHub>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAdminKnowledgeHubVideoHubQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdminKnowledgeHubVideoHub>>> = ({ signal }) => getAdminKnowledgeHubVideoHub({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAdminKnowledgeHubVideoHub>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetAdminKnowledgeHubVideoHubQueryResult = NonNullable<Awaited<ReturnType<typeof getAdminKnowledgeHubVideoHub>>>
+export type GetAdminKnowledgeHubVideoHubQueryError = ErrorType<ErrorResponse>
+
+
+/**
+ * @summary Read Video Hub settings, categories, and all videos
+ */
+
+export function useGetAdminKnowledgeHubVideoHub<TData = Awaited<ReturnType<typeof getAdminKnowledgeHubVideoHub>>, TError = ErrorType<ErrorResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminKnowledgeHubVideoHub>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetAdminKnowledgeHubVideoHubQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getUpdateAdminKnowledgeHubVideoHubPageUrl = () => {
+
+
+
+
+  return `/api/admin/knowledge-hub/video-hub/page`
+}
+
+/**
+ * @summary Update Video Hub page copy, highlights, background, and featured session
+ */
+export const updateAdminKnowledgeHubVideoHubPage = async (knowledgeHubVideoHubPageInput: KnowledgeHubVideoHubPageInput, options?: Parameters<typeof customFetch>[1]): Promise<KnowledgeHubVideoHubPageInput> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<KnowledgeHubVideoHubPageInput>(getUpdateAdminKnowledgeHubVideoHubPageUrl(),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(knowledgeHubVideoHubPageInput)
+  }
+);}
+
+
+
+
+
+export const getUpdateAdminKnowledgeHubVideoHubPageMutationKey = () => ['updateAdminKnowledgeHubVideoHubPage'] as const;
+
+export const getUpdateAdminKnowledgeHubVideoHubPageMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAdminKnowledgeHubVideoHubPage>>, TError,UpdateAdminKnowledgeHubVideoHubPageMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateAdminKnowledgeHubVideoHubPage>>, TError,UpdateAdminKnowledgeHubVideoHubPageMutationVariables, TContext> => {
+
+const mutationKey = getUpdateAdminKnowledgeHubVideoHubPageMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateAdminKnowledgeHubVideoHubPage>>, UpdateAdminKnowledgeHubVideoHubPageMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  updateAdminKnowledgeHubVideoHubPage(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateAdminKnowledgeHubVideoHubPageMutationResult = NonNullable<Awaited<ReturnType<typeof updateAdminKnowledgeHubVideoHubPage>>>
+    export type UpdateAdminKnowledgeHubVideoHubPageMutationBody = BodyType<KnowledgeHubVideoHubPageInput>
+    export type UpdateAdminKnowledgeHubVideoHubPageMutationError = ErrorType<ErrorResponse>
+    export type UpdateAdminKnowledgeHubVideoHubPageMutationVariables = {data: BodyType<KnowledgeHubVideoHubPageInput>}
+
+    /**
+ * @summary Update Video Hub page copy, highlights, background, and featured session
+ */
+export const useUpdateAdminKnowledgeHubVideoHubPage = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAdminKnowledgeHubVideoHubPage>>, TError,UpdateAdminKnowledgeHubVideoHubPageMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateAdminKnowledgeHubVideoHubPage>>,
+        TError,
+        UpdateAdminKnowledgeHubVideoHubPageMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateAdminKnowledgeHubVideoHubPageMutationOptions(options));
+    }
+
+export const getCreateAdminKnowledgeHubVideoUrl = () => {
+
+
+
+
+  return `/api/admin/knowledge-hub/video-hub/videos`
+}
+
+/**
+ * @summary Create a Video Hub session
+ */
+export const createAdminKnowledgeHubVideo = async (knowledgeHubVideoInput: KnowledgeHubVideoInput, options?: Parameters<typeof customFetch>[1]): Promise<KnowledgeHubVideoRecord> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<KnowledgeHubVideoRecord>(getCreateAdminKnowledgeHubVideoUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(knowledgeHubVideoInput)
+  }
+);}
+
+
+
+
+
+export const getCreateAdminKnowledgeHubVideoMutationKey = () => ['createAdminKnowledgeHubVideo'] as const;
+
+export const getCreateAdminKnowledgeHubVideoMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createAdminKnowledgeHubVideo>>, TError,CreateAdminKnowledgeHubVideoMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createAdminKnowledgeHubVideo>>, TError,CreateAdminKnowledgeHubVideoMutationVariables, TContext> => {
+
+const mutationKey = getCreateAdminKnowledgeHubVideoMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createAdminKnowledgeHubVideo>>, CreateAdminKnowledgeHubVideoMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  createAdminKnowledgeHubVideo(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateAdminKnowledgeHubVideoMutationResult = NonNullable<Awaited<ReturnType<typeof createAdminKnowledgeHubVideo>>>
+    export type CreateAdminKnowledgeHubVideoMutationBody = BodyType<KnowledgeHubVideoInput>
+    export type CreateAdminKnowledgeHubVideoMutationError = ErrorType<ErrorResponse>
+    export type CreateAdminKnowledgeHubVideoMutationVariables = {data: BodyType<KnowledgeHubVideoInput>}
+
+    /**
+ * @summary Create a Video Hub session
+ */
+export const useCreateAdminKnowledgeHubVideo = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createAdminKnowledgeHubVideo>>, TError,CreateAdminKnowledgeHubVideoMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createAdminKnowledgeHubVideo>>,
+        TError,
+        CreateAdminKnowledgeHubVideoMutationVariables,
+        TContext
+      > => {
+      return useMutation(getCreateAdminKnowledgeHubVideoMutationOptions(options));
+    }
+
+export const getUpdateAdminKnowledgeHubVideoUrl = (id: string,) => {
+
+
+
+
+  return `/api/admin/knowledge-hub/video-hub/videos/${id}`
+}
+
+/**
+ * @summary Update a Video Hub session
+ */
+export const updateAdminKnowledgeHubVideo = async (id: string,
+    knowledgeHubVideoInput: KnowledgeHubVideoInput, options?: Parameters<typeof customFetch>[1]): Promise<KnowledgeHubVideoRecord> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<KnowledgeHubVideoRecord>(getUpdateAdminKnowledgeHubVideoUrl(id),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(knowledgeHubVideoInput)
+  }
+);}
+
+
+
+
+
+export const getUpdateAdminKnowledgeHubVideoMutationKey = () => ['updateAdminKnowledgeHubVideo'] as const;
+
+export const getUpdateAdminKnowledgeHubVideoMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAdminKnowledgeHubVideo>>, TError,UpdateAdminKnowledgeHubVideoMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateAdminKnowledgeHubVideo>>, TError,UpdateAdminKnowledgeHubVideoMutationVariables, TContext> => {
+
+const mutationKey = getUpdateAdminKnowledgeHubVideoMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateAdminKnowledgeHubVideo>>, UpdateAdminKnowledgeHubVideoMutationVariables> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  updateAdminKnowledgeHubVideo(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateAdminKnowledgeHubVideoMutationResult = NonNullable<Awaited<ReturnType<typeof updateAdminKnowledgeHubVideo>>>
+    export type UpdateAdminKnowledgeHubVideoMutationBody = BodyType<KnowledgeHubVideoInput>
+    export type UpdateAdminKnowledgeHubVideoMutationError = ErrorType<ErrorResponse>
+    export type UpdateAdminKnowledgeHubVideoMutationVariables = {id: string;data: BodyType<KnowledgeHubVideoInput>}
+
+    /**
+ * @summary Update a Video Hub session
+ */
+export const useUpdateAdminKnowledgeHubVideo = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAdminKnowledgeHubVideo>>, TError,UpdateAdminKnowledgeHubVideoMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateAdminKnowledgeHubVideo>>,
+        TError,
+        UpdateAdminKnowledgeHubVideoMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateAdminKnowledgeHubVideoMutationOptions(options));
+    }
+
+export const getDeleteAdminKnowledgeHubVideoUrl = (id: string,) => {
+
+
+
+
+  return `/api/admin/knowledge-hub/video-hub/videos/${id}`
+}
+
+/**
+ * @summary Delete a Video Hub session
+ */
+export const deleteAdminKnowledgeHubVideo = async (id: string, options?: Parameters<typeof customFetch>[1]): Promise<void> => {
+
+  return customFetch<void>(getDeleteAdminKnowledgeHubVideoUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+
+export const getDeleteAdminKnowledgeHubVideoMutationKey = () => ['deleteAdminKnowledgeHubVideo'] as const;
+
+export const getDeleteAdminKnowledgeHubVideoMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAdminKnowledgeHubVideo>>, TError,DeleteAdminKnowledgeHubVideoMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteAdminKnowledgeHubVideo>>, TError,DeleteAdminKnowledgeHubVideoMutationVariables, TContext> => {
+
+const mutationKey = getDeleteAdminKnowledgeHubVideoMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteAdminKnowledgeHubVideo>>, DeleteAdminKnowledgeHubVideoMutationVariables> = (props) => {
+          const {id} = props ?? {};
+
+          return  deleteAdminKnowledgeHubVideo(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteAdminKnowledgeHubVideoMutationResult = NonNullable<Awaited<ReturnType<typeof deleteAdminKnowledgeHubVideo>>>
+
+    export type DeleteAdminKnowledgeHubVideoMutationError = ErrorType<ErrorResponse>
+    export type DeleteAdminKnowledgeHubVideoMutationVariables = {id: string}
+
+    /**
+ * @summary Delete a Video Hub session
+ */
+export const useDeleteAdminKnowledgeHubVideo = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAdminKnowledgeHubVideo>>, TError,DeleteAdminKnowledgeHubVideoMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof deleteAdminKnowledgeHubVideo>>,
+        TError,
+        DeleteAdminKnowledgeHubVideoMutationVariables,
+        TContext
+      > => {
+      return useMutation(getDeleteAdminKnowledgeHubVideoMutationOptions(options));
+    }
+
+export const getCreateAdminKnowledgeHubVideoCategoryUrl = () => {
+
+
+
+
+  return `/api/admin/knowledge-hub/video-hub/categories`
+}
+
+/**
+ * @summary Create a Video Hub category
+ */
+export const createAdminKnowledgeHubVideoCategory = async (knowledgeHubVideoCategoryInput: KnowledgeHubVideoCategoryInput, options?: Parameters<typeof customFetch>[1]): Promise<KnowledgeHubVideoCategory> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<KnowledgeHubVideoCategory>(getCreateAdminKnowledgeHubVideoCategoryUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(knowledgeHubVideoCategoryInput)
+  }
+);}
+
+
+
+
+
+export const getCreateAdminKnowledgeHubVideoCategoryMutationKey = () => ['createAdminKnowledgeHubVideoCategory'] as const;
+
+export const getCreateAdminKnowledgeHubVideoCategoryMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createAdminKnowledgeHubVideoCategory>>, TError,CreateAdminKnowledgeHubVideoCategoryMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createAdminKnowledgeHubVideoCategory>>, TError,CreateAdminKnowledgeHubVideoCategoryMutationVariables, TContext> => {
+
+const mutationKey = getCreateAdminKnowledgeHubVideoCategoryMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createAdminKnowledgeHubVideoCategory>>, CreateAdminKnowledgeHubVideoCategoryMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  createAdminKnowledgeHubVideoCategory(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateAdminKnowledgeHubVideoCategoryMutationResult = NonNullable<Awaited<ReturnType<typeof createAdminKnowledgeHubVideoCategory>>>
+    export type CreateAdminKnowledgeHubVideoCategoryMutationBody = BodyType<KnowledgeHubVideoCategoryInput>
+    export type CreateAdminKnowledgeHubVideoCategoryMutationError = ErrorType<ErrorResponse>
+    export type CreateAdminKnowledgeHubVideoCategoryMutationVariables = {data: BodyType<KnowledgeHubVideoCategoryInput>}
+
+    /**
+ * @summary Create a Video Hub category
+ */
+export const useCreateAdminKnowledgeHubVideoCategory = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createAdminKnowledgeHubVideoCategory>>, TError,CreateAdminKnowledgeHubVideoCategoryMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createAdminKnowledgeHubVideoCategory>>,
+        TError,
+        CreateAdminKnowledgeHubVideoCategoryMutationVariables,
+        TContext
+      > => {
+      return useMutation(getCreateAdminKnowledgeHubVideoCategoryMutationOptions(options));
+    }
+
+export const getUpdateAdminKnowledgeHubVideoCategoryUrl = (id: string,) => {
+
+
+
+
+  return `/api/admin/knowledge-hub/video-hub/categories/${id}`
+}
+
+/**
+ * @summary Update a Video Hub category
+ */
+export const updateAdminKnowledgeHubVideoCategory = async (id: string,
+    knowledgeHubVideoCategoryInput: KnowledgeHubVideoCategoryInput, options?: Parameters<typeof customFetch>[1]): Promise<KnowledgeHubVideoCategory> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<KnowledgeHubVideoCategory>(getUpdateAdminKnowledgeHubVideoCategoryUrl(id),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(knowledgeHubVideoCategoryInput)
+  }
+);}
+
+
+
+
+
+export const getUpdateAdminKnowledgeHubVideoCategoryMutationKey = () => ['updateAdminKnowledgeHubVideoCategory'] as const;
+
+export const getUpdateAdminKnowledgeHubVideoCategoryMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAdminKnowledgeHubVideoCategory>>, TError,UpdateAdminKnowledgeHubVideoCategoryMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateAdminKnowledgeHubVideoCategory>>, TError,UpdateAdminKnowledgeHubVideoCategoryMutationVariables, TContext> => {
+
+const mutationKey = getUpdateAdminKnowledgeHubVideoCategoryMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateAdminKnowledgeHubVideoCategory>>, UpdateAdminKnowledgeHubVideoCategoryMutationVariables> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  updateAdminKnowledgeHubVideoCategory(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateAdminKnowledgeHubVideoCategoryMutationResult = NonNullable<Awaited<ReturnType<typeof updateAdminKnowledgeHubVideoCategory>>>
+    export type UpdateAdminKnowledgeHubVideoCategoryMutationBody = BodyType<KnowledgeHubVideoCategoryInput>
+    export type UpdateAdminKnowledgeHubVideoCategoryMutationError = ErrorType<ErrorResponse>
+    export type UpdateAdminKnowledgeHubVideoCategoryMutationVariables = {id: string;data: BodyType<KnowledgeHubVideoCategoryInput>}
+
+    /**
+ * @summary Update a Video Hub category
+ */
+export const useUpdateAdminKnowledgeHubVideoCategory = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAdminKnowledgeHubVideoCategory>>, TError,UpdateAdminKnowledgeHubVideoCategoryMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateAdminKnowledgeHubVideoCategory>>,
+        TError,
+        UpdateAdminKnowledgeHubVideoCategoryMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateAdminKnowledgeHubVideoCategoryMutationOptions(options));
+    }
+
+export const getDeleteAdminKnowledgeHubVideoCategoryUrl = (id: string,) => {
+
+
+
+
+  return `/api/admin/knowledge-hub/video-hub/categories/${id}`
+}
+
+/**
+ * @summary Delete an unused Video Hub category
+ */
+export const deleteAdminKnowledgeHubVideoCategory = async (id: string, options?: Parameters<typeof customFetch>[1]): Promise<void> => {
+
+  return customFetch<void>(getDeleteAdminKnowledgeHubVideoCategoryUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+
+export const getDeleteAdminKnowledgeHubVideoCategoryMutationKey = () => ['deleteAdminKnowledgeHubVideoCategory'] as const;
+
+export const getDeleteAdminKnowledgeHubVideoCategoryMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAdminKnowledgeHubVideoCategory>>, TError,DeleteAdminKnowledgeHubVideoCategoryMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteAdminKnowledgeHubVideoCategory>>, TError,DeleteAdminKnowledgeHubVideoCategoryMutationVariables, TContext> => {
+
+const mutationKey = getDeleteAdminKnowledgeHubVideoCategoryMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteAdminKnowledgeHubVideoCategory>>, DeleteAdminKnowledgeHubVideoCategoryMutationVariables> = (props) => {
+          const {id} = props ?? {};
+
+          return  deleteAdminKnowledgeHubVideoCategory(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteAdminKnowledgeHubVideoCategoryMutationResult = NonNullable<Awaited<ReturnType<typeof deleteAdminKnowledgeHubVideoCategory>>>
+
+    export type DeleteAdminKnowledgeHubVideoCategoryMutationError = ErrorType<ErrorResponse>
+    export type DeleteAdminKnowledgeHubVideoCategoryMutationVariables = {id: string}
+
+    /**
+ * @summary Delete an unused Video Hub category
+ */
+export const useDeleteAdminKnowledgeHubVideoCategory = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAdminKnowledgeHubVideoCategory>>, TError,DeleteAdminKnowledgeHubVideoCategoryMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof deleteAdminKnowledgeHubVideoCategory>>,
+        TError,
+        DeleteAdminKnowledgeHubVideoCategoryMutationVariables,
+        TContext
+      > => {
+      return useMutation(getDeleteAdminKnowledgeHubVideoCategoryMutationOptions(options));
+    }
+
+export const getRequestAdminKnowledgeHubVideoImageUploadUrlUrl = () => {
+
+
+
+
+  return `/api/admin/knowledge-hub/video-hub/images/upload-url`
+}
+
+/**
+ * @summary Request a persistent image upload URL for Video Hub content
+ */
+export const requestAdminKnowledgeHubVideoImageUploadUrl = async (videoHubImageUploadUrlRequest: VideoHubImageUploadUrlRequest, options?: Parameters<typeof customFetch>[1]): Promise<VideoHubImageUploadUrlResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<VideoHubImageUploadUrlResponse>(getRequestAdminKnowledgeHubVideoImageUploadUrlUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(videoHubImageUploadUrlRequest)
+  }
+);}
+
+
+
+
+
+export const getRequestAdminKnowledgeHubVideoImageUploadUrlMutationKey = () => ['requestAdminKnowledgeHubVideoImageUploadUrl'] as const;
+
+export const getRequestAdminKnowledgeHubVideoImageUploadUrlMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof requestAdminKnowledgeHubVideoImageUploadUrl>>, TError,RequestAdminKnowledgeHubVideoImageUploadUrlMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof requestAdminKnowledgeHubVideoImageUploadUrl>>, TError,RequestAdminKnowledgeHubVideoImageUploadUrlMutationVariables, TContext> => {
+
+const mutationKey = getRequestAdminKnowledgeHubVideoImageUploadUrlMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof requestAdminKnowledgeHubVideoImageUploadUrl>>, RequestAdminKnowledgeHubVideoImageUploadUrlMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  requestAdminKnowledgeHubVideoImageUploadUrl(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type RequestAdminKnowledgeHubVideoImageUploadUrlMutationResult = NonNullable<Awaited<ReturnType<typeof requestAdminKnowledgeHubVideoImageUploadUrl>>>
+    export type RequestAdminKnowledgeHubVideoImageUploadUrlMutationBody = BodyType<VideoHubImageUploadUrlRequest>
+    export type RequestAdminKnowledgeHubVideoImageUploadUrlMutationError = ErrorType<ErrorResponse>
+    export type RequestAdminKnowledgeHubVideoImageUploadUrlMutationVariables = {data: BodyType<VideoHubImageUploadUrlRequest>}
+
+    /**
+ * @summary Request a persistent image upload URL for Video Hub content
+ */
+export const useRequestAdminKnowledgeHubVideoImageUploadUrl = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof requestAdminKnowledgeHubVideoImageUploadUrl>>, TError,RequestAdminKnowledgeHubVideoImageUploadUrlMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof requestAdminKnowledgeHubVideoImageUploadUrl>>,
+        TError,
+        RequestAdminKnowledgeHubVideoImageUploadUrlMutationVariables,
+        TContext
+      > => {
+      return useMutation(getRequestAdminKnowledgeHubVideoImageUploadUrlMutationOptions(options));
+    }
+
+export const getCompleteAdminKnowledgeHubVideoImageUploadUrl = () => {
+
+
+
+
+  return `/api/admin/knowledge-hub/video-hub/images/complete`
+}
+
+/**
+ * @summary Make an uploaded Video Hub image publicly readable
+ */
+export const completeAdminKnowledgeHubVideoImageUpload = async (videoHubImageUploadCompleteRequest: VideoHubImageUploadCompleteRequest, options?: Parameters<typeof customFetch>[1]): Promise<VideoHubImageUploadCompleteResponse> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<VideoHubImageUploadCompleteResponse>(getCompleteAdminKnowledgeHubVideoImageUploadUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(videoHubImageUploadCompleteRequest)
+  }
+);}
+
+
+
+
+
+export const getCompleteAdminKnowledgeHubVideoImageUploadMutationKey = () => ['completeAdminKnowledgeHubVideoImageUpload'] as const;
+
+export const getCompleteAdminKnowledgeHubVideoImageUploadMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof completeAdminKnowledgeHubVideoImageUpload>>, TError,CompleteAdminKnowledgeHubVideoImageUploadMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof completeAdminKnowledgeHubVideoImageUpload>>, TError,CompleteAdminKnowledgeHubVideoImageUploadMutationVariables, TContext> => {
+
+const mutationKey = getCompleteAdminKnowledgeHubVideoImageUploadMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof completeAdminKnowledgeHubVideoImageUpload>>, CompleteAdminKnowledgeHubVideoImageUploadMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  completeAdminKnowledgeHubVideoImageUpload(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CompleteAdminKnowledgeHubVideoImageUploadMutationResult = NonNullable<Awaited<ReturnType<typeof completeAdminKnowledgeHubVideoImageUpload>>>
+    export type CompleteAdminKnowledgeHubVideoImageUploadMutationBody = BodyType<VideoHubImageUploadCompleteRequest>
+    export type CompleteAdminKnowledgeHubVideoImageUploadMutationError = ErrorType<ErrorResponse>
+    export type CompleteAdminKnowledgeHubVideoImageUploadMutationVariables = {data: BodyType<VideoHubImageUploadCompleteRequest>}
+
+    /**
+ * @summary Make an uploaded Video Hub image publicly readable
+ */
+export const useCompleteAdminKnowledgeHubVideoImageUpload = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof completeAdminKnowledgeHubVideoImageUpload>>, TError,CompleteAdminKnowledgeHubVideoImageUploadMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof completeAdminKnowledgeHubVideoImageUpload>>,
+        TError,
+        CompleteAdminKnowledgeHubVideoImageUploadMutationVariables,
+        TContext
+      > => {
+      return useMutation(getCompleteAdminKnowledgeHubVideoImageUploadMutationOptions(options));
     }
 
