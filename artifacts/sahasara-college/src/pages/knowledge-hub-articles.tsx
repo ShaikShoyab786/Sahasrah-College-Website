@@ -14,7 +14,7 @@ import { PublicFooter } from '@/components/public-footer';
 import { PublicHeader } from '@/components/public-header';
 import { createPublicThemeStyle, DEFAULT_ACCENT_COLOR, DEFAULT_PRIMARY_COLOR, DEFAULT_SURFACE_COLOR } from '@/lib/public-theme';
 
-const limit = 9;
+const limit = 6;
 
 const fallbackSite = {
   collegeName: 'Sahsrah Junior College',
