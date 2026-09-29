@@ -3053,6 +3053,291 @@ export interface AboutAdmissionCtaInput {
   sortOrder: number;
 }
 
+export interface KnowledgeHubArticlesPageSettings {
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  heroEyebrow: string;
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  heroTitle: string;
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  heroAccentText: string;
+  /**
+     * @minLength 1
+     * @maxLength 700
+     */
+  heroDescription: string;
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  articlesMetricLabel: string;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  expertsMetricTitle: string;
+  /**
+     * @minLength 1
+     * @maxLength 180
+     */
+  expertsMetricDescription: string;
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  heroCtaLabel: string;
+  /**
+     * @minLength 1
+     * @maxLength 500
+     */
+  heroCtaHref: string;
+  /**
+     * @maxLength 1000
+     * @nullable
+     */
+  heroImageUrl: string | null;
+  /** @maxLength 240 */
+  heroImageAltText: string;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  featuredEyebrow: string;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  articlesEyebrow: string;
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  articlesHeading: string;
+  /**
+     * @minLength 1
+     * @maxLength 600
+     */
+  articlesDescription: string;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  searchPlaceholder: string;
+  topicPanelVisible: boolean;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  topicPanelTitle: string;
+  /**
+     * @minLength 1
+     * @maxLength 500
+     */
+  topicPanelDescription: string;
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  topicPanelCtaLabel: string;
+  /**
+     * @minLength 1
+     * @maxLength 500
+     */
+  topicPanelHref: string;
+  updatesPanelVisible: boolean;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  updatesPanelTitle: string;
+  /**
+     * @minLength 1
+     * @maxLength 500
+     */
+  updatesPanelDescription: string;
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  updatesPanelCtaLabel: string;
+  /**
+     * @minLength 1
+     * @maxLength 500
+     */
+  updatesPanelHref: string;
+}
+
+export type KnowledgeHubArticlesPageInput = KnowledgeHubArticlesPageSettings & ({
+  /**
+     * @maxLength 100
+     * @nullable
+     */
+  featuredArticleId: string | null;
+});
+
+export interface KnowledgeHubArticleCategory {
+  id: string;
+  name: string;
+  slug: string;
+  icon: string;
+  displayOrder: number;
+  isVisible: boolean;
+  /** @minimum 0 */
+  publishedArticleCount: number;
+}
+
+export interface KnowledgeHubArticleCategoryInput {
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  name: string;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     * @pattern ^[a-z0-9]+(?:-[a-z0-9]+)*$
+     */
+  slug: string;
+  /**
+     * @minLength 1
+     * @maxLength 50
+     */
+  icon: string;
+  /**
+     * @minimum 1
+     * @maximum 500
+     */
+  displayOrder: number;
+  isVisible: boolean;
+}
+
+export interface KnowledgeHubArticleSummary {
+  id: string;
+  title: string;
+  slug: string;
+  categoryId: string;
+  categoryName: string;
+  categorySlug: string;
+  categoryIcon: string;
+  excerpt: string;
+  /** @nullable */
+  coverImageUrl: string | null;
+  coverImageAltText: string;
+  author: string;
+  /** @minimum 1 */
+  readTimeMinutes: number;
+  /** @nullable */
+  publishedAt: string | null;
+}
+
+export type KnowledgeHubArticleStatus = typeof KnowledgeHubArticleStatus[keyof typeof KnowledgeHubArticleStatus];
+
+
+export const KnowledgeHubArticleStatus = {
+  draft: 'draft',
+  published: 'published',
+} as const;
+
+export type KnowledgeHubArticle = KnowledgeHubArticleSummary & {
+  body: string;
+  status: KnowledgeHubArticleStatus;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type KnowledgeHubArticleInputStatus = typeof KnowledgeHubArticleInputStatus[keyof typeof KnowledgeHubArticleInputStatus];
+
+
+export const KnowledgeHubArticleInputStatus = {
+  draft: 'draft',
+  published: 'published',
+} as const;
+
+export interface KnowledgeHubArticleInput {
+  /**
+     * @minLength 1
+     * @maxLength 180
+     */
+  title: string;
+  /**
+     * @minLength 1
+     * @maxLength 180
+     * @pattern ^[a-z0-9]+(?:-[a-z0-9]+)*$
+     */
+  slug: string;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  categoryId: string;
+  /**
+     * @minLength 1
+     * @maxLength 500
+     */
+  excerpt: string;
+  /**
+     * @minLength 1
+     * @maxLength 50000
+     */
+  body: string;
+  /**
+     * @maxLength 1000
+     * @nullable
+     */
+  coverImageUrl: string | null;
+  /** @maxLength 240 */
+  coverImageAltText: string;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  author: string;
+  /**
+     * @minimum 1
+     * @maximum 240
+     */
+  readTimeMinutes: number;
+  status: KnowledgeHubArticleInputStatus;
+}
+
+export interface KnowledgeHubArticlesPage {
+  settings: KnowledgeHubArticlesPageSettings;
+  featuredArticle: KnowledgeHubArticleSummary | null;
+  /** @minimum 0 */
+  publishedArticleCount: number;
+  /** @minimum 0 */
+  publishedCategoryCount: number;
+  categories: KnowledgeHubArticleCategory[];
+}
+
+export interface KnowledgeHubArticlesList {
+  items: KnowledgeHubArticleSummary[];
+  /** @minimum 0 */
+  total: number;
+  /** @minimum 0 */
+  offset: number;
+  /**
+     * @minimum 1
+     * @maximum 30
+     */
+  limit: number;
+  hasMore: boolean;
+}
+
+export interface AdminKnowledgeHubArticles {
+  settings: KnowledgeHubArticlesPageInput;
+  categories: KnowledgeHubArticleCategory[];
+  articles: KnowledgeHubArticle[];
+}
+
 export type ImageUploadInputPurpose = typeof ImageUploadInputPurpose[keyof typeof ImageUploadInputPurpose];
 
 
@@ -3098,4 +3383,34 @@ export interface ImageUploadResult {
   url: string;
   purpose: ImageUploadResultPurpose;
 }
+
+export type GetKnowledgeHubArticlesParams = {
+/**
+ * @maxLength 200
+ */
+search?: string;
+/**
+ * @maxLength 100
+ */
+category?: string;
+sort?: GetKnowledgeHubArticlesSort;
+/**
+ * @minimum 0
+ */
+offset?: number;
+/**
+ * @minimum 1
+ * @maximum 30
+ */
+limit?: number;
+};
+
+export type GetKnowledgeHubArticlesSort = typeof GetKnowledgeHubArticlesSort[keyof typeof GetKnowledgeHubArticlesSort];
+
+
+export const GetKnowledgeHubArticlesSort = {
+  recent: 'recent',
+  oldest: 'oldest',
+  title: 'title',
+} as const;
 

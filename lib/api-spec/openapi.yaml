@@ -2693,6 +2693,352 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+  /knowledge-hub/articles/page:
+    get:
+      operationId: getKnowledgeHubArticlesPage
+      tags: [public]
+      summary: Read public Articles page settings and published counts
+      responses:
+        "200":
+          description: Articles page content and published article/category counts
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KnowledgeHubArticlesPage"
+  /knowledge-hub/articles:
+    get:
+      operationId: getKnowledgeHubArticles
+      tags: [public]
+      summary: Search and browse published Knowledge Hub articles
+      parameters:
+        - in: query
+          name: search
+          schema: { type: string, maxLength: 200 }
+        - in: query
+          name: category
+          schema: { type: string, maxLength: 100 }
+        - in: query
+          name: sort
+          schema: { type: string, enum: [recent, oldest, title], default: recent }
+        - in: query
+          name: offset
+          schema: { type: integer, minimum: 0, default: 0 }
+        - in: query
+          name: limit
+          schema: { type: integer, minimum: 1, maximum: 30, default: 9 }
+      responses:
+        "200":
+          description: A page of published articles
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KnowledgeHubArticlesList"
+  /knowledge-hub/articles/{slug}:
+    get:
+      operationId: getKnowledgeHubArticleBySlug
+      tags: [public]
+      summary: Read a published article
+      parameters:
+        - in: path
+          name: slug
+          required: true
+          schema: { type: string, minLength: 1, maxLength: 180 }
+      responses:
+        "200":
+          description: Published article
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KnowledgeHubArticle"
+        "404":
+          description: Article not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/knowledge-hub/articles:
+    get:
+      operationId: getAdminKnowledgeHubArticles
+      tags: [admin]
+      summary: Read Articles page settings, categories, and all articles
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Articles content for administration
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminKnowledgeHubArticles"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    post:
+      operationId: createAdminKnowledgeHubArticle
+      tags: [admin]
+      summary: Create an article
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KnowledgeHubArticleInput"
+      responses:
+        "201":
+          description: Created article
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KnowledgeHubArticle"
+        "400":
+          description: Invalid article
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "409":
+          description: Article slug already exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/knowledge-hub/articles/page:
+    put:
+      operationId: updateAdminKnowledgeHubArticlesPage
+      tags: [admin]
+      summary: Update Articles page text, featured article, image, and support panels
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KnowledgeHubArticlesPageInput"
+      responses:
+        "200":
+          description: Updated Articles page settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KnowledgeHubArticlesPageInput"
+        "400":
+          description: Invalid page settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/knowledge-hub/articles/categories:
+    post:
+      operationId: createAdminKnowledgeHubArticleCategory
+      tags: [admin]
+      summary: Create an Articles category
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KnowledgeHubArticleCategoryInput"
+      responses:
+        "201":
+          description: Created category
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KnowledgeHubArticleCategory"
+        "400":
+          description: Invalid category
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "409":
+          description: Category slug already exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/knowledge-hub/articles/categories/{id}:
+    put:
+      operationId: updateAdminKnowledgeHubArticleCategory
+      tags: [admin]
+      summary: Update an Articles category
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string, minLength: 1 }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KnowledgeHubArticleCategoryInput"
+      responses:
+        "200":
+          description: Updated category
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KnowledgeHubArticleCategory"
+        "400":
+          description: Invalid category
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Category not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "409":
+          description: Category slug already exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteAdminKnowledgeHubArticleCategory
+      tags: [admin]
+      summary: Delete an unused Articles category
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string, minLength: 1 }
+      responses:
+        "204":
+          description: Category deleted
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Category not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "409":
+          description: Category still contains articles
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/knowledge-hub/articles/{id}:
+    put:
+      operationId: updateAdminKnowledgeHubArticle
+      tags: [admin]
+      summary: Update an article
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string, minLength: 1 }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/KnowledgeHubArticleInput"
+      responses:
+        "200":
+          description: Updated article
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/KnowledgeHubArticle"
+        "400":
+          description: Invalid article
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Article not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "409":
+          description: Article slug already exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteAdminKnowledgeHubArticle
+      tags: [admin]
+      summary: Delete an article
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string, minLength: 1 }
+      responses:
+        "204":
+          description: Article deleted
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Article not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 components:
   securitySchemes:
     cookieAuth:
@@ -7097,6 +7443,137 @@ components:
           minimum: 1
           maximum: 20
       required: [heading, supportingText, applyButtonLabel, applyButtonHref, campusVisitButtonLabel, campusVisitButtonHref, prospectusButtonLabel, prospectusButtonHref, backgroundImage, backgroundImageAltText, counselorButtonLabel, counselorButtonHref, admissionPhone, workingHours, isVisible, sortOrder]
+    KnowledgeHubArticlesPageSettings:
+      type: object
+      properties:
+        heroEyebrow: { type: string, minLength: 1, maxLength: 120 }
+        heroTitle: { type: string, minLength: 1, maxLength: 160 }
+        heroAccentText: { type: string, minLength: 1, maxLength: 80 }
+        heroDescription: { type: string, minLength: 1, maxLength: 700 }
+        articlesMetricLabel: { type: string, minLength: 1, maxLength: 80 }
+        expertsMetricTitle: { type: string, minLength: 1, maxLength: 100 }
+        expertsMetricDescription: { type: string, minLength: 1, maxLength: 180 }
+        heroCtaLabel: { type: string, minLength: 1, maxLength: 80 }
+        heroCtaHref: { type: string, minLength: 1, maxLength: 500 }
+        heroImageUrl: { type: ["string", "null"], maxLength: 1000 }
+        heroImageAltText: { type: string, maxLength: 240 }
+        featuredEyebrow: { type: string, minLength: 1, maxLength: 120 }
+        articlesEyebrow: { type: string, minLength: 1, maxLength: 120 }
+        articlesHeading: { type: string, minLength: 1, maxLength: 160 }
+        articlesDescription: { type: string, minLength: 1, maxLength: 600 }
+        searchPlaceholder: { type: string, minLength: 1, maxLength: 120 }
+        topicPanelVisible: { type: boolean }
+        topicPanelTitle: { type: string, minLength: 1, maxLength: 120 }
+        topicPanelDescription: { type: string, minLength: 1, maxLength: 500 }
+        topicPanelCtaLabel: { type: string, minLength: 1, maxLength: 80 }
+        topicPanelHref: { type: string, minLength: 1, maxLength: 500 }
+        updatesPanelVisible: { type: boolean }
+        updatesPanelTitle: { type: string, minLength: 1, maxLength: 120 }
+        updatesPanelDescription: { type: string, minLength: 1, maxLength: 500 }
+        updatesPanelCtaLabel: { type: string, minLength: 1, maxLength: 80 }
+        updatesPanelHref: { type: string, minLength: 1, maxLength: 500 }
+      required: [heroEyebrow, heroTitle, heroAccentText, heroDescription, articlesMetricLabel, expertsMetricTitle, expertsMetricDescription, heroCtaLabel, heroCtaHref, heroImageUrl, heroImageAltText, featuredEyebrow, articlesEyebrow, articlesHeading, articlesDescription, searchPlaceholder, topicPanelVisible, topicPanelTitle, topicPanelDescription, topicPanelCtaLabel, topicPanelHref, updatesPanelVisible, updatesPanelTitle, updatesPanelDescription, updatesPanelCtaLabel, updatesPanelHref]
+    KnowledgeHubArticlesPageInput:
+      allOf:
+        - $ref: "#/components/schemas/KnowledgeHubArticlesPageSettings"
+        - type: object
+          properties:
+            featuredArticleId: { type: ["string", "null"], maxLength: 100 }
+          required: [featuredArticleId]
+    KnowledgeHubArticleCategory:
+      type: object
+      properties:
+        id: { type: string }
+        name: { type: string }
+        slug: { type: string }
+        icon: { type: string }
+        displayOrder: { type: integer }
+        isVisible: { type: boolean }
+        publishedArticleCount: { type: integer, minimum: 0 }
+      required: [id, name, slug, icon, displayOrder, isVisible, publishedArticleCount]
+    KnowledgeHubArticleCategoryInput:
+      type: object
+      properties:
+        name: { type: string, minLength: 1, maxLength: 80 }
+        slug: { type: string, minLength: 1, maxLength: 100, pattern: "^[a-z0-9]+(?:-[a-z0-9]+)*$" }
+        icon: { type: string, minLength: 1, maxLength: 50 }
+        displayOrder: { type: integer, minimum: 1, maximum: 500 }
+        isVisible: { type: boolean }
+      required: [name, slug, icon, displayOrder, isVisible]
+    KnowledgeHubArticleSummary:
+      type: object
+      properties:
+        id: { type: string }
+        title: { type: string }
+        slug: { type: string }
+        categoryId: { type: string }
+        categoryName: { type: string }
+        categorySlug: { type: string }
+        categoryIcon: { type: string }
+        excerpt: { type: string }
+        coverImageUrl: { type: ["string", "null"] }
+        coverImageAltText: { type: string }
+        author: { type: string }
+        readTimeMinutes: { type: integer, minimum: 1 }
+        publishedAt: { type: ["string", "null"], format: date-time }
+      required: [id, title, slug, categoryId, categoryName, categorySlug, categoryIcon, excerpt, coverImageUrl, coverImageAltText, author, readTimeMinutes, publishedAt]
+    KnowledgeHubArticle:
+      allOf:
+        - $ref: "#/components/schemas/KnowledgeHubArticleSummary"
+        - type: object
+          properties:
+            body: { type: string }
+            status: { type: string, enum: [draft, published] }
+            createdAt: { type: string, format: date-time }
+            updatedAt: { type: string, format: date-time }
+          required: [body, status, createdAt, updatedAt]
+    KnowledgeHubArticleInput:
+      type: object
+      properties:
+        title: { type: string, minLength: 1, maxLength: 180 }
+        slug: { type: string, minLength: 1, maxLength: 180, pattern: "^[a-z0-9]+(?:-[a-z0-9]+)*$" }
+        categoryId: { type: string, minLength: 1, maxLength: 100 }
+        excerpt: { type: string, minLength: 1, maxLength: 500 }
+        body: { type: string, minLength: 1, maxLength: 50000 }
+        coverImageUrl: { type: ["string", "null"], maxLength: 1000 }
+        coverImageAltText: { type: string, maxLength: 240 }
+        author: { type: string, minLength: 1, maxLength: 120 }
+        readTimeMinutes: { type: integer, minimum: 1, maximum: 240 }
+        status: { type: string, enum: [draft, published] }
+      required: [title, slug, categoryId, excerpt, body, coverImageUrl, coverImageAltText, author, readTimeMinutes, status]
+    KnowledgeHubArticlesPage:
+      type: object
+      properties:
+        settings: { $ref: "#/components/schemas/KnowledgeHubArticlesPageSettings" }
+        featuredArticle: { oneOf: [{ $ref: "#/components/schemas/KnowledgeHubArticleSummary" }, { type: "null" }] }
+        publishedArticleCount: { type: integer, minimum: 0 }
+        publishedCategoryCount: { type: integer, minimum: 0 }
+        categories:
+          type: array
+          items: { $ref: "#/components/schemas/KnowledgeHubArticleCategory" }
+      required: [settings, featuredArticle, publishedArticleCount, publishedCategoryCount, categories]
+    KnowledgeHubArticlesList:
+      type: object
+      properties:
+        items:
+          type: array
+          items: { $ref: "#/components/schemas/KnowledgeHubArticleSummary" }
+        total: { type: integer, minimum: 0 }
+        offset: { type: integer, minimum: 0 }
+        limit: { type: integer, minimum: 1, maximum: 30 }
+        hasMore: { type: boolean }
+      required: [items, total, offset, limit, hasMore]
+    AdminKnowledgeHubArticles:
+      type: object
+      properties:
+        settings: { $ref: "#/components/schemas/KnowledgeHubArticlesPageInput" }
+        categories:
+          type: array
+          items: { $ref: "#/components/schemas/KnowledgeHubArticleCategory" }
+        articles:
+          type: array
+          items: { $ref: "#/components/schemas/KnowledgeHubArticle" }
+      required: [settings, categories, articles]
     ImageUploadInput:
       type: object
       properties:

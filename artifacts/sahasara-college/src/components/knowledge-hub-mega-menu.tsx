@@ -85,29 +85,31 @@ function MenuDestination({
 function CategoryCard({
   card,
   onClose,
+  compact,
 }: {
   card: KnowledgeHubMegaMenu['cards'][number];
   onClose: () => void;
+  compact: boolean;
 }) {
   const meta = categoryMeta[card.category];
   const Icon = meta.icon;
-  const href = `/knowledge-hub#knowledge-hub-${card.category}`;
+  const href = card.category === 'articles' ? '/knowledge-hub/articles' : `/knowledge-hub#knowledge-hub-${card.category}`;
 
   return (
     <MenuDestination
       href={href}
       onClick={onClose}
-      className={`group relative flex min-h-[17.6rem] flex-col overflow-hidden rounded-xl border p-4 transition duration-200 hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))] ${meta.surface} ${meta.border}`}
+      className={`group relative flex flex-col overflow-hidden rounded-xl border transition duration-200 hover:-translate-y-0.5 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))] ${compact ? 'min-h-[14.75rem] p-3' : 'min-h-[17.6rem] p-4'} ${meta.surface} ${meta.border}`}
       ariaLabel={`${meta.label}: ${card.description}`}
       testId={`link-knowledge-hub-category-${card.category}`}
     >
-      <div className={`grid h-11 w-11 place-items-center rounded-full ${meta.iconSurface}`}>
+      <div className={`grid ${compact ? 'h-9 w-9' : 'h-11 w-11'} place-items-center rounded-full ${meta.iconSurface}`}>
         <Icon size={22} strokeWidth={1.8} aria-hidden="true" />
       </div>
-      <span className="mt-4 font-display text-[1.08rem] font-semibold tracking-[-.025em] text-[hsl(var(--primary))]">{meta.label}</span>
-      <span className="mt-1.5 min-h-10 text-[11px] leading-4 text-[hsl(var(--muted-foreground))]">{card.description}</span>
-      <span className="mt-2 inline-flex w-fit rounded-full bg-[hsl(var(--secondary))] px-2.5 py-1 text-[9px] font-bold uppercase tracking-[.1em] text-[hsl(var(--muted-foreground))]">Coming Soon</span>
-      <ul className="mt-3 space-y-1.5 border-t border-[hsl(var(--primary)/.08)] pt-3 text-[10px] leading-4 text-[hsl(var(--muted-foreground))]">
+      <span className={`${compact ? 'mt-2' : 'mt-4'} font-display text-[1.08rem] font-semibold tracking-[-.025em] text-[hsl(var(--primary))]`}>{meta.label}</span>
+      <span className={`${compact ? 'mt-1 min-h-8' : 'mt-1.5 min-h-10'} text-[11px] leading-4 text-[hsl(var(--muted-foreground))]`}>{card.description}</span>
+      <span className={`${compact ? 'mt-1.5' : 'mt-2'} inline-flex w-fit rounded-full bg-[hsl(var(--secondary))] px-2.5 py-1 text-[9px] font-bold uppercase tracking-[.1em] text-[hsl(var(--muted-foreground))]`}>{card.category === 'articles' ? 'Now Available' : 'Coming Soon'}</span>
+      <ul className={`${compact ? 'mt-2 grid grid-cols-2 gap-x-2 gap-y-1 pt-2' : 'mt-3 space-y-1.5 pt-3'} border-t border-[hsl(var(--primary)/.08)] text-[10px] leading-4 text-[hsl(var(--muted-foreground))]`}>
         {meta.bullets.map((bullet) => (
           <li key={bullet} className="flex items-center gap-2">
             <span className={`h-1.5 w-1.5 shrink-0 rounded-full ${meta.iconSurface.split(' ')[0]}`} aria-hidden="true" />
@@ -127,13 +129,15 @@ function BrandPanel({
   panel,
   onClose,
   compact,
+  dense,
 }: {
   panel: KnowledgeHubMegaMenu['panel'];
   onClose: () => void;
   compact: boolean;
+  dense: boolean;
 }) {
   return (
-    <aside className={`relative isolate flex min-h-[19rem] flex-col overflow-hidden bg-[hsl(var(--primary))] p-5 text-[hsl(var(--primary-foreground))] ${compact ? 'rounded-xl' : 'rounded-xl md:min-h-full md:p-6'}`}>
+    <aside className={`relative isolate flex min-h-[19rem] flex-col overflow-hidden bg-[hsl(var(--primary))] p-5 text-[hsl(var(--primary-foreground))] ${compact ? 'rounded-xl' : `rounded-xl md:min-h-full ${dense ? 'md:p-4' : 'md:p-6'}`}`}>
       {panel.imageUrl ? (
         <img src={panel.imageUrl} alt={panel.imageAltText} className="absolute inset-0 -z-20 h-full w-full object-cover" data-testid="img-knowledge-hub-panel" />
       ) : (
@@ -146,8 +150,8 @@ function BrandPanel({
       )}
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-[hsl(var(--primary)/.68)] via-[hsl(var(--primary)/.82)] to-[hsl(var(--primary))]" aria-hidden="true" />
       <p className="text-[9px] font-bold uppercase tracking-[.19em] text-[hsl(var(--accent))]" data-testid="text-knowledge-hub-panel-eyebrow">{panel.eyebrow}</p>
-      <h3 className="mt-4 max-w-[13rem] font-display text-[2rem] font-semibold leading-[.98] tracking-[-.045em]" data-testid="text-knowledge-hub-panel-title">{panel.title}</h3>
-      <p className="mt-4 max-w-[15rem] text-xs leading-5 text-white/75" data-testid="text-knowledge-hub-panel-description">{panel.description}</p>
+      <h3 className={`${dense ? 'mt-2' : 'mt-4'} max-w-[13rem] font-display text-[2rem] font-semibold leading-[.98] tracking-[-.045em]`} data-testid="text-knowledge-hub-panel-title">{panel.title}</h3>
+      <p className={`${dense ? 'mt-2' : 'mt-4'} max-w-[15rem] text-xs leading-5 text-white/75`} data-testid="text-knowledge-hub-panel-description">{panel.description}</p>
       <MenuDestination
         href="/knowledge-hub"
         onClick={onClose}
@@ -192,15 +196,15 @@ export function KnowledgeHubMegaMenuPanel({
     .sort((a, b) => a.displayOrder - b.displayOrder);
 
   return (
-    <div className={`overflow-hidden rounded-[1.35rem] border border-[hsl(var(--border))] bg-[hsl(var(--card))] text-[hsl(var(--foreground))] shadow-2xl ${mobile ? 'space-y-3 p-2.5' : 'p-2.5 md:p-3'}`} data-testid="knowledge-hub-mega-menu">
-      <div className={mobile ? 'space-y-3' : 'grid gap-2.5 md:grid-cols-[minmax(0,1fr)_16.5rem]'}>
-        <div className={`min-w-0 ${mobile ? 'space-y-2.5' : 'grid grid-cols-2 gap-2.5'}`}>
-          {cards.map((card) => <CategoryCard key={card.category} card={card} onClose={onClose} />)}
+    <div className={`overflow-hidden rounded-[1.35rem] border border-[hsl(var(--border))] bg-[hsl(var(--card))] text-[hsl(var(--foreground))] shadow-2xl ${mobile ? 'space-y-3 p-2.5' : 'p-2'}`} data-testid="knowledge-hub-mega-menu">
+      <div className={mobile ? 'space-y-3' : 'grid gap-2 md:grid-cols-[minmax(0,1fr)_16.5rem]'}>
+        <div className={`min-w-0 ${mobile ? 'space-y-2.5' : 'grid grid-cols-2 gap-2'}`}>
+          {cards.map((card) => <CategoryCard key={card.category} card={card} onClose={onClose} compact={!mobile} />)}
           {cards.length === 0 && <p className="col-span-2 rounded-xl border border-dashed border-[hsl(var(--border))] p-6 text-sm text-[hsl(var(--muted-foreground))]">Knowledge Hub pathways are being prepared.</p>}
         </div>
-        <BrandPanel panel={content.panel} onClose={onClose} compact={mobile} />
+        <BrandPanel panel={content.panel} onClose={onClose} compact={mobile} dense={!mobile} />
       </div>
-      <div className="flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-[hsl(var(--border))] px-2 py-2.5" data-testid="knowledge-hub-trending-strip">
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-2 border-t border-[hsl(var(--border))] px-2 py-2" data-testid="knowledge-hub-trending-strip">
         <span className="inline-flex items-center gap-2 whitespace-nowrap pr-1 text-[11px] font-bold text-rose-600">
           <Flame size={16} aria-hidden="true" /> Trending Now
         </span>

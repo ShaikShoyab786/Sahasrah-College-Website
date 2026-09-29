@@ -5571,3 +5571,746 @@ export const UploadAdminImageResponse = zod.object({
 })
 
 
+/**
+ * @summary Read public Articles page settings and published counts
+ */
+export const getKnowledgeHubArticlesPageResponseSettingsHeroEyebrowMax = 120;
+
+export const getKnowledgeHubArticlesPageResponseSettingsHeroTitleMax = 160;
+
+export const getKnowledgeHubArticlesPageResponseSettingsHeroAccentTextMax = 80;
+
+export const getKnowledgeHubArticlesPageResponseSettingsHeroDescriptionMax = 700;
+
+export const getKnowledgeHubArticlesPageResponseSettingsArticlesMetricLabelMax = 80;
+
+export const getKnowledgeHubArticlesPageResponseSettingsExpertsMetricTitleMax = 100;
+
+export const getKnowledgeHubArticlesPageResponseSettingsExpertsMetricDescriptionMax = 180;
+
+export const getKnowledgeHubArticlesPageResponseSettingsHeroCtaLabelMax = 80;
+
+export const getKnowledgeHubArticlesPageResponseSettingsHeroCtaHrefMax = 500;
+
+export const getKnowledgeHubArticlesPageResponseSettingsHeroImageUrlMax = 1000;
+
+export const getKnowledgeHubArticlesPageResponseSettingsHeroImageAltTextMax = 240;
+
+export const getKnowledgeHubArticlesPageResponseSettingsFeaturedEyebrowMax = 120;
+
+export const getKnowledgeHubArticlesPageResponseSettingsArticlesEyebrowMax = 120;
+
+export const getKnowledgeHubArticlesPageResponseSettingsArticlesHeadingMax = 160;
+
+export const getKnowledgeHubArticlesPageResponseSettingsArticlesDescriptionMax = 600;
+
+export const getKnowledgeHubArticlesPageResponseSettingsSearchPlaceholderMax = 120;
+
+export const getKnowledgeHubArticlesPageResponseSettingsTopicPanelTitleMax = 120;
+
+export const getKnowledgeHubArticlesPageResponseSettingsTopicPanelDescriptionMax = 500;
+
+export const getKnowledgeHubArticlesPageResponseSettingsTopicPanelCtaLabelMax = 80;
+
+export const getKnowledgeHubArticlesPageResponseSettingsTopicPanelHrefMax = 500;
+
+export const getKnowledgeHubArticlesPageResponseSettingsUpdatesPanelTitleMax = 120;
+
+export const getKnowledgeHubArticlesPageResponseSettingsUpdatesPanelDescriptionMax = 500;
+
+export const getKnowledgeHubArticlesPageResponseSettingsUpdatesPanelCtaLabelMax = 80;
+
+export const getKnowledgeHubArticlesPageResponseSettingsUpdatesPanelHrefMax = 500;
+
+
+export const getKnowledgeHubArticlesPageResponsePublishedArticleCountMin = 0;
+
+export const getKnowledgeHubArticlesPageResponsePublishedCategoryCountMin = 0;
+
+export const getKnowledgeHubArticlesPageResponseCategoriesItemPublishedArticleCountMin = 0;
+
+
+
+export const GetKnowledgeHubArticlesPageResponse = zod.object({
+  "settings": zod.object({
+  "heroEyebrow": zod.string().min(1).max(getKnowledgeHubArticlesPageResponseSettingsHeroEyebrowMax),
+  "heroTitle": zod.string().min(1).max(getKnowledgeHubArticlesPageResponseSettingsHeroTitleMax),
+  "heroAccentText": zod.string().min(1).max(getKnowledgeHubArticlesPageResponseSettingsHeroAccentTextMax),
+  "heroDescription": zod.string().min(1).max(getKnowledgeHubArticlesPageResponseSettingsHeroDescriptionMax),
+  "articlesMetricLabel": zod.string().min(1).max(getKnowledgeHubArticlesPageResponseSettingsArticlesMetricLabelMax),
+  "expertsMetricTitle": zod.string().min(1).max(getKnowledgeHubArticlesPageResponseSettingsExpertsMetricTitleMax),
+  "expertsMetricDescription": zod.string().min(1).max(getKnowledgeHubArticlesPageResponseSettingsExpertsMetricDescriptionMax),
+  "heroCtaLabel": zod.string().min(1).max(getKnowledgeHubArticlesPageResponseSettingsHeroCtaLabelMax),
+  "heroCtaHref": zod.string().min(1).max(getKnowledgeHubArticlesPageResponseSettingsHeroCtaHrefMax),
+  "heroImageUrl": zod.string().max(getKnowledgeHubArticlesPageResponseSettingsHeroImageUrlMax).nullable(),
+  "heroImageAltText": zod.string().max(getKnowledgeHubArticlesPageResponseSettingsHeroImageAltTextMax),
+  "featuredEyebrow": zod.string().min(1).max(getKnowledgeHubArticlesPageResponseSettingsFeaturedEyebrowMax),
+  "articlesEyebrow": zod.string().min(1).max(getKnowledgeHubArticlesPageResponseSettingsArticlesEyebrowMax),
+  "articlesHeading": zod.string().min(1).max(getKnowledgeHubArticlesPageResponseSettingsArticlesHeadingMax),
+  "articlesDescription": zod.string().min(1).max(getKnowledgeHubArticlesPageResponseSettingsArticlesDescriptionMax),
+  "searchPlaceholder": zod.string().min(1).max(getKnowledgeHubArticlesPageResponseSettingsSearchPlaceholderMax),
+  "topicPanelVisible": zod.boolean(),
+  "topicPanelTitle": zod.string().min(1).max(getKnowledgeHubArticlesPageResponseSettingsTopicPanelTitleMax),
+  "topicPanelDescription": zod.string().min(1).max(getKnowledgeHubArticlesPageResponseSettingsTopicPanelDescriptionMax),
+  "topicPanelCtaLabel": zod.string().min(1).max(getKnowledgeHubArticlesPageResponseSettingsTopicPanelCtaLabelMax),
+  "topicPanelHref": zod.string().min(1).max(getKnowledgeHubArticlesPageResponseSettingsTopicPanelHrefMax),
+  "updatesPanelVisible": zod.boolean(),
+  "updatesPanelTitle": zod.string().min(1).max(getKnowledgeHubArticlesPageResponseSettingsUpdatesPanelTitleMax),
+  "updatesPanelDescription": zod.string().min(1).max(getKnowledgeHubArticlesPageResponseSettingsUpdatesPanelDescriptionMax),
+  "updatesPanelCtaLabel": zod.string().min(1).max(getKnowledgeHubArticlesPageResponseSettingsUpdatesPanelCtaLabelMax),
+  "updatesPanelHref": zod.string().min(1).max(getKnowledgeHubArticlesPageResponseSettingsUpdatesPanelHrefMax)
+}),
+  "featuredArticle": zod.union([zod.object({
+  "id": zod.string(),
+  "title": zod.string(),
+  "slug": zod.string(),
+  "categoryId": zod.string(),
+  "categoryName": zod.string(),
+  "categorySlug": zod.string(),
+  "categoryIcon": zod.string(),
+  "excerpt": zod.string(),
+  "coverImageUrl": zod.string().nullable(),
+  "coverImageAltText": zod.string(),
+  "author": zod.string(),
+  "readTimeMinutes": zod.number().int().min(1),
+  "publishedAt": zod.coerce.date().nullable()
+}),zod.null()]),
+  "publishedArticleCount": zod.number().int().min(getKnowledgeHubArticlesPageResponsePublishedArticleCountMin),
+  "publishedCategoryCount": zod.number().int().min(getKnowledgeHubArticlesPageResponsePublishedCategoryCountMin),
+  "categories": zod.array(zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "slug": zod.string(),
+  "icon": zod.string(),
+  "displayOrder": zod.number().int(),
+  "isVisible": zod.boolean(),
+  "publishedArticleCount": zod.number().int().min(getKnowledgeHubArticlesPageResponseCategoriesItemPublishedArticleCountMin)
+}))
+})
+
+
+/**
+ * @summary Search and browse published Knowledge Hub articles
+ */
+export const getKnowledgeHubArticlesQuerySearchMax = 200;
+
+export const getKnowledgeHubArticlesQueryCategoryMax = 100;
+
+export const getKnowledgeHubArticlesQuerySortDefault = `recent`;
+export const getKnowledgeHubArticlesQueryOffsetDefault = 0;
+export const getKnowledgeHubArticlesQueryOffsetMin = 0;
+
+export const getKnowledgeHubArticlesQueryLimitDefault = 9;
+export const getKnowledgeHubArticlesQueryLimitMax = 30;
+
+
+
+export const GetKnowledgeHubArticlesQueryParams = zod.object({
+  "search": zod.coerce.string().max(getKnowledgeHubArticlesQuerySearchMax).optional(),
+  "category": zod.coerce.string().max(getKnowledgeHubArticlesQueryCategoryMax).optional(),
+  "sort": zod.enum(['recent', 'oldest', 'title']).default(getKnowledgeHubArticlesQuerySortDefault),
+  "offset": zod.coerce.number().int().min(getKnowledgeHubArticlesQueryOffsetMin).default(getKnowledgeHubArticlesQueryOffsetDefault),
+  "limit": zod.coerce.number().int().min(1).max(getKnowledgeHubArticlesQueryLimitMax).default(getKnowledgeHubArticlesQueryLimitDefault)
+})
+
+
+export const getKnowledgeHubArticlesResponseTotalMin = 0;
+
+export const getKnowledgeHubArticlesResponseOffsetMin = 0;
+
+export const getKnowledgeHubArticlesResponseLimitMax = 30;
+
+
+
+export const GetKnowledgeHubArticlesResponse = zod.object({
+  "items": zod.array(zod.object({
+  "id": zod.string(),
+  "title": zod.string(),
+  "slug": zod.string(),
+  "categoryId": zod.string(),
+  "categoryName": zod.string(),
+  "categorySlug": zod.string(),
+  "categoryIcon": zod.string(),
+  "excerpt": zod.string(),
+  "coverImageUrl": zod.string().nullable(),
+  "coverImageAltText": zod.string(),
+  "author": zod.string(),
+  "readTimeMinutes": zod.number().int().min(1),
+  "publishedAt": zod.coerce.date().nullable()
+})),
+  "total": zod.number().int().min(getKnowledgeHubArticlesResponseTotalMin),
+  "offset": zod.number().int().min(getKnowledgeHubArticlesResponseOffsetMin),
+  "limit": zod.number().int().min(1).max(getKnowledgeHubArticlesResponseLimitMax),
+  "hasMore": zod.boolean()
+})
+
+
+/**
+ * @summary Read a published article
+ */
+export const getKnowledgeHubArticleBySlugPathSlugMax = 180;
+
+
+
+export const GetKnowledgeHubArticleBySlugParams = zod.object({
+  "slug": zod.coerce.string().min(1).max(getKnowledgeHubArticleBySlugPathSlugMax)
+})
+
+
+
+
+export const GetKnowledgeHubArticleBySlugResponse = zod.object({
+  "id": zod.string(),
+  "title": zod.string(),
+  "slug": zod.string(),
+  "categoryId": zod.string(),
+  "categoryName": zod.string(),
+  "categorySlug": zod.string(),
+  "categoryIcon": zod.string(),
+  "excerpt": zod.string(),
+  "coverImageUrl": zod.string().nullable(),
+  "coverImageAltText": zod.string(),
+  "author": zod.string(),
+  "readTimeMinutes": zod.number().int().min(1),
+  "publishedAt": zod.coerce.date().nullable()
+}).and(zod.object({
+  "body": zod.string(),
+  "status": zod.enum(['draft', 'published']),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+}))
+
+
+/**
+ * @summary Read Articles page settings, categories, and all articles
+ */
+export const getAdminKnowledgeHubArticlesResponseSettingsOneHeroEyebrowMax = 120;
+
+export const getAdminKnowledgeHubArticlesResponseSettingsOneHeroTitleMax = 160;
+
+export const getAdminKnowledgeHubArticlesResponseSettingsOneHeroAccentTextMax = 80;
+
+export const getAdminKnowledgeHubArticlesResponseSettingsOneHeroDescriptionMax = 700;
+
+export const getAdminKnowledgeHubArticlesResponseSettingsOneArticlesMetricLabelMax = 80;
+
+export const getAdminKnowledgeHubArticlesResponseSettingsOneExpertsMetricTitleMax = 100;
+
+export const getAdminKnowledgeHubArticlesResponseSettingsOneExpertsMetricDescriptionMax = 180;
+
+export const getAdminKnowledgeHubArticlesResponseSettingsOneHeroCtaLabelMax = 80;
+
+export const getAdminKnowledgeHubArticlesResponseSettingsOneHeroCtaHrefMax = 500;
+
+export const getAdminKnowledgeHubArticlesResponseSettingsOneHeroImageUrlMax = 1000;
+
+export const getAdminKnowledgeHubArticlesResponseSettingsOneHeroImageAltTextMax = 240;
+
+export const getAdminKnowledgeHubArticlesResponseSettingsOneFeaturedEyebrowMax = 120;
+
+export const getAdminKnowledgeHubArticlesResponseSettingsOneArticlesEyebrowMax = 120;
+
+export const getAdminKnowledgeHubArticlesResponseSettingsOneArticlesHeadingMax = 160;
+
+export const getAdminKnowledgeHubArticlesResponseSettingsOneArticlesDescriptionMax = 600;
+
+export const getAdminKnowledgeHubArticlesResponseSettingsOneSearchPlaceholderMax = 120;
+
+export const getAdminKnowledgeHubArticlesResponseSettingsOneTopicPanelTitleMax = 120;
+
+export const getAdminKnowledgeHubArticlesResponseSettingsOneTopicPanelDescriptionMax = 500;
+
+export const getAdminKnowledgeHubArticlesResponseSettingsOneTopicPanelCtaLabelMax = 80;
+
+export const getAdminKnowledgeHubArticlesResponseSettingsOneTopicPanelHrefMax = 500;
+
+export const getAdminKnowledgeHubArticlesResponseSettingsOneUpdatesPanelTitleMax = 120;
+
+export const getAdminKnowledgeHubArticlesResponseSettingsOneUpdatesPanelDescriptionMax = 500;
+
+export const getAdminKnowledgeHubArticlesResponseSettingsOneUpdatesPanelCtaLabelMax = 80;
+
+export const getAdminKnowledgeHubArticlesResponseSettingsOneUpdatesPanelHrefMax = 500;
+
+export const getAdminKnowledgeHubArticlesResponseSettingsTwoFeaturedArticleIdMax = 100;
+
+export const getAdminKnowledgeHubArticlesResponseCategoriesItemPublishedArticleCountMin = 0;
+
+
+
+
+export const GetAdminKnowledgeHubArticlesResponse = zod.object({
+  "settings": zod.object({
+  "heroEyebrow": zod.string().min(1).max(getAdminKnowledgeHubArticlesResponseSettingsOneHeroEyebrowMax),
+  "heroTitle": zod.string().min(1).max(getAdminKnowledgeHubArticlesResponseSettingsOneHeroTitleMax),
+  "heroAccentText": zod.string().min(1).max(getAdminKnowledgeHubArticlesResponseSettingsOneHeroAccentTextMax),
+  "heroDescription": zod.string().min(1).max(getAdminKnowledgeHubArticlesResponseSettingsOneHeroDescriptionMax),
+  "articlesMetricLabel": zod.string().min(1).max(getAdminKnowledgeHubArticlesResponseSettingsOneArticlesMetricLabelMax),
+  "expertsMetricTitle": zod.string().min(1).max(getAdminKnowledgeHubArticlesResponseSettingsOneExpertsMetricTitleMax),
+  "expertsMetricDescription": zod.string().min(1).max(getAdminKnowledgeHubArticlesResponseSettingsOneExpertsMetricDescriptionMax),
+  "heroCtaLabel": zod.string().min(1).max(getAdminKnowledgeHubArticlesResponseSettingsOneHeroCtaLabelMax),
+  "heroCtaHref": zod.string().min(1).max(getAdminKnowledgeHubArticlesResponseSettingsOneHeroCtaHrefMax),
+  "heroImageUrl": zod.string().max(getAdminKnowledgeHubArticlesResponseSettingsOneHeroImageUrlMax).nullable(),
+  "heroImageAltText": zod.string().max(getAdminKnowledgeHubArticlesResponseSettingsOneHeroImageAltTextMax),
+  "featuredEyebrow": zod.string().min(1).max(getAdminKnowledgeHubArticlesResponseSettingsOneFeaturedEyebrowMax),
+  "articlesEyebrow": zod.string().min(1).max(getAdminKnowledgeHubArticlesResponseSettingsOneArticlesEyebrowMax),
+  "articlesHeading": zod.string().min(1).max(getAdminKnowledgeHubArticlesResponseSettingsOneArticlesHeadingMax),
+  "articlesDescription": zod.string().min(1).max(getAdminKnowledgeHubArticlesResponseSettingsOneArticlesDescriptionMax),
+  "searchPlaceholder": zod.string().min(1).max(getAdminKnowledgeHubArticlesResponseSettingsOneSearchPlaceholderMax),
+  "topicPanelVisible": zod.boolean(),
+  "topicPanelTitle": zod.string().min(1).max(getAdminKnowledgeHubArticlesResponseSettingsOneTopicPanelTitleMax),
+  "topicPanelDescription": zod.string().min(1).max(getAdminKnowledgeHubArticlesResponseSettingsOneTopicPanelDescriptionMax),
+  "topicPanelCtaLabel": zod.string().min(1).max(getAdminKnowledgeHubArticlesResponseSettingsOneTopicPanelCtaLabelMax),
+  "topicPanelHref": zod.string().min(1).max(getAdminKnowledgeHubArticlesResponseSettingsOneTopicPanelHrefMax),
+  "updatesPanelVisible": zod.boolean(),
+  "updatesPanelTitle": zod.string().min(1).max(getAdminKnowledgeHubArticlesResponseSettingsOneUpdatesPanelTitleMax),
+  "updatesPanelDescription": zod.string().min(1).max(getAdminKnowledgeHubArticlesResponseSettingsOneUpdatesPanelDescriptionMax),
+  "updatesPanelCtaLabel": zod.string().min(1).max(getAdminKnowledgeHubArticlesResponseSettingsOneUpdatesPanelCtaLabelMax),
+  "updatesPanelHref": zod.string().min(1).max(getAdminKnowledgeHubArticlesResponseSettingsOneUpdatesPanelHrefMax)
+}).and(zod.object({
+  "featuredArticleId": zod.string().max(getAdminKnowledgeHubArticlesResponseSettingsTwoFeaturedArticleIdMax).nullable()
+})),
+  "categories": zod.array(zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "slug": zod.string(),
+  "icon": zod.string(),
+  "displayOrder": zod.number().int(),
+  "isVisible": zod.boolean(),
+  "publishedArticleCount": zod.number().int().min(getAdminKnowledgeHubArticlesResponseCategoriesItemPublishedArticleCountMin)
+})),
+  "articles": zod.array(zod.object({
+  "id": zod.string(),
+  "title": zod.string(),
+  "slug": zod.string(),
+  "categoryId": zod.string(),
+  "categoryName": zod.string(),
+  "categorySlug": zod.string(),
+  "categoryIcon": zod.string(),
+  "excerpt": zod.string(),
+  "coverImageUrl": zod.string().nullable(),
+  "coverImageAltText": zod.string(),
+  "author": zod.string(),
+  "readTimeMinutes": zod.number().int().min(1),
+  "publishedAt": zod.coerce.date().nullable()
+}).and(zod.object({
+  "body": zod.string(),
+  "status": zod.enum(['draft', 'published']),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})))
+})
+
+
+/**
+ * @summary Create an article
+ */
+export const createAdminKnowledgeHubArticleBodyTitleMax = 180;
+
+export const createAdminKnowledgeHubArticleBodySlugMax = 180;
+
+
+export const createAdminKnowledgeHubArticleBodySlugRegExp = new RegExp('^[a-z0-9]+(?:-[a-z0-9]+)*$');
+export const createAdminKnowledgeHubArticleBodyCategoryIdMax = 100;
+
+export const createAdminKnowledgeHubArticleBodyExcerptMax = 500;
+
+export const createAdminKnowledgeHubArticleBodyBodyMax = 50000;
+
+export const createAdminKnowledgeHubArticleBodyCoverImageUrlMax = 1000;
+
+export const createAdminKnowledgeHubArticleBodyCoverImageAltTextMax = 240;
+
+export const createAdminKnowledgeHubArticleBodyAuthorMax = 120;
+
+export const createAdminKnowledgeHubArticleBodyReadTimeMinutesMax = 240;
+
+
+
+export const CreateAdminKnowledgeHubArticleBody = zod.object({
+  "title": zod.string().min(1).max(createAdminKnowledgeHubArticleBodyTitleMax),
+  "slug": zod.string().min(1).max(createAdminKnowledgeHubArticleBodySlugMax).regex(createAdminKnowledgeHubArticleBodySlugRegExp),
+  "categoryId": zod.string().min(1).max(createAdminKnowledgeHubArticleBodyCategoryIdMax),
+  "excerpt": zod.string().min(1).max(createAdminKnowledgeHubArticleBodyExcerptMax),
+  "body": zod.string().min(1).max(createAdminKnowledgeHubArticleBodyBodyMax),
+  "coverImageUrl": zod.string().max(createAdminKnowledgeHubArticleBodyCoverImageUrlMax).nullable(),
+  "coverImageAltText": zod.string().max(createAdminKnowledgeHubArticleBodyCoverImageAltTextMax),
+  "author": zod.string().min(1).max(createAdminKnowledgeHubArticleBodyAuthorMax),
+  "readTimeMinutes": zod.number().int().min(1).max(createAdminKnowledgeHubArticleBodyReadTimeMinutesMax),
+  "status": zod.enum(['draft', 'published'])
+})
+
+
+
+
+export const CreateAdminKnowledgeHubArticleResponse = zod.object({
+  "id": zod.string(),
+  "title": zod.string(),
+  "slug": zod.string(),
+  "categoryId": zod.string(),
+  "categoryName": zod.string(),
+  "categorySlug": zod.string(),
+  "categoryIcon": zod.string(),
+  "excerpt": zod.string(),
+  "coverImageUrl": zod.string().nullable(),
+  "coverImageAltText": zod.string(),
+  "author": zod.string(),
+  "readTimeMinutes": zod.number().int().min(1),
+  "publishedAt": zod.coerce.date().nullable()
+}).and(zod.object({
+  "body": zod.string(),
+  "status": zod.enum(['draft', 'published']),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+}))
+
+
+/**
+ * @summary Update Articles page text, featured article, image, and support panels
+ */
+export const updateAdminKnowledgeHubArticlesPageBodyOneHeroEyebrowMax = 120;
+
+export const updateAdminKnowledgeHubArticlesPageBodyOneHeroTitleMax = 160;
+
+export const updateAdminKnowledgeHubArticlesPageBodyOneHeroAccentTextMax = 80;
+
+export const updateAdminKnowledgeHubArticlesPageBodyOneHeroDescriptionMax = 700;
+
+export const updateAdminKnowledgeHubArticlesPageBodyOneArticlesMetricLabelMax = 80;
+
+export const updateAdminKnowledgeHubArticlesPageBodyOneExpertsMetricTitleMax = 100;
+
+export const updateAdminKnowledgeHubArticlesPageBodyOneExpertsMetricDescriptionMax = 180;
+
+export const updateAdminKnowledgeHubArticlesPageBodyOneHeroCtaLabelMax = 80;
+
+export const updateAdminKnowledgeHubArticlesPageBodyOneHeroCtaHrefMax = 500;
+
+export const updateAdminKnowledgeHubArticlesPageBodyOneHeroImageUrlMax = 1000;
+
+export const updateAdminKnowledgeHubArticlesPageBodyOneHeroImageAltTextMax = 240;
+
+export const updateAdminKnowledgeHubArticlesPageBodyOneFeaturedEyebrowMax = 120;
+
+export const updateAdminKnowledgeHubArticlesPageBodyOneArticlesEyebrowMax = 120;
+
+export const updateAdminKnowledgeHubArticlesPageBodyOneArticlesHeadingMax = 160;
+
+export const updateAdminKnowledgeHubArticlesPageBodyOneArticlesDescriptionMax = 600;
+
+export const updateAdminKnowledgeHubArticlesPageBodyOneSearchPlaceholderMax = 120;
+
+export const updateAdminKnowledgeHubArticlesPageBodyOneTopicPanelTitleMax = 120;
+
+export const updateAdminKnowledgeHubArticlesPageBodyOneTopicPanelDescriptionMax = 500;
+
+export const updateAdminKnowledgeHubArticlesPageBodyOneTopicPanelCtaLabelMax = 80;
+
+export const updateAdminKnowledgeHubArticlesPageBodyOneTopicPanelHrefMax = 500;
+
+export const updateAdminKnowledgeHubArticlesPageBodyOneUpdatesPanelTitleMax = 120;
+
+export const updateAdminKnowledgeHubArticlesPageBodyOneUpdatesPanelDescriptionMax = 500;
+
+export const updateAdminKnowledgeHubArticlesPageBodyOneUpdatesPanelCtaLabelMax = 80;
+
+export const updateAdminKnowledgeHubArticlesPageBodyOneUpdatesPanelHrefMax = 500;
+
+export const updateAdminKnowledgeHubArticlesPageBodyTwoFeaturedArticleIdMax = 100;
+
+
+
+export const UpdateAdminKnowledgeHubArticlesPageBody = zod.object({
+  "heroEyebrow": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageBodyOneHeroEyebrowMax),
+  "heroTitle": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageBodyOneHeroTitleMax),
+  "heroAccentText": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageBodyOneHeroAccentTextMax),
+  "heroDescription": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageBodyOneHeroDescriptionMax),
+  "articlesMetricLabel": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageBodyOneArticlesMetricLabelMax),
+  "expertsMetricTitle": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageBodyOneExpertsMetricTitleMax),
+  "expertsMetricDescription": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageBodyOneExpertsMetricDescriptionMax),
+  "heroCtaLabel": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageBodyOneHeroCtaLabelMax),
+  "heroCtaHref": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageBodyOneHeroCtaHrefMax),
+  "heroImageUrl": zod.string().max(updateAdminKnowledgeHubArticlesPageBodyOneHeroImageUrlMax).nullable(),
+  "heroImageAltText": zod.string().max(updateAdminKnowledgeHubArticlesPageBodyOneHeroImageAltTextMax),
+  "featuredEyebrow": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageBodyOneFeaturedEyebrowMax),
+  "articlesEyebrow": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageBodyOneArticlesEyebrowMax),
+  "articlesHeading": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageBodyOneArticlesHeadingMax),
+  "articlesDescription": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageBodyOneArticlesDescriptionMax),
+  "searchPlaceholder": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageBodyOneSearchPlaceholderMax),
+  "topicPanelVisible": zod.boolean(),
+  "topicPanelTitle": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageBodyOneTopicPanelTitleMax),
+  "topicPanelDescription": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageBodyOneTopicPanelDescriptionMax),
+  "topicPanelCtaLabel": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageBodyOneTopicPanelCtaLabelMax),
+  "topicPanelHref": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageBodyOneTopicPanelHrefMax),
+  "updatesPanelVisible": zod.boolean(),
+  "updatesPanelTitle": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageBodyOneUpdatesPanelTitleMax),
+  "updatesPanelDescription": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageBodyOneUpdatesPanelDescriptionMax),
+  "updatesPanelCtaLabel": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageBodyOneUpdatesPanelCtaLabelMax),
+  "updatesPanelHref": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageBodyOneUpdatesPanelHrefMax)
+}).and(zod.object({
+  "featuredArticleId": zod.string().max(updateAdminKnowledgeHubArticlesPageBodyTwoFeaturedArticleIdMax).nullable()
+}))
+
+export const updateAdminKnowledgeHubArticlesPageResponseOneHeroEyebrowMax = 120;
+
+export const updateAdminKnowledgeHubArticlesPageResponseOneHeroTitleMax = 160;
+
+export const updateAdminKnowledgeHubArticlesPageResponseOneHeroAccentTextMax = 80;
+
+export const updateAdminKnowledgeHubArticlesPageResponseOneHeroDescriptionMax = 700;
+
+export const updateAdminKnowledgeHubArticlesPageResponseOneArticlesMetricLabelMax = 80;
+
+export const updateAdminKnowledgeHubArticlesPageResponseOneExpertsMetricTitleMax = 100;
+
+export const updateAdminKnowledgeHubArticlesPageResponseOneExpertsMetricDescriptionMax = 180;
+
+export const updateAdminKnowledgeHubArticlesPageResponseOneHeroCtaLabelMax = 80;
+
+export const updateAdminKnowledgeHubArticlesPageResponseOneHeroCtaHrefMax = 500;
+
+export const updateAdminKnowledgeHubArticlesPageResponseOneHeroImageUrlMax = 1000;
+
+export const updateAdminKnowledgeHubArticlesPageResponseOneHeroImageAltTextMax = 240;
+
+export const updateAdminKnowledgeHubArticlesPageResponseOneFeaturedEyebrowMax = 120;
+
+export const updateAdminKnowledgeHubArticlesPageResponseOneArticlesEyebrowMax = 120;
+
+export const updateAdminKnowledgeHubArticlesPageResponseOneArticlesHeadingMax = 160;
+
+export const updateAdminKnowledgeHubArticlesPageResponseOneArticlesDescriptionMax = 600;
+
+export const updateAdminKnowledgeHubArticlesPageResponseOneSearchPlaceholderMax = 120;
+
+export const updateAdminKnowledgeHubArticlesPageResponseOneTopicPanelTitleMax = 120;
+
+export const updateAdminKnowledgeHubArticlesPageResponseOneTopicPanelDescriptionMax = 500;
+
+export const updateAdminKnowledgeHubArticlesPageResponseOneTopicPanelCtaLabelMax = 80;
+
+export const updateAdminKnowledgeHubArticlesPageResponseOneTopicPanelHrefMax = 500;
+
+export const updateAdminKnowledgeHubArticlesPageResponseOneUpdatesPanelTitleMax = 120;
+
+export const updateAdminKnowledgeHubArticlesPageResponseOneUpdatesPanelDescriptionMax = 500;
+
+export const updateAdminKnowledgeHubArticlesPageResponseOneUpdatesPanelCtaLabelMax = 80;
+
+export const updateAdminKnowledgeHubArticlesPageResponseOneUpdatesPanelHrefMax = 500;
+
+export const updateAdminKnowledgeHubArticlesPageResponseTwoFeaturedArticleIdMax = 100;
+
+
+
+export const UpdateAdminKnowledgeHubArticlesPageResponse = zod.object({
+  "heroEyebrow": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageResponseOneHeroEyebrowMax),
+  "heroTitle": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageResponseOneHeroTitleMax),
+  "heroAccentText": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageResponseOneHeroAccentTextMax),
+  "heroDescription": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageResponseOneHeroDescriptionMax),
+  "articlesMetricLabel": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageResponseOneArticlesMetricLabelMax),
+  "expertsMetricTitle": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageResponseOneExpertsMetricTitleMax),
+  "expertsMetricDescription": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageResponseOneExpertsMetricDescriptionMax),
+  "heroCtaLabel": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageResponseOneHeroCtaLabelMax),
+  "heroCtaHref": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageResponseOneHeroCtaHrefMax),
+  "heroImageUrl": zod.string().max(updateAdminKnowledgeHubArticlesPageResponseOneHeroImageUrlMax).nullable(),
+  "heroImageAltText": zod.string().max(updateAdminKnowledgeHubArticlesPageResponseOneHeroImageAltTextMax),
+  "featuredEyebrow": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageResponseOneFeaturedEyebrowMax),
+  "articlesEyebrow": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageResponseOneArticlesEyebrowMax),
+  "articlesHeading": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageResponseOneArticlesHeadingMax),
+  "articlesDescription": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageResponseOneArticlesDescriptionMax),
+  "searchPlaceholder": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageResponseOneSearchPlaceholderMax),
+  "topicPanelVisible": zod.boolean(),
+  "topicPanelTitle": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageResponseOneTopicPanelTitleMax),
+  "topicPanelDescription": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageResponseOneTopicPanelDescriptionMax),
+  "topicPanelCtaLabel": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageResponseOneTopicPanelCtaLabelMax),
+  "topicPanelHref": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageResponseOneTopicPanelHrefMax),
+  "updatesPanelVisible": zod.boolean(),
+  "updatesPanelTitle": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageResponseOneUpdatesPanelTitleMax),
+  "updatesPanelDescription": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageResponseOneUpdatesPanelDescriptionMax),
+  "updatesPanelCtaLabel": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageResponseOneUpdatesPanelCtaLabelMax),
+  "updatesPanelHref": zod.string().min(1).max(updateAdminKnowledgeHubArticlesPageResponseOneUpdatesPanelHrefMax)
+}).and(zod.object({
+  "featuredArticleId": zod.string().max(updateAdminKnowledgeHubArticlesPageResponseTwoFeaturedArticleIdMax).nullable()
+}))
+
+
+/**
+ * @summary Create an Articles category
+ */
+export const createAdminKnowledgeHubArticleCategoryBodyNameMax = 80;
+
+export const createAdminKnowledgeHubArticleCategoryBodySlugMax = 100;
+
+
+export const createAdminKnowledgeHubArticleCategoryBodySlugRegExp = new RegExp('^[a-z0-9]+(?:-[a-z0-9]+)*$');
+export const createAdminKnowledgeHubArticleCategoryBodyIconMax = 50;
+
+export const createAdminKnowledgeHubArticleCategoryBodyDisplayOrderMax = 500;
+
+
+
+export const CreateAdminKnowledgeHubArticleCategoryBody = zod.object({
+  "name": zod.string().min(1).max(createAdminKnowledgeHubArticleCategoryBodyNameMax),
+  "slug": zod.string().min(1).max(createAdminKnowledgeHubArticleCategoryBodySlugMax).regex(createAdminKnowledgeHubArticleCategoryBodySlugRegExp),
+  "icon": zod.string().min(1).max(createAdminKnowledgeHubArticleCategoryBodyIconMax),
+  "displayOrder": zod.number().int().min(1).max(createAdminKnowledgeHubArticleCategoryBodyDisplayOrderMax),
+  "isVisible": zod.boolean()
+})
+
+export const createAdminKnowledgeHubArticleCategoryResponsePublishedArticleCountMin = 0;
+
+
+
+export const CreateAdminKnowledgeHubArticleCategoryResponse = zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "slug": zod.string(),
+  "icon": zod.string(),
+  "displayOrder": zod.number().int(),
+  "isVisible": zod.boolean(),
+  "publishedArticleCount": zod.number().int().min(createAdminKnowledgeHubArticleCategoryResponsePublishedArticleCountMin)
+})
+
+
+/**
+ * @summary Update an Articles category
+ */
+
+
+
+export const UpdateAdminKnowledgeHubArticleCategoryParams = zod.object({
+  "id": zod.coerce.string().min(1)
+})
+
+export const updateAdminKnowledgeHubArticleCategoryBodyNameMax = 80;
+
+export const updateAdminKnowledgeHubArticleCategoryBodySlugMax = 100;
+
+
+export const updateAdminKnowledgeHubArticleCategoryBodySlugRegExp = new RegExp('^[a-z0-9]+(?:-[a-z0-9]+)*$');
+export const updateAdminKnowledgeHubArticleCategoryBodyIconMax = 50;
+
+export const updateAdminKnowledgeHubArticleCategoryBodyDisplayOrderMax = 500;
+
+
+
+export const UpdateAdminKnowledgeHubArticleCategoryBody = zod.object({
+  "name": zod.string().min(1).max(updateAdminKnowledgeHubArticleCategoryBodyNameMax),
+  "slug": zod.string().min(1).max(updateAdminKnowledgeHubArticleCategoryBodySlugMax).regex(updateAdminKnowledgeHubArticleCategoryBodySlugRegExp),
+  "icon": zod.string().min(1).max(updateAdminKnowledgeHubArticleCategoryBodyIconMax),
+  "displayOrder": zod.number().int().min(1).max(updateAdminKnowledgeHubArticleCategoryBodyDisplayOrderMax),
+  "isVisible": zod.boolean()
+})
+
+export const updateAdminKnowledgeHubArticleCategoryResponsePublishedArticleCountMin = 0;
+
+
+
+export const UpdateAdminKnowledgeHubArticleCategoryResponse = zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "slug": zod.string(),
+  "icon": zod.string(),
+  "displayOrder": zod.number().int(),
+  "isVisible": zod.boolean(),
+  "publishedArticleCount": zod.number().int().min(updateAdminKnowledgeHubArticleCategoryResponsePublishedArticleCountMin)
+})
+
+
+/**
+ * @summary Delete an unused Articles category
+ */
+
+
+
+export const DeleteAdminKnowledgeHubArticleCategoryParams = zod.object({
+  "id": zod.coerce.string().min(1)
+})
+
+export const DeleteAdminKnowledgeHubArticleCategoryResponse = zod.void()
+
+
+/**
+ * @summary Update an article
+ */
+
+
+
+export const UpdateAdminKnowledgeHubArticleParams = zod.object({
+  "id": zod.coerce.string().min(1)
+})
+
+export const updateAdminKnowledgeHubArticleBodyTitleMax = 180;
+
+export const updateAdminKnowledgeHubArticleBodySlugMax = 180;
+
+
+export const updateAdminKnowledgeHubArticleBodySlugRegExp = new RegExp('^[a-z0-9]+(?:-[a-z0-9]+)*$');
+export const updateAdminKnowledgeHubArticleBodyCategoryIdMax = 100;
+
+export const updateAdminKnowledgeHubArticleBodyExcerptMax = 500;
+
+export const updateAdminKnowledgeHubArticleBodyBodyMax = 50000;
+
+export const updateAdminKnowledgeHubArticleBodyCoverImageUrlMax = 1000;
+
+export const updateAdminKnowledgeHubArticleBodyCoverImageAltTextMax = 240;
+
+export const updateAdminKnowledgeHubArticleBodyAuthorMax = 120;
+
+export const updateAdminKnowledgeHubArticleBodyReadTimeMinutesMax = 240;
+
+
+
+export const UpdateAdminKnowledgeHubArticleBody = zod.object({
+  "title": zod.string().min(1).max(updateAdminKnowledgeHubArticleBodyTitleMax),
+  "slug": zod.string().min(1).max(updateAdminKnowledgeHubArticleBodySlugMax).regex(updateAdminKnowledgeHubArticleBodySlugRegExp),
+  "categoryId": zod.string().min(1).max(updateAdminKnowledgeHubArticleBodyCategoryIdMax),
+  "excerpt": zod.string().min(1).max(updateAdminKnowledgeHubArticleBodyExcerptMax),
+  "body": zod.string().min(1).max(updateAdminKnowledgeHubArticleBodyBodyMax),
+  "coverImageUrl": zod.string().max(updateAdminKnowledgeHubArticleBodyCoverImageUrlMax).nullable(),
+  "coverImageAltText": zod.string().max(updateAdminKnowledgeHubArticleBodyCoverImageAltTextMax),
+  "author": zod.string().min(1).max(updateAdminKnowledgeHubArticleBodyAuthorMax),
+  "readTimeMinutes": zod.number().int().min(1).max(updateAdminKnowledgeHubArticleBodyReadTimeMinutesMax),
+  "status": zod.enum(['draft', 'published'])
+})
+
+
+
+
+export const UpdateAdminKnowledgeHubArticleResponse = zod.object({
+  "id": zod.string(),
+  "title": zod.string(),
+  "slug": zod.string(),
+  "categoryId": zod.string(),
+  "categoryName": zod.string(),
+  "categorySlug": zod.string(),
+  "categoryIcon": zod.string(),
+  "excerpt": zod.string(),
+  "coverImageUrl": zod.string().nullable(),
+  "coverImageAltText": zod.string(),
+  "author": zod.string(),
+  "readTimeMinutes": zod.number().int().min(1),
+  "publishedAt": zod.coerce.date().nullable()
+}).and(zod.object({
+  "body": zod.string(),
+  "status": zod.enum(['draft', 'published']),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+}))
+
+
+/**
+ * @summary Delete an article
+ */
+
+
+
+export const DeleteAdminKnowledgeHubArticleParams = zod.object({
+  "id": zod.coerce.string().min(1)
+})
+
+export const DeleteAdminKnowledgeHubArticleResponse = zod.void()
+
+

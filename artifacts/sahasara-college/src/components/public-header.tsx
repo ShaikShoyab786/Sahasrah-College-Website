@@ -14,9 +14,10 @@ type PublicHeaderProps = {
   };
   activePage?: 'home' | 'about' | 'faculty' | 'results' | 'gallery' | 'contact' | 'courses' | 'knowledge-hub';
   mobileFlow?: boolean;
+  appearance?: 'default' | 'light';
 };
 
-export function PublicHeader({ settings, activePage = 'home', mobileFlow = false }: PublicHeaderProps) {
+export function PublicHeader({ settings, activePage = 'home', mobileFlow = false, appearance = 'default' }: PublicHeaderProps) {
   const [location] = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
   const [coursesOpen, setCoursesOpen] = useState(false);
@@ -90,7 +91,9 @@ export function PublicHeader({ settings, activePage = 'home', mobileFlow = false
     coursesPointerInsideRef.current = false;
     knowledgeHubPointerInsideRef.current = false;
   };
-  const linkClass = (active: boolean) => `transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-4 focus-visible:ring-offset-transparent ${active ? 'text-white underline decoration-[hsl(var(--accent))] underline-offset-8' : ''}`;
+  const linkClass = (active: boolean) => appearance === 'light'
+    ? `transition hover:text-[hsl(var(--accent))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary))] focus-visible:ring-offset-4 focus-visible:ring-offset-[hsl(var(--background))] ${active ? 'text-[hsl(var(--primary))] underline decoration-[hsl(var(--accent))] underline-offset-8' : ''}`
+    : `transition hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-4 focus-visible:ring-offset-transparent ${active ? 'text-white underline decoration-[hsl(var(--accent))] underline-offset-8' : ''}`;
 
   useLayoutEffect(() => {
     const headerRow = headerRowRef.current;
@@ -160,12 +163,12 @@ export function PublicHeader({ settings, activePage = 'home', mobileFlow = false
   }, []);
 
   return (
-    <header ref={headerRef} className={`${mobileFlow ? 'relative bg-[hsl(var(--primary))] lg:absolute lg:bg-gradient-to-b lg:from-black/45 lg:to-transparent' : 'absolute bg-gradient-to-b from-black/45 to-transparent'} inset-x-0 top-0 z-20`}>
+    <header ref={headerRef} className={`${appearance === 'light' ? 'absolute bg-[hsl(var(--background)/.96)] shadow-[var(--shadow-sm)] backdrop-blur-md' : mobileFlow ? 'relative bg-[hsl(var(--primary))] lg:absolute lg:bg-gradient-to-b lg:from-black/45 lg:to-transparent' : 'absolute bg-gradient-to-b from-black/45 to-transparent'} inset-x-0 top-0 z-20`}>
       <div ref={headerRowRef} className="mx-auto flex max-w-7xl items-center justify-between gap-1 px-2 py-3 sm:gap-2 sm:px-6 sm:py-5 lg:gap-0 lg:px-10">
         <div className="min-w-0 flex-1 lg:flex-none">
-          <SiteMark name={settings.collegeName} tagline={settings.tagline} logoUrl={settings.logoUrl} inverse responsive />
+          <SiteMark name={settings.collegeName} tagline={settings.tagline} logoUrl={settings.logoUrl} inverse={appearance !== 'light'} responsive />
         </div>
-        <nav className="hidden items-center gap-3 text-sm font-semibold text-white/90 lg:flex xl:gap-5" aria-label="Public navigation">
+        <nav className={`hidden items-center gap-3 text-sm font-semibold lg:flex xl:gap-5 ${appearance === 'light' ? 'text-[hsl(var(--primary)/.9)]' : 'text-white/90'}`} aria-label="Public navigation">
           <Link href="/" className={linkClass(homeActive)} aria-current={homeActive ? 'page' : undefined} data-testid="link-nav-home" onClick={closeMenus}>Home</Link>
           <Link href="/about" className={linkClass(aboutActive)} aria-current={aboutActive ? 'page' : undefined} data-testid="link-nav-about" onClick={closeMenus}>About</Link>
           <Link href="/faculty" className={linkClass(facultyActive)} aria-current={facultyActive ? 'page' : undefined} data-testid="link-nav-faculty" onClick={closeMenus}>Faculty</Link>
@@ -328,7 +331,7 @@ export function PublicHeader({ settings, activePage = 'home', mobileFlow = false
         </nav>
         <div className="flex shrink-0 items-center gap-1 sm:gap-2">
           <Link href="/contact" onClick={closeMenus} className="inline-flex h-10 shrink-0 items-center whitespace-nowrap rounded-full bg-[hsl(var(--accent))] px-2 text-xs font-bold text-[hsl(var(--accent-foreground))] shadow-sm transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent-foreground))] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(var(--accent))] sm:h-11 sm:px-5 sm:text-sm" data-testid="link-header-admissions">Admissions <ArrowRight size={16} className="ml-2 hidden sm:inline" aria-hidden="true" /></Link>
-          <button id="public-mobile-menu-trigger" type="button" aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'} aria-controls="public-mobile-navigation" aria-expanded={menuOpen} onClick={() => setMenuOpen((current) => !current)} className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-white/25 text-white transition hover:border-white/60 hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--primary-foreground))] sm:h-11 sm:w-11 lg:hidden" data-testid="button-public-menu">
+          <button id="public-mobile-menu-trigger" type="button" aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'} aria-controls="public-mobile-navigation" aria-expanded={menuOpen} onClick={() => setMenuOpen((current) => !current)} className={`grid h-10 w-10 shrink-0 place-items-center rounded-full border transition focus-visible:outline-none focus-visible:ring-2 sm:h-11 sm:w-11 lg:hidden ${appearance === 'light' ? 'border-[hsl(var(--primary)/.25)] text-[hsl(var(--primary))] hover:border-[hsl(var(--primary)/.6)] hover:bg-[hsl(var(--primary)/.06)] focus-visible:ring-[hsl(var(--primary))]' : 'border-white/25 text-white hover:border-white/60 hover:bg-white/10 focus-visible:ring-[hsl(var(--primary-foreground))]'}`} data-testid="button-public-menu">
             {menuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>

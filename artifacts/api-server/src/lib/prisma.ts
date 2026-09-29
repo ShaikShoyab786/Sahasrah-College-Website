@@ -9,6 +9,10 @@ import { COURSE_SEEDS, normalizeCourseHighlights, type CourseHighlight } from ".
 import { DEFAULT_COURSES_MEGA_MENU } from "./courses-mega-menu-content";
 import { DEFAULT_ALL_COURSES_PAGE } from "./all-courses-page-content";
 import { DEFAULT_KNOWLEDGE_HUB_MEGA_MENU } from "./knowledge-hub-mega-menu-content";
+import {
+  DEFAULT_KNOWLEDGE_HUB_ARTICLES_PAGE,
+  DEFAULT_KNOWLEDGE_HUB_ARTICLE_CATEGORIES,
+} from "./knowledge-hub-articles-content";
 
 const LEGACY_COURSE_ACTIONS = [
   { slug: "mpc", primaryActionLabel: "Explore admissions", secondaryActionLabel: "Talk to a counsellor" },
@@ -339,6 +343,34 @@ export async function initializeDatabase() {
       id: "singleton",
       content: DEFAULT_KNOWLEDGE_HUB_MEGA_MENU,
     },
+  });
+
+  await prisma.knowledgeHubArticlesPageSettings.upsert({
+    where: { id: "singleton" },
+    update: {},
+    create: {
+      id: "singleton",
+      content: DEFAULT_KNOWLEDGE_HUB_ARTICLES_PAGE,
+    },
+  });
+
+  await prisma.$transaction(async (tx) => {
+    const setup = await tx.knowledgeHubArticlesSetup.upsert({
+      where: { id: "singleton" },
+      update: {},
+      create: { id: "singleton" },
+    });
+    if (setup.defaultCategoriesSeededAt) return;
+    if (await tx.knowledgeHubArticleCategory.count() === 0) {
+      await tx.knowledgeHubArticleCategory.createMany({
+        data: DEFAULT_KNOWLEDGE_HUB_ARTICLE_CATEGORIES,
+        skipDuplicates: true,
+      });
+    }
+    await tx.knowledgeHubArticlesSetup.update({
+      where: { id: "singleton" },
+      data: { defaultCategoriesSeededAt: new Date() },
+    });
   });
 
   await prisma.siteSettings.upsert({

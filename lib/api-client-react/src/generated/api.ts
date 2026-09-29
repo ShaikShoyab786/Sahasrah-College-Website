@@ -43,6 +43,7 @@ import type {
   AdminCourse,
   AdminFacultyCollection,
   AdminFacultyMember,
+  AdminKnowledgeHubArticles,
   AdminResultsLibrary,
   AdminResultsLibraryInput,
   AllCoursesPageSettings,
@@ -73,6 +74,7 @@ import type {
   GalleryItemsOrderInput,
   GalleryPageSettings,
   GalleryPageSettingsInput,
+  GetKnowledgeHubArticlesParams,
   HealthStatus,
   HomepageAboutPreview,
   HomepageAboutPreviewInput,
@@ -102,6 +104,13 @@ import type {
   HomepageTestimonialsInput,
   ImageUploadInput,
   ImageUploadResult,
+  KnowledgeHubArticle,
+  KnowledgeHubArticleCategory,
+  KnowledgeHubArticleCategoryInput,
+  KnowledgeHubArticleInput,
+  KnowledgeHubArticlesList,
+  KnowledgeHubArticlesPage,
+  KnowledgeHubArticlesPageInput,
   KnowledgeHubMegaMenu,
   LoginInput,
   MessageResponse,
@@ -9359,5 +9368,910 @@ export const useUploadAdminImage = <TError = ErrorType<ErrorResponse>,
         TContext
       > => {
       return useMutation(getUploadAdminImageMutationOptions(options));
+    }
+
+export const getGetKnowledgeHubArticlesPageUrl = () => {
+
+
+
+
+  return `/api/knowledge-hub/articles/page`
+}
+
+/**
+ * @summary Read public Articles page settings and published counts
+ */
+export const getKnowledgeHubArticlesPage = async ( options?: Parameters<typeof customFetch>[1]): Promise<KnowledgeHubArticlesPage> => {
+
+  return customFetch<KnowledgeHubArticlesPage>(getGetKnowledgeHubArticlesPageUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetKnowledgeHubArticlesPageQueryKey = () => {
+    return [
+    `/api/knowledge-hub/articles/page`
+    ] as const;
+    }
+
+
+export const getGetKnowledgeHubArticlesPageQueryOptions = <TData = Awaited<ReturnType<typeof getKnowledgeHubArticlesPage>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getKnowledgeHubArticlesPage>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetKnowledgeHubArticlesPageQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getKnowledgeHubArticlesPage>>> = ({ signal }) => getKnowledgeHubArticlesPage({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getKnowledgeHubArticlesPage>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetKnowledgeHubArticlesPageQueryResult = NonNullable<Awaited<ReturnType<typeof getKnowledgeHubArticlesPage>>>
+export type GetKnowledgeHubArticlesPageQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Read public Articles page settings and published counts
+ */
+
+export function useGetKnowledgeHubArticlesPage<TData = Awaited<ReturnType<typeof getKnowledgeHubArticlesPage>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getKnowledgeHubArticlesPage>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetKnowledgeHubArticlesPageQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetKnowledgeHubArticlesUrl = (params?: GetKnowledgeHubArticlesParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/knowledge-hub/articles?${stringifiedParams}` : `/api/knowledge-hub/articles`
+}
+
+/**
+ * @summary Search and browse published Knowledge Hub articles
+ */
+export const getKnowledgeHubArticles = async (params?: GetKnowledgeHubArticlesParams, options?: Parameters<typeof customFetch>[1]): Promise<KnowledgeHubArticlesList> => {
+
+  return customFetch<KnowledgeHubArticlesList>(getGetKnowledgeHubArticlesUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetKnowledgeHubArticlesQueryKey = (params?: GetKnowledgeHubArticlesParams,) => {
+    return [
+    `/api/knowledge-hub/articles`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetKnowledgeHubArticlesQueryOptions = <TData = Awaited<ReturnType<typeof getKnowledgeHubArticles>>, TError = ErrorType<unknown>>(params?: GetKnowledgeHubArticlesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getKnowledgeHubArticles>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetKnowledgeHubArticlesQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getKnowledgeHubArticles>>> = ({ signal }) => getKnowledgeHubArticles(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getKnowledgeHubArticles>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetKnowledgeHubArticlesQueryResult = NonNullable<Awaited<ReturnType<typeof getKnowledgeHubArticles>>>
+export type GetKnowledgeHubArticlesQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Search and browse published Knowledge Hub articles
+ */
+
+export function useGetKnowledgeHubArticles<TData = Awaited<ReturnType<typeof getKnowledgeHubArticles>>, TError = ErrorType<unknown>>(
+ params?: GetKnowledgeHubArticlesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getKnowledgeHubArticles>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetKnowledgeHubArticlesQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetKnowledgeHubArticleBySlugUrl = (slug: string,) => {
+
+
+
+
+  return `/api/knowledge-hub/articles/${slug}`
+}
+
+/**
+ * @summary Read a published article
+ */
+export const getKnowledgeHubArticleBySlug = async (slug: string, options?: Parameters<typeof customFetch>[1]): Promise<KnowledgeHubArticle> => {
+
+  return customFetch<KnowledgeHubArticle>(getGetKnowledgeHubArticleBySlugUrl(slug),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetKnowledgeHubArticleBySlugQueryKey = (slug: string,) => {
+    return [
+    `/api/knowledge-hub/articles/${slug}`
+    ] as const;
+    }
+
+
+export const getGetKnowledgeHubArticleBySlugQueryOptions = <TData = Awaited<ReturnType<typeof getKnowledgeHubArticleBySlug>>, TError = ErrorType<ErrorResponse>>(slug: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getKnowledgeHubArticleBySlug>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetKnowledgeHubArticleBySlugQueryKey(slug);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getKnowledgeHubArticleBySlug>>> = ({ signal }) => getKnowledgeHubArticleBySlug(slug, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: slug !== null && slug !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getKnowledgeHubArticleBySlug>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetKnowledgeHubArticleBySlugQueryResult = NonNullable<Awaited<ReturnType<typeof getKnowledgeHubArticleBySlug>>>
+export type GetKnowledgeHubArticleBySlugQueryError = ErrorType<ErrorResponse>
+
+
+/**
+ * @summary Read a published article
+ */
+
+export function useGetKnowledgeHubArticleBySlug<TData = Awaited<ReturnType<typeof getKnowledgeHubArticleBySlug>>, TError = ErrorType<ErrorResponse>>(
+ slug: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getKnowledgeHubArticleBySlug>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetKnowledgeHubArticleBySlugQueryOptions(slug,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetAdminKnowledgeHubArticlesUrl = () => {
+
+
+
+
+  return `/api/admin/knowledge-hub/articles`
+}
+
+/**
+ * @summary Read Articles page settings, categories, and all articles
+ */
+export const getAdminKnowledgeHubArticles = async ( options?: Parameters<typeof customFetch>[1]): Promise<AdminKnowledgeHubArticles> => {
+
+  return customFetch<AdminKnowledgeHubArticles>(getGetAdminKnowledgeHubArticlesUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAdminKnowledgeHubArticlesQueryKey = () => {
+    return [
+    `/api/admin/knowledge-hub/articles`
+    ] as const;
+    }
+
+
+export const getGetAdminKnowledgeHubArticlesQueryOptions = <TData = Awaited<ReturnType<typeof getAdminKnowledgeHubArticles>>, TError = ErrorType<ErrorResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminKnowledgeHubArticles>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAdminKnowledgeHubArticlesQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdminKnowledgeHubArticles>>> = ({ signal }) => getAdminKnowledgeHubArticles({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAdminKnowledgeHubArticles>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetAdminKnowledgeHubArticlesQueryResult = NonNullable<Awaited<ReturnType<typeof getAdminKnowledgeHubArticles>>>
+export type GetAdminKnowledgeHubArticlesQueryError = ErrorType<ErrorResponse>
+
+
+/**
+ * @summary Read Articles page settings, categories, and all articles
+ */
+
+export function useGetAdminKnowledgeHubArticles<TData = Awaited<ReturnType<typeof getAdminKnowledgeHubArticles>>, TError = ErrorType<ErrorResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminKnowledgeHubArticles>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetAdminKnowledgeHubArticlesQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getCreateAdminKnowledgeHubArticleUrl = () => {
+
+
+
+
+  return `/api/admin/knowledge-hub/articles`
+}
+
+/**
+ * @summary Create an article
+ */
+export const createAdminKnowledgeHubArticle = async (knowledgeHubArticleInput: KnowledgeHubArticleInput, options?: Parameters<typeof customFetch>[1]): Promise<KnowledgeHubArticle> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<KnowledgeHubArticle>(getCreateAdminKnowledgeHubArticleUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(knowledgeHubArticleInput)
+  }
+);}
+
+
+
+
+
+export const getCreateAdminKnowledgeHubArticleMutationKey = () => ['createAdminKnowledgeHubArticle'] as const;
+
+export const getCreateAdminKnowledgeHubArticleMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createAdminKnowledgeHubArticle>>, TError,CreateAdminKnowledgeHubArticleMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createAdminKnowledgeHubArticle>>, TError,CreateAdminKnowledgeHubArticleMutationVariables, TContext> => {
+
+const mutationKey = getCreateAdminKnowledgeHubArticleMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createAdminKnowledgeHubArticle>>, CreateAdminKnowledgeHubArticleMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  createAdminKnowledgeHubArticle(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateAdminKnowledgeHubArticleMutationResult = NonNullable<Awaited<ReturnType<typeof createAdminKnowledgeHubArticle>>>
+    export type CreateAdminKnowledgeHubArticleMutationBody = BodyType<KnowledgeHubArticleInput>
+    export type CreateAdminKnowledgeHubArticleMutationError = ErrorType<ErrorResponse>
+    export type CreateAdminKnowledgeHubArticleMutationVariables = {data: BodyType<KnowledgeHubArticleInput>}
+
+    /**
+ * @summary Create an article
+ */
+export const useCreateAdminKnowledgeHubArticle = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createAdminKnowledgeHubArticle>>, TError,CreateAdminKnowledgeHubArticleMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createAdminKnowledgeHubArticle>>,
+        TError,
+        CreateAdminKnowledgeHubArticleMutationVariables,
+        TContext
+      > => {
+      return useMutation(getCreateAdminKnowledgeHubArticleMutationOptions(options));
+    }
+
+export const getUpdateAdminKnowledgeHubArticlesPageUrl = () => {
+
+
+
+
+  return `/api/admin/knowledge-hub/articles/page`
+}
+
+/**
+ * @summary Update Articles page text, featured article, image, and support panels
+ */
+export const updateAdminKnowledgeHubArticlesPage = async (knowledgeHubArticlesPageInput: KnowledgeHubArticlesPageInput, options?: Parameters<typeof customFetch>[1]): Promise<KnowledgeHubArticlesPageInput> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<KnowledgeHubArticlesPageInput>(getUpdateAdminKnowledgeHubArticlesPageUrl(),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(knowledgeHubArticlesPageInput)
+  }
+);}
+
+
+
+
+
+export const getUpdateAdminKnowledgeHubArticlesPageMutationKey = () => ['updateAdminKnowledgeHubArticlesPage'] as const;
+
+export const getUpdateAdminKnowledgeHubArticlesPageMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAdminKnowledgeHubArticlesPage>>, TError,UpdateAdminKnowledgeHubArticlesPageMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateAdminKnowledgeHubArticlesPage>>, TError,UpdateAdminKnowledgeHubArticlesPageMutationVariables, TContext> => {
+
+const mutationKey = getUpdateAdminKnowledgeHubArticlesPageMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateAdminKnowledgeHubArticlesPage>>, UpdateAdminKnowledgeHubArticlesPageMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  updateAdminKnowledgeHubArticlesPage(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateAdminKnowledgeHubArticlesPageMutationResult = NonNullable<Awaited<ReturnType<typeof updateAdminKnowledgeHubArticlesPage>>>
+    export type UpdateAdminKnowledgeHubArticlesPageMutationBody = BodyType<KnowledgeHubArticlesPageInput>
+    export type UpdateAdminKnowledgeHubArticlesPageMutationError = ErrorType<ErrorResponse>
+    export type UpdateAdminKnowledgeHubArticlesPageMutationVariables = {data: BodyType<KnowledgeHubArticlesPageInput>}
+
+    /**
+ * @summary Update Articles page text, featured article, image, and support panels
+ */
+export const useUpdateAdminKnowledgeHubArticlesPage = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAdminKnowledgeHubArticlesPage>>, TError,UpdateAdminKnowledgeHubArticlesPageMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateAdminKnowledgeHubArticlesPage>>,
+        TError,
+        UpdateAdminKnowledgeHubArticlesPageMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateAdminKnowledgeHubArticlesPageMutationOptions(options));
+    }
+
+export const getCreateAdminKnowledgeHubArticleCategoryUrl = () => {
+
+
+
+
+  return `/api/admin/knowledge-hub/articles/categories`
+}
+
+/**
+ * @summary Create an Articles category
+ */
+export const createAdminKnowledgeHubArticleCategory = async (knowledgeHubArticleCategoryInput: KnowledgeHubArticleCategoryInput, options?: Parameters<typeof customFetch>[1]): Promise<KnowledgeHubArticleCategory> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<KnowledgeHubArticleCategory>(getCreateAdminKnowledgeHubArticleCategoryUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(knowledgeHubArticleCategoryInput)
+  }
+);}
+
+
+
+
+
+export const getCreateAdminKnowledgeHubArticleCategoryMutationKey = () => ['createAdminKnowledgeHubArticleCategory'] as const;
+
+export const getCreateAdminKnowledgeHubArticleCategoryMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createAdminKnowledgeHubArticleCategory>>, TError,CreateAdminKnowledgeHubArticleCategoryMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createAdminKnowledgeHubArticleCategory>>, TError,CreateAdminKnowledgeHubArticleCategoryMutationVariables, TContext> => {
+
+const mutationKey = getCreateAdminKnowledgeHubArticleCategoryMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createAdminKnowledgeHubArticleCategory>>, CreateAdminKnowledgeHubArticleCategoryMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  createAdminKnowledgeHubArticleCategory(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateAdminKnowledgeHubArticleCategoryMutationResult = NonNullable<Awaited<ReturnType<typeof createAdminKnowledgeHubArticleCategory>>>
+    export type CreateAdminKnowledgeHubArticleCategoryMutationBody = BodyType<KnowledgeHubArticleCategoryInput>
+    export type CreateAdminKnowledgeHubArticleCategoryMutationError = ErrorType<ErrorResponse>
+    export type CreateAdminKnowledgeHubArticleCategoryMutationVariables = {data: BodyType<KnowledgeHubArticleCategoryInput>}
+
+    /**
+ * @summary Create an Articles category
+ */
+export const useCreateAdminKnowledgeHubArticleCategory = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createAdminKnowledgeHubArticleCategory>>, TError,CreateAdminKnowledgeHubArticleCategoryMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createAdminKnowledgeHubArticleCategory>>,
+        TError,
+        CreateAdminKnowledgeHubArticleCategoryMutationVariables,
+        TContext
+      > => {
+      return useMutation(getCreateAdminKnowledgeHubArticleCategoryMutationOptions(options));
+    }
+
+export const getUpdateAdminKnowledgeHubArticleCategoryUrl = (id: string,) => {
+
+
+
+
+  return `/api/admin/knowledge-hub/articles/categories/${id}`
+}
+
+/**
+ * @summary Update an Articles category
+ */
+export const updateAdminKnowledgeHubArticleCategory = async (id: string,
+    knowledgeHubArticleCategoryInput: KnowledgeHubArticleCategoryInput, options?: Parameters<typeof customFetch>[1]): Promise<KnowledgeHubArticleCategory> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<KnowledgeHubArticleCategory>(getUpdateAdminKnowledgeHubArticleCategoryUrl(id),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(knowledgeHubArticleCategoryInput)
+  }
+);}
+
+
+
+
+
+export const getUpdateAdminKnowledgeHubArticleCategoryMutationKey = () => ['updateAdminKnowledgeHubArticleCategory'] as const;
+
+export const getUpdateAdminKnowledgeHubArticleCategoryMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAdminKnowledgeHubArticleCategory>>, TError,UpdateAdminKnowledgeHubArticleCategoryMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateAdminKnowledgeHubArticleCategory>>, TError,UpdateAdminKnowledgeHubArticleCategoryMutationVariables, TContext> => {
+
+const mutationKey = getUpdateAdminKnowledgeHubArticleCategoryMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateAdminKnowledgeHubArticleCategory>>, UpdateAdminKnowledgeHubArticleCategoryMutationVariables> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  updateAdminKnowledgeHubArticleCategory(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateAdminKnowledgeHubArticleCategoryMutationResult = NonNullable<Awaited<ReturnType<typeof updateAdminKnowledgeHubArticleCategory>>>
+    export type UpdateAdminKnowledgeHubArticleCategoryMutationBody = BodyType<KnowledgeHubArticleCategoryInput>
+    export type UpdateAdminKnowledgeHubArticleCategoryMutationError = ErrorType<ErrorResponse>
+    export type UpdateAdminKnowledgeHubArticleCategoryMutationVariables = {id: string;data: BodyType<KnowledgeHubArticleCategoryInput>}
+
+    /**
+ * @summary Update an Articles category
+ */
+export const useUpdateAdminKnowledgeHubArticleCategory = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAdminKnowledgeHubArticleCategory>>, TError,UpdateAdminKnowledgeHubArticleCategoryMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateAdminKnowledgeHubArticleCategory>>,
+        TError,
+        UpdateAdminKnowledgeHubArticleCategoryMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateAdminKnowledgeHubArticleCategoryMutationOptions(options));
+    }
+
+export const getDeleteAdminKnowledgeHubArticleCategoryUrl = (id: string,) => {
+
+
+
+
+  return `/api/admin/knowledge-hub/articles/categories/${id}`
+}
+
+/**
+ * @summary Delete an unused Articles category
+ */
+export const deleteAdminKnowledgeHubArticleCategory = async (id: string, options?: Parameters<typeof customFetch>[1]): Promise<void> => {
+
+  return customFetch<void>(getDeleteAdminKnowledgeHubArticleCategoryUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+
+export const getDeleteAdminKnowledgeHubArticleCategoryMutationKey = () => ['deleteAdminKnowledgeHubArticleCategory'] as const;
+
+export const getDeleteAdminKnowledgeHubArticleCategoryMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAdminKnowledgeHubArticleCategory>>, TError,DeleteAdminKnowledgeHubArticleCategoryMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteAdminKnowledgeHubArticleCategory>>, TError,DeleteAdminKnowledgeHubArticleCategoryMutationVariables, TContext> => {
+
+const mutationKey = getDeleteAdminKnowledgeHubArticleCategoryMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteAdminKnowledgeHubArticleCategory>>, DeleteAdminKnowledgeHubArticleCategoryMutationVariables> = (props) => {
+          const {id} = props ?? {};
+
+          return  deleteAdminKnowledgeHubArticleCategory(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteAdminKnowledgeHubArticleCategoryMutationResult = NonNullable<Awaited<ReturnType<typeof deleteAdminKnowledgeHubArticleCategory>>>
+
+    export type DeleteAdminKnowledgeHubArticleCategoryMutationError = ErrorType<ErrorResponse>
+    export type DeleteAdminKnowledgeHubArticleCategoryMutationVariables = {id: string}
+
+    /**
+ * @summary Delete an unused Articles category
+ */
+export const useDeleteAdminKnowledgeHubArticleCategory = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAdminKnowledgeHubArticleCategory>>, TError,DeleteAdminKnowledgeHubArticleCategoryMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof deleteAdminKnowledgeHubArticleCategory>>,
+        TError,
+        DeleteAdminKnowledgeHubArticleCategoryMutationVariables,
+        TContext
+      > => {
+      return useMutation(getDeleteAdminKnowledgeHubArticleCategoryMutationOptions(options));
+    }
+
+export const getUpdateAdminKnowledgeHubArticleUrl = (id: string,) => {
+
+
+
+
+  return `/api/admin/knowledge-hub/articles/${id}`
+}
+
+/**
+ * @summary Update an article
+ */
+export const updateAdminKnowledgeHubArticle = async (id: string,
+    knowledgeHubArticleInput: KnowledgeHubArticleInput, options?: Parameters<typeof customFetch>[1]): Promise<KnowledgeHubArticle> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<KnowledgeHubArticle>(getUpdateAdminKnowledgeHubArticleUrl(id),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(knowledgeHubArticleInput)
+  }
+);}
+
+
+
+
+
+export const getUpdateAdminKnowledgeHubArticleMutationKey = () => ['updateAdminKnowledgeHubArticle'] as const;
+
+export const getUpdateAdminKnowledgeHubArticleMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAdminKnowledgeHubArticle>>, TError,UpdateAdminKnowledgeHubArticleMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateAdminKnowledgeHubArticle>>, TError,UpdateAdminKnowledgeHubArticleMutationVariables, TContext> => {
+
+const mutationKey = getUpdateAdminKnowledgeHubArticleMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateAdminKnowledgeHubArticle>>, UpdateAdminKnowledgeHubArticleMutationVariables> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  updateAdminKnowledgeHubArticle(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateAdminKnowledgeHubArticleMutationResult = NonNullable<Awaited<ReturnType<typeof updateAdminKnowledgeHubArticle>>>
+    export type UpdateAdminKnowledgeHubArticleMutationBody = BodyType<KnowledgeHubArticleInput>
+    export type UpdateAdminKnowledgeHubArticleMutationError = ErrorType<ErrorResponse>
+    export type UpdateAdminKnowledgeHubArticleMutationVariables = {id: string;data: BodyType<KnowledgeHubArticleInput>}
+
+    /**
+ * @summary Update an article
+ */
+export const useUpdateAdminKnowledgeHubArticle = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAdminKnowledgeHubArticle>>, TError,UpdateAdminKnowledgeHubArticleMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateAdminKnowledgeHubArticle>>,
+        TError,
+        UpdateAdminKnowledgeHubArticleMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateAdminKnowledgeHubArticleMutationOptions(options));
+    }
+
+export const getDeleteAdminKnowledgeHubArticleUrl = (id: string,) => {
+
+
+
+
+  return `/api/admin/knowledge-hub/articles/${id}`
+}
+
+/**
+ * @summary Delete an article
+ */
+export const deleteAdminKnowledgeHubArticle = async (id: string, options?: Parameters<typeof customFetch>[1]): Promise<void> => {
+
+  return customFetch<void>(getDeleteAdminKnowledgeHubArticleUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+
+export const getDeleteAdminKnowledgeHubArticleMutationKey = () => ['deleteAdminKnowledgeHubArticle'] as const;
+
+export const getDeleteAdminKnowledgeHubArticleMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAdminKnowledgeHubArticle>>, TError,DeleteAdminKnowledgeHubArticleMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteAdminKnowledgeHubArticle>>, TError,DeleteAdminKnowledgeHubArticleMutationVariables, TContext> => {
+
+const mutationKey = getDeleteAdminKnowledgeHubArticleMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteAdminKnowledgeHubArticle>>, DeleteAdminKnowledgeHubArticleMutationVariables> = (props) => {
+          const {id} = props ?? {};
+
+          return  deleteAdminKnowledgeHubArticle(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteAdminKnowledgeHubArticleMutationResult = NonNullable<Awaited<ReturnType<typeof deleteAdminKnowledgeHubArticle>>>
+
+    export type DeleteAdminKnowledgeHubArticleMutationError = ErrorType<ErrorResponse>
+    export type DeleteAdminKnowledgeHubArticleMutationVariables = {id: string}
+
+    /**
+ * @summary Delete an article
+ */
+export const useDeleteAdminKnowledgeHubArticle = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAdminKnowledgeHubArticle>>, TError,DeleteAdminKnowledgeHubArticleMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof deleteAdminKnowledgeHubArticle>>,
+        TError,
+        DeleteAdminKnowledgeHubArticleMutationVariables,
+        TContext
+      > => {
+      return useMutation(getDeleteAdminKnowledgeHubArticleMutationOptions(options));
     }
 

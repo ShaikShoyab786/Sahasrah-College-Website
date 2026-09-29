@@ -31,6 +31,7 @@ function KnowledgeHubSkeleton() {
 
 function CategorySection({ category }: { category: typeof categories[number] }) {
   const Icon = category.icon;
+  const available = category.id === 'articles';
   const tint = category.tint === 'rose'
     ? 'bg-rose-50 border-rose-100 text-rose-700'
     : category.tint === 'violet'
@@ -48,11 +49,18 @@ function CategorySection({ category }: { category: typeof categories[number] }) 
         <div>
           <div className="flex flex-wrap items-center gap-3">
             <p className="text-xs font-bold uppercase tracking-[.18em] text-[hsl(var(--accent-foreground))]">Knowledge Hub</p>
-            <span className="rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--card))] px-3 py-1 text-[10px] font-bold uppercase tracking-[.12em] text-[hsl(var(--muted-foreground))]">Coming Soon</span>
+            {!available && <span className="rounded-full border border-[hsl(var(--border))] bg-[hsl(var(--card))] px-3 py-1 text-[10px] font-bold uppercase tracking-[.12em] text-[hsl(var(--muted-foreground))]">Coming Soon</span>}
           </div>
           <h2 className="mt-3 font-display text-4xl font-semibold tracking-[-.045em] text-[hsl(var(--primary))] sm:text-5xl">{category.title}</h2>
           <p className="mt-4 max-w-xl text-base leading-7 text-[hsl(var(--muted-foreground))]">{category.description}</p>
-          <p className="mt-5 flex items-center gap-2 text-sm font-semibold text-[hsl(var(--primary)/.7)]"><CheckCircle2 size={17} className="text-[hsl(var(--accent-foreground))]" /> This section is being prepared for students and families.</p>
+          {available ? (
+            <>
+              <p className="mt-5 flex items-center gap-2 text-sm font-semibold text-[hsl(var(--primary)/.7)]"><CheckCircle2 size={17} className="text-[hsl(var(--accent-foreground))]" /> Browse published articles for students and families.</p>
+              <Link href="/knowledge-hub/articles" className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-full bg-[hsl(var(--primary))] px-5 text-sm font-bold text-[hsl(var(--primary-foreground))] transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]" data-testid="link-knowledge-hub-articles-cta">Explore Articles <ArrowRight size={16} aria-hidden="true" /></Link>
+            </>
+          ) : (
+            <p className="mt-5 flex items-center gap-2 text-sm font-semibold text-[hsl(var(--primary)/.7)]"><CheckCircle2 size={17} className="text-[hsl(var(--accent-foreground))]" /> This section is being prepared for students and families.</p>
+          )}
         </div>
       </div>
     </section>
@@ -86,7 +94,7 @@ export default function KnowledgeHub() {
               <h1 className="mt-5 max-w-3xl font-display text-5xl font-semibold leading-[.96] tracking-[-.055em] sm:text-7xl" data-testid="text-knowledge-hub-title">{panel.title}</h1>
               <p className="mt-6 max-w-2xl text-base leading-7 text-white/72 sm:text-lg">{panel.description}</p>
               <div className="mt-8 flex flex-wrap gap-3">
-                {categories.map((category) => <Link key={category.id} href={`#knowledge-hub-${category.id}`} className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 text-sm font-bold transition hover:-translate-y-0.5 hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]" data-testid={`link-knowledge-hub-hero-${category.id}`}>{category.title}<ArrowRight size={15} aria-hidden="true" /></Link>)}
+                {categories.map((category) => <Link key={category.id} href={category.id === 'articles' ? '/knowledge-hub/articles' : `#knowledge-hub-${category.id}`} className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 text-sm font-bold transition hover:-translate-y-0.5 hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]" data-testid={`link-knowledge-hub-hero-${category.id}`}>{category.title}<ArrowRight size={15} aria-hidden="true" /></Link>)}
               </div>
             </div>
             <div className="relative min-h-64 overflow-hidden rounded-[1.75rem] border border-white/15 bg-white/10 p-6 shadow-2xl">
@@ -105,7 +113,7 @@ export default function KnowledgeHub() {
           <div className="mx-auto max-w-5xl">
             <p className="text-xs font-bold uppercase tracking-[.2em] text-[hsl(var(--accent-foreground))]">A clear path through the noise</p>
             <h2 className="mt-3 max-w-2xl font-display text-4xl font-semibold leading-tight tracking-[-.045em] text-[hsl(var(--primary))] sm:text-5xl">Four ways to make study feel more manageable.</h2>
-            <p className="mt-4 max-w-xl text-base leading-7 text-[hsl(var(--muted-foreground))]">Choose a category to see what is coming to the Hub. Every section will be shaped with the same practical, student-first care.</p>
+            <p className="mt-4 max-w-xl text-base leading-7 text-[hsl(var(--muted-foreground))]">Explore the Articles section for practical guidance. More Knowledge Hub sections will be added in later phases.</p>
           </div>
         </section>
         <div className="px-6 lg:px-10">{categories.map((category) => <CategorySection key={category.id} category={category} />)}</div>

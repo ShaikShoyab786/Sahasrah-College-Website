@@ -781,6 +781,56 @@ model KnowledgeHubMegaMenuSettings {
   updatedAt DateTime @updatedAt
 }
 
+model KnowledgeHubArticlesPageSettings {
+  id                String                @id @default("singleton")
+  content           Json
+  featuredArticleId String?               @unique
+  featuredArticle   KnowledgeHubArticle?   @relation(fields: [featuredArticleId], references: [id], onDelete: SetNull)
+  createdAt         DateTime              @default(now())
+  updatedAt         DateTime              @updatedAt
+}
+
+model KnowledgeHubArticlesSetup {
+  id                       String    @id @default("singleton")
+  defaultCategoriesSeededAt DateTime?
+}
+
+model KnowledgeHubArticleCategory {
+  id           String               @id @default(cuid())
+  name         String
+  slug         String               @unique
+  icon         String               @default("file-text")
+  displayOrder Int                  @default(1)
+  isVisible    Boolean              @default(true)
+  createdAt    DateTime             @default(now())
+  updatedAt    DateTime             @updatedAt
+  articles     KnowledgeHubArticle[]
+
+  @@index([isVisible, displayOrder])
+}
+
+model KnowledgeHubArticle {
+  id                  String                       @id @default(cuid())
+  title               String
+  slug                String                       @unique
+  categoryId          String
+  category            KnowledgeHubArticleCategory  @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  excerpt             String
+  body                String
+  coverImageUrl       String?
+  coverImageAltText   String
+  author              String
+  readTimeMinutes     Int                          @default(1)
+  status              String                       @default("draft")
+  publishedAt         DateTime?
+  createdAt           DateTime                     @default(now())
+  updatedAt           DateTime                     @updatedAt
+  featuredOnPage      KnowledgeHubArticlesPageSettings?
+
+  @@index([status, publishedAt])
+  @@index([categoryId, status, publishedAt])
+}
+
 model FacultyImportState {
   id          String   @id @default("singleton")
   completedAt DateTime @default(now())
