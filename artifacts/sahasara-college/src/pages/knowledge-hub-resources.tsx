@@ -13,6 +13,7 @@ import { PublicHeader } from '@/components/public-header';
 import { createPublicThemeStyle, DEFAULT_ACCENT_COLOR, DEFAULT_PRIMARY_COLOR, DEFAULT_SURFACE_COLOR } from '@/lib/public-theme';
 
 const batchSize = 9;
+const resourceEyebrowClass = 'text-xs font-bold uppercase tracking-[.2em] text-[hsl(var(--primary))]';
 const resourceTypeLabels: Record<KnowledgeHubResourceType, string> = {
   notes: 'Notes',
   'previous-year-question-papers': 'Previous-year papers',
@@ -79,7 +80,7 @@ function ResourceCard({ resource, featured = false }: { resource: KnowledgeHubRe
         <span className="absolute left-4 top-4 rounded-full bg-[hsl(var(--accent))] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[.12em] text-[hsl(var(--accent-foreground))]">{resourceTypeLabels[resource.resourceType]}</span>
       </div>
       <div className="flex flex-1 flex-col p-5 sm:p-6">
-        <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[.15em] text-[hsl(var(--accent-foreground))]">
+        <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[.15em] text-[hsl(var(--primary))]">
           <span>{resource.categoryName}</span><span className="text-[hsl(var(--border))]">/</span><span>{dateLabel(resource.publishedAt)}</span>
         </div>
         <h3 className={`${featured ? 'text-2xl sm:text-3xl' : 'text-xl'} mt-3 font-display font-semibold leading-[1.08] tracking-[-.035em] text-[hsl(var(--primary))]`}>{resource.title}</h3>
@@ -172,7 +173,7 @@ export default function KnowledgeHubResources() {
           <div className="absolute -right-28 -top-40 -z-10 h-[34rem] w-[34rem] rounded-full border border-white/10" aria-hidden="true" />
           <div className="relative mx-auto max-w-7xl">
             <div className="max-w-3xl py-9 sm:py-16">
-              <p className="text-xs font-bold uppercase tracking-[.22em] text-[hsl(var(--accent))]" data-testid="text-resource-hub-hero-eyebrow">{settings.heroEyebrow}</p>
+              <p className="text-xs font-bold uppercase tracking-[.2em] text-white" data-testid="text-resource-hub-hero-eyebrow">{settings.heroEyebrow}</p>
               <h1 className="mt-5 max-w-3xl font-display text-5xl font-semibold leading-[.96] tracking-[-.065em] text-white sm:text-7xl" data-testid="text-resource-hub-hero-heading">{settings.heroHeading}</h1>
               <p className="mt-6 max-w-2xl text-base leading-7 text-white/72 sm:text-lg">{settings.heroDescription}</p>
               <a href={settings.heroCtaHref} className="mt-8 inline-flex min-h-12 items-center gap-3 rounded-xl bg-[hsl(var(--accent))] px-5 text-sm font-bold text-[hsl(var(--accent-foreground))] transition hover:-translate-y-0.5" data-testid="link-resource-hub-hero-cta">{settings.heroCtaLabel}<ArrowRight size={17} /></a>
@@ -184,7 +185,7 @@ export default function KnowledgeHubResources() {
           <section className="px-6 py-14 sm:py-20 lg:px-10" data-testid="section-resource-hub-featured">
             <div className="mx-auto max-w-7xl">
               <div className="mb-7 flex items-end justify-between gap-4">
-                <div><p className="text-xs font-bold uppercase tracking-[.2em] text-[hsl(var(--accent-foreground))]">{settings.featuredEyebrow}</p><h2 className="mt-2 font-display text-3xl font-semibold tracking-[-.045em] text-[hsl(var(--primary))] sm:text-4xl">Start with a useful resource.</h2></div>
+                <div><p className={resourceEyebrowClass}>{settings.featuredEyebrow}</p><h2 className="mt-2 font-display text-3xl font-semibold tracking-[-.045em] text-[hsl(var(--primary))] sm:text-4xl">Start with a useful resource.</h2></div>
                 <span className="hidden items-center gap-2 text-xs font-bold uppercase tracking-[.15em] text-[hsl(var(--muted-foreground))] sm:flex"><BookOpen size={16} /> {page.publishedResourceCount} published resources</span>
               </div>
               <ResourceCard resource={page.featuredResource} featured />
@@ -195,7 +196,7 @@ export default function KnowledgeHubResources() {
         <section id="resource-library" className="bg-[hsl(var(--secondary))] px-6 py-14 sm:py-20 lg:px-10" data-testid="section-resource-library">
           <div className="mx-auto max-w-7xl">
             <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
-              <div><p className="text-xs font-bold uppercase tracking-[.2em] text-[hsl(var(--accent-foreground))]">{settings.libraryEyebrow}</p><h2 className="mt-3 max-w-3xl font-display text-4xl font-semibold leading-tight tracking-[-.05em] text-[hsl(var(--primary))] sm:text-5xl" data-testid="text-resource-library-heading">{settings.libraryHeading}</h2><p className="mt-4 max-w-2xl text-sm leading-7 text-[hsl(var(--muted-foreground))]">{settings.libraryDescription}</p></div>
+              <div><p className={resourceEyebrowClass}>{settings.libraryEyebrow}</p><h2 className="mt-3 max-w-3xl font-display text-4xl font-semibold leading-tight tracking-[-.05em] text-[hsl(var(--primary))] sm:text-5xl" data-testid="text-resource-library-heading">{settings.libraryHeading}</h2><p className="mt-4 max-w-2xl text-sm leading-7 text-[hsl(var(--muted-foreground))]">{settings.libraryDescription}</p></div>
               <div className="flex items-center gap-2 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] px-4 py-3 text-sm font-semibold text-[hsl(var(--muted-foreground))]" data-testid="text-resource-count"><BookOpen size={16} /> {page.publishedResourceCount} published</div>
             </div>
             <div className="mt-9 rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-3 shadow-[var(--shadow-xs)]">
