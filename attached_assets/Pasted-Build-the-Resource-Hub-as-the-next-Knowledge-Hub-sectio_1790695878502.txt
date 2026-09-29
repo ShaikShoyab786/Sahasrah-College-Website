@@ -1,0 +1,23 @@
+Build the Resource Hub as the next Knowledge Hub section. There are no reference images for this page. First inspect the completed Article Hub and Video Hub, then use their established layout, admin workflow, components, and visual style as a guide. Create a Resource Hub experience that feels consistent with them, without copying their pages or changing them.
+
+Admin dashboard
+Under Pages → Knowledge Hub, add Resource Hub immediately after Video Hub. Keep the existing Knowledge Hub Main Page, Articles, and Video Hub items and functionality unchanged.
+
+Admins should be able to manage the Resource Hub’s public content, including:
+
+Hero eyebrow, heading, description, CTA, and background image.
+A featured resource and its display order.
+Resource records: title, description, resource type, subject, exam, class/level, academic year, language, tags, and published/draft status.
+The resource’s PDF file and an optional card/cover image.
+Resource categories and their display order.
+Support common resource types such as notes, previous-year question papers, sample papers, worksheets, and revision guides. Admins need to add, edit, publish/unpublish, feature, reorder, and delete resources, with a confirmation before deletion.
+
+Public page
+Build a professional, responsive page with a clear hero, a featured resource, and a searchable resource library. Provide useful filters such as resource type, subject, exam, and year; sorting; and Load More / View Less behavior consistent with the Article Hub.
+
+Resource cards should show useful metadata and provide clear View PDF and/or Download PDF actions. Use the project’s existing file storage and PDF viewing/download patterns. Only published resources should appear publicly. Search and filters must use the saved resource data, and each resource should appear only once.
+
+Design and implementation
+Use the existing site’s visual language, but don’t make the page blue everywhere. Balance deep navy text with warm neutral surfaces and restrained red or other accent colors. Check text, badges, buttons, and muted labels for strong contrast and readability across desktop and mobile.
+
+I’ll provide the background and cover images through admin uploads. Don’t generate or source images, and don’t show fake resources or “Coming Soon” placeholders. Follow the project’s existing admin permissions, database, upload, and validation patterns; persist real content rather than using mock data. Verify that uploads, edits, publishing, filtering, PDF actions, and empty states work before finishing.
