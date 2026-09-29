@@ -1,4 +1,4 @@
-import { type ReactNode } from 'react';
+import { type ReactNode, useLayoutEffect, useRef } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ErrorBoundary } from '@/components/error-boundary';
 import { Toaster } from '@/components/ui/toaster';
@@ -209,6 +209,30 @@ function Router() {
   );
 }
 
+function RouteScrollManager() {
+  const [location] = useLocation();
+  const previousLocation = useRef(location);
+
+  useLayoutEffect(() => {
+    const previousRestoration = window.history.scrollRestoration;
+    window.history.scrollRestoration = 'manual';
+    return () => {
+      window.history.scrollRestoration = previousRestoration;
+    };
+  }, []);
+
+  useLayoutEffect(() => {
+    if (previousLocation.current === location) return;
+    previousLocation.current = location;
+
+    // Keep explicit destination anchors; reset only page-to-page navigation.
+    if (window.location.hash) return;
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, [location]);
+
+  return null;
+}
+
 function RoutedErrorBoundary({ children }: { children: ReactNode }) {
   const [location] = useLocation();
   return <ErrorBoundary resetKey={location}>{children}</ErrorBoundary>;
@@ -219,6 +243,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
+          <RouteScrollManager />
           <Router />
           <PublicVisitIntroGate />
           <CallbackPopupGate />
