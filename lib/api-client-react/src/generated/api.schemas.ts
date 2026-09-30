@@ -3190,6 +3190,149 @@ export interface KnowledgeHubExamUpdatesPageSettings {
 
 export type KnowledgeHubExamUpdatesPageInput = KnowledgeHubExamUpdatesPageSettings;
 
+export type KnowledgeHubExamUpdatesImportantDatesExam = typeof KnowledgeHubExamUpdatesImportantDatesExam[keyof typeof KnowledgeHubExamUpdatesImportantDatesExam];
+
+
+export const KnowledgeHubExamUpdatesImportantDatesExam = {
+  JEE: 'JEE',
+  NEET: 'NEET',
+  Intermediate: 'Intermediate',
+  EAMCET: 'EAMCET',
+  Other_Exams: 'Other Exams',
+} as const;
+
+export type KnowledgeHubExamUpdatesImportantDatesSettingsExamLabels = {
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  JEE: string;
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  NEET: string;
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  Intermediate: string;
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  EAMCET: string;
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  'Other Exams': string;
+};
+
+export interface KnowledgeHubExamUpdatesImportantDatesSettings {
+  /**
+     * @minLength 1
+     * @maxLength 180
+     */
+  heading: string;
+  /** @maxLength 1000 */
+  description: string;
+  visible: boolean;
+  examLabels: KnowledgeHubExamUpdatesImportantDatesSettingsExamLabels;
+}
+
+export type KnowledgeHubExamUpdatesImportantDatesSettingsInput = KnowledgeHubExamUpdatesImportantDatesSettings;
+
+export type KnowledgeHubExamUpdatesImportantDatesMilestoneInputEventStatusOverride = typeof KnowledgeHubExamUpdatesImportantDatesMilestoneInputEventStatusOverride[keyof typeof KnowledgeHubExamUpdatesImportantDatesMilestoneInputEventStatusOverride];
+
+
+export const KnowledgeHubExamUpdatesImportantDatesMilestoneInputEventStatusOverride = {
+  automatic: 'automatic',
+  postponed: 'postponed',
+  cancelled: 'cancelled',
+} as const;
+
+export type KnowledgeHubExamUpdatesImportantDatesMilestoneInputStatus = typeof KnowledgeHubExamUpdatesImportantDatesMilestoneInputStatus[keyof typeof KnowledgeHubExamUpdatesImportantDatesMilestoneInputStatus];
+
+
+export const KnowledgeHubExamUpdatesImportantDatesMilestoneInputStatus = {
+  draft: 'draft',
+  published: 'published',
+  archived: 'archived',
+} as const;
+
+export interface KnowledgeHubExamUpdatesImportantDatesMilestoneInput {
+  exam: KnowledgeHubExamUpdatesImportantDatesExam;
+  /**
+     * @minLength 1
+     * @maxLength 40
+     */
+  cycleYear: string;
+  /**
+     * @minLength 1
+     * @maxLength 240
+     */
+  title: string;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  milestoneType: string;
+  /**
+     * @nullable
+     * @pattern ^\d{4}-\d{2}-\d{2}$
+     */
+  startDate?: string | null;
+  /**
+     * @nullable
+     * @pattern ^\d{4}-\d{2}-\d{2}$
+     */
+  endDate?: string | null;
+  /** @maxLength 2000 */
+  description: string;
+  /**
+     * @maxLength 1000
+     * @nullable
+     */
+  officialUrl?: string | null;
+  eventStatusOverride: KnowledgeHubExamUpdatesImportantDatesMilestoneInputEventStatusOverride;
+  status: KnowledgeHubExamUpdatesImportantDatesMilestoneInputStatus;
+  /**
+     * @minimum 1
+     * @maximum 10000
+     */
+  displayOrder: number;
+  isDemo: boolean;
+}
+
+export type KnowledgeHubExamUpdatesImportantDatesMilestone = KnowledgeHubExamUpdatesImportantDatesMilestoneInput & ({
+  id: string;
+  /**
+     * @nullable
+     * @pattern ^\d{4}-\d{2}-\d{2}$
+     */
+  startDate: string | null;
+  /**
+     * @nullable
+     * @pattern ^\d{4}-\d{2}-\d{2}$
+     */
+  endDate: string | null;
+  /**
+     * @maxLength 1000
+     * @nullable
+     */
+  officialUrl: string | null;
+  createdAt: string;
+  updatedAt: string;
+});
+
+export interface KnowledgeHubExamUpdatesImportantDates {
+  settings: KnowledgeHubExamUpdatesImportantDatesSettings;
+  milestones: KnowledgeHubExamUpdatesImportantDatesMilestone[];
+}
+
+export type AdminKnowledgeHubExamUpdatesImportantDates = KnowledgeHubExamUpdatesImportantDates;
+
 export type KnowledgeHubExamUpdateInputStatus = typeof KnowledgeHubExamUpdateInputStatus[keyof typeof KnowledgeHubExamUpdateInputStatus];
 
 

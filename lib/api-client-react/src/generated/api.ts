@@ -119,6 +119,11 @@ import type {
   KnowledgeHubArticlesPageInput,
   KnowledgeHubExamUpdate,
   KnowledgeHubExamUpdateInput,
+  KnowledgeHubExamUpdatesImportantDates,
+  KnowledgeHubExamUpdatesImportantDatesMilestone,
+  KnowledgeHubExamUpdatesImportantDatesMilestoneInput,
+  KnowledgeHubExamUpdatesImportantDatesSettings,
+  KnowledgeHubExamUpdatesImportantDatesSettingsInput,
   KnowledgeHubExamUpdatesList,
   KnowledgeHubExamUpdatesPageInput,
   KnowledgeHubExamUpdatesPageSettings,
@@ -9564,6 +9569,83 @@ export function useGetKnowledgeHubExamUpdates<TData = Awaited<ReturnType<typeof 
 
 
 
+export const getGetKnowledgeHubExamUpdatesImportantDatesUrl = () => {
+
+
+
+
+  return `/api/knowledge-hub/exam-updates/important-dates`
+}
+
+/**
+ * @summary Read published exam milestones and Important Dates settings
+ */
+export const getKnowledgeHubExamUpdatesImportantDates = async ( options?: Parameters<typeof customFetch>[1]): Promise<KnowledgeHubExamUpdatesImportantDates> => {
+
+  return customFetch<KnowledgeHubExamUpdatesImportantDates>(getGetKnowledgeHubExamUpdatesImportantDatesUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetKnowledgeHubExamUpdatesImportantDatesQueryKey = () => {
+    return [
+    `/api/knowledge-hub/exam-updates/important-dates`
+    ] as const;
+    }
+
+
+export const getGetKnowledgeHubExamUpdatesImportantDatesQueryOptions = <TData = Awaited<ReturnType<typeof getKnowledgeHubExamUpdatesImportantDates>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getKnowledgeHubExamUpdatesImportantDates>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetKnowledgeHubExamUpdatesImportantDatesQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getKnowledgeHubExamUpdatesImportantDates>>> = ({ signal }) => getKnowledgeHubExamUpdatesImportantDates({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getKnowledgeHubExamUpdatesImportantDates>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetKnowledgeHubExamUpdatesImportantDatesQueryResult = NonNullable<Awaited<ReturnType<typeof getKnowledgeHubExamUpdatesImportantDates>>>
+export type GetKnowledgeHubExamUpdatesImportantDatesQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Read published exam milestones and Important Dates settings
+ */
+
+export function useGetKnowledgeHubExamUpdatesImportantDates<TData = Awaited<ReturnType<typeof getKnowledgeHubExamUpdatesImportantDates>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getKnowledgeHubExamUpdatesImportantDates>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetKnowledgeHubExamUpdatesImportantDatesQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
 export const getGetAdminKnowledgeHubExamUpdatesUrl = () => {
 
 
@@ -9727,6 +9809,422 @@ export const useCreateAdminKnowledgeHubExamUpdate = <TError = ErrorType<ErrorRes
         TContext
       > => {
       return useMutation(getCreateAdminKnowledgeHubExamUpdateMutationOptions(options));
+    }
+
+export const getGetAdminKnowledgeHubExamUpdatesImportantDatesUrl = () => {
+
+
+
+
+  return `/api/admin/knowledge-hub/exam-updates/important-dates`
+}
+
+/**
+ * @summary Read Important Dates settings and all milestones
+ */
+export const getAdminKnowledgeHubExamUpdatesImportantDates = async ( options?: Parameters<typeof customFetch>[1]): Promise<KnowledgeHubExamUpdatesImportantDates> => {
+
+  return customFetch<KnowledgeHubExamUpdatesImportantDates>(getGetAdminKnowledgeHubExamUpdatesImportantDatesUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAdminKnowledgeHubExamUpdatesImportantDatesQueryKey = () => {
+    return [
+    `/api/admin/knowledge-hub/exam-updates/important-dates`
+    ] as const;
+    }
+
+
+export const getGetAdminKnowledgeHubExamUpdatesImportantDatesQueryOptions = <TData = Awaited<ReturnType<typeof getAdminKnowledgeHubExamUpdatesImportantDates>>, TError = ErrorType<ErrorResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminKnowledgeHubExamUpdatesImportantDates>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAdminKnowledgeHubExamUpdatesImportantDatesQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdminKnowledgeHubExamUpdatesImportantDates>>> = ({ signal }) => getAdminKnowledgeHubExamUpdatesImportantDates({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAdminKnowledgeHubExamUpdatesImportantDates>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetAdminKnowledgeHubExamUpdatesImportantDatesQueryResult = NonNullable<Awaited<ReturnType<typeof getAdminKnowledgeHubExamUpdatesImportantDates>>>
+export type GetAdminKnowledgeHubExamUpdatesImportantDatesQueryError = ErrorType<ErrorResponse>
+
+
+/**
+ * @summary Read Important Dates settings and all milestones
+ */
+
+export function useGetAdminKnowledgeHubExamUpdatesImportantDates<TData = Awaited<ReturnType<typeof getAdminKnowledgeHubExamUpdatesImportantDates>>, TError = ErrorType<ErrorResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminKnowledgeHubExamUpdatesImportantDates>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetAdminKnowledgeHubExamUpdatesImportantDatesQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getCreateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneUrl = () => {
+
+
+
+
+  return `/api/admin/knowledge-hub/exam-updates/important-dates`
+}
+
+/**
+ * @summary Create an Important Dates milestone
+ */
+export const createAdminKnowledgeHubExamUpdatesImportantDatesMilestone = async (knowledgeHubExamUpdatesImportantDatesMilestoneInput: KnowledgeHubExamUpdatesImportantDatesMilestoneInput, options?: Parameters<typeof customFetch>[1]): Promise<KnowledgeHubExamUpdatesImportantDatesMilestone> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<KnowledgeHubExamUpdatesImportantDatesMilestone>(getCreateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(knowledgeHubExamUpdatesImportantDatesMilestoneInput)
+  }
+);}
+
+
+
+
+
+export const getCreateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneMutationKey = () => ['createAdminKnowledgeHubExamUpdatesImportantDatesMilestone'] as const;
+
+export const getCreateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createAdminKnowledgeHubExamUpdatesImportantDatesMilestone>>, TError,CreateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createAdminKnowledgeHubExamUpdatesImportantDatesMilestone>>, TError,CreateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneMutationVariables, TContext> => {
+
+const mutationKey = getCreateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createAdminKnowledgeHubExamUpdatesImportantDatesMilestone>>, CreateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  createAdminKnowledgeHubExamUpdatesImportantDatesMilestone(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneMutationResult = NonNullable<Awaited<ReturnType<typeof createAdminKnowledgeHubExamUpdatesImportantDatesMilestone>>>
+    export type CreateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneMutationBody = BodyType<KnowledgeHubExamUpdatesImportantDatesMilestoneInput>
+    export type CreateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneMutationError = ErrorType<ErrorResponse>
+    export type CreateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneMutationVariables = {data: BodyType<KnowledgeHubExamUpdatesImportantDatesMilestoneInput>}
+
+    /**
+ * @summary Create an Important Dates milestone
+ */
+export const useCreateAdminKnowledgeHubExamUpdatesImportantDatesMilestone = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createAdminKnowledgeHubExamUpdatesImportantDatesMilestone>>, TError,CreateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createAdminKnowledgeHubExamUpdatesImportantDatesMilestone>>,
+        TError,
+        CreateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneMutationVariables,
+        TContext
+      > => {
+      return useMutation(getCreateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneMutationOptions(options));
+    }
+
+export const getUpdateAdminKnowledgeHubExamUpdatesImportantDatesSettingsUrl = () => {
+
+
+
+
+  return `/api/admin/knowledge-hub/exam-updates/important-dates/settings`
+}
+
+/**
+ * @summary Update Important Dates section settings and exam labels
+ */
+export const updateAdminKnowledgeHubExamUpdatesImportantDatesSettings = async (knowledgeHubExamUpdatesImportantDatesSettingsInput: KnowledgeHubExamUpdatesImportantDatesSettingsInput, options?: Parameters<typeof customFetch>[1]): Promise<KnowledgeHubExamUpdatesImportantDatesSettings> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<KnowledgeHubExamUpdatesImportantDatesSettings>(getUpdateAdminKnowledgeHubExamUpdatesImportantDatesSettingsUrl(),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(knowledgeHubExamUpdatesImportantDatesSettingsInput)
+  }
+);}
+
+
+
+
+
+export const getUpdateAdminKnowledgeHubExamUpdatesImportantDatesSettingsMutationKey = () => ['updateAdminKnowledgeHubExamUpdatesImportantDatesSettings'] as const;
+
+export const getUpdateAdminKnowledgeHubExamUpdatesImportantDatesSettingsMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAdminKnowledgeHubExamUpdatesImportantDatesSettings>>, TError,UpdateAdminKnowledgeHubExamUpdatesImportantDatesSettingsMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateAdminKnowledgeHubExamUpdatesImportantDatesSettings>>, TError,UpdateAdminKnowledgeHubExamUpdatesImportantDatesSettingsMutationVariables, TContext> => {
+
+const mutationKey = getUpdateAdminKnowledgeHubExamUpdatesImportantDatesSettingsMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateAdminKnowledgeHubExamUpdatesImportantDatesSettings>>, UpdateAdminKnowledgeHubExamUpdatesImportantDatesSettingsMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  updateAdminKnowledgeHubExamUpdatesImportantDatesSettings(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateAdminKnowledgeHubExamUpdatesImportantDatesSettingsMutationResult = NonNullable<Awaited<ReturnType<typeof updateAdminKnowledgeHubExamUpdatesImportantDatesSettings>>>
+    export type UpdateAdminKnowledgeHubExamUpdatesImportantDatesSettingsMutationBody = BodyType<KnowledgeHubExamUpdatesImportantDatesSettingsInput>
+    export type UpdateAdminKnowledgeHubExamUpdatesImportantDatesSettingsMutationError = ErrorType<ErrorResponse>
+    export type UpdateAdminKnowledgeHubExamUpdatesImportantDatesSettingsMutationVariables = {data: BodyType<KnowledgeHubExamUpdatesImportantDatesSettingsInput>}
+
+    /**
+ * @summary Update Important Dates section settings and exam labels
+ */
+export const useUpdateAdminKnowledgeHubExamUpdatesImportantDatesSettings = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAdminKnowledgeHubExamUpdatesImportantDatesSettings>>, TError,UpdateAdminKnowledgeHubExamUpdatesImportantDatesSettingsMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateAdminKnowledgeHubExamUpdatesImportantDatesSettings>>,
+        TError,
+        UpdateAdminKnowledgeHubExamUpdatesImportantDatesSettingsMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateAdminKnowledgeHubExamUpdatesImportantDatesSettingsMutationOptions(options));
+    }
+
+export const getUpdateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneUrl = (id: string,) => {
+
+
+
+
+  return `/api/admin/knowledge-hub/exam-updates/important-dates/${id}`
+}
+
+/**
+ * @summary Update an Important Dates milestone
+ */
+export const updateAdminKnowledgeHubExamUpdatesImportantDatesMilestone = async (id: string,
+    knowledgeHubExamUpdatesImportantDatesMilestoneInput: KnowledgeHubExamUpdatesImportantDatesMilestoneInput, options?: Parameters<typeof customFetch>[1]): Promise<KnowledgeHubExamUpdatesImportantDatesMilestone> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<KnowledgeHubExamUpdatesImportantDatesMilestone>(getUpdateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneUrl(id),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(knowledgeHubExamUpdatesImportantDatesMilestoneInput)
+  }
+);}
+
+
+
+
+
+export const getUpdateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneMutationKey = () => ['updateAdminKnowledgeHubExamUpdatesImportantDatesMilestone'] as const;
+
+export const getUpdateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAdminKnowledgeHubExamUpdatesImportantDatesMilestone>>, TError,UpdateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateAdminKnowledgeHubExamUpdatesImportantDatesMilestone>>, TError,UpdateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneMutationVariables, TContext> => {
+
+const mutationKey = getUpdateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateAdminKnowledgeHubExamUpdatesImportantDatesMilestone>>, UpdateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneMutationVariables> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  updateAdminKnowledgeHubExamUpdatesImportantDatesMilestone(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneMutationResult = NonNullable<Awaited<ReturnType<typeof updateAdminKnowledgeHubExamUpdatesImportantDatesMilestone>>>
+    export type UpdateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneMutationBody = BodyType<KnowledgeHubExamUpdatesImportantDatesMilestoneInput>
+    export type UpdateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneMutationError = ErrorType<ErrorResponse>
+    export type UpdateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneMutationVariables = {id: string;data: BodyType<KnowledgeHubExamUpdatesImportantDatesMilestoneInput>}
+
+    /**
+ * @summary Update an Important Dates milestone
+ */
+export const useUpdateAdminKnowledgeHubExamUpdatesImportantDatesMilestone = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAdminKnowledgeHubExamUpdatesImportantDatesMilestone>>, TError,UpdateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateAdminKnowledgeHubExamUpdatesImportantDatesMilestone>>,
+        TError,
+        UpdateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneMutationOptions(options));
+    }
+
+export const getDeleteAdminKnowledgeHubExamUpdatesImportantDatesMilestoneUrl = (id: string,) => {
+
+
+
+
+  return `/api/admin/knowledge-hub/exam-updates/important-dates/${id}`
+}
+
+/**
+ * @summary Delete an Important Dates milestone
+ */
+export const deleteAdminKnowledgeHubExamUpdatesImportantDatesMilestone = async (id: string, options?: Parameters<typeof customFetch>[1]): Promise<void> => {
+
+  return customFetch<void>(getDeleteAdminKnowledgeHubExamUpdatesImportantDatesMilestoneUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+
+export const getDeleteAdminKnowledgeHubExamUpdatesImportantDatesMilestoneMutationKey = () => ['deleteAdminKnowledgeHubExamUpdatesImportantDatesMilestone'] as const;
+
+export const getDeleteAdminKnowledgeHubExamUpdatesImportantDatesMilestoneMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAdminKnowledgeHubExamUpdatesImportantDatesMilestone>>, TError,DeleteAdminKnowledgeHubExamUpdatesImportantDatesMilestoneMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteAdminKnowledgeHubExamUpdatesImportantDatesMilestone>>, TError,DeleteAdminKnowledgeHubExamUpdatesImportantDatesMilestoneMutationVariables, TContext> => {
+
+const mutationKey = getDeleteAdminKnowledgeHubExamUpdatesImportantDatesMilestoneMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteAdminKnowledgeHubExamUpdatesImportantDatesMilestone>>, DeleteAdminKnowledgeHubExamUpdatesImportantDatesMilestoneMutationVariables> = (props) => {
+          const {id} = props ?? {};
+
+          return  deleteAdminKnowledgeHubExamUpdatesImportantDatesMilestone(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteAdminKnowledgeHubExamUpdatesImportantDatesMilestoneMutationResult = NonNullable<Awaited<ReturnType<typeof deleteAdminKnowledgeHubExamUpdatesImportantDatesMilestone>>>
+
+    export type DeleteAdminKnowledgeHubExamUpdatesImportantDatesMilestoneMutationError = ErrorType<ErrorResponse>
+    export type DeleteAdminKnowledgeHubExamUpdatesImportantDatesMilestoneMutationVariables = {id: string}
+
+    /**
+ * @summary Delete an Important Dates milestone
+ */
+export const useDeleteAdminKnowledgeHubExamUpdatesImportantDatesMilestone = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAdminKnowledgeHubExamUpdatesImportantDatesMilestone>>, TError,DeleteAdminKnowledgeHubExamUpdatesImportantDatesMilestoneMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof deleteAdminKnowledgeHubExamUpdatesImportantDatesMilestone>>,
+        TError,
+        DeleteAdminKnowledgeHubExamUpdatesImportantDatesMilestoneMutationVariables,
+        TContext
+      > => {
+      return useMutation(getDeleteAdminKnowledgeHubExamUpdatesImportantDatesMilestoneMutationOptions(options));
     }
 
 export const getUpdateAdminKnowledgeHubExamUpdatesPageUrl = () => {

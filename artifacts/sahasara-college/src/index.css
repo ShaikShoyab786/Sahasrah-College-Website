@@ -539,6 +539,22 @@ body { min-width: 320px; }
 .scrollbar-none::-webkit-scrollbar {
   display: none;
 }
+.important-dates-rail {
+  background: linear-gradient(90deg, hsl(var(--accent) / .55), hsl(var(--border)));
+}
+.important-dates-node {
+  transition: transform .25s cubic-bezier(.22,1,.36,1), background-color .25s ease;
+}
+.important-dates-item:hover .important-dates-node,
+.important-dates-item:focus-within .important-dates-node {
+  transform: translateY(-3px);
+  background: hsl(var(--accent) / .2);
+}
+@media (prefers-reduced-motion: reduce) {
+  .important-dates-node { transition: none; }
+  .important-dates-item:hover .important-dates-node,
+  .important-dates-item:focus-within .important-dates-node { transform: none; }
+}
 @media (prefers-reduced-motion: reduce) {
   .home-reveal-card,
   .home-topic-card,

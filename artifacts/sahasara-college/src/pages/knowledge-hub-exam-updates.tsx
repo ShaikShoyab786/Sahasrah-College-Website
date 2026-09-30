@@ -9,6 +9,7 @@ import {
 } from '@workspace/api-client-react';
 import { PublicFooter } from '@/components/public-footer';
 import { PublicHeader } from '@/components/public-header';
+import { ImportantDates } from '@/components/important-dates';
 import { createPublicThemeStyle, DEFAULT_ACCENT_COLOR, DEFAULT_PRIMARY_COLOR, DEFAULT_SURFACE_COLOR } from '@/lib/public-theme';
 
 const fallbackSite = {
@@ -247,6 +248,7 @@ export default function KnowledgeHubExamUpdates() {
             )}
           </div>
         </section>
+        <ImportantDates />
       </main>
       <PublicFooter settings={{ collegeName: site.collegeName, tagline: site.tagline, logoUrl: site.logoUrl, email: site.email, phone: site.phone, footerText: site.footerText || fallbackSite.footerText }} />
     </div>

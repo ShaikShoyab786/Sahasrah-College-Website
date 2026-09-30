@@ -17,6 +17,10 @@ import {
 import { DEFAULT_KNOWLEDGE_HUB_VIDEO_PAGE } from "./knowledge-hub-video-content";
 import { DEFAULT_KNOWLEDGE_HUB_RESOURCE_HUB_PAGE } from "./knowledge-hub-resource-content";
 import { DEFAULT_KNOWLEDGE_HUB_EXAM_UPDATES_PAGE } from "./knowledge-hub-exam-updates-content";
+import {
+  DEFAULT_KNOWLEDGE_HUB_IMPORTANT_DATES_SETTINGS,
+  INITIAL_KNOWLEDGE_HUB_IMPORTANT_DATES_MILESTONES,
+} from "./knowledge-hub-important-dates-content";
 
 const LEGACY_COURSE_ACTIONS = [
   { slug: "mpc", primaryActionLabel: "Explore admissions", secondaryActionLabel: "Talk to a counsellor" },
@@ -306,6 +310,100 @@ async function ensureKnowledgeHubExamUpdatesSchema() {
   }
 }
 
+async function ensureKnowledgeHubImportantDatesSchema() {
+  await prisma.$executeRawUnsafe(`
+    CREATE TABLE IF NOT EXISTS "KnowledgeHubExamUpdatesImportantDatesSettings" (
+      "id" TEXT NOT NULL DEFAULT 'singleton',
+      "content" JSONB NOT NULL,
+      "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      CONSTRAINT "KnowledgeHubExamUpdatesImportantDatesSettings_pkey" PRIMARY KEY ("id")
+    )
+  `);
+  await prisma.$executeRawUnsafe(`
+    CREATE TABLE IF NOT EXISTS "KnowledgeHubExamUpdatesImportantDateMilestone" (
+      "id" TEXT NOT NULL,
+      "exam" TEXT NOT NULL,
+      "cycleYear" TEXT NOT NULL,
+      "title" TEXT NOT NULL,
+      "milestoneType" TEXT NOT NULL,
+      "startDate" DATE,
+      "endDate" DATE,
+      "description" TEXT NOT NULL DEFAULT '',
+      "officialUrl" TEXT,
+      "eventStatusOverride" TEXT NOT NULL DEFAULT 'automatic',
+      "status" TEXT NOT NULL DEFAULT 'draft',
+      "displayOrder" INTEGER NOT NULL DEFAULT 1,
+      "isDemo" BOOLEAN NOT NULL DEFAULT false,
+      "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      CONSTRAINT "KnowledgeHubExamUpdatesImportantDateMilestone_pkey" PRIMARY KEY ("id"),
+      CONSTRAINT "KnowledgeHubExamUpdatesImportantDateMilestone_exam_check"
+        CHECK ("exam" IN ('JEE', 'NEET', 'Intermediate', 'EAMCET', 'Other Exams')),
+      CONSTRAINT "KnowledgeHubExamUpdatesImportantDateMilestone_status_check"
+        CHECK ("status" IN ('draft', 'published', 'archived')),
+      CONSTRAINT "KnowledgeHubExamUpdatesImportantDateMilestone_override_check"
+        CHECK ("eventStatusOverride" IN ('automatic', 'postponed', 'cancelled')),
+      CONSTRAINT "KnowledgeHubExamUpdatesImportantDateMilestone_date_order_check"
+        CHECK ("startDate" IS NULL OR "endDate" IS NULL OR "endDate" >= "startDate")
+    )
+  `);
+  await prisma.$executeRawUnsafe(`
+    CREATE INDEX IF NOT EXISTS "KnowledgeHubExamUpdatesImportantDateMilestone_status_idx"
+    ON "KnowledgeHubExamUpdatesImportantDateMilestone" ("status")
+  `);
+  await prisma.$executeRawUnsafe(`
+    CREATE TABLE IF NOT EXISTS "KnowledgeHubExamUpdatesImportantDatesSetup" (
+      "id" TEXT NOT NULL DEFAULT 'singleton',
+      "seededAt" TIMESTAMP(3),
+      CONSTRAINT "KnowledgeHubExamUpdatesImportantDatesSetup_pkey" PRIMARY KEY ("id")
+    )
+  `);
+  await prisma.$executeRawUnsafe(
+    `INSERT INTO "KnowledgeHubExamUpdatesImportantDatesSetup" ("id", "seededAt")
+     VALUES ('singleton', NULL) ON CONFLICT ("id") DO NOTHING`,
+  );
+  await prisma.$executeRawUnsafe(
+    `INSERT INTO "KnowledgeHubExamUpdatesImportantDatesSettings" ("id", "content", "updatedAt")
+     VALUES ('singleton', $1::jsonb, CURRENT_TIMESTAMP) ON CONFLICT ("id") DO NOTHING`,
+    JSON.stringify(DEFAULT_KNOWLEDGE_HUB_IMPORTANT_DATES_SETTINGS),
+  );
+
+  await prisma.$transaction(async (tx) => {
+    const seededState = await tx.$queryRawUnsafe<Array<{ seededAt: Date | null }>>(
+      `SELECT "seededAt" FROM "KnowledgeHubExamUpdatesImportantDatesSetup"
+       WHERE "id" = 'singleton' FOR UPDATE`,
+    );
+    if (seededState[0]?.seededAt) return;
+    for (const milestone of INITIAL_KNOWLEDGE_HUB_IMPORTANT_DATES_MILESTONES) {
+      await tx.$executeRawUnsafe(
+        `INSERT INTO "KnowledgeHubExamUpdatesImportantDateMilestone"
+         ("id", "exam", "cycleYear", "title", "milestoneType", "startDate", "endDate", "description",
+          "officialUrl", "eventStatusOverride", "status", "displayOrder", "isDemo", "updatedAt")
+         VALUES ($1, $2, $3, $4, $5, $6::date, $7::date, $8, $9, $10, $11, $12, $13, CURRENT_TIMESTAMP)
+         ON CONFLICT ("id") DO NOTHING`,
+        milestone.id,
+        milestone.exam,
+        milestone.cycleYear,
+        milestone.title,
+        milestone.milestoneType,
+        milestone.startDate,
+        milestone.endDate,
+        milestone.description,
+        milestone.officialUrl,
+        milestone.eventStatusOverride,
+        milestone.status,
+        milestone.displayOrder,
+        milestone.isDemo,
+      );
+    }
+    await tx.$executeRawUnsafe(
+      `UPDATE "KnowledgeHubExamUpdatesImportantDatesSetup"
+       SET "seededAt" = CURRENT_TIMESTAMP WHERE "id" = 'singleton'`,
+    );
+  });
+}
+
 class LegacyResultStoryChangedError extends Error {}
 
 async function backfillLegacyResultStories() {
@@ -515,6 +613,7 @@ export async function initializeDatabase() {
   await ensureAlumniStorySchema();
   await ensureKnowledgeHubResourceSchema();
   await ensureKnowledgeHubExamUpdatesSchema();
+  await ensureKnowledgeHubImportantDatesSchema();
   await backfillLegacyResultStories();
   await backfillCollegeNameTypo();
 

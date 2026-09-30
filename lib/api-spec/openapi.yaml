@@ -2720,6 +2720,17 @@ paths:
           content:
             application/json:
               schema: { $ref: "#/components/schemas/KnowledgeHubExamUpdatesList" }
+  /knowledge-hub/exam-updates/important-dates:
+    get:
+      operationId: getKnowledgeHubExamUpdatesImportantDates
+      tags: [public]
+      summary: Read published exam milestones and Important Dates settings
+      responses:
+        "200":
+          description: Public Important Dates content
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/KnowledgeHubExamUpdatesImportantDates" }
   /admin/knowledge-hub/exam-updates:
     get:
       operationId: getAdminKnowledgeHubExamUpdates
@@ -2760,6 +2771,129 @@ paths:
               schema: { $ref: "#/components/schemas/ErrorResponse" }
         "401":
           description: Not authenticated
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+  /admin/knowledge-hub/exam-updates/important-dates:
+    get:
+      operationId: getAdminKnowledgeHubExamUpdatesImportantDates
+      tags: [admin]
+      summary: Read Important Dates settings and all milestones
+      security: [{ cookieAuth: [] }]
+      responses:
+        "200":
+          description: Important Dates administration content
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/AdminKnowledgeHubExamUpdatesImportantDates" }
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+    post:
+      operationId: createAdminKnowledgeHubExamUpdatesImportantDatesMilestone
+      tags: [admin]
+      summary: Create an Important Dates milestone
+      security: [{ cookieAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/KnowledgeHubExamUpdatesImportantDatesMilestoneInput" }
+      responses:
+        "201":
+          description: Created milestone
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/KnowledgeHubExamUpdatesImportantDatesMilestone" }
+        "400":
+          description: Invalid milestone
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+  /admin/knowledge-hub/exam-updates/important-dates/settings:
+    put:
+      operationId: updateAdminKnowledgeHubExamUpdatesImportantDatesSettings
+      tags: [admin]
+      summary: Update Important Dates section settings and exam labels
+      security: [{ cookieAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/KnowledgeHubExamUpdatesImportantDatesSettingsInput" }
+      responses:
+        "200":
+          description: Saved Important Dates settings
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/KnowledgeHubExamUpdatesImportantDatesSettings" }
+        "400":
+          description: Invalid Important Dates settings
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+  /admin/knowledge-hub/exam-updates/important-dates/{id}:
+    put:
+      operationId: updateAdminKnowledgeHubExamUpdatesImportantDatesMilestone
+      tags: [admin]
+      summary: Update an Important Dates milestone
+      security: [{ cookieAuth: [] }]
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string, minLength: 1, maxLength: 100 } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/KnowledgeHubExamUpdatesImportantDatesMilestoneInput" }
+      responses:
+        "200":
+          description: Updated milestone
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/KnowledgeHubExamUpdatesImportantDatesMilestone" }
+        "400":
+          description: Invalid milestone
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+        "404":
+          description: Milestone not found
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+    delete:
+      operationId: deleteAdminKnowledgeHubExamUpdatesImportantDatesMilestone
+      tags: [admin]
+      summary: Delete an Important Dates milestone
+      security: [{ cookieAuth: [] }]
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string, minLength: 1, maxLength: 100 } }
+      responses:
+        "204": { description: Deleted milestone }
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+        "404":
+          description: Milestone not found
           content:
             application/json:
               schema: { $ref: "#/components/schemas/ErrorResponse" }
@@ -8338,6 +8472,66 @@ components:
     KnowledgeHubExamUpdatesPageInput:
       allOf:
         - $ref: "#/components/schemas/KnowledgeHubExamUpdatesPageSettings"
+    KnowledgeHubExamUpdatesImportantDatesExam:
+      type: string
+      enum: [JEE, NEET, Intermediate, EAMCET, "Other Exams"]
+    KnowledgeHubExamUpdatesImportantDatesSettings:
+      type: object
+      properties:
+        heading: { type: string, minLength: 1, maxLength: 180 }
+        description: { type: string, maxLength: 1000 }
+        visible: { type: boolean }
+        examLabels:
+          type: object
+          properties:
+            JEE: { type: string, minLength: 1, maxLength: 80 }
+            NEET: { type: string, minLength: 1, maxLength: 80 }
+            Intermediate: { type: string, minLength: 1, maxLength: 80 }
+            EAMCET: { type: string, minLength: 1, maxLength: 80 }
+            "Other Exams": { type: string, minLength: 1, maxLength: 80 }
+          required: [JEE, NEET, Intermediate, EAMCET, "Other Exams"]
+      required: [heading, description, visible, examLabels]
+    KnowledgeHubExamUpdatesImportantDatesSettingsInput:
+      allOf:
+        - $ref: "#/components/schemas/KnowledgeHubExamUpdatesImportantDatesSettings"
+    KnowledgeHubExamUpdatesImportantDatesMilestoneInput:
+      type: object
+      properties:
+        exam: { $ref: "#/components/schemas/KnowledgeHubExamUpdatesImportantDatesExam" }
+        cycleYear: { type: string, minLength: 1, maxLength: 40 }
+        title: { type: string, minLength: 1, maxLength: 240 }
+        milestoneType: { type: string, minLength: 1, maxLength: 120 }
+        startDate: { type: ["string", "null"], pattern: '^\d{4}-\d{2}-\d{2}$' }
+        endDate: { type: ["string", "null"], pattern: '^\d{4}-\d{2}-\d{2}$' }
+        description: { type: string, maxLength: 2000 }
+        officialUrl: { type: ["string", "null"], maxLength: 1000 }
+        eventStatusOverride: { type: string, enum: [automatic, postponed, cancelled] }
+        status: { type: string, enum: [draft, published, archived] }
+        displayOrder: { type: integer, minimum: 1, maximum: 10000 }
+        isDemo: { type: boolean }
+      required: [exam, cycleYear, title, milestoneType, description, eventStatusOverride, status, displayOrder, isDemo]
+    KnowledgeHubExamUpdatesImportantDatesMilestone:
+      allOf:
+        - $ref: "#/components/schemas/KnowledgeHubExamUpdatesImportantDatesMilestoneInput"
+        - type: object
+          properties:
+            id: { type: string }
+            startDate: { type: ["string", "null"], pattern: '^\d{4}-\d{2}-\d{2}$' }
+            endDate: { type: ["string", "null"], pattern: '^\d{4}-\d{2}-\d{2}$' }
+            officialUrl: { type: ["string", "null"], maxLength: 1000 }
+            createdAt: { type: string, format: date-time }
+            updatedAt: { type: string, format: date-time }
+          required: [id, startDate, endDate, officialUrl, createdAt, updatedAt]
+    KnowledgeHubExamUpdatesImportantDates:
+      type: object
+      properties:
+        settings: { $ref: "#/components/schemas/KnowledgeHubExamUpdatesImportantDatesSettings" }
+        milestones:
+          type: array
+          items: { $ref: "#/components/schemas/KnowledgeHubExamUpdatesImportantDatesMilestone" }
+      required: [settings, milestones]
+    AdminKnowledgeHubExamUpdatesImportantDates:
+      $ref: "#/components/schemas/KnowledgeHubExamUpdatesImportantDates"
     KnowledgeHubExamUpdateInput:
       type: object
       properties:

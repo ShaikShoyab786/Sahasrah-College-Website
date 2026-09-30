@@ -16,6 +16,7 @@ import {
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { SaveButton } from '@/components/form-fields';
 import { EditorCard, EditorFrame, EditorSkeleton, LoadError, SaveStatus } from '@/pages/admin-about-hero';
+import { AdminImportantDates } from '@/components/admin-important-dates';
 
 const inputClass = 'h-11 w-full rounded-xl border border-[hsl(var(--admin-border))] bg-[hsl(var(--admin-input-background))] px-3 text-sm text-[hsl(var(--admin-text))] outline-none transition focus:border-[hsl(var(--admin-focus))] focus:ring-4 focus:ring-[hsl(var(--admin-focus)/.16)]';
 const textareaClass = 'min-h-28 w-full resize-y rounded-xl border border-[hsl(var(--admin-border))] bg-[hsl(var(--admin-input-background))] px-3 py-3 text-sm leading-6 text-[hsl(var(--admin-text))] outline-none transition focus:border-[hsl(var(--admin-focus))] focus:ring-4 focus:ring-[hsl(var(--admin-focus)/.16)]';
@@ -365,6 +366,7 @@ export default function AdminKnowledgeHubExamUpdates() {
           </Form>
         </EditorCard>
       </div>
+      <AdminImportantDates />
     </EditorFrame>
   );
 }

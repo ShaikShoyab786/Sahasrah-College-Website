@@ -5856,6 +5856,80 @@ export const GetKnowledgeHubExamUpdatesResponse = zod.object({
 
 
 /**
+ * @summary Read published exam milestones and Important Dates settings
+ */
+export const getKnowledgeHubExamUpdatesImportantDatesResponseSettingsHeadingMax = 180;
+
+export const getKnowledgeHubExamUpdatesImportantDatesResponseSettingsDescriptionMax = 1000;
+
+export const getKnowledgeHubExamUpdatesImportantDatesResponseSettingsExamLabelsJEEMax = 80;
+
+export const getKnowledgeHubExamUpdatesImportantDatesResponseSettingsExamLabelsNEETMax = 80;
+
+export const getKnowledgeHubExamUpdatesImportantDatesResponseSettingsExamLabelsIntermediateMax = 80;
+
+export const getKnowledgeHubExamUpdatesImportantDatesResponseSettingsExamLabelsEAMCETMax = 80;
+
+export const getKnowledgeHubExamUpdatesImportantDatesResponseSettingsExamLabelsOtherExamsMax = 80;
+
+export const getKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemOneCycleYearMax = 40;
+
+export const getKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemOneTitleMax = 240;
+
+export const getKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemOneMilestoneTypeMax = 120;
+
+export const getKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemOneStartDateRegExp = new RegExp('^\\d{4}-\\d{2}-\\d{2}$');
+export const getKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemOneEndDateRegExp = new RegExp('^\\d{4}-\\d{2}-\\d{2}$');
+export const getKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemOneDescriptionMax = 2000;
+
+export const getKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemOneOfficialUrlMax = 1000;
+
+export const getKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemOneDisplayOrderMax = 10000;
+
+export const getKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemTwoStartDateRegExp = new RegExp('^\\d{4}-\\d{2}-\\d{2}$');
+export const getKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemTwoEndDateRegExp = new RegExp('^\\d{4}-\\d{2}-\\d{2}$');
+export const getKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemTwoOfficialUrlMax = 1000;
+
+
+
+export const GetKnowledgeHubExamUpdatesImportantDatesResponse = zod.object({
+  "settings": zod.object({
+  "heading": zod.string().min(1).max(getKnowledgeHubExamUpdatesImportantDatesResponseSettingsHeadingMax),
+  "description": zod.string().max(getKnowledgeHubExamUpdatesImportantDatesResponseSettingsDescriptionMax),
+  "visible": zod.boolean(),
+  "examLabels": zod.object({
+  "JEE": zod.string().min(1).max(getKnowledgeHubExamUpdatesImportantDatesResponseSettingsExamLabelsJEEMax),
+  "NEET": zod.string().min(1).max(getKnowledgeHubExamUpdatesImportantDatesResponseSettingsExamLabelsNEETMax),
+  "Intermediate": zod.string().min(1).max(getKnowledgeHubExamUpdatesImportantDatesResponseSettingsExamLabelsIntermediateMax),
+  "EAMCET": zod.string().min(1).max(getKnowledgeHubExamUpdatesImportantDatesResponseSettingsExamLabelsEAMCETMax),
+  "Other Exams": zod.string().min(1).max(getKnowledgeHubExamUpdatesImportantDatesResponseSettingsExamLabelsOtherExamsMax)
+})
+}),
+  "milestones": zod.array(zod.object({
+  "exam": zod.enum(['JEE', 'NEET', 'Intermediate', 'EAMCET', 'Other Exams']),
+  "cycleYear": zod.string().min(1).max(getKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemOneCycleYearMax),
+  "title": zod.string().min(1).max(getKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemOneTitleMax),
+  "milestoneType": zod.string().min(1).max(getKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemOneMilestoneTypeMax),
+  "startDate": zod.string().regex(getKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemOneStartDateRegExp).nullable(),
+  "endDate": zod.string().regex(getKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemOneEndDateRegExp).nullable(),
+  "description": zod.string().max(getKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemOneDescriptionMax),
+  "officialUrl": zod.string().max(getKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemOneOfficialUrlMax).nullable(),
+  "eventStatusOverride": zod.enum(['automatic', 'postponed', 'cancelled']),
+  "status": zod.enum(['draft', 'published', 'archived']),
+  "displayOrder": zod.number().int().min(1).max(getKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemOneDisplayOrderMax),
+  "isDemo": zod.boolean()
+}).and(zod.object({
+  "id": zod.string(),
+  "startDate": zod.string().regex(getKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemTwoStartDateRegExp).nullable(),
+  "endDate": zod.string().regex(getKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemTwoEndDateRegExp).nullable(),
+  "officialUrl": zod.string().max(getKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemTwoOfficialUrlMax).nullable(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})))
+})
+
+
+/**
  * @summary Read Exam Updates settings and all update records
  */
 export const getAdminKnowledgeHubExamUpdatesResponseSettingsHeroEyebrowMax = 120;
@@ -6019,6 +6093,318 @@ export const CreateAdminKnowledgeHubExamUpdateResponse = zod.object({
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date()
 }))
+
+
+/**
+ * @summary Read Important Dates settings and all milestones
+ */
+export const getAdminKnowledgeHubExamUpdatesImportantDatesResponseSettingsHeadingMax = 180;
+
+export const getAdminKnowledgeHubExamUpdatesImportantDatesResponseSettingsDescriptionMax = 1000;
+
+export const getAdminKnowledgeHubExamUpdatesImportantDatesResponseSettingsExamLabelsJEEMax = 80;
+
+export const getAdminKnowledgeHubExamUpdatesImportantDatesResponseSettingsExamLabelsNEETMax = 80;
+
+export const getAdminKnowledgeHubExamUpdatesImportantDatesResponseSettingsExamLabelsIntermediateMax = 80;
+
+export const getAdminKnowledgeHubExamUpdatesImportantDatesResponseSettingsExamLabelsEAMCETMax = 80;
+
+export const getAdminKnowledgeHubExamUpdatesImportantDatesResponseSettingsExamLabelsOtherExamsMax = 80;
+
+export const getAdminKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemOneCycleYearMax = 40;
+
+export const getAdminKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemOneTitleMax = 240;
+
+export const getAdminKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemOneMilestoneTypeMax = 120;
+
+export const getAdminKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemOneStartDateRegExp = new RegExp('^\\d{4}-\\d{2}-\\d{2}$');
+export const getAdminKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemOneEndDateRegExp = new RegExp('^\\d{4}-\\d{2}-\\d{2}$');
+export const getAdminKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemOneDescriptionMax = 2000;
+
+export const getAdminKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemOneOfficialUrlMax = 1000;
+
+export const getAdminKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemOneDisplayOrderMax = 10000;
+
+export const getAdminKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemTwoStartDateRegExp = new RegExp('^\\d{4}-\\d{2}-\\d{2}$');
+export const getAdminKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemTwoEndDateRegExp = new RegExp('^\\d{4}-\\d{2}-\\d{2}$');
+export const getAdminKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemTwoOfficialUrlMax = 1000;
+
+
+
+export const GetAdminKnowledgeHubExamUpdatesImportantDatesResponse = zod.object({
+  "settings": zod.object({
+  "heading": zod.string().min(1).max(getAdminKnowledgeHubExamUpdatesImportantDatesResponseSettingsHeadingMax),
+  "description": zod.string().max(getAdminKnowledgeHubExamUpdatesImportantDatesResponseSettingsDescriptionMax),
+  "visible": zod.boolean(),
+  "examLabels": zod.object({
+  "JEE": zod.string().min(1).max(getAdminKnowledgeHubExamUpdatesImportantDatesResponseSettingsExamLabelsJEEMax),
+  "NEET": zod.string().min(1).max(getAdminKnowledgeHubExamUpdatesImportantDatesResponseSettingsExamLabelsNEETMax),
+  "Intermediate": zod.string().min(1).max(getAdminKnowledgeHubExamUpdatesImportantDatesResponseSettingsExamLabelsIntermediateMax),
+  "EAMCET": zod.string().min(1).max(getAdminKnowledgeHubExamUpdatesImportantDatesResponseSettingsExamLabelsEAMCETMax),
+  "Other Exams": zod.string().min(1).max(getAdminKnowledgeHubExamUpdatesImportantDatesResponseSettingsExamLabelsOtherExamsMax)
+})
+}),
+  "milestones": zod.array(zod.object({
+  "exam": zod.enum(['JEE', 'NEET', 'Intermediate', 'EAMCET', 'Other Exams']),
+  "cycleYear": zod.string().min(1).max(getAdminKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemOneCycleYearMax),
+  "title": zod.string().min(1).max(getAdminKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemOneTitleMax),
+  "milestoneType": zod.string().min(1).max(getAdminKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemOneMilestoneTypeMax),
+  "startDate": zod.string().regex(getAdminKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemOneStartDateRegExp).nullable(),
+  "endDate": zod.string().regex(getAdminKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemOneEndDateRegExp).nullable(),
+  "description": zod.string().max(getAdminKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemOneDescriptionMax),
+  "officialUrl": zod.string().max(getAdminKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemOneOfficialUrlMax).nullable(),
+  "eventStatusOverride": zod.enum(['automatic', 'postponed', 'cancelled']),
+  "status": zod.enum(['draft', 'published', 'archived']),
+  "displayOrder": zod.number().int().min(1).max(getAdminKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemOneDisplayOrderMax),
+  "isDemo": zod.boolean()
+}).and(zod.object({
+  "id": zod.string(),
+  "startDate": zod.string().regex(getAdminKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemTwoStartDateRegExp).nullable(),
+  "endDate": zod.string().regex(getAdminKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemTwoEndDateRegExp).nullable(),
+  "officialUrl": zod.string().max(getAdminKnowledgeHubExamUpdatesImportantDatesResponseMilestonesItemTwoOfficialUrlMax).nullable(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})))
+})
+
+
+/**
+ * @summary Create an Important Dates milestone
+ */
+export const createAdminKnowledgeHubExamUpdatesImportantDatesMilestoneBodyCycleYearMax = 40;
+
+export const createAdminKnowledgeHubExamUpdatesImportantDatesMilestoneBodyTitleMax = 240;
+
+export const createAdminKnowledgeHubExamUpdatesImportantDatesMilestoneBodyMilestoneTypeMax = 120;
+
+export const createAdminKnowledgeHubExamUpdatesImportantDatesMilestoneBodyStartDateRegExp = new RegExp('^\\d{4}-\\d{2}-\\d{2}$');
+export const createAdminKnowledgeHubExamUpdatesImportantDatesMilestoneBodyEndDateRegExp = new RegExp('^\\d{4}-\\d{2}-\\d{2}$');
+export const createAdminKnowledgeHubExamUpdatesImportantDatesMilestoneBodyDescriptionMax = 2000;
+
+export const createAdminKnowledgeHubExamUpdatesImportantDatesMilestoneBodyOfficialUrlMax = 1000;
+
+export const createAdminKnowledgeHubExamUpdatesImportantDatesMilestoneBodyDisplayOrderMax = 10000;
+
+
+
+export const CreateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneBody = zod.object({
+  "exam": zod.enum(['JEE', 'NEET', 'Intermediate', 'EAMCET', 'Other Exams']),
+  "cycleYear": zod.string().min(1).max(createAdminKnowledgeHubExamUpdatesImportantDatesMilestoneBodyCycleYearMax),
+  "title": zod.string().min(1).max(createAdminKnowledgeHubExamUpdatesImportantDatesMilestoneBodyTitleMax),
+  "milestoneType": zod.string().min(1).max(createAdminKnowledgeHubExamUpdatesImportantDatesMilestoneBodyMilestoneTypeMax),
+  "startDate": zod.string().regex(createAdminKnowledgeHubExamUpdatesImportantDatesMilestoneBodyStartDateRegExp).nullish(),
+  "endDate": zod.string().regex(createAdminKnowledgeHubExamUpdatesImportantDatesMilestoneBodyEndDateRegExp).nullish(),
+  "description": zod.string().max(createAdminKnowledgeHubExamUpdatesImportantDatesMilestoneBodyDescriptionMax),
+  "officialUrl": zod.string().max(createAdminKnowledgeHubExamUpdatesImportantDatesMilestoneBodyOfficialUrlMax).nullish(),
+  "eventStatusOverride": zod.enum(['automatic', 'postponed', 'cancelled']),
+  "status": zod.enum(['draft', 'published', 'archived']),
+  "displayOrder": zod.number().int().min(1).max(createAdminKnowledgeHubExamUpdatesImportantDatesMilestoneBodyDisplayOrderMax),
+  "isDemo": zod.boolean()
+})
+
+export const createAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseOneCycleYearMax = 40;
+
+export const createAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseOneTitleMax = 240;
+
+export const createAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseOneMilestoneTypeMax = 120;
+
+export const createAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseOneStartDateRegExp = new RegExp('^\\d{4}-\\d{2}-\\d{2}$');
+export const createAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseOneEndDateRegExp = new RegExp('^\\d{4}-\\d{2}-\\d{2}$');
+export const createAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseOneDescriptionMax = 2000;
+
+export const createAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseOneOfficialUrlMax = 1000;
+
+export const createAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseOneDisplayOrderMax = 10000;
+
+export const createAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseTwoStartDateRegExp = new RegExp('^\\d{4}-\\d{2}-\\d{2}$');
+export const createAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseTwoEndDateRegExp = new RegExp('^\\d{4}-\\d{2}-\\d{2}$');
+export const createAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseTwoOfficialUrlMax = 1000;
+
+
+
+export const CreateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponse = zod.object({
+  "exam": zod.enum(['JEE', 'NEET', 'Intermediate', 'EAMCET', 'Other Exams']),
+  "cycleYear": zod.string().min(1).max(createAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseOneCycleYearMax),
+  "title": zod.string().min(1).max(createAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseOneTitleMax),
+  "milestoneType": zod.string().min(1).max(createAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseOneMilestoneTypeMax),
+  "startDate": zod.string().regex(createAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseOneStartDateRegExp).nullable(),
+  "endDate": zod.string().regex(createAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseOneEndDateRegExp).nullable(),
+  "description": zod.string().max(createAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseOneDescriptionMax),
+  "officialUrl": zod.string().max(createAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseOneOfficialUrlMax).nullable(),
+  "eventStatusOverride": zod.enum(['automatic', 'postponed', 'cancelled']),
+  "status": zod.enum(['draft', 'published', 'archived']),
+  "displayOrder": zod.number().int().min(1).max(createAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseOneDisplayOrderMax),
+  "isDemo": zod.boolean()
+}).and(zod.object({
+  "id": zod.string(),
+  "startDate": zod.string().regex(createAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseTwoStartDateRegExp).nullable(),
+  "endDate": zod.string().regex(createAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseTwoEndDateRegExp).nullable(),
+  "officialUrl": zod.string().max(createAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseTwoOfficialUrlMax).nullable(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+}))
+
+
+/**
+ * @summary Update Important Dates section settings and exam labels
+ */
+export const updateAdminKnowledgeHubExamUpdatesImportantDatesSettingsBodyOneHeadingMax = 180;
+
+export const updateAdminKnowledgeHubExamUpdatesImportantDatesSettingsBodyOneDescriptionMax = 1000;
+
+export const updateAdminKnowledgeHubExamUpdatesImportantDatesSettingsBodyOneExamLabelsJEEMax = 80;
+
+export const updateAdminKnowledgeHubExamUpdatesImportantDatesSettingsBodyOneExamLabelsNEETMax = 80;
+
+export const updateAdminKnowledgeHubExamUpdatesImportantDatesSettingsBodyOneExamLabelsIntermediateMax = 80;
+
+export const updateAdminKnowledgeHubExamUpdatesImportantDatesSettingsBodyOneExamLabelsEAMCETMax = 80;
+
+export const updateAdminKnowledgeHubExamUpdatesImportantDatesSettingsBodyOneExamLabelsOtherExamsMax = 80;
+
+
+
+export const UpdateAdminKnowledgeHubExamUpdatesImportantDatesSettingsBody = zod.object({
+  "heading": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesImportantDatesSettingsBodyOneHeadingMax),
+  "description": zod.string().max(updateAdminKnowledgeHubExamUpdatesImportantDatesSettingsBodyOneDescriptionMax),
+  "visible": zod.boolean(),
+  "examLabels": zod.object({
+  "JEE": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesImportantDatesSettingsBodyOneExamLabelsJEEMax),
+  "NEET": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesImportantDatesSettingsBodyOneExamLabelsNEETMax),
+  "Intermediate": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesImportantDatesSettingsBodyOneExamLabelsIntermediateMax),
+  "EAMCET": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesImportantDatesSettingsBodyOneExamLabelsEAMCETMax),
+  "Other Exams": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesImportantDatesSettingsBodyOneExamLabelsOtherExamsMax)
+})
+})
+
+export const updateAdminKnowledgeHubExamUpdatesImportantDatesSettingsResponseHeadingMax = 180;
+
+export const updateAdminKnowledgeHubExamUpdatesImportantDatesSettingsResponseDescriptionMax = 1000;
+
+export const updateAdminKnowledgeHubExamUpdatesImportantDatesSettingsResponseExamLabelsJEEMax = 80;
+
+export const updateAdminKnowledgeHubExamUpdatesImportantDatesSettingsResponseExamLabelsNEETMax = 80;
+
+export const updateAdminKnowledgeHubExamUpdatesImportantDatesSettingsResponseExamLabelsIntermediateMax = 80;
+
+export const updateAdminKnowledgeHubExamUpdatesImportantDatesSettingsResponseExamLabelsEAMCETMax = 80;
+
+export const updateAdminKnowledgeHubExamUpdatesImportantDatesSettingsResponseExamLabelsOtherExamsMax = 80;
+
+
+
+export const UpdateAdminKnowledgeHubExamUpdatesImportantDatesSettingsResponse = zod.object({
+  "heading": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesImportantDatesSettingsResponseHeadingMax),
+  "description": zod.string().max(updateAdminKnowledgeHubExamUpdatesImportantDatesSettingsResponseDescriptionMax),
+  "visible": zod.boolean(),
+  "examLabels": zod.object({
+  "JEE": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesImportantDatesSettingsResponseExamLabelsJEEMax),
+  "NEET": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesImportantDatesSettingsResponseExamLabelsNEETMax),
+  "Intermediate": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesImportantDatesSettingsResponseExamLabelsIntermediateMax),
+  "EAMCET": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesImportantDatesSettingsResponseExamLabelsEAMCETMax),
+  "Other Exams": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesImportantDatesSettingsResponseExamLabelsOtherExamsMax)
+})
+})
+
+
+/**
+ * @summary Update an Important Dates milestone
+ */
+export const updateAdminKnowledgeHubExamUpdatesImportantDatesMilestonePathIdMax = 100;
+
+
+
+export const UpdateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneParams = zod.object({
+  "id": zod.coerce.string().min(1).max(updateAdminKnowledgeHubExamUpdatesImportantDatesMilestonePathIdMax)
+})
+
+export const updateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneBodyCycleYearMax = 40;
+
+export const updateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneBodyTitleMax = 240;
+
+export const updateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneBodyMilestoneTypeMax = 120;
+
+export const updateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneBodyStartDateRegExp = new RegExp('^\\d{4}-\\d{2}-\\d{2}$');
+export const updateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneBodyEndDateRegExp = new RegExp('^\\d{4}-\\d{2}-\\d{2}$');
+export const updateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneBodyDescriptionMax = 2000;
+
+export const updateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneBodyOfficialUrlMax = 1000;
+
+export const updateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneBodyDisplayOrderMax = 10000;
+
+
+
+export const UpdateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneBody = zod.object({
+  "exam": zod.enum(['JEE', 'NEET', 'Intermediate', 'EAMCET', 'Other Exams']),
+  "cycleYear": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneBodyCycleYearMax),
+  "title": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneBodyTitleMax),
+  "milestoneType": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneBodyMilestoneTypeMax),
+  "startDate": zod.string().regex(updateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneBodyStartDateRegExp).nullish(),
+  "endDate": zod.string().regex(updateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneBodyEndDateRegExp).nullish(),
+  "description": zod.string().max(updateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneBodyDescriptionMax),
+  "officialUrl": zod.string().max(updateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneBodyOfficialUrlMax).nullish(),
+  "eventStatusOverride": zod.enum(['automatic', 'postponed', 'cancelled']),
+  "status": zod.enum(['draft', 'published', 'archived']),
+  "displayOrder": zod.number().int().min(1).max(updateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneBodyDisplayOrderMax),
+  "isDemo": zod.boolean()
+})
+
+export const updateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseOneCycleYearMax = 40;
+
+export const updateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseOneTitleMax = 240;
+
+export const updateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseOneMilestoneTypeMax = 120;
+
+export const updateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseOneStartDateRegExp = new RegExp('^\\d{4}-\\d{2}-\\d{2}$');
+export const updateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseOneEndDateRegExp = new RegExp('^\\d{4}-\\d{2}-\\d{2}$');
+export const updateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseOneDescriptionMax = 2000;
+
+export const updateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseOneOfficialUrlMax = 1000;
+
+export const updateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseOneDisplayOrderMax = 10000;
+
+export const updateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseTwoStartDateRegExp = new RegExp('^\\d{4}-\\d{2}-\\d{2}$');
+export const updateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseTwoEndDateRegExp = new RegExp('^\\d{4}-\\d{2}-\\d{2}$');
+export const updateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseTwoOfficialUrlMax = 1000;
+
+
+
+export const UpdateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponse = zod.object({
+  "exam": zod.enum(['JEE', 'NEET', 'Intermediate', 'EAMCET', 'Other Exams']),
+  "cycleYear": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseOneCycleYearMax),
+  "title": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseOneTitleMax),
+  "milestoneType": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseOneMilestoneTypeMax),
+  "startDate": zod.string().regex(updateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseOneStartDateRegExp).nullable(),
+  "endDate": zod.string().regex(updateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseOneEndDateRegExp).nullable(),
+  "description": zod.string().max(updateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseOneDescriptionMax),
+  "officialUrl": zod.string().max(updateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseOneOfficialUrlMax).nullable(),
+  "eventStatusOverride": zod.enum(['automatic', 'postponed', 'cancelled']),
+  "status": zod.enum(['draft', 'published', 'archived']),
+  "displayOrder": zod.number().int().min(1).max(updateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseOneDisplayOrderMax),
+  "isDemo": zod.boolean()
+}).and(zod.object({
+  "id": zod.string(),
+  "startDate": zod.string().regex(updateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseTwoStartDateRegExp).nullable(),
+  "endDate": zod.string().regex(updateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseTwoEndDateRegExp).nullable(),
+  "officialUrl": zod.string().max(updateAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponseTwoOfficialUrlMax).nullable(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+}))
+
+
+/**
+ * @summary Delete an Important Dates milestone
+ */
+export const deleteAdminKnowledgeHubExamUpdatesImportantDatesMilestonePathIdMax = 100;
+
+
+
+export const DeleteAdminKnowledgeHubExamUpdatesImportantDatesMilestoneParams = zod.object({
+  "id": zod.coerce.string().min(1).max(deleteAdminKnowledgeHubExamUpdatesImportantDatesMilestonePathIdMax)
+})
+
+export const DeleteAdminKnowledgeHubExamUpdatesImportantDatesMilestoneResponse = zod.void()
 
 
 /**
