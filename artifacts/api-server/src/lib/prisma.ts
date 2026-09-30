@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { Prisma, PrismaClient } from "@prisma/client";
+import { logger } from "./logger";
 import {
   DEFAULT_CONTACT_COURSE_OPTIONS,
   isLegacyCollapsedDefaultCourseOptions,
@@ -35,6 +36,17 @@ export const prisma = new PrismaClient();
 const galleryCategories = ["Campus", "Classrooms", "Sports", "Labs", "Library", "Achievements", "Events"];
 
 export let databaseInitializationStage = "connecting to PostgreSQL";
+
+async function runDatabaseInitializationStep(stage: string, action: () => Promise<unknown>) {
+  databaseInitializationStage = stage;
+  const startedAt = Date.now();
+  logger.info({ stage }, "Database initialization step started");
+  await action();
+  logger.info(
+    { stage, durationMs: Date.now() - startedAt },
+    "Database initialization step completed",
+  );
+}
 
 async function ensureSiteSettingsSocialUrlColumns() {
   await prisma.$executeRawUnsafe(`
@@ -555,20 +567,43 @@ function getGalleryCategory(category: string | null, title: string) {
 }
 
 async function backfillCollegeNameTypo() {
-  const columns = await prisma.$queryRaw<Array<{ tableName: string; columnName: string }>>`
-    SELECT table_name AS "tableName", column_name AS "columnName"
-    FROM information_schema.columns
-    WHERE table_schema = 'public'
-      AND data_type IN ('character varying', 'text', 'character')
-      AND column_name NOT IN ('id', 'tokenHash', 'passwordHash')
-  `;
-
-  for (const { tableName, columnName } of columns) {
-    if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(tableName) || !/^[A-Za-z_][A-Za-z0-9_]*$/.test(columnName)) continue;
-    await prisma.$executeRawUnsafe(
-      `UPDATE "${tableName}" SET "${columnName}" = replace(replace(replace("${columnName}", 'Sahasara', 'Sahsrah'), 'SAHASARA', 'SAHSRAH'), 'sahasara', 'sahsrah') WHERE "${columnName}" LIKE '%Sahasara%' OR "${columnName}" LIKE '%SAHASARA%' OR "${columnName}" LIKE '%sahasara%'`,
-    );
-  }
+  await prisma.$executeRawUnsafe(`
+    DO $college_name_backfill$
+    DECLARE
+      target_column RECORD;
+    BEGIN
+      FOR target_column IN
+        SELECT table_schema, table_name, column_name
+        FROM information_schema.columns
+        WHERE table_schema = 'public'
+          AND data_type IN ('character varying', 'text', 'character')
+          AND column_name NOT IN ('id', 'tokenHash', 'passwordHash')
+      LOOP
+        EXECUTE format(
+          'UPDATE %I.%I
+           SET %I = replace(replace(replace(%I, %L, %L), %L, %L), %L, %L)
+           WHERE %I LIKE %L OR %I LIKE %L OR %I LIKE %L',
+          target_column.table_schema,
+          target_column.table_name,
+          target_column.column_name,
+          target_column.column_name,
+          'Sahasara',
+          'Sahsrah',
+          'SAHASARA',
+          'SAHSRAH',
+          'sahasara',
+          'sahsrah',
+          target_column.column_name,
+          '%Sahasara%',
+          target_column.column_name,
+          '%SAHASARA%',
+          target_column.column_name,
+          '%sahasara%'
+        );
+      END LOOP;
+    END
+    $college_name_backfill$;
+  `);
 }
 
 function areCourseHighlightsNormalized(value: unknown, expected: CourseHighlight[]): boolean {
@@ -621,17 +656,32 @@ async function backfillCourseHighlights() {
 }
 
 export async function initializeDatabase() {
-  databaseInitializationStage = "connecting to PostgreSQL";
-  await prisma.$connect();
-  databaseInitializationStage = "applying additive schema changes";
-  await ensureSiteSettingsSocialUrlColumns();
-  await ensureAlumniStorySchema();
-  await ensureKnowledgeHubResourceSchema();
-  await ensureKnowledgeHubExamUpdatesSchema();
-  await ensureKnowledgeHubImportantDatesSchema();
+  await runDatabaseInitializationStep("connecting to PostgreSQL", () => prisma.$connect());
+  await runDatabaseInitializationStep(
+    "applying additive SiteSettings schema changes",
+    ensureSiteSettingsSocialUrlColumns,
+  );
+  await runDatabaseInitializationStep("ensuring alumni story schema", ensureAlumniStorySchema);
+  await runDatabaseInitializationStep(
+    "ensuring Knowledge Hub resource schema",
+    ensureKnowledgeHubResourceSchema,
+  );
+  await runDatabaseInitializationStep(
+    "ensuring Knowledge Hub exam update schema",
+    ensureKnowledgeHubExamUpdatesSchema,
+  );
+  await runDatabaseInitializationStep(
+    "ensuring Knowledge Hub important dates schema",
+    ensureKnowledgeHubImportantDatesSchema,
+  );
   databaseInitializationStage = "initializing site content";
-  await backfillLegacyResultStories();
-  await backfillCollegeNameTypo();
+  logger.info({ stage: databaseInitializationStage }, "Database initialization step started");
+  await runDatabaseInitializationStep("importing legacy result stories", backfillLegacyResultStories);
+  await runDatabaseInitializationStep(
+    "correcting legacy college name values",
+    backfillCollegeNameTypo,
+  );
+  databaseInitializationStage = "initializing site content";
 
   const { highlights: videoHubHighlights, ...videoHubSettings } = DEFAULT_KNOWLEDGE_HUB_VIDEO_PAGE;
   await prisma.knowledgeHubVideoHubSettings.upsert({
