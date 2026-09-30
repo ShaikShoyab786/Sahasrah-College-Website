@@ -16,8 +16,15 @@ if (Number.isNaN(port) || port <= 0) {
   throw new Error(`Invalid PORT value: "${rawPort}"`);
 }
 
+const initializationStartedAt = Date.now();
+logger.info("Starting database initialization");
+
 initializeDatabase()
   .then(() => {
+    logger.info(
+      { durationMs: Date.now() - initializationStartedAt },
+      "Database initialization completed",
+    );
     app.listen(port, (err) => {
       if (err) {
         logger.error({ err }, "Error listening on port");

@@ -8,3 +8,9 @@ Keep Prisma and `@prisma/client` on the stable 6.x line unless a later migration
 **Why:** In this environment the latest package tag resolved to an unreleased Prisma 8 CLI that did not provide the standard `prisma generate` command, blocking client generation. The database also contains tables outside Prisma's model set, so a full sync can threaten unrelated persisted data.
 
 **How to apply:** Preserve matching Prisma CLI/client major versions. Before any `db push`, inspect the proposed changes and investigate unrelated table drops; never bypass those warnings with `--accept-data-loss`. Prefer idempotent additive startup SQL for compatible column additions.
+
+Make Prisma client generation an explicit prerequisite of the publishing build, rather than relying on dependency install hooks or a client already generated in the workspace.
+
+**Why:** Publishing logs showed pnpm skipping Prisma dependency build scripts. A cached local client can hide this packaging gap, and bundling with `@prisma/client` externalized does not detect a missing generated client.
+
+**How to apply:** Keep generation in the shared build command used by publishing and development. Generation updates client code only; do not substitute a database schema push or migration.
