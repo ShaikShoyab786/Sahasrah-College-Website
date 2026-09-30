@@ -1,0 +1,24 @@
+Improve enquiry management with an admin follow-up workflow. Inspect the existing enquiry forms, enquiry management screen, and dashboard first. Extend the current system without changing public forms unnecessarily or losing existing enquiry records.
+
+Enquiry status and details
+Replace the ambiguous reviewed/solved tick with clear admin-managed statuses:
+
+New
+Follow-up needed
+Completed — no further follow-up
+Keep the enquiry’s type separate from its status. Provide useful types such as Call-back requested, Campus visit planned, Topic suggestion, Course/admissions question, and Other.
+
+Let admins add private internal notes describing what the person said and what action was taken. Notes should be timestamped, attributed to the admin, and appended to the enquiry’s history—not silently overwrite earlier notes. Let admins record a next action and optional follow-up date/time. Make it easy to update the type, status, notes, and follow-up date, or reopen a completed enquiry.
+
+Internal notes must only be visible to admins. Preserve all existing enquiry data. Don’t automatically treat an old “reviewed” enquiry as completed unless its outcome is clear; retain its history and provide a safe way to classify it.
+
+Dashboard
+Add a Follow-up Enquiries section to the existing dashboard with counts and direct links for:
+
+Follow-ups needed
+Due today
+Overdue
+Upcoming follow-ups
+Show the relevant enquiry, type, next action, due date, and status. Provide filters for status and type, and quick actions to open an enquiry, add a note, change its status, or complete it. Completed enquiries should leave the active follow-up list but remain searchable in enquiry history.
+
+Keep the existing Overview shortcuts and Site Identity area unchanged. Use the project’s existing database, permissions, and admin UI patterns. Don’t add automatic calls, emails, or other customer notifications. Verify the workflow with a new enquiry, a call-back request, a campus visit, a topic suggestion, a completed enquiry, and an overdue follow-up.
