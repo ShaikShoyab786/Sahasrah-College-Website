@@ -766,6 +766,7 @@ export async function initializeDatabase() {
     galleryDescription?: string;
     galleryButtonHref?: string;
     facultyButtonHref?: string;
+    liveUpdatesButtonHref?: string;
   } = {};
   if (
     existingHomepageCopy?.galleryHeading === "Life at KVR College" ||
@@ -785,6 +786,9 @@ export async function initializeDatabase() {
   }
   if (existingHomepageCopy?.facultyButtonHref === "/about#leadership") {
     galleryCopyBackfill.facultyButtonHref = "/faculty";
+  }
+  if (existingHomepageCopy?.liveUpdatesButtonHref === "#live-updates") {
+    galleryCopyBackfill.liveUpdatesButtonHref = "/knowledge-hub/exam-updates";
   }
   if (Object.keys(galleryCopyBackfill).length > 0) {
     await prisma.homepagePreviewCopy.update({

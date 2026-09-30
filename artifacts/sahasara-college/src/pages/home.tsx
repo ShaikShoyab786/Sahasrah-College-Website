@@ -114,7 +114,7 @@ const fallbackHomepagePreviewCopy = {
   liveUpdatesEyebrow: 'From Sahsrah',
   liveUpdatesHeading: 'Live Updates',
   liveUpdatesButtonLabel: 'View all updates',
-  liveUpdatesButtonHref: '#live-updates',
+  liveUpdatesButtonHref: '/knowledge-hub/exam-updates',
   facultyEyebrow: 'Learn From the Best',
   facultyHeading: 'Our Expert Faculty',
   facultyDescription: 'Experienced subject-matter experts who make difficult ideas clearer and ambitious goals more achievable.',

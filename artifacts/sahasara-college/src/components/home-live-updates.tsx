@@ -8,7 +8,7 @@ type HomeLiveUpdatesProps = {
   heading?: string; buttonLabel?: string; buttonHref?: string;
 };
 
-export function HomeLiveUpdates({ updates, eyebrow = 'From Sahsrah', heading = 'Live Updates', buttonLabel = 'View all updates', buttonHref = '#live-updates' }: HomeLiveUpdatesProps) {
+export function HomeLiveUpdates({ updates, eyebrow = 'From Sahsrah', heading = 'Live Updates', buttonLabel = 'View all updates', buttonHref = '/knowledge-hub/exam-updates' }: HomeLiveUpdatesProps) {
   return (
     <section id="live-updates" className="border-b border-[hsl(var(--border))] bg-[hsl(var(--secondary)/.45)] px-6 py-20 lg:px-10 lg:py-28" aria-labelledby="live-updates-heading">
       <div className="mx-auto max-w-7xl">

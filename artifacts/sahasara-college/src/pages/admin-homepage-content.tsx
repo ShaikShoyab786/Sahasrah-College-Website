@@ -88,7 +88,7 @@ export function AdminHomepageLiveUpdates() {
   const upload = useUploadAdminImage();
   const feedback = useSaveFeedback();
   const [form, setForm] = useState<HomepageLiveUpdateInput[]>(liveUpdateDefaults);
-  const [copyForm, setCopyForm] = useState({ eyebrow: 'From Sahsrah', heading: 'Live Updates', buttonLabel: 'View all updates', buttonHref: '#live-updates' });
+  const [copyForm, setCopyForm] = useState({ eyebrow: 'From Sahsrah', heading: 'Live Updates', buttonLabel: 'View all updates', buttonHref: '/knowledge-hub/exam-updates' });
   const [uploading, setUploading] = useState<number | null>(null);
   useEffect(() => { if (query.data) setForm(query.data.map(({ title, excerpt, category, actionBadge, publishDate, imageUrl, imageAltText, detailUrl, isFeatured, isActive, displayOrder }) => ({ title, excerpt, category, actionBadge, publishDate, imageUrl, imageAltText, detailUrl, isFeatured, isActive, displayOrder }))); }, [query.data]);
    useEffect(() => { if (copyQuery.data) setCopyForm({ eyebrow: copyQuery.data.liveUpdatesEyebrow, heading: copyQuery.data.liveUpdatesHeading, buttonLabel: copyQuery.data.liveUpdatesButtonLabel, buttonHref: copyQuery.data.liveUpdatesButtonHref }); }, [copyQuery.data]);
