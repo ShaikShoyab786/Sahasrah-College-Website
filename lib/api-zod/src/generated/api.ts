@@ -5758,6 +5758,16 @@ export const getKnowledgeHubExamUpdatesPageResponseLatestHeadingMax = 160;
 
 export const getKnowledgeHubExamUpdatesPageResponseLatestDescriptionMax = 500;
 
+export const getKnowledgeHubExamUpdatesPageResponseCtaHeadingMax = 180;
+
+export const getKnowledgeHubExamUpdatesPageResponseCtaDescriptionMax = 700;
+
+export const getKnowledgeHubExamUpdatesPageResponseCtaButtonLabelMax = 80;
+
+export const getKnowledgeHubExamUpdatesPageResponseCtaButtonHrefMax = 1000;
+
+export const getKnowledgeHubExamUpdatesPageResponseCtaBackgroundImageUrlMax = 1000;
+
 export const getKnowledgeHubExamUpdatesPageResponseExamFiltersItemMax = 60;
 
 export const getKnowledgeHubExamUpdatesPageResponseExamFiltersMax = 12;
@@ -5775,6 +5785,12 @@ export const GetKnowledgeHubExamUpdatesPageResponse = zod.object({
   "latestEyebrow": zod.string().min(1).max(getKnowledgeHubExamUpdatesPageResponseLatestEyebrowMax),
   "latestHeading": zod.string().min(1).max(getKnowledgeHubExamUpdatesPageResponseLatestHeadingMax),
   "latestDescription": zod.string().min(1).max(getKnowledgeHubExamUpdatesPageResponseLatestDescriptionMax),
+  "ctaHeading": zod.string().min(1).max(getKnowledgeHubExamUpdatesPageResponseCtaHeadingMax),
+  "ctaDescription": zod.string().min(1).max(getKnowledgeHubExamUpdatesPageResponseCtaDescriptionMax),
+  "ctaButtonLabel": zod.string().min(1).max(getKnowledgeHubExamUpdatesPageResponseCtaButtonLabelMax),
+  "ctaButtonHref": zod.string().min(1).max(getKnowledgeHubExamUpdatesPageResponseCtaButtonHrefMax),
+  "ctaBackgroundImageUrl": zod.string().max(getKnowledgeHubExamUpdatesPageResponseCtaBackgroundImageUrlMax).nullable(),
+  "ctaVisible": zod.boolean(),
   "examFilters": zod.array(zod.string().min(1).max(getKnowledgeHubExamUpdatesPageResponseExamFiltersItemMax)).min(1).max(getKnowledgeHubExamUpdatesPageResponseExamFiltersMax)
 })
 
@@ -5952,6 +5968,16 @@ export const getAdminKnowledgeHubExamUpdatesResponseSettingsLatestHeadingMax = 1
 
 export const getAdminKnowledgeHubExamUpdatesResponseSettingsLatestDescriptionMax = 500;
 
+export const getAdminKnowledgeHubExamUpdatesResponseSettingsCtaHeadingMax = 180;
+
+export const getAdminKnowledgeHubExamUpdatesResponseSettingsCtaDescriptionMax = 700;
+
+export const getAdminKnowledgeHubExamUpdatesResponseSettingsCtaButtonLabelMax = 80;
+
+export const getAdminKnowledgeHubExamUpdatesResponseSettingsCtaButtonHrefMax = 1000;
+
+export const getAdminKnowledgeHubExamUpdatesResponseSettingsCtaBackgroundImageUrlMax = 1000;
+
 export const getAdminKnowledgeHubExamUpdatesResponseSettingsExamFiltersItemMax = 60;
 
 export const getAdminKnowledgeHubExamUpdatesResponseSettingsExamFiltersMax = 12;
@@ -5990,6 +6016,12 @@ export const GetAdminKnowledgeHubExamUpdatesResponse = zod.object({
   "latestEyebrow": zod.string().min(1).max(getAdminKnowledgeHubExamUpdatesResponseSettingsLatestEyebrowMax),
   "latestHeading": zod.string().min(1).max(getAdminKnowledgeHubExamUpdatesResponseSettingsLatestHeadingMax),
   "latestDescription": zod.string().min(1).max(getAdminKnowledgeHubExamUpdatesResponseSettingsLatestDescriptionMax),
+  "ctaHeading": zod.string().min(1).max(getAdminKnowledgeHubExamUpdatesResponseSettingsCtaHeadingMax),
+  "ctaDescription": zod.string().min(1).max(getAdminKnowledgeHubExamUpdatesResponseSettingsCtaDescriptionMax),
+  "ctaButtonLabel": zod.string().min(1).max(getAdminKnowledgeHubExamUpdatesResponseSettingsCtaButtonLabelMax),
+  "ctaButtonHref": zod.string().min(1).max(getAdminKnowledgeHubExamUpdatesResponseSettingsCtaButtonHrefMax),
+  "ctaBackgroundImageUrl": zod.string().max(getAdminKnowledgeHubExamUpdatesResponseSettingsCtaBackgroundImageUrlMax).nullable(),
+  "ctaVisible": zod.boolean(),
   "examFilters": zod.array(zod.string().min(1).max(getAdminKnowledgeHubExamUpdatesResponseSettingsExamFiltersItemMax)).min(1).max(getAdminKnowledgeHubExamUpdatesResponseSettingsExamFiltersMax)
 }),
   "updates": zod.array(zod.object({
@@ -6430,6 +6462,16 @@ export const updateAdminKnowledgeHubExamUpdatesPageBodyOneLatestHeadingMax = 160
 
 export const updateAdminKnowledgeHubExamUpdatesPageBodyOneLatestDescriptionMax = 500;
 
+export const updateAdminKnowledgeHubExamUpdatesPageBodyOneCtaHeadingMax = 180;
+
+export const updateAdminKnowledgeHubExamUpdatesPageBodyOneCtaDescriptionMax = 700;
+
+export const updateAdminKnowledgeHubExamUpdatesPageBodyOneCtaButtonLabelMax = 80;
+
+export const updateAdminKnowledgeHubExamUpdatesPageBodyOneCtaButtonHrefMax = 1000;
+
+export const updateAdminKnowledgeHubExamUpdatesPageBodyOneCtaBackgroundImageUrlMax = 1000;
+
 export const updateAdminKnowledgeHubExamUpdatesPageBodyOneExamFiltersItemMax = 60;
 
 export const updateAdminKnowledgeHubExamUpdatesPageBodyOneExamFiltersMax = 12;
@@ -6447,6 +6489,12 @@ export const UpdateAdminKnowledgeHubExamUpdatesPageBody = zod.object({
   "latestEyebrow": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesPageBodyOneLatestEyebrowMax),
   "latestHeading": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesPageBodyOneLatestHeadingMax),
   "latestDescription": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesPageBodyOneLatestDescriptionMax),
+  "ctaHeading": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesPageBodyOneCtaHeadingMax),
+  "ctaDescription": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesPageBodyOneCtaDescriptionMax),
+  "ctaButtonLabel": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesPageBodyOneCtaButtonLabelMax),
+  "ctaButtonHref": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesPageBodyOneCtaButtonHrefMax),
+  "ctaBackgroundImageUrl": zod.string().max(updateAdminKnowledgeHubExamUpdatesPageBodyOneCtaBackgroundImageUrlMax).nullable(),
+  "ctaVisible": zod.boolean(),
   "examFilters": zod.array(zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesPageBodyOneExamFiltersItemMax)).min(1).max(updateAdminKnowledgeHubExamUpdatesPageBodyOneExamFiltersMax)
 })
 
@@ -6470,6 +6518,16 @@ export const updateAdminKnowledgeHubExamUpdatesPageResponseLatestHeadingMax = 16
 
 export const updateAdminKnowledgeHubExamUpdatesPageResponseLatestDescriptionMax = 500;
 
+export const updateAdminKnowledgeHubExamUpdatesPageResponseCtaHeadingMax = 180;
+
+export const updateAdminKnowledgeHubExamUpdatesPageResponseCtaDescriptionMax = 700;
+
+export const updateAdminKnowledgeHubExamUpdatesPageResponseCtaButtonLabelMax = 80;
+
+export const updateAdminKnowledgeHubExamUpdatesPageResponseCtaButtonHrefMax = 1000;
+
+export const updateAdminKnowledgeHubExamUpdatesPageResponseCtaBackgroundImageUrlMax = 1000;
+
 export const updateAdminKnowledgeHubExamUpdatesPageResponseExamFiltersItemMax = 60;
 
 export const updateAdminKnowledgeHubExamUpdatesPageResponseExamFiltersMax = 12;
@@ -6487,6 +6545,12 @@ export const UpdateAdminKnowledgeHubExamUpdatesPageResponse = zod.object({
   "latestEyebrow": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesPageResponseLatestEyebrowMax),
   "latestHeading": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesPageResponseLatestHeadingMax),
   "latestDescription": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesPageResponseLatestDescriptionMax),
+  "ctaHeading": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesPageResponseCtaHeadingMax),
+  "ctaDescription": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesPageResponseCtaDescriptionMax),
+  "ctaButtonLabel": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesPageResponseCtaButtonLabelMax),
+  "ctaButtonHref": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesPageResponseCtaButtonHrefMax),
+  "ctaBackgroundImageUrl": zod.string().max(updateAdminKnowledgeHubExamUpdatesPageResponseCtaBackgroundImageUrlMax).nullable(),
+  "ctaVisible": zod.boolean(),
   "examFilters": zod.array(zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesPageResponseExamFiltersItemMax)).min(1).max(updateAdminKnowledgeHubExamUpdatesPageResponseExamFiltersMax)
 })
 

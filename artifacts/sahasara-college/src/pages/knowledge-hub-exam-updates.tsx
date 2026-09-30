@@ -1,4 +1,4 @@
-import { CalendarDays, ChevronDown, ChevronUp, ExternalLink, FileText, RotateCcw, Search, ShieldCheck } from 'lucide-react';
+import { ArrowUpRight, CalendarDays, ChevronDown, ChevronUp, ExternalLink, FileText, RotateCcw, Search, ShieldCheck } from 'lucide-react';
 import { useMemo, useState, type FormEvent } from 'react';
 import {
   useGetKnowledgeHubExamUpdates,
@@ -249,6 +249,32 @@ export default function KnowledgeHubExamUpdates() {
           </div>
         </section>
         <ImportantDates />
+        {page.ctaVisible && (
+          <section className="exam-counselling-cta" aria-labelledby="exam-counselling-title" data-testid="section-exam-counselling-cta">
+            {page.ctaBackgroundImageUrl && (
+              <img src={page.ctaBackgroundImageUrl} alt="" loading="lazy" className="exam-counselling-cta__image" data-testid="img-exam-counselling-cta" />
+            )}
+            <div className="exam-counselling-cta__shade" aria-hidden="true" />
+            <div className="mx-auto flex min-h-[420px] max-w-7xl flex-col justify-center px-6 py-16 sm:min-h-[480px] sm:py-20 lg:px-10 lg:py-24">
+              <div className="max-w-[680px]">
+                <div className="mb-7 flex items-center gap-3 text-[11px] font-bold uppercase tracking-[.22em] text-[#e7c998]">
+                  <span className="h-px w-9 bg-[#d4a36d]" aria-hidden="true" />
+                  Beyond the notices
+                </div>
+                <h2 id="exam-counselling-title" className="font-display text-[clamp(2.5rem,5.1vw,4.7rem)] font-semibold leading-[1.06] tracking-[-.055em] text-[#fff9ef]" data-testid="text-exam-counselling-heading">{page.ctaHeading}</h2>
+                <p className="mt-6 max-w-xl text-[15px] leading-7 text-[#f1e9df] sm:text-lg sm:leading-8" data-testid="text-exam-counselling-description">{page.ctaDescription}</p>
+                <a
+                  href={page.ctaButtonHref}
+                  {...(/^https:\/\//i.test(page.ctaButtonHref) ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                  className="exam-counselling-cta__button mt-9 inline-flex min-h-13 max-w-full items-center justify-center gap-3 rounded-xl px-6 py-3.5 text-center text-sm font-bold leading-5 shadow-[0_12px_28px_rgba(0,0,0,.24)] sm:text-[15px]"
+                  data-testid="link-exam-counselling-cta"
+                >
+                  {page.ctaButtonLabel}<ArrowUpRight size={18} className="shrink-0" aria-hidden="true" />
+                </a>
+              </div>
+            </div>
+          </section>
+        )}
       </main>
       <PublicFooter settings={{ collegeName: site.collegeName, tagline: site.tagline, logoUrl: site.logoUrl, email: site.email, phone: site.phone, footerText: site.footerText || fallbackSite.footerText }} />
     </div>

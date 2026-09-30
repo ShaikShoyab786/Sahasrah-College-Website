@@ -9,5 +9,11 @@ export const DEFAULT_KNOWLEDGE_HUB_EXAM_UPDATES_PAGE = {
   latestEyebrow: "OFFICIAL NOTICES",
   latestHeading: "Latest Exam Updates",
   latestDescription: "Official notifications, important notices, and key announcements.",
+  ctaHeading: "Need Guidance for Your Exam Preparation?",
+  ctaDescription: "Our academic counsellors can help with exam strategies, important dates, and preparation guidance.",
+  ctaButtonLabel: "Talk to an Academic Counsellor",
+  ctaButtonHref: "/contact",
+  ctaBackgroundImageUrl: "/exam-counselling-cta.jpg",
+  ctaVisible: true,
   examFilters: ["JEE", "NEET", "Intermediate", "EAMCET", "Other Exams"],
 } as const;

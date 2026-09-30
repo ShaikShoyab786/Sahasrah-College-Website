@@ -8463,12 +8463,18 @@ components:
         latestEyebrow: { type: string, minLength: 1, maxLength: 120 }
         latestHeading: { type: string, minLength: 1, maxLength: 160 }
         latestDescription: { type: string, minLength: 1, maxLength: 500 }
+        ctaHeading: { type: string, minLength: 1, maxLength: 180 }
+        ctaDescription: { type: string, minLength: 1, maxLength: 700 }
+        ctaButtonLabel: { type: string, minLength: 1, maxLength: 80 }
+        ctaButtonHref: { type: string, minLength: 1, maxLength: 1000 }
+        ctaBackgroundImageUrl: { type: ["string", "null"], maxLength: 1000 }
+        ctaVisible: { type: boolean }
         examFilters:
           type: array
           minItems: 1
           maxItems: 12
           items: { type: string, minLength: 1, maxLength: 60 }
-      required: [heroEyebrow, heroHeadline, heroDescription, heroBackgroundImageUrl, heroBackgroundImageAltText, searchPlaceholder, searchButtonLabel, latestEyebrow, latestHeading, latestDescription, examFilters]
+      required: [heroEyebrow, heroHeadline, heroDescription, heroBackgroundImageUrl, heroBackgroundImageAltText, searchPlaceholder, searchButtonLabel, latestEyebrow, latestHeading, latestDescription, examFilters, ctaHeading, ctaDescription, ctaButtonLabel, ctaButtonHref, ctaBackgroundImageUrl, ctaVisible]
     KnowledgeHubExamUpdatesPageInput:
       allOf:
         - $ref: "#/components/schemas/KnowledgeHubExamUpdatesPageSettings"

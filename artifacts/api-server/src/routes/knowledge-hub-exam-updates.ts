@@ -64,6 +64,18 @@ function isSafeImageUrl(value: string | null) {
   }
 }
 
+function isSafeCtaDestination(value: string) {
+  if (value.startsWith("/")) {
+    return !value.startsWith("//") && !value.includes("\\") && !/\s/.test(value);
+  }
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" && !url.username && !url.password;
+  } catch {
+    return false;
+  }
+}
+
 function validOfficialUrl(value: string) {
   try {
     const url = new URL(value);
@@ -92,7 +104,7 @@ async function pageSettings() {
   );
   const stored = rows[0]?.content;
   return stored && typeof stored === "object" && !Array.isArray(stored)
-    ? stored
+    ? { ...DEFAULT_KNOWLEDGE_HUB_EXAM_UPDATES_PAGE, ...stored }
     : DEFAULT_KNOWLEDGE_HUB_EXAM_UPDATES_PAGE;
 }
 
@@ -176,8 +188,17 @@ router.get("/admin/knowledge-hub/exam-updates", requireAdmin, async (req, res): 
 
 router.put("/admin/knowledge-hub/exam-updates/page", requireAdmin, async (req, res): Promise<void> => {
   const parsed = Z.UpdateAdminKnowledgeHubExamUpdatesPageBody.safeParse(req.body);
-  if (!parsed.success || !isSafeImageUrl(parsed.data?.heroBackgroundImageUrl ?? null)) {
-    res.status(400).json({ error: "Check the page settings and hero image URL." });
+  if (!parsed.success || !isSafeImageUrl(parsed.data?.heroBackgroundImageUrl ?? null) || !isSafeImageUrl(parsed.data?.ctaBackgroundImageUrl ?? null)) {
+    res.status(400).json({ error: "Check the page settings and image URLs." });
+    return;
+  }
+  if (
+    !parsed.data.ctaHeading.trim() ||
+    !parsed.data.ctaDescription.trim() ||
+    !parsed.data.ctaButtonLabel.trim() ||
+    !isSafeCtaDestination(parsed.data.ctaButtonHref.trim())
+  ) {
+    res.status(400).json({ error: "Add CTA text and a valid site path or HTTPS button destination." });
     return;
   }
   const uniqueFilters = [...new Set(parsed.data.examFilters.map((filter) => filter.trim()).filter(Boolean))];
@@ -185,7 +206,15 @@ router.put("/admin/knowledge-hub/exam-updates/page", requireAdmin, async (req, r
     res.status(400).json({ error: "Exam filters must be non-empty and unique." });
     return;
   }
-  const settings = { ...parsed.data, examFilters: uniqueFilters };
+  const settings = {
+    ...parsed.data,
+    examFilters: uniqueFilters,
+    ctaHeading: parsed.data.ctaHeading.trim(),
+    ctaDescription: parsed.data.ctaDescription.trim(),
+    ctaButtonLabel: parsed.data.ctaButtonLabel.trim(),
+    ctaButtonHref: parsed.data.ctaButtonHref.trim(),
+    ctaBackgroundImageUrl: parsed.data.ctaBackgroundImageUrl?.trim() || null,
+  };
   try {
     await prisma.$executeRawUnsafe(
       `INSERT INTO "KnowledgeHubExamUpdatesPageSettings" ("id", "content", "createdAt", "updatedAt")

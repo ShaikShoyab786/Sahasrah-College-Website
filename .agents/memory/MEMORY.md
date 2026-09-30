@@ -9,3 +9,4 @@
 - [Results alumni story publication](results-story-publication.md) — keep alumni stories separate from current results and never publish imported drafts without review.
 - [Resource Hub data boundary](resource-hub-data.md) — keep published resources separate from legacy homepage previews and require visible-category eligibility for featured items.
 - [Admin test credentials](admin-test-credentials.md) — isolated browser tests may lack workspace admin secrets; verify protected APIs without exposing credentials.
+- [JSON page settings evolution](json-page-settings-evolution.md) — merge new defaults into saved JSON before strict response validation so older records still load.

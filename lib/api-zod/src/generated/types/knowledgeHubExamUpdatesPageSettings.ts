@@ -55,6 +55,32 @@ export interface KnowledgeHubExamUpdatesPageSettings {
      */
   latestDescription: string;
   /**
+     * @minLength 1
+     * @maxLength 180
+     */
+  ctaHeading: string;
+  /**
+     * @minLength 1
+     * @maxLength 700
+     */
+  ctaDescription: string;
+  /**
+     * @minLength 1
+     * @maxLength 80
+     */
+  ctaButtonLabel: string;
+  /**
+     * @minLength 1
+     * @maxLength 1000
+     */
+  ctaButtonHref: string;
+  /**
+     * @maxLength 1000
+     * @nullable
+     */
+  ctaBackgroundImageUrl: string | null;
+  ctaVisible: boolean;
+  /**
      * @minItems 1
      * @maxItems 12
      * @items.minLength 1

@@ -1,14 +1,16 @@
-import { Archive, CalendarDays, ExternalLink, FileText, ImagePlus, Pencil, Plus, Save, ShieldCheck, Trash2, X } from 'lucide-react';
-import { useEffect, useMemo, useRef, useState, type InputHTMLAttributes, type TextareaHTMLAttributes } from 'react';
+import { Archive, CalendarDays, ExternalLink, FileText, ImagePlus, MessageCircle, Pencil, Plus, Save, ShieldCheck, Trash2, X } from 'lucide-react';
+import { useEffect, useMemo, useRef, useState, type ChangeEvent, type InputHTMLAttributes, type TextareaHTMLAttributes } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useForm, type Control } from 'react-hook-form';
 import {
   getGetAdminKnowledgeHubExamUpdatesQueryKey,
+  getGetKnowledgeHubExamUpdatesPageQueryKey,
   useCreateAdminKnowledgeHubExamUpdate,
   useDeleteAdminKnowledgeHubExamUpdate,
   useGetAdminKnowledgeHubExamUpdates,
   useUpdateAdminKnowledgeHubExamUpdate,
   useUpdateAdminKnowledgeHubExamUpdatesPage,
+  useUploadAdminImage,
   type KnowledgeHubExamUpdate,
   type KnowledgeHubExamUpdateInput,
   type KnowledgeHubExamUpdatesPageInput,
@@ -34,8 +36,24 @@ function blankSettings(): KnowledgeHubExamUpdatesPageInput {
     latestEyebrow: 'OFFICIAL NOTICES',
     latestHeading: 'Latest Exam Updates',
     latestDescription: 'Official notifications, important notices, and key announcements.',
+    ctaHeading: 'Need Guidance for Your Exam Preparation?',
+    ctaDescription: 'Our academic counsellors can help with exam strategies, important dates, and preparation guidance.',
+    ctaButtonLabel: 'Talk to an Academic Counsellor',
+    ctaButtonHref: '/contact',
+    ctaBackgroundImageUrl: '/exam-counselling-cta.jpg',
+    ctaVisible: true,
     examFilters: ['JEE', 'NEET', 'Intermediate', 'EAMCET', 'Other Exams'],
   };
+}
+
+function isSafeDestination(value: string) {
+  if (/^\/(?!\/)[^\s\\]*$/.test(value)) return true;
+  try {
+    const url = new URL(value);
+    return url.protocol === 'https:' && Boolean(url.hostname) && !url.username && !url.password;
+  } catch {
+    return false;
+  }
 }
 
 function blankUpdate(order = 1): KnowledgeHubExamUpdateInput {
@@ -114,6 +132,7 @@ export default function AdminKnowledgeHubExamUpdates() {
   const queryClient = useQueryClient();
   const query = useGetAdminKnowledgeHubExamUpdates();
   const updatePage = useUpdateAdminKnowledgeHubExamUpdatesPage();
+  const uploadImage = useUploadAdminImage();
   const createUpdate = useCreateAdminKnowledgeHubExamUpdate();
   const updateUpdate = useUpdateAdminKnowledgeHubExamUpdate();
   const deleteUpdate = useDeleteAdminKnowledgeHubExamUpdate();
@@ -130,11 +149,13 @@ export default function AdminKnowledgeHubExamUpdates() {
   );
   const selectedRecord = records.find((item) => item.id === selectedId);
   const filters = settingsForm.watch('examFilters') ?? [];
+  const ctaImage = settingsForm.watch('ctaBackgroundImageUrl');
+  const ctaVisible = settingsForm.watch('ctaVisible');
   const recordValues = recordForm.watch();
 
   useEffect(() => {
     if (!query.data || initialized.current) return;
-    settingsForm.reset(query.data.settings);
+    settingsForm.reset({ ...blankSettings(), ...query.data.settings });
     const first = [...query.data.updates].sort((a, b) => Number(b.isPinned) - Number(a.isPinned) || a.displayOrder - b.displayOrder)[0];
     if (first) {
       setSelectedId(first.id);
@@ -155,6 +176,11 @@ export default function AdminKnowledgeHubExamUpdates() {
     const next = {
       ...values,
       heroBackgroundImageUrl: values.heroBackgroundImageUrl?.trim() || null,
+      ctaHeading: values.ctaHeading?.trim() || '',
+      ctaDescription: values.ctaDescription?.trim() || '',
+      ctaButtonLabel: values.ctaButtonLabel?.trim() || '',
+      ctaButtonHref: values.ctaButtonHref?.trim() || '',
+      ctaBackgroundImageUrl: values.ctaBackgroundImageUrl?.trim() || null,
       examFilters: values.examFilters.map((item) => item.trim()).filter(Boolean),
     };
     if (!next.examFilters.length) {
@@ -165,13 +191,51 @@ export default function AdminKnowledgeHubExamUpdates() {
       setError('Add alt text for the hero background image.');
       return;
     }
+    for (const field of ['ctaHeading', 'ctaDescription', 'ctaButtonLabel'] as const) {
+      if (!next[field]) {
+        settingsForm.setError(field, { message: 'This field cannot be blank.' });
+        setError('Complete the counsellor invitation before saving.');
+        return;
+      }
+    }
+    if (!isSafeDestination(next.ctaButtonHref)) {
+      settingsForm.setError('ctaButtonHref', { message: 'Use a site path starting with / or a valid HTTPS URL.' });
+      setError('Enter a safe destination for the counselling button.');
+      return;
+    }
+    if (next.ctaBackgroundImageUrl && !isSafeDestination(next.ctaBackgroundImageUrl)) {
+      settingsForm.setError('ctaBackgroundImageUrl', { message: 'Use a site path starting with / or a valid HTTPS image URL.' });
+      setError('Enter a safe image URL or remove the image.');
+      return;
+    }
     updatePage.mutate({ data: next }, {
       onSuccess: (saved) => {
         settingsForm.reset(saved);
         invalidate();
+        void queryClient.invalidateQueries({ queryKey: getGetKnowledgeHubExamUpdatesPageQueryKey() });
         showNotice('Exam Updates page settings saved.');
       },
       onError: showError,
+    });
+  };
+
+  const uploadCtaImage = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+      setError('Choose a JPEG, PNG, or WebP image.');
+      setNotice('');
+      return;
+    }
+    setError('');
+    setNotice('');
+    uploadImage.mutate({ data: { file, purpose: 'cta' } }, {
+      onSuccess: ({ url }) => {
+        settingsForm.setValue('ctaBackgroundImageUrl', url, { shouldDirty: true, shouldValidate: true });
+        showNotice('Image uploaded. Save page settings to publish this replacement.');
+      },
+      onError: (reason) => showError(reason),
     });
   };
 
@@ -297,8 +361,41 @@ export default function AdminKnowledgeHubExamUpdates() {
               </div>
             </div>
           </EditorCard>
+          <EditorCard icon={<MessageCircle size={19} />} title="Exam preparation invitation" description="A final conversation after the notices and important dates, not another announcement.">
+            <div className="space-y-6">
+              <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-[hsl(var(--admin-border))] bg-[hsl(var(--admin-surface-soft))] p-4">
+                <input type="checkbox" checked={Boolean(ctaVisible)} onChange={(event) => settingsForm.setValue('ctaVisible', event.target.checked, { shouldDirty: true })} className="mt-0.5 h-4 w-4 accent-[hsl(var(--admin-focus))]" data-testid="checkbox-exam-cta-visible" />
+                <span><span className="block text-sm font-bold text-[hsl(var(--admin-text))]">Show counselling invitation</span><span className="mt-1 block text-xs leading-5 text-[hsl(var(--admin-text-muted))]">When off, the public page ends after Important Dates.</span></span>
+              </label>
+              <div className="grid gap-5 md:grid-cols-2">
+                <div className="md:col-span-2"><TextField control={settingsForm.control} name="ctaHeading" label="Invitation heading" required maxLength={180} data-testid="input-exam-cta-heading" /></div>
+                <div className="md:col-span-2"><TextAreaField control={settingsForm.control} name="ctaDescription" label="Supporting description" required maxLength={700} data-testid="input-exam-cta-description" /></div>
+                <TextField control={settingsForm.control} name="ctaButtonLabel" label="Button label" required maxLength={80} data-testid="input-exam-cta-button-label" />
+                <TextField control={settingsForm.control} name="ctaButtonHref" label="Button destination" required maxLength={1000} placeholder="/contact" data-testid="input-exam-cta-button-href" />
+              </div>
+              <p className="-mt-3 text-xs leading-5 text-[hsl(var(--admin-text-muted))]">Link to a real site path (such as /contact) or an HTTPS page.</p>
+              <div className="overflow-hidden rounded-2xl border border-[hsl(var(--admin-border))] bg-[hsl(var(--admin-surface-soft))]">
+                <div className="relative aspect-[2.4/1] min-h-40 bg-[#211f1b]">
+                  {ctaImage ? <img src={ctaImage} alt="Counselling CTA background preview" className="h-full w-full object-cover" data-testid="img-exam-cta-preview" /> : <div className="grid h-full place-items-center px-5 text-center text-sm text-[#f1e9df]">No image selected. The public invitation will use a dark, readable background.</div>}
+                  {ctaImage && <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#161715]/85 via-[#161715]/50 to-transparent" aria-hidden="true" />}
+                  <span className="pointer-events-none absolute bottom-5 left-5 max-w-[70%] font-display text-xl font-semibold text-[#fff9ef] sm:text-2xl">{settingsForm.watch('ctaHeading')}</span>
+                </div>
+                <div className="space-y-4 p-4 sm:p-5">
+                  <div className="flex flex-wrap items-center gap-3">
+                    <label className={`${buttonClass} cursor-pointer border border-[hsl(var(--admin-border))] bg-[hsl(var(--admin-input-background))] text-[hsl(var(--admin-text))] ${uploadImage.isPending ? 'pointer-events-none opacity-55' : ''}`}>
+                      <input type="file" accept="image/jpeg,image/png,image/webp" onChange={uploadCtaImage} disabled={uploadImage.isPending} className="sr-only" data-testid="input-exam-cta-image-upload" />
+                      <ImagePlus size={16} /> {uploadImage.isPending ? 'Uploading image…' : ctaImage ? 'Replace image' : 'Upload image'}
+                    </label>
+                    {ctaImage && <button type="button" onClick={() => { settingsForm.setValue('ctaBackgroundImageUrl', null, { shouldDirty: true }); showNotice('Image removed from the form. Save page settings to publish the change.'); }} className={`${buttonClass} text-[hsl(var(--admin-text-muted))] hover:bg-[hsl(var(--admin-border)/.4)]`} data-testid="button-remove-exam-cta-image"><X size={16} /> Remove image</button>}
+                  </div>
+                  <TextField control={settingsForm.control} name="ctaBackgroundImageUrl" label="Background image URL (optional)" maxLength={1000} placeholder="/exam-counselling-cta.jpg" data-testid="input-exam-cta-image-url" />
+                  <p className="text-xs leading-5 text-[hsl(var(--admin-text-muted))]">Upload a new image or paste an image URL. Save page settings to make it live.</p>
+                </div>
+              </div>
+            </div>
+          </EditorCard>
           <SaveStatus error={error} notice={notice} />
-          <div className="flex justify-end"><SaveButton pending={updatePage.isPending} testId="button-save-exam-updates-page">Save page settings</SaveButton></div>
+          <div className="flex justify-end"><SaveButton pending={updatePage.isPending || uploadImage.isPending} testId="button-save-exam-updates-page">Save page settings</SaveButton></div>
         </form>
       </Form>
 
