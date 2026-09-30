@@ -1,0 +1,17 @@
+Implement only the Important Dates section on the existing Exam Updates page. The hero and Latest Exam Updates sections are already complete; leave them unchanged. Do not build Quick Links, the guidance panel, or later sections yet. Follow the site’s existing style and make the section clear and professional without overusing blue.
+
+Public section
+Place an Important Dates panel directly below Latest Exam Updates. Include an editable heading and description, exam tabs for JEE, NEET, Intermediate, EAMCET, and Other Exams, and a chronological milestone timeline for the selected exam and cycle.
+
+On desktop, display the key milestones in a horizontal timeline with clear icons, milestone labels, and dates. On mobile, stack them vertically. Support single dates and date ranges. Show View Full Calendar to expand the remaining milestones inline, and View Less to collapse them. The selected exam tab should filter both the compact and expanded timeline.
+
+Include milestone types such as registration opening, application deadline, admit card release, exam date, answer key, and result. These are examples—not a fixed list; admins must be able to add other milestone types.
+
+Show both past and upcoming milestones. Mark past events Completed; show current events as Ongoing and future events as Upcoming. For date ranges, mark an event completed after its end date. Let admins correct the status for postponed or cancelled events.
+
+Admin management
+Under the existing Pages → Knowledge Hub → Exam Updates admin area, add controls for this section. Admins must be able to add, edit, publish/unpublish, reorder, archive, and delete milestones with confirmation. Each milestone should support its exam, exam cycle/year, title, type, start date, optional end date, description, official-source URL, status, and display order. Keep the section heading, description, tab labels, and visibility manageable there too. Changes must persist and appear on the public page without code changes.
+
+Add starter entries in the admin dashboard yourself. Verify dates and source URLs against official exam authorities; never invent deadlines or publish unverified dates as fact. If a date can’t be verified, keep that entry clearly marked as a draft/demo until confirmed.
+
+Check text contrast and readability, especially the tabs, dates, icons, and status labels. Test admin create/edit/publish, exam filtering, completed/ongoing/upcoming states, date ranges, and expand/collapse behavior at desktop and mobile sizes. Don’t change the completed Hero or Latest Exam Updates sections.
