@@ -6,10 +6,10 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export type ImageUploadInputPurpose = typeof ImageUploadInputPurpose[keyof typeof ImageUploadInputPurpose];
+export type AdminImageUploadCompletionPurpose = typeof AdminImageUploadCompletionPurpose[keyof typeof AdminImageUploadCompletionPurpose];
 
 
-export const ImageUploadInputPurpose = {
+export const AdminImageUploadCompletionPurpose = {
   logo: 'logo',
   hero: 'hero',
   campus: 'campus',

@@ -4643,10 +4643,19 @@ export interface KnowledgeHubResourceUploadCompleteResponse {
   imageUrl: string | null;
 }
 
-export type ImageUploadInputPurpose = typeof ImageUploadInputPurpose[keyof typeof ImageUploadInputPurpose];
+export type AdminImageUploadRequestContentType = typeof AdminImageUploadRequestContentType[keyof typeof AdminImageUploadRequestContentType];
 
 
-export const ImageUploadInputPurpose = {
+export const AdminImageUploadRequestContentType = {
+  'image/jpeg': 'image/jpeg',
+  'image/png': 'image/png',
+  'image/webp': 'image/webp',
+} as const;
+
+export type AdminImageUploadRequestPurpose = typeof AdminImageUploadRequestPurpose[keyof typeof AdminImageUploadRequestPurpose];
+
+
+export const AdminImageUploadRequestPurpose = {
   logo: 'logo',
   hero: 'hero',
   campus: 'campus',
@@ -4661,9 +4670,79 @@ export const ImageUploadInputPurpose = {
   login: 'login',
 } as const;
 
-export interface ImageUploadInput {
-  file: Blob;
-  purpose: ImageUploadInputPurpose;
+export interface AdminImageUploadRequest {
+  /**
+     * @minLength 1
+     * @maxLength 240
+     */
+  fileName: string;
+  /**
+     * @minimum 1
+     * @maximum 5242880
+     */
+  size: number;
+  contentType: AdminImageUploadRequestContentType;
+  purpose: AdminImageUploadRequestPurpose;
+}
+
+export type AdminImageUploadUrlPurpose = typeof AdminImageUploadUrlPurpose[keyof typeof AdminImageUploadUrlPurpose];
+
+
+export const AdminImageUploadUrlPurpose = {
+  logo: 'logo',
+  hero: 'hero',
+  campus: 'campus',
+  cta: 'cta',
+  update: 'update',
+  topic: 'topic',
+  result: 'result',
+  testimonial: 'testimonial',
+  faculty: 'faculty',
+  gallery: 'gallery',
+  knowledge: 'knowledge',
+  login: 'login',
+} as const;
+
+export interface AdminImageUploadUrl {
+  uploadURL: string;
+  /**
+     * @minLength 1
+     * @maxLength 255
+     */
+  objectPath: string;
+  /**
+     * @minLength 1
+     * @maxLength 500
+     */
+  url: string;
+  purpose: AdminImageUploadUrlPurpose;
+}
+
+export type AdminImageUploadCompletionPurpose = typeof AdminImageUploadCompletionPurpose[keyof typeof AdminImageUploadCompletionPurpose];
+
+
+export const AdminImageUploadCompletionPurpose = {
+  logo: 'logo',
+  hero: 'hero',
+  campus: 'campus',
+  cta: 'cta',
+  update: 'update',
+  topic: 'topic',
+  result: 'result',
+  testimonial: 'testimonial',
+  faculty: 'faculty',
+  gallery: 'gallery',
+  knowledge: 'knowledge',
+  login: 'login',
+} as const;
+
+export interface AdminImageUploadCompletion {
+  /**
+     * @minLength 1
+     * @maxLength 255
+     */
+  objectPath: string;
+  purpose: AdminImageUploadCompletionPurpose;
 }
 
 export type ImageUploadResultPurpose = typeof ImageUploadResultPurpose[keyof typeof ImageUploadResultPurpose];

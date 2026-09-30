@@ -43,6 +43,9 @@ import type {
   AdminCourse,
   AdminFacultyCollection,
   AdminFacultyMember,
+  AdminImageUploadCompletion,
+  AdminImageUploadRequest,
+  AdminImageUploadUrl,
   AdminKnowledgeHubArticles,
   AdminKnowledgeHubExamUpdates,
   AdminKnowledgeHubResources,
@@ -111,7 +114,6 @@ import type {
   HomepageStatisticsInput,
   HomepageTestimonials,
   HomepageTestimonialsInput,
-  ImageUploadInput,
   ImageUploadResult,
   KnowledgeHubArticle,
   KnowledgeHubArticleCategory,
@@ -9500,7 +9502,7 @@ export const useUpdateAboutAdmissionCta = <TError = ErrorType<ErrorResponse>,
       return useMutation(getUpdateAboutAdmissionCtaMutationOptions(options));
     }
 
-export const getUploadAdminImageUrl = () => {
+export const getRequestAdminImageUploadUrlUrl = () => {
 
 
 
@@ -9509,19 +9511,30 @@ export const getUploadAdminImageUrl = () => {
 }
 
 /**
- * @summary Upload a logo, hero, campus, or CTA image
+ * @summary Request a presigned URL for an admin image
  */
-export const uploadAdminImage = async (imageUploadInput: ImageUploadInput, options?: Parameters<typeof customFetch>[1]): Promise<ImageUploadResult> => {
-    const formData = new FormData();
-formData.append(`file`, imageUploadInput.file);
-formData.append(`purpose`, imageUploadInput.purpose);
+export const requestAdminImageUploadUrl = async (adminImageUploadRequest: AdminImageUploadRequest, options?: Parameters<typeof customFetch>[1]): Promise<AdminImageUploadUrl> => {
 
-  return customFetch<ImageUploadResult>(getUploadAdminImageUrl(),
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<AdminImageUploadUrl>(getRequestAdminImageUploadUrlUrl(),
   {
     ...options,
-    method: 'POST'
-    ,
-    body: formData
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(adminImageUploadRequest)
   }
 );}
 
@@ -9529,13 +9542,13 @@ formData.append(`purpose`, imageUploadInput.purpose);
 
 
 
-export const getUploadAdminImageMutationKey = () => ['uploadAdminImage'] as const;
+export const getRequestAdminImageUploadUrlMutationKey = () => ['requestAdminImageUploadUrl'] as const;
 
-export const getUploadAdminImageMutationOptions = <TError = ErrorType<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof uploadAdminImage>>, TError,UploadAdminImageMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
-): UseMutationOptions<Awaited<ReturnType<typeof uploadAdminImage>>, TError,UploadAdminImageMutationVariables, TContext> => {
+export const getRequestAdminImageUploadUrlMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof requestAdminImageUploadUrl>>, TError,RequestAdminImageUploadUrlMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof requestAdminImageUploadUrl>>, TError,RequestAdminImageUploadUrlMutationVariables, TContext> => {
 
-const mutationKey = getUploadAdminImageMutationKey();
+const mutationKey = getRequestAdminImageUploadUrlMutationKey();
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -9545,10 +9558,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof uploadAdminImage>>, UploadAdminImageMutationVariables> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof requestAdminImageUploadUrl>>, RequestAdminImageUploadUrlMutationVariables> = (props) => {
           const {data} = props ?? {};
 
-          return  uploadAdminImage(data,requestOptions)
+          return  requestAdminImageUploadUrl(data,requestOptions)
         }
 
 
@@ -9558,23 +9571,111 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type UploadAdminImageMutationResult = NonNullable<Awaited<ReturnType<typeof uploadAdminImage>>>
-    export type UploadAdminImageMutationBody = BodyType<ImageUploadInput>
-    export type UploadAdminImageMutationError = ErrorType<ErrorResponse>
-    export type UploadAdminImageMutationVariables = {data: BodyType<ImageUploadInput>}
+    export type RequestAdminImageUploadUrlMutationResult = NonNullable<Awaited<ReturnType<typeof requestAdminImageUploadUrl>>>
+    export type RequestAdminImageUploadUrlMutationBody = BodyType<AdminImageUploadRequest>
+    export type RequestAdminImageUploadUrlMutationError = ErrorType<ErrorResponse>
+    export type RequestAdminImageUploadUrlMutationVariables = {data: BodyType<AdminImageUploadRequest>}
 
     /**
- * @summary Upload a logo, hero, campus, or CTA image
+ * @summary Request a presigned URL for an admin image
  */
-export const useUploadAdminImage = <TError = ErrorType<ErrorResponse>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof uploadAdminImage>>, TError,UploadAdminImageMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+export const useRequestAdminImageUploadUrl = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof requestAdminImageUploadUrl>>, TError,RequestAdminImageUploadUrlMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
  ): UseMutationResult<
-        Awaited<ReturnType<typeof uploadAdminImage>>,
+        Awaited<ReturnType<typeof requestAdminImageUploadUrl>>,
         TError,
-        UploadAdminImageMutationVariables,
+        RequestAdminImageUploadUrlMutationVariables,
         TContext
       > => {
-      return useMutation(getUploadAdminImageMutationOptions(options));
+      return useMutation(getRequestAdminImageUploadUrlMutationOptions(options));
+    }
+
+export const getCompleteAdminImageUploadUrl = () => {
+
+
+
+
+  return `/api/admin/uploads/complete`
+}
+
+/**
+ * @summary Verify an uploaded admin image
+ */
+export const completeAdminImageUpload = async (adminImageUploadCompletion: AdminImageUploadCompletion, options?: Parameters<typeof customFetch>[1]): Promise<ImageUploadResult> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<ImageUploadResult>(getCompleteAdminImageUploadUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(adminImageUploadCompletion)
+  }
+);}
+
+
+
+
+
+export const getCompleteAdminImageUploadMutationKey = () => ['completeAdminImageUpload'] as const;
+
+export const getCompleteAdminImageUploadMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof completeAdminImageUpload>>, TError,CompleteAdminImageUploadMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof completeAdminImageUpload>>, TError,CompleteAdminImageUploadMutationVariables, TContext> => {
+
+const mutationKey = getCompleteAdminImageUploadMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof completeAdminImageUpload>>, CompleteAdminImageUploadMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  completeAdminImageUpload(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CompleteAdminImageUploadMutationResult = NonNullable<Awaited<ReturnType<typeof completeAdminImageUpload>>>
+    export type CompleteAdminImageUploadMutationBody = BodyType<AdminImageUploadCompletion>
+    export type CompleteAdminImageUploadMutationError = ErrorType<ErrorResponse>
+    export type CompleteAdminImageUploadMutationVariables = {data: BodyType<AdminImageUploadCompletion>}
+
+    /**
+ * @summary Verify an uploaded admin image
+ */
+export const useCompleteAdminImageUpload = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof completeAdminImageUpload>>, TError,CompleteAdminImageUploadMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof completeAdminImageUpload>>,
+        TError,
+        CompleteAdminImageUploadMutationVariables,
+        TContext
+      > => {
+      return useMutation(getCompleteAdminImageUploadMutationOptions(options));
     }
 
 export const getGetKnowledgeHubExamUpdatesPageUrl = () => {

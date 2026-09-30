@@ -2732,26 +2732,70 @@ paths:
                 $ref: "#/components/schemas/ErrorResponse"
   /admin/uploads:
     post:
-      operationId: uploadAdminImage
+      operationId: requestAdminImageUploadUrl
       tags: [admin]
-      summary: Upload a logo, hero, campus, or CTA image
+      summary: Request a presigned URL for an admin image
       security:
         - cookieAuth: []
       requestBody:
         required: true
         content:
-          multipart/form-data:
+          application/json:
             schema:
-              $ref: "#/components/schemas/ImageUploadInput"
+              $ref: "#/components/schemas/AdminImageUploadRequest"
       responses:
-        "201":
-          description: Uploaded image reference
+        "200":
+          description: Upload URL and public image reference
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminImageUploadUrl"
+        "400":
+          description: Invalid image
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Failed to prepare image upload
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/uploads/complete:
+    post:
+      operationId: completeAdminImageUpload
+      tags: [admin]
+      summary: Verify an uploaded admin image
+      security:
+        - cookieAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdminImageUploadCompletion"
+      responses:
+        "200":
+          description: Verified public image reference
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ImageUploadResult"
         "400":
-          description: Invalid image
+          description: Invalid or incomplete image upload
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "500":
+          description: Failed to verify image upload
           content:
             application/json:
               schema:
@@ -9251,18 +9295,40 @@ components:
         objectPath: { type: string, pattern: "^/objects/uploads/[a-f0-9-]{36}$" }
         imageUrl: { type: ["string", "null"], maxLength: 1000 }
       required: [kind, objectPath, imageUrl]
-    ImageUploadInput:
+    AdminImageUploadRequest:
       type: object
       properties:
-        file:
+        fileName: { type: string, minLength: 1, maxLength: 240 }
+        size: { type: integer, minimum: 1, maximum: 5242880 }
+        contentType:
           type: string
-          format: binary
+          enum: [image/jpeg, image/png, image/webp]
         purpose:
           type: string
           enum: [logo, hero, campus, cta, update, topic, result, testimonial, faculty, gallery, knowledge, login]
       required:
-        - file
+        - fileName
+        - size
+        - contentType
         - purpose
+    AdminImageUploadUrl:
+      type: object
+      properties:
+        uploadURL: { type: string, format: uri }
+        objectPath: { type: string, minLength: 1, maxLength: 255 }
+        url: { type: string, minLength: 1, maxLength: 500 }
+        purpose:
+          type: string
+          enum: [logo, hero, campus, cta, update, topic, result, testimonial, faculty, gallery, knowledge, login]
+      required: [uploadURL, objectPath, url, purpose]
+    AdminImageUploadCompletion:
+      type: object
+      properties:
+        objectPath: { type: string, minLength: 1, maxLength: 255 }
+        purpose:
+          type: string
+          enum: [logo, hero, campus, cta, update, topic, result, testimonial, faculty, gallery, knowledge, login]
+      required: [objectPath, purpose]
     ImageUploadResult:
       type: object
       properties:

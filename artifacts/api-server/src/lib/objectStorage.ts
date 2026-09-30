@@ -88,6 +88,25 @@ export class ObjectStorageService {
     return null;
   }
 
+  async getPublicObjectUploadURL(filePath: string): Promise<string> {
+    const normalizedPath = filePath.replace(/^\/+/, '');
+    if (
+      !normalizedPath ||
+      normalizedPath.split('/').some((segment) => !segment || segment === '..')
+    ) {
+      throw new Error('Invalid public object path');
+    }
+
+    const fullPath = `${this.getPublicObjectSearchPaths()[0]}/${normalizedPath}`;
+    const { bucketName, objectName } = parseObjectPath(fullPath);
+    return signObjectURL({
+      bucketName,
+      objectName,
+      method: 'PUT',
+      ttlSec: 900,
+    });
+  }
+
   async downloadObject(
     file: File,
     cacheTtlSec: number = 3600,

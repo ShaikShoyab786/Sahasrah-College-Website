@@ -5820,14 +5820,48 @@ export const UpdateAboutAdmissionCtaResponse = zod.object({
 
 
 /**
- * @summary Upload a logo, hero, campus, or CTA image
+ * @summary Request a presigned URL for an admin image
  */
-export const UploadAdminImageBody = zod.object({
-  "file": zod.instanceof(Blob),
+export const requestAdminImageUploadUrlBodyFileNameMax = 240;
+
+export const requestAdminImageUploadUrlBodySizeMax = 5242880;
+
+
+
+export const RequestAdminImageUploadUrlBody = zod.object({
+  "fileName": zod.string().min(1).max(requestAdminImageUploadUrlBodyFileNameMax),
+  "size": zod.number().int().min(1).max(requestAdminImageUploadUrlBodySizeMax),
+  "contentType": zod.enum(['image/jpeg', 'image/png', 'image/webp']),
   "purpose": zod.enum(['logo', 'hero', 'campus', 'cta', 'update', 'topic', 'result', 'testimonial', 'faculty', 'gallery', 'knowledge', 'login'])
 })
 
-export const UploadAdminImageResponse = zod.object({
+export const requestAdminImageUploadUrlResponseObjectPathMax = 255;
+
+export const requestAdminImageUploadUrlResponseUrlMax = 500;
+
+
+
+export const RequestAdminImageUploadUrlResponse = zod.object({
+  "uploadURL": zod.string().url(),
+  "objectPath": zod.string().min(1).max(requestAdminImageUploadUrlResponseObjectPathMax),
+  "url": zod.string().min(1).max(requestAdminImageUploadUrlResponseUrlMax),
+  "purpose": zod.enum(['logo', 'hero', 'campus', 'cta', 'update', 'topic', 'result', 'testimonial', 'faculty', 'gallery', 'knowledge', 'login'])
+})
+
+
+/**
+ * @summary Verify an uploaded admin image
+ */
+export const completeAdminImageUploadBodyObjectPathMax = 255;
+
+
+
+export const CompleteAdminImageUploadBody = zod.object({
+  "objectPath": zod.string().min(1).max(completeAdminImageUploadBodyObjectPathMax),
+  "purpose": zod.enum(['logo', 'hero', 'campus', 'cta', 'update', 'topic', 'result', 'testimonial', 'faculty', 'gallery', 'knowledge', 'login'])
+})
+
+export const CompleteAdminImageUploadResponse = zod.object({
   "url": zod.string(),
   "purpose": zod.enum(['logo', 'hero', 'campus', 'cta', 'update', 'topic', 'result', 'testimonial', 'faculty', 'gallery', 'knowledge', 'login'])
 })

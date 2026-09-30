@@ -13,3 +13,4 @@
 - [Admin test credentials](admin-test-credentials.md) — isolated browser tests may lack workspace admin secrets; verify protected APIs without exposing credentials.
 - [JSON page settings evolution](json-page-settings-evolution.md) — merge new defaults into saved JSON before strict response validation so older records still load.
 - [Database startup round trips](database-startup-round-trips.md) — keep broad startup backfills set-based or server-side; thousands of serial database calls can exhaust autoscale readiness windows.
+- [GCS stream listener warning](gcs-stream-listener-warning.md) — an upstream per-request PassThrough can exceed Node's default listener count; avoid global suppression.
