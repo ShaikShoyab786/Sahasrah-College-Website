@@ -1,21 +1,17 @@
 import { useEffect, useState, type FormEvent } from 'react';
-import { Check, MessageCircle, Phone, RefreshCw, Trash2 } from 'lucide-react';
+import { MessageCircle, Phone } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   getGetCallbackPopupSettingsQueryKey,
-  getGetAdminContactEnquiriesQueryKey,
   getGetAdminContactSettingsQueryKey,
   getGetContactSettingsQueryKey,
-  useGetAdminContactEnquiries,
   useGetAdminContactSettings,
-  useDeleteAdminContactEnquiry,
-  useUpdateAdminContactEnquiry,
   useUpdateContactSettings,
-  type ContactEnquiry,
   type ContactSettingsInput,
 } from '@workspace/api-client-react';
 import { Area, Field, SaveButton } from '@/components/form-fields';
 import { EditorCard, EditorFrame, EditorSkeleton, LoadError, SaveStatus } from '@/pages/admin-about-hero';
+import { EnquiryHistory } from '@/components/admin-enquiry-workspace';
 
 const defaultCourseOptions = [
   'MPC',
@@ -202,36 +198,5 @@ export function AdminContact() {
 }
 
 export function AdminContactEnquiries() {
-  const query = useGetAdminContactEnquiries();
-  const client = useQueryClient();
-  const update = useUpdateAdminContactEnquiry();
-  const remove = useDeleteAdminContactEnquiry();
-  const [error, setError] = useState('');
-  const save = (item: ContactEnquiry, patch: { contacted: boolean; resolved: boolean }) => {
-    setError('');
-    update.mutate({ id: item.id, data: patch }, {
-      onSuccess: (saved) => client.setQueryData(getGetAdminContactEnquiriesQueryKey(), (current: ContactEnquiry[] | undefined) => current?.map((entry) => entry.id === saved.id ? saved : entry)),
-      onError: () => setError('We could not update that enquiry. Please try again.'),
-    });
-  };
-  const deleteEnquiry = (item: ContactEnquiry) => {
-    if (!window.confirm(`Delete the enquiry from ${item.name}? This cannot be undone.`)) return;
-    setError('');
-    remove.mutate({ id: item.id }, {
-      onSuccess: () => client.setQueryData(getGetAdminContactEnquiriesQueryKey(), (current: ContactEnquiry[] | undefined) => current?.filter((entry) => entry.id !== item.id)),
-      onError: () => setError('We could not delete that enquiry. Please try again.'),
-    });
-  };
-
-  if (query.isLoading) return <EditorSkeleton />;
-  if (query.isError && !query.data) return <LoadError onRetry={() => query.refetch()} />;
-  return (
-    <EditorFrame eyebrow="Dashboard / Enquiries" title="Review admissions enquiries." description="Contact form submissions and callback requests are stored privately for the admissions team to review and follow up." previewHref="/contact">
-      {error && <p className="mt-8 rounded-xl border border-red-700/20 bg-red-50 px-4 py-3 text-sm text-red-800">{error}</p>}
-      <div className="mt-10 space-y-4">
-        {!query.data?.length && <div className="rounded-2xl border border-dashed border-[hsl(var(--border))] p-10 text-center text-sm text-[hsl(var(--muted-foreground))]">No Contact enquiries yet.</div>}
-        {query.data?.map((item) => <article key={item.id} className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5 md:p-7"><div className="flex flex-col justify-between gap-4 md:flex-row md:items-start"><div><div className="flex flex-wrap items-center gap-3"><h2 className="font-display text-2xl font-semibold text-[hsl(var(--primary))]">{item.name}</h2><span className={`inline-flex rounded-full px-2.5 py-1 text-xs font-bold ${item.contacted ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}`}>{item.contacted ? 'Reviewed' : 'New'}</span><span className="inline-flex rounded-full bg-[hsl(var(--accent)/.14)] px-2.5 py-1 text-xs font-bold text-[hsl(var(--primary))]">{item.source === 'callback-request' ? 'Callback Request' : 'Contact Form'}</span></div><p className="mt-2 text-sm text-[hsl(var(--muted-foreground))]">{new Date(item.createdAt).toLocaleString()} · {item.course || 'Course not specified'}</p></div><a href={`tel:${item.phone}`} className="inline-flex items-center gap-2 text-sm font-bold text-[hsl(var(--primary))]"><Phone size={16} />{item.phone}</a></div><div className="mt-5 grid gap-4 text-sm leading-6 text-[hsl(var(--muted-foreground))] md:grid-cols-3"><p><strong className="text-[hsl(var(--foreground))]">Email</strong><br />{item.email || 'Not provided'}</p><p className="md:col-span-2"><strong className="text-[hsl(var(--foreground))]">Message</strong><br />{item.message || 'Not provided'}</p></div><div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-[hsl(var(--border))] pt-5 text-sm font-semibold"><div className="flex flex-wrap gap-5"><label className="flex items-center gap-2"><input type="checkbox" checked={item.contacted} onChange={(event) => save(item, { contacted: event.target.checked, resolved: item.resolved })} className="h-4 w-4 accent-[hsl(var(--accent))]" /> Reviewed / contacted</label><label className="flex items-center gap-2"><input type="checkbox" checked={item.resolved} onChange={(event) => save(item, { contacted: item.contacted, resolved: event.target.checked })} className="h-4 w-4 accent-[hsl(var(--accent))]" /> Resolved</label></div><button type="button" onClick={() => deleteEnquiry(item)} disabled={remove.isPending} className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-bold text-red-700 transition hover:bg-red-50 disabled:opacity-50"><Trash2 size={16} /> Delete</button></div></article>)}
-      </div>
-    </EditorFrame>
-  );
+  return <EnquiryHistory />;
 }

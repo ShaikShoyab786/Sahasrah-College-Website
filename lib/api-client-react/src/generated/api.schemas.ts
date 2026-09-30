@@ -241,6 +241,26 @@ export const ContactEnquirySource = {
   'callback-request': 'callback-request',
 } as const;
 
+export type ContactEnquiryStatus = typeof ContactEnquiryStatus[keyof typeof ContactEnquiryStatus];
+
+
+export const ContactEnquiryStatus = {
+  new: 'new',
+  'follow-up-needed': 'follow-up-needed',
+  completed: 'completed',
+} as const;
+
+export type ContactEnquiryType = typeof ContactEnquiryType[keyof typeof ContactEnquiryType];
+
+
+export const ContactEnquiryType = {
+  'call-back-requested': 'call-back-requested',
+  'campus-visit-planned': 'campus-visit-planned',
+  'topic-suggestion': 'topic-suggestion',
+  'course-admissions-question': 'course-admissions-question',
+  other: 'other',
+} as const;
+
 export interface ContactEnquiry {
   id: string;
   name: string;
@@ -252,15 +272,71 @@ export interface ContactEnquiry {
   email: string | null;
   /** @nullable */
   message: string | null;
+  status: ContactEnquiryStatus;
+  type: ContactEnquiryType;
+  /** @nullable */
+  nextAction: string | null;
+  /** @nullable */
+  nextActionDueAt: string | null;
+  /** Retained legacy review flag; use status for current workflow state. */
   contacted: boolean;
+  /** Retained legacy completion flag; use status for current workflow state. */
   resolved: boolean;
   createdAt: string;
   updatedAt: string;
 }
 
-export interface ContactEnquiryStatusInput {
-  contacted: boolean;
-  resolved: boolean;
+export interface ContactEnquiryNote {
+  id: string;
+  enquiryId: string;
+  authorName: string;
+  body: string;
+  createdAt: string;
+}
+
+export interface ContactEnquiryDetail {
+  enquiry: ContactEnquiry;
+  notes: ContactEnquiryNote[];
+}
+
+export type ContactEnquiryUpdateStatus = typeof ContactEnquiryUpdateStatus[keyof typeof ContactEnquiryUpdateStatus];
+
+
+export const ContactEnquiryUpdateStatus = {
+  new: 'new',
+  'follow-up-needed': 'follow-up-needed',
+  completed: 'completed',
+} as const;
+
+export type ContactEnquiryUpdateType = typeof ContactEnquiryUpdateType[keyof typeof ContactEnquiryUpdateType];
+
+
+export const ContactEnquiryUpdateType = {
+  'call-back-requested': 'call-back-requested',
+  'campus-visit-planned': 'campus-visit-planned',
+  'topic-suggestion': 'topic-suggestion',
+  'course-admissions-question': 'course-admissions-question',
+  other: 'other',
+} as const;
+
+export interface ContactEnquiryUpdate {
+  status?: ContactEnquiryUpdateStatus;
+  type?: ContactEnquiryUpdateType;
+  /**
+     * @maxLength 500
+     * @nullable
+     */
+  nextAction?: string | null;
+  /** @nullable */
+  nextActionDueAt?: string | null;
+}
+
+export interface ContactEnquiryNoteInput {
+  /**
+     * @minLength 1
+     * @maxLength 5000
+     */
+  body: string;
 }
 
 export interface SiteSettings {

@@ -717,6 +717,37 @@ paths:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
   /admin/contact-enquiries/{id}:
+    get:
+      operationId: getAdminContactEnquiry
+      tags: [admin]
+      summary: Read a Contact enquiry and its private notes
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Contact enquiry with append-only admin notes
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactEnquiryDetail"
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Enquiry not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
     patch:
       operationId: updateAdminContactEnquiry
       tags: [admin]
@@ -734,7 +765,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ContactEnquiryStatusInput"
+              $ref: "#/components/schemas/ContactEnquiryUpdate"
       responses:
         "200":
           description: Updated Contact enquiry
@@ -744,12 +775,6 @@ paths:
                 $ref: "#/components/schemas/ContactEnquiry"
         "404":
           description: Enquiry not found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ErrorResponse"
-        "401":
-          description: Not authenticated
           content:
             application/json:
               schema:
@@ -769,6 +794,50 @@ paths:
       responses:
         "204":
           description: Enquiry deleted
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+        "404":
+          description: Enquiry not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /admin/contact-enquiries/{id}/notes:
+    post:
+      operationId: createAdminContactEnquiryNote
+      tags: [admin]
+      summary: Append a private admin note to a Contact enquiry
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContactEnquiryNoteInput"
+      responses:
+        "201":
+          description: Private note appended to enquiry history
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactEnquiryNote"
+        "400":
+          description: Invalid note
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
         "401":
           description: Not authenticated
           content:
@@ -4365,25 +4434,78 @@ components:
           type: ["string", "null"]
         message:
           type: ["string", "null"]
+        status:
+          type: string
+          enum: [new, follow-up-needed, completed]
+        type:
+          type: string
+          enum: [call-back-requested, campus-visit-planned, topic-suggestion, course-admissions-question, other]
+        nextAction:
+          type: ["string", "null"]
+        nextActionDueAt:
+          type: ["string", "null"]
+          format: date-time
         contacted:
           type: boolean
+          description: Retained legacy review flag; use status for current workflow state.
         resolved:
           type: boolean
+          description: Retained legacy completion flag; use status for current workflow state.
         createdAt:
           type: string
           format: date-time
         updatedAt:
           type: string
           format: date-time
-      required: [id, name, phone, course, source, email, message, contacted, resolved, createdAt, updatedAt]
-    ContactEnquiryStatusInput:
+      required: [id, name, phone, course, source, email, message, status, type, nextAction, nextActionDueAt, contacted, resolved, createdAt, updatedAt]
+    ContactEnquiryDetail:
       type: object
       properties:
-        contacted:
-          type: boolean
-        resolved:
-          type: boolean
-      required: [contacted, resolved]
+        enquiry:
+          $ref: "#/components/schemas/ContactEnquiry"
+        notes:
+          type: array
+          items:
+            $ref: "#/components/schemas/ContactEnquiryNote"
+      required: [enquiry, notes]
+    ContactEnquiryUpdate:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [new, follow-up-needed, completed]
+        type:
+          type: string
+          enum: [call-back-requested, campus-visit-planned, topic-suggestion, course-admissions-question, other]
+        nextAction:
+          type: ["string", "null"]
+          maxLength: 500
+        nextActionDueAt:
+          type: ["string", "null"]
+          format: date-time
+    ContactEnquiryNote:
+      type: object
+      properties:
+        id:
+          type: string
+        enquiryId:
+          type: string
+        authorName:
+          type: string
+        body:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, enquiryId, authorName, body, createdAt]
+    ContactEnquiryNoteInput:
+      type: object
+      properties:
+        body:
+          type: string
+          minLength: 1
+          maxLength: 5000
+      required: [body]
     SiteSettings:
       type: object
       properties:

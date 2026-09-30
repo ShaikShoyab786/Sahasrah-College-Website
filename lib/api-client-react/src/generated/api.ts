@@ -53,9 +53,12 @@ import type {
   AuthSession,
   CallbackPopupSettings,
   ContactEnquiry,
+  ContactEnquiryDetail,
   ContactEnquiryInput,
-  ContactEnquiryStatusInput,
+  ContactEnquiryNote,
+  ContactEnquiryNoteInput,
   ContactEnquirySubmission,
+  ContactEnquiryUpdate,
   ContactSettings,
   ContactSettingsInput,
   CourseSlug,
@@ -3230,6 +3233,83 @@ export function useGetAdminContactEnquiries<TData = Awaited<ReturnType<typeof ge
 
 
 
+export const getGetAdminContactEnquiryUrl = (id: string,) => {
+
+
+
+
+  return `/api/admin/contact-enquiries/${id}`
+}
+
+/**
+ * @summary Read a Contact enquiry and its private notes
+ */
+export const getAdminContactEnquiry = async (id: string, options?: Parameters<typeof customFetch>[1]): Promise<ContactEnquiryDetail> => {
+
+  return customFetch<ContactEnquiryDetail>(getGetAdminContactEnquiryUrl(id),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAdminContactEnquiryQueryKey = (id: string,) => {
+    return [
+    `/api/admin/contact-enquiries/${id}`
+    ] as const;
+    }
+
+
+export const getGetAdminContactEnquiryQueryOptions = <TData = Awaited<ReturnType<typeof getAdminContactEnquiry>>, TError = ErrorType<ErrorResponse>>(id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminContactEnquiry>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAdminContactEnquiryQueryKey(id);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdminContactEnquiry>>> = ({ signal }) => getAdminContactEnquiry(id, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: id !== null && id !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAdminContactEnquiry>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetAdminContactEnquiryQueryResult = NonNullable<Awaited<ReturnType<typeof getAdminContactEnquiry>>>
+export type GetAdminContactEnquiryQueryError = ErrorType<ErrorResponse>
+
+
+/**
+ * @summary Read a Contact enquiry and its private notes
+ */
+
+export function useGetAdminContactEnquiry<TData = Awaited<ReturnType<typeof getAdminContactEnquiry>>, TError = ErrorType<ErrorResponse>>(
+ id: string, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminContactEnquiry>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetAdminContactEnquiryQueryOptions(id,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
 export const getUpdateAdminContactEnquiryUrl = (id: string,) => {
 
 
@@ -3242,7 +3322,7 @@ export const getUpdateAdminContactEnquiryUrl = (id: string,) => {
  * @summary Update Contact enquiry follow-up state
  */
 export const updateAdminContactEnquiry = async (id: string,
-    contactEnquiryStatusInput: ContactEnquiryStatusInput, options?: Parameters<typeof customFetch>[1]): Promise<ContactEnquiry> => {
+    contactEnquiryUpdate: ContactEnquiryUpdate, options?: Parameters<typeof customFetch>[1]): Promise<ContactEnquiry> => {
 
     const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
     if (!h) return {};
@@ -3263,7 +3343,7 @@ return customFetch<ContactEnquiry>(getUpdateAdminContactEnquiryUrl(id),
     ...options,
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
-    body: JSON.stringify(contactEnquiryStatusInput)
+    body: JSON.stringify(contactEnquiryUpdate)
   }
 );}
 
@@ -3301,9 +3381,9 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type UpdateAdminContactEnquiryMutationResult = NonNullable<Awaited<ReturnType<typeof updateAdminContactEnquiry>>>
-    export type UpdateAdminContactEnquiryMutationBody = BodyType<ContactEnquiryStatusInput>
+    export type UpdateAdminContactEnquiryMutationBody = BodyType<ContactEnquiryUpdate>
     export type UpdateAdminContactEnquiryMutationError = ErrorType<ErrorResponse>
-    export type UpdateAdminContactEnquiryMutationVariables = {id: string;data: BodyType<ContactEnquiryStatusInput>}
+    export type UpdateAdminContactEnquiryMutationVariables = {id: string;data: BodyType<ContactEnquiryUpdate>}
 
     /**
  * @summary Update Contact enquiry follow-up state
@@ -3391,6 +3471,95 @@ export const useDeleteAdminContactEnquiry = <TError = ErrorType<ErrorResponse>,
         TContext
       > => {
       return useMutation(getDeleteAdminContactEnquiryMutationOptions(options));
+    }
+
+export const getCreateAdminContactEnquiryNoteUrl = (id: string,) => {
+
+
+
+
+  return `/api/admin/contact-enquiries/${id}/notes`
+}
+
+/**
+ * @summary Append a private admin note to a Contact enquiry
+ */
+export const createAdminContactEnquiryNote = async (id: string,
+    contactEnquiryNoteInput: ContactEnquiryNoteInput, options?: Parameters<typeof customFetch>[1]): Promise<ContactEnquiryNote> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<ContactEnquiryNote>(getCreateAdminContactEnquiryNoteUrl(id),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(contactEnquiryNoteInput)
+  }
+);}
+
+
+
+
+
+export const getCreateAdminContactEnquiryNoteMutationKey = () => ['createAdminContactEnquiryNote'] as const;
+
+export const getCreateAdminContactEnquiryNoteMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createAdminContactEnquiryNote>>, TError,CreateAdminContactEnquiryNoteMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createAdminContactEnquiryNote>>, TError,CreateAdminContactEnquiryNoteMutationVariables, TContext> => {
+
+const mutationKey = getCreateAdminContactEnquiryNoteMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createAdminContactEnquiryNote>>, CreateAdminContactEnquiryNoteMutationVariables> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  createAdminContactEnquiryNote(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateAdminContactEnquiryNoteMutationResult = NonNullable<Awaited<ReturnType<typeof createAdminContactEnquiryNote>>>
+    export type CreateAdminContactEnquiryNoteMutationBody = BodyType<ContactEnquiryNoteInput>
+    export type CreateAdminContactEnquiryNoteMutationError = ErrorType<ErrorResponse>
+    export type CreateAdminContactEnquiryNoteMutationVariables = {id: string;data: BodyType<ContactEnquiryNoteInput>}
+
+    /**
+ * @summary Append a private admin note to a Contact enquiry
+ */
+export const useCreateAdminContactEnquiryNote = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createAdminContactEnquiryNote>>, TError,CreateAdminContactEnquiryNoteMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createAdminContactEnquiryNote>>,
+        TError,
+        CreateAdminContactEnquiryNoteMutationVariables,
+        TContext
+      > => {
+      return useMutation(getCreateAdminContactEnquiryNoteMutationOptions(options));
     }
 
 export const getUpdateHomepageHeroUrl = () => {

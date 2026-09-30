@@ -1292,12 +1292,51 @@ export const GetAdminContactEnquiriesResponseItem = zod.object({
   "source": zod.enum(['contact-form', 'callback-request']),
   "email": zod.string().nullable(),
   "message": zod.string().nullable(),
-  "contacted": zod.boolean(),
-  "resolved": zod.boolean(),
+  "status": zod.enum(['new', 'follow-up-needed', 'completed']),
+  "type": zod.enum(['call-back-requested', 'campus-visit-planned', 'topic-suggestion', 'course-admissions-question', 'other']),
+  "nextAction": zod.string().nullable(),
+  "nextActionDueAt": zod.coerce.date().nullable(),
+  "contacted": zod.boolean().describe('Retained legacy review flag; use status for current workflow state.'),
+  "resolved": zod.boolean().describe('Retained legacy completion flag; use status for current workflow state.'),
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date()
 })
 export const GetAdminContactEnquiriesResponse = zod.array(GetAdminContactEnquiriesResponseItem)
+
+
+/**
+ * @summary Read a Contact enquiry and its private notes
+ */
+export const GetAdminContactEnquiryParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const GetAdminContactEnquiryResponse = zod.object({
+  "enquiry": zod.object({
+  "id": zod.string(),
+  "name": zod.string(),
+  "phone": zod.string(),
+  "course": zod.string().nullable(),
+  "source": zod.enum(['contact-form', 'callback-request']),
+  "email": zod.string().nullable(),
+  "message": zod.string().nullable(),
+  "status": zod.enum(['new', 'follow-up-needed', 'completed']),
+  "type": zod.enum(['call-back-requested', 'campus-visit-planned', 'topic-suggestion', 'course-admissions-question', 'other']),
+  "nextAction": zod.string().nullable(),
+  "nextActionDueAt": zod.coerce.date().nullable(),
+  "contacted": zod.boolean().describe('Retained legacy review flag; use status for current workflow state.'),
+  "resolved": zod.boolean().describe('Retained legacy completion flag; use status for current workflow state.'),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+}),
+  "notes": zod.array(zod.object({
+  "id": zod.string(),
+  "enquiryId": zod.string(),
+  "authorName": zod.string(),
+  "body": zod.string(),
+  "createdAt": zod.coerce.date()
+}))
+})
 
 
 /**
@@ -1307,9 +1346,15 @@ export const UpdateAdminContactEnquiryParams = zod.object({
   "id": zod.coerce.string()
 })
 
+export const updateAdminContactEnquiryBodyNextActionMax = 500;
+
+
+
 export const UpdateAdminContactEnquiryBody = zod.object({
-  "contacted": zod.boolean(),
-  "resolved": zod.boolean()
+  "status": zod.enum(['new', 'follow-up-needed', 'completed']).optional(),
+  "type": zod.enum(['call-back-requested', 'campus-visit-planned', 'topic-suggestion', 'course-admissions-question', 'other']).optional(),
+  "nextAction": zod.string().max(updateAdminContactEnquiryBodyNextActionMax).nullish(),
+  "nextActionDueAt": zod.coerce.date().nullish()
 })
 
 export const UpdateAdminContactEnquiryResponse = zod.object({
@@ -1320,8 +1365,12 @@ export const UpdateAdminContactEnquiryResponse = zod.object({
   "source": zod.enum(['contact-form', 'callback-request']),
   "email": zod.string().nullable(),
   "message": zod.string().nullable(),
-  "contacted": zod.boolean(),
-  "resolved": zod.boolean(),
+  "status": zod.enum(['new', 'follow-up-needed', 'completed']),
+  "type": zod.enum(['call-back-requested', 'campus-visit-planned', 'topic-suggestion', 'course-admissions-question', 'other']),
+  "nextAction": zod.string().nullable(),
+  "nextActionDueAt": zod.coerce.date().nullable(),
+  "contacted": zod.boolean().describe('Retained legacy review flag; use status for current workflow state.'),
+  "resolved": zod.boolean().describe('Retained legacy completion flag; use status for current workflow state.'),
   "createdAt": zod.coerce.date(),
   "updatedAt": zod.coerce.date()
 })
@@ -1335,6 +1384,30 @@ export const DeleteAdminContactEnquiryParams = zod.object({
 })
 
 export const DeleteAdminContactEnquiryResponse = zod.void()
+
+
+/**
+ * @summary Append a private admin note to a Contact enquiry
+ */
+export const CreateAdminContactEnquiryNoteParams = zod.object({
+  "id": zod.coerce.string()
+})
+
+export const createAdminContactEnquiryNoteBodyBodyMax = 5000;
+
+
+
+export const CreateAdminContactEnquiryNoteBody = zod.object({
+  "body": zod.string().min(1).max(createAdminContactEnquiryNoteBodyBodyMax)
+})
+
+export const CreateAdminContactEnquiryNoteResponse = zod.object({
+  "id": zod.string(),
+  "enquiryId": zod.string(),
+  "authorName": zod.string(),
+  "body": zod.string(),
+  "createdAt": zod.coerce.date()
+})
 
 
 /**

@@ -14,6 +14,7 @@ model Admin {
   displayName  String
   createdAt    DateTime        @default(now())
   sessions     AdminSession[]
+  contactEnquiryNotes ContactEnquiryNote[]
 }
 
 model AdminSession {
@@ -118,6 +119,10 @@ model ContactEnquiry {
   source            String   @default("contact-form")
   email             String?
   message           String?
+  status            String   @default("new")
+  type              String   @default("other")
+  nextAction        String?
+  nextActionDueAt   DateTime?
   deliveryStatus    String   @default("stored")
   deliveryError     String?
   whatsappRecipient String?
@@ -125,10 +130,25 @@ model ContactEnquiry {
   resolved          Boolean  @default(false)
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+  notes             ContactEnquiryNote[]
 
   @@index([deliveryStatus])
   @@index([contacted, resolved])
   @@index([createdAt])
+  @@index([status, nextActionDueAt])
+}
+
+model ContactEnquiryNote {
+  id            String         @id @default(cuid())
+  enquiryId     String
+  authorAdminId String?
+  authorName    String
+  body          String         @db.Text
+  createdAt     DateTime       @default(now())
+  enquiry       ContactEnquiry @relation(fields: [enquiryId], references: [id], onDelete: Cascade)
+  author        Admin?         @relation(fields: [authorAdminId], references: [id], onDelete: SetNull)
+
+  @@index([enquiryId, createdAt])
 }
 
 model HomepageHero {

@@ -1,5 +1,8 @@
 import { Router, type IRouter } from "express";
 import {
+  CreateAdminContactEnquiryNoteBody,
+  CreateAdminContactEnquiryNoteResponse,
+  GetAdminContactEnquiryResponse,
   GetAdminContactEnquiriesResponse,
   GetAdminContactSettingsResponse,
   GetCallbackPopupSettingsResponse,
@@ -171,6 +174,8 @@ router.post("/contact-enquiries", async (req, res) => {
       source,
       email: parsed.data.email ?? null,
       message: parsed.data.message ?? null,
+      status: "new",
+      type: source === "callback-request" ? "call-back-requested" : "other",
     },
   });
 
@@ -239,18 +244,84 @@ router.get("/admin/contact-enquiries", requireAdmin, async (req, res) => {
   }
 });
 
+router.get("/admin/contact-enquiries/:id", requireAdmin, async (req, res) => {
+  try {
+    const enquiry = await prisma.contactEnquiry.findUnique({
+      where: { id: String(req.params.id) },
+      include: { notes: { orderBy: { createdAt: "asc" } } },
+    });
+    if (!enquiry) {
+      res.status(404).json({ error: "That enquiry could not be found." });
+      return;
+    }
+    res.json(GetAdminContactEnquiryResponse.parse({ enquiry, notes: enquiry.notes }));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to read Contact enquiry details");
+    res.status(500).json({ error: "Unable to load Contact enquiry details." });
+  }
+});
+
 router.patch("/admin/contact-enquiries/:id", requireAdmin, async (req, res) => {
-  const parsed = UpdateAdminContactEnquiryBody.safeParse(req.body);
+  const raw = {
+    ...req.body,
+    nextAction: typeof req.body?.nextAction === "string"
+      ? req.body.nextAction.trim() || null
+      : req.body?.nextAction,
+  };
+  const parsed = UpdateAdminContactEnquiryBody.safeParse(raw);
   if (!parsed.success) {
-    res.status(400).json({ error: "Check the enquiry status and try again." });
+    res.status(400).json({ error: "Check the enquiry details and try again." });
     return;
   }
   try {
-    const enquiry = await prisma.contactEnquiry.update({ where: { id: String(req.params.id) }, data: parsed.data });
+    const { nextActionDueAt, ...updates } = parsed.data;
+    const data = {
+      ...updates,
+      ...(nextActionDueAt !== undefined
+        ? { nextActionDueAt: nextActionDueAt === null ? null : new Date(nextActionDueAt) }
+        : {}),
+    };
+    const enquiry = await prisma.contactEnquiry.update({ where: { id: String(req.params.id) }, data });
     res.json(UpdateAdminContactEnquiryResponse.parse(enquiry));
   } catch (error) {
     req.log.error({ err: error }, "Unable to update Contact enquiry");
     res.status(404).json({ error: "That enquiry could not be found." });
+  }
+});
+
+router.post("/admin/contact-enquiries/:id/notes", requireAdmin, async (req, res) => {
+  const raw = {
+    ...req.body,
+    body: typeof req.body?.body === "string" ? req.body.body.trim() : req.body?.body,
+  };
+  const parsed = CreateAdminContactEnquiryNoteBody.safeParse(raw);
+  if (!parsed.success) {
+    res.status(400).json({ error: "Write a note before adding it to enquiry history." });
+    return;
+  }
+  try {
+    const enquiryId = String(req.params.id);
+    const enquiry = await prisma.contactEnquiry.findUnique({
+      where: { id: enquiryId },
+      select: { id: true },
+    });
+    if (!enquiry) {
+      res.status(404).json({ error: "That enquiry could not be found." });
+      return;
+    }
+    const admin = res.locals.admin as { id: string; displayName: string; email: string };
+    const note = await prisma.contactEnquiryNote.create({
+      data: {
+        enquiryId,
+        authorAdminId: admin.id,
+        authorName: admin.displayName || admin.email,
+        body: parsed.data.body,
+      },
+    });
+    res.status(201).json(CreateAdminContactEnquiryNoteResponse.parse(note));
+  } catch (error) {
+    req.log.error({ err: error }, "Unable to append a Contact enquiry note");
+    res.status(500).json({ error: "Unable to add the note. Please try again." });
   }
 });
 

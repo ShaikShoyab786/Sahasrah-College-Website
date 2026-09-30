@@ -6,6 +6,8 @@
  * OpenAPI spec version: 0.1.0
  */
 import type { ContactEnquirySource } from './contactEnquirySource';
+import type { ContactEnquiryStatus } from './contactEnquiryStatus';
+import type { ContactEnquiryType } from './contactEnquiryType';
 
 export interface ContactEnquiry {
   id: string;
@@ -18,7 +20,15 @@ export interface ContactEnquiry {
   email: string | null;
   /** @nullable */
   message: string | null;
+  status: ContactEnquiryStatus;
+  type: ContactEnquiryType;
+  /** @nullable */
+  nextAction: string | null;
+  /** @nullable */
+  nextActionDueAt: Date | null;
+  /** Retained legacy review flag; use status for current workflow state. */
   contacted: boolean;
+  /** Retained legacy completion flag; use status for current workflow state. */
   resolved: boolean;
   createdAt: Date;
   updatedAt: Date;

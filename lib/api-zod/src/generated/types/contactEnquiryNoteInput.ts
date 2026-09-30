@@ -6,7 +6,10 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export interface ContactEnquiryStatusInput {
-  contacted: boolean;
-  resolved: boolean;
+export interface ContactEnquiryNoteInput {
+  /**
+     * @minLength 1
+     * @maxLength 5000
+     */
+  body: string;
 }

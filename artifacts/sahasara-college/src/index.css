@@ -604,6 +604,65 @@ body { min-width: 320px; }
   }
 }
 
+/* Admissions register: a quiet, high-signal workspace for staff follow-up. */
+.enquiry-surface {
+  background:
+    linear-gradient(135deg, hsl(var(--card)) 0%, hsl(var(--card)) 68%, hsl(var(--accent) / .055) 100%);
+  box-shadow: 0 8px 24px hsl(var(--primary) / .045);
+}
+.enquiry-kicker {
+  color: hsl(var(--accent-foreground));
+  letter-spacing: .18em;
+}
+.enquiry-filter {
+  transition: border-color .2s ease, box-shadow .2s ease, background-color .2s ease;
+}
+.enquiry-filter:focus {
+  border-color: hsl(var(--accent));
+  box-shadow: 0 0 0 4px hsl(var(--accent) / .14);
+  outline: none;
+}
+.enquiry-row {
+  transition: border-color .2s ease, background-color .2s ease, transform .2s ease;
+}
+.enquiry-row:hover {
+  border-color: hsl(var(--accent) / .5);
+  background: hsl(var(--accent) / .035);
+}
+.enquiry-row:focus-within {
+  border-color: hsl(var(--accent) / .7);
+}
+.enquiry-action {
+  transition: transform .2s cubic-bezier(.22,1,.36,1), background-color .2s ease, color .2s ease;
+}
+.enquiry-action:hover { transform: translateY(-1px); }
+.enquiry-action:focus-visible {
+  outline: 3px solid hsl(var(--accent) / .34);
+  outline-offset: 2px;
+}
+.enquiry-detail {
+  animation: enquiry-detail-in .28s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes enquiry-detail-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.enquiry-skeleton {
+  background: linear-gradient(90deg, hsl(var(--muted)) 20%, hsl(var(--accent) / .14) 38%, hsl(var(--muted)) 56%);
+  background-size: 220% 100%;
+  animation: enquiry-shimmer 1.25s ease-in-out infinite;
+}
+@keyframes enquiry-shimmer {
+  from { background-position: 100% 0; }
+  to { background-position: -100% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .enquiry-action,
+  .enquiry-row,
+  .enquiry-detail,
+  .enquiry-skeleton { animation: none; transition: none; }
+}
+
 @media (max-width: 1023px) {
   .story-collage { min-height: 430px; }
 }
