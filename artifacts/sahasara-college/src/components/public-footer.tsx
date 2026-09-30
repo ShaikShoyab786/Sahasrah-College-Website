@@ -139,6 +139,9 @@ export function PublicFooter({ settings }: PublicFooterProps) {
         <div className="flex flex-col gap-2 pt-5 text-xs leading-5 text-[hsl(var(--primary-foreground)/.62)] sm:flex-row sm:items-center sm:justify-between">
           <span>© {new Date().getFullYear()} {settings.collegeName}. All rights reserved.</span>
           <span>{settings.tagline}</span>
+          <Link href="/admin" className="inline-flex min-h-9 w-fit items-center justify-center rounded-full border border-[hsl(var(--primary-foreground)/.28)] px-3.5 py-1.5 font-semibold text-[hsl(var(--primary-foreground)/.84)] transition hover:border-[hsl(var(--accent))] hover:bg-[hsl(var(--accent))] hover:text-[hsl(var(--accent-foreground))] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]" data-testid="link-footer-admin-sign-in">
+            Administration Sign In
+          </Link>
         </div>
       </div>
     </footer>
