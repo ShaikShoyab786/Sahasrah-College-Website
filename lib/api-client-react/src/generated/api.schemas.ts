@@ -359,6 +359,9 @@ export interface SiteSettings {
   footerText: string;
   introEnabled: boolean;
   introQuote: string;
+  showCallQuickAction: boolean;
+  showWhatsappQuickAction: boolean;
+  showApplyQuickAction: boolean;
   loginLeftEyebrow: string;
   loginLeftHeading: string;
   loginLeftHighlightedHeading: string;
@@ -412,6 +415,9 @@ export interface SiteSettingsInput {
      * @pattern ^(?=.*\S)[^\r\n]+$
      */
   introQuote: string;
+  showCallQuickAction: boolean;
+  showWhatsappQuickAction: boolean;
+  showApplyQuickAction: boolean;
   /** @minLength 1 */
   loginLeftEyebrow: string;
   /** @minLength 1 */

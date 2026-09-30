@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Check, ImagePlus, LockKeyhole, Palette, Sparkles } from 'lucide-react';
+import { Check, ImagePlus, LockKeyhole, Palette, PhoneCall, Sparkles } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { getGetSiteSettingsQueryKey, useGetSiteSettings, useUpdateSiteSettings, useUploadAdminImage } from '@workspace/api-client-react';
 import { Area, Field, SaveButton } from '@/components/form-fields';
@@ -26,7 +26,29 @@ const loginDefaults = {
   loginBackLinkLabel: 'Back to website',
 };
 
-const empty = { collegeName: '', tagline: '', logoUrl: '', email: '', phone: '', address: '', socialFacebookUrl: '', socialInstagramUrl: '', socialYoutubeUrl: '', socialLinkedinUrl: '', primaryColor: DEFAULT_PRIMARY_COLOR, accentColor: DEFAULT_ACCENT_COLOR, surfaceColor: DEFAULT_SURFACE_COLOR, themePreset: 'sahsrah-blue-red' as ThemePresetId, footerText: '', introEnabled: true, introQuote: DEFAULT_INTRO_QUOTE, ...loginDefaults };
+const empty = {
+  collegeName: '',
+  tagline: '',
+  logoUrl: '',
+  email: '',
+  phone: '',
+  address: '',
+  socialFacebookUrl: '',
+  socialInstagramUrl: '',
+  socialYoutubeUrl: '',
+  socialLinkedinUrl: '',
+  primaryColor: DEFAULT_PRIMARY_COLOR,
+  accentColor: DEFAULT_ACCENT_COLOR,
+  surfaceColor: DEFAULT_SURFACE_COLOR,
+  themePreset: 'sahsrah-blue-red' as ThemePresetId,
+  footerText: '',
+  introEnabled: true,
+  introQuote: DEFAULT_INTRO_QUOTE,
+  showCallQuickAction: true,
+  showWhatsappQuickAction: true,
+  showApplyQuickAction: true,
+  ...loginDefaults,
+};
 
 export default function AdminSiteSettings() {
   const queryClient = useQueryClient();
@@ -36,7 +58,47 @@ export default function AdminSiteSettings() {
   const [form, setForm] = useState(empty);
   const [notice, setNotice] = useState('');
   const [error, setError] = useState('');
-   useEffect(() => { if (query.data) setForm({ collegeName: query.data.collegeName, tagline: query.data.tagline, logoUrl: query.data.logoUrl ?? '', email: query.data.email, phone: query.data.phone, address: query.data.address, socialFacebookUrl: query.data.socialFacebookUrl ?? '', socialInstagramUrl: query.data.socialInstagramUrl ?? '', socialYoutubeUrl: query.data.socialYoutubeUrl ?? '', socialLinkedinUrl: query.data.socialLinkedinUrl ?? '', primaryColor: normalizeHexColor(query.data.primaryColor) ?? DEFAULT_PRIMARY_COLOR, accentColor: normalizeHexColor(query.data.accentColor) ?? DEFAULT_ACCENT_COLOR, surfaceColor: normalizeHexColor(query.data.surfaceColor) ?? DEFAULT_SURFACE_COLOR, themePreset: (query.data.themePreset as ThemePresetId) || 'custom', footerText: query.data.footerText, introEnabled: query.data.introEnabled ?? true, introQuote: query.data.introQuote?.trim() || DEFAULT_INTRO_QUOTE, loginLeftEyebrow: query.data.loginLeftEyebrow || loginDefaults.loginLeftEyebrow, loginLeftHeading: query.data.loginLeftHeading || loginDefaults.loginLeftHeading, loginLeftHighlightedHeading: query.data.loginLeftHighlightedHeading || loginDefaults.loginLeftHighlightedHeading, loginLeftDescription: query.data.loginLeftDescription || loginDefaults.loginLeftDescription, loginLeftBottomText: query.data.loginLeftBottomText || loginDefaults.loginLeftBottomText, loginBackgroundImageUrl: query.data.loginBackgroundImageUrl ?? '', loginBackgroundImageAltText: query.data.loginBackgroundImageAltText || loginDefaults.loginBackgroundImageAltText, loginRightEyebrow: query.data.loginRightEyebrow || loginDefaults.loginRightEyebrow, loginRightHeading: query.data.loginRightHeading || loginDefaults.loginRightHeading, loginRightDescription: query.data.loginRightDescription || loginDefaults.loginRightDescription, loginEmailLabel: query.data.loginEmailLabel || loginDefaults.loginEmailLabel, loginPasswordLabel: query.data.loginPasswordLabel || loginDefaults.loginPasswordLabel, loginButtonLabel: query.data.loginButtonLabel || loginDefaults.loginButtonLabel, loginSecurityNote: query.data.loginSecurityNote || loginDefaults.loginSecurityNote, loginBackLinkLabel: query.data.loginBackLinkLabel || loginDefaults.loginBackLinkLabel }); }, [query.data]);
+  useEffect(() => {
+    const settings = query.data;
+    if (!settings) return;
+    setForm({
+      collegeName: settings.collegeName,
+      tagline: settings.tagline,
+      logoUrl: settings.logoUrl ?? '',
+      email: settings.email,
+      phone: settings.phone,
+      address: settings.address,
+      socialFacebookUrl: settings.socialFacebookUrl ?? '',
+      socialInstagramUrl: settings.socialInstagramUrl ?? '',
+      socialYoutubeUrl: settings.socialYoutubeUrl ?? '',
+      socialLinkedinUrl: settings.socialLinkedinUrl ?? '',
+      primaryColor: normalizeHexColor(settings.primaryColor) ?? DEFAULT_PRIMARY_COLOR,
+      accentColor: normalizeHexColor(settings.accentColor) ?? DEFAULT_ACCENT_COLOR,
+      surfaceColor: normalizeHexColor(settings.surfaceColor) ?? DEFAULT_SURFACE_COLOR,
+      themePreset: (settings.themePreset as ThemePresetId) || 'custom',
+      footerText: settings.footerText,
+      introEnabled: settings.introEnabled ?? true,
+      introQuote: settings.introQuote?.trim() || DEFAULT_INTRO_QUOTE,
+      showCallQuickAction: settings.showCallQuickAction ?? true,
+      showWhatsappQuickAction: settings.showWhatsappQuickAction ?? true,
+      showApplyQuickAction: settings.showApplyQuickAction ?? true,
+      loginLeftEyebrow: settings.loginLeftEyebrow || loginDefaults.loginLeftEyebrow,
+      loginLeftHeading: settings.loginLeftHeading || loginDefaults.loginLeftHeading,
+      loginLeftHighlightedHeading: settings.loginLeftHighlightedHeading || loginDefaults.loginLeftHighlightedHeading,
+      loginLeftDescription: settings.loginLeftDescription || loginDefaults.loginLeftDescription,
+      loginLeftBottomText: settings.loginLeftBottomText || loginDefaults.loginLeftBottomText,
+      loginBackgroundImageUrl: settings.loginBackgroundImageUrl ?? '',
+      loginBackgroundImageAltText: settings.loginBackgroundImageAltText || loginDefaults.loginBackgroundImageAltText,
+      loginRightEyebrow: settings.loginRightEyebrow || loginDefaults.loginRightEyebrow,
+      loginRightHeading: settings.loginRightHeading || loginDefaults.loginRightHeading,
+      loginRightDescription: settings.loginRightDescription || loginDefaults.loginRightDescription,
+      loginEmailLabel: settings.loginEmailLabel || loginDefaults.loginEmailLabel,
+      loginPasswordLabel: settings.loginPasswordLabel || loginDefaults.loginPasswordLabel,
+      loginButtonLabel: settings.loginButtonLabel || loginDefaults.loginButtonLabel,
+      loginSecurityNote: settings.loginSecurityNote || loginDefaults.loginSecurityNote,
+      loginBackLinkLabel: settings.loginBackLinkLabel || loginDefaults.loginBackLinkLabel,
+    });
+  }, [query.data]);
   const set = <K extends keyof typeof empty,>(key: K, value: (typeof empty)[K]) => setForm((current) => ({ ...current, [key]: value }));
   const submit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); setNotice(''); setError('');
@@ -56,7 +118,7 @@ export default function AdminSiteSettings() {
       setError('Use valid hex colours for primary, accent, and surface, such as #022A6C, #CE0B11, and #F5F7FB.');
       return;
     }
-     update.mutate({ data: { ...form, logoUrl: form.logoUrl || null, loginBackgroundImageUrl: form.loginBackgroundImageUrl || null, primaryColor, accentColor, surfaceColor, themePreset: form.themePreset || 'custom' } }, { onSuccess: (savedSettings) => { queryClient.setQueryData(getGetSiteSettingsQueryKey(), savedSettings); queryClient.invalidateQueries({ queryKey: getGetSiteSettingsQueryKey() }); setForm((current) => ({ ...current, primaryColor, accentColor, surfaceColor, loginBackgroundImageUrl: savedSettings.loginBackgroundImageUrl ?? '' })); setNotice('Identity and admin login content saved.'); }, onError: () => setError('We could not save these changes. Please try again.') });
+      update.mutate({ data: { ...form, logoUrl: form.logoUrl || null, loginBackgroundImageUrl: form.loginBackgroundImageUrl || null, primaryColor, accentColor, surfaceColor, themePreset: form.themePreset || 'custom' } }, { onSuccess: (savedSettings) => { queryClient.setQueryData(getGetSiteSettingsQueryKey(), savedSettings); queryClient.invalidateQueries({ queryKey: getGetSiteSettingsQueryKey() }); setForm((current) => ({ ...current, primaryColor, accentColor, surfaceColor, loginBackgroundImageUrl: savedSettings.loginBackgroundImageUrl ?? '' })); setNotice('Site identity and display settings saved.'); }, onError: () => setError('We could not save these changes. Please try again.') });
   };
   const selectPreset = (preset: typeof THEME_PRESETS[number]) => setForm((current) => ({ ...current, themePreset: preset.id, primaryColor: preset.primary, accentColor: preset.accent, surfaceColor: preset.surface }));
   const useCustomTheme = () => setForm((current) => ({ ...current, themePreset: 'custom' }));
@@ -74,7 +136,33 @@ export default function AdminSiteSettings() {
     <form onSubmit={submit} className="mt-10 space-y-6">
       <section className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 md:p-8"><SectionTitle icon={<Palette size={18} />} title="The essentials" description="The name and voice families meet first." /><div className="mt-7 grid gap-5 md:grid-cols-2"><Field id="collegeName" label="College name" value={form.collegeName} onChange={(e) => set('collegeName', e.target.value)} required placeholder="Sahsrah Junior College" /><Field id="tagline" label="Tagline" value={form.tagline} onChange={(e) => set('tagline', e.target.value)} placeholder="A clear beginning for a remarkable future." /><div className="md:col-span-2"><Area id="footerText" label="Footer text" hint="Short and human" value={form.footerText} onChange={(e) => set('footerText', e.target.value)} placeholder="A public junior college for curious minds and purposeful lives." /></div></div></section>
       <section className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 md:p-8"><SectionTitle icon={<ImagePlus size={18} />} title="Logo" description="Use a square mark with a transparent or light background." /><div className="mt-7 flex flex-col gap-5 sm:flex-row sm:items-center"><div className="grid h-24 w-24 shrink-0 place-items-center overflow-hidden rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--secondary))]">{form.logoUrl ? <img src={form.logoUrl} alt="Current college logo" className="h-full w-full object-cover" data-testid="img-settings-logo" /> : <span className="font-display text-3xl text-[hsl(var(--accent-foreground))]" data-testid="text-logo-empty">S</span>}</div><div><label className="inline-flex h-11 cursor-pointer items-center rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--background))] px-4 text-sm font-bold transition hover:border-[hsl(var(--accent))]" data-testid="label-upload-logo"><input type="file" accept="image/png,image/jpeg,image/webp" className="sr-only" onChange={handleUpload} data-testid="input-upload-logo" />{upload.isPending ? 'Uploading…' : 'Upload a logo'}</label><p className="mt-2 text-xs text-[hsl(var(--muted-foreground))]">PNG, JPG, or WebP · up to 5MB</p></div></div><div className="mt-6"><Field id="logoUrl" label="Or paste a logo URL" value={form.logoUrl} onChange={(e) => set('logoUrl', e.target.value)} placeholder="https://…" /></div></section>
-       <section className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 md:p-8"><SectionTitle title="Footer Essentials" description="Manage the college contact details and social profiles shown in the public footer." /><div className="mt-7 grid gap-5 md:grid-cols-2"><Field id="email" label="Admissions email" type="email" value={form.email} onChange={(e) => set('email', e.target.value)} placeholder="admissions@sahsrah.edu" /><Field id="phone" label="Phone number" value={form.phone} onChange={(e) => set('phone', e.target.value)} required placeholder="+91 40 2458 0176" /><div className="md:col-span-2"><Area id="address" label="Campus address" value={form.address} onChange={(e) => set('address', e.target.value)} required placeholder="18 Vidya Marg, Hyderabad, Telangana 500034" /></div><Field id="socialFacebookUrl" label="Facebook profile URL" type="url" value={form.socialFacebookUrl} onChange={(e) => set('socialFacebookUrl', e.target.value)} placeholder="https://www.facebook.com/your-page" hint="Leave blank to hide this icon." pattern="^https://.+$" /><Field id="socialInstagramUrl" label="Instagram profile URL" type="url" value={form.socialInstagramUrl} onChange={(e) => set('socialInstagramUrl', e.target.value)} placeholder="https://www.instagram.com/your-profile" hint="Leave blank to hide this icon." pattern="^https://.+$" /><Field id="socialYoutubeUrl" label="YouTube channel URL" type="url" value={form.socialYoutubeUrl} onChange={(e) => set('socialYoutubeUrl', e.target.value)} placeholder="https://www.youtube.com/@your-channel" hint="Leave blank to hide this icon." pattern="^https://.+$" /><Field id="socialLinkedinUrl" label="LinkedIn page URL" type="url" value={form.socialLinkedinUrl} onChange={(e) => set('socialLinkedinUrl', e.target.value)} placeholder="https://www.linkedin.com/company/your-page" hint="Leave blank to hide this icon." pattern="^https://.+$" /></div></section>
+        <section className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 md:p-8"><SectionTitle title="Footer Essentials" description="Manage the college contact details and social profiles shown in the public footer." /><div className="mt-7 grid gap-5 md:grid-cols-2"><Field id="email" label="Admissions email" type="email" value={form.email} onChange={(e) => set('email', e.target.value)} placeholder="admissions@sahsrah.edu" /><Field id="phone" label="Phone number" value={form.phone} onChange={(e) => set('phone', e.target.value)} required placeholder="+91 40 2458 0176" /><div className="md:col-span-2"><Area id="address" label="Campus address" value={form.address} onChange={(e) => set('address', e.target.value)} required placeholder="18 Vidya Marg, Hyderabad, Telangana 500034" /></div><Field id="socialFacebookUrl" label="Facebook profile URL" type="url" value={form.socialFacebookUrl} onChange={(e) => set('socialFacebookUrl', e.target.value)} placeholder="https://www.facebook.com/your-page" hint="Leave blank to hide this icon." pattern="^https://.+$" /><Field id="socialInstagramUrl" label="Instagram profile URL" type="url" value={form.socialInstagramUrl} onChange={(e) => set('socialInstagramUrl', e.target.value)} placeholder="https://www.instagram.com/your-profile" hint="Leave blank to hide this icon." pattern="^https://.+$" /><Field id="socialYoutubeUrl" label="YouTube channel URL" type="url" value={form.socialYoutubeUrl} onChange={(e) => set('socialYoutubeUrl', e.target.value)} placeholder="https://www.youtube.com/@your-channel" hint="Leave blank to hide this icon." pattern="^https://.+$" /><Field id="socialLinkedinUrl" label="LinkedIn page URL" type="url" value={form.socialLinkedinUrl} onChange={(e) => set('socialLinkedinUrl', e.target.value)} placeholder="https://www.linkedin.com/company/your-page" hint="Leave blank to hide this icon." pattern="^https://.+$" /></div></section>
+        <section className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 md:p-8" data-testid="group-floating-quick-actions">
+          <SectionTitle icon={<PhoneCall size={18} />} title="Floating Quick Actions" description="Choose which actions appear after visitors scroll past the first screen. Contact buttons use the numbers saved on the Contact page." />
+          <div className="mt-6 grid gap-3 md:grid-cols-3">
+            <VisibilityOption
+              id="showCallQuickAction"
+              checked={form.showCallQuickAction}
+              onChange={(value) => set('showCallQuickAction', value)}
+              label="Show Call Us"
+              description="Calls the Contact page’s primary phone number."
+            />
+            <VisibilityOption
+              id="showWhatsappQuickAction"
+              checked={form.showWhatsappQuickAction}
+              onChange={(value) => set('showWhatsappQuickAction', value)}
+              label="Show WhatsApp"
+              description="Shows the bar action and floating WhatsApp button."
+            />
+            <VisibilityOption
+              id="showApplyQuickAction"
+              checked={form.showApplyQuickAction}
+              onChange={(value) => set('showApplyQuickAction', value)}
+              label="Show Apply Now"
+              description="Links to the Contact page."
+            />
+          </div>
+        </section>
        <section className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-6 md:p-8">
          <SectionTitle icon={<Palette size={18} />} title="Available Themes" description="Choose a reusable colour system for the public site and admin dashboard." />
          <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -181,6 +269,24 @@ function SectionTitle({ icon, title, description }: { icon?: React.ReactNode; ti
 function ColorField({ id, label, value, onChange }: { id: string; label: string; value: string; onChange: (value: string) => void }) {
   const pickerValue = normalizeHexColor(value) ?? '#000000';
   return <label className="block space-y-2 text-sm font-semibold" htmlFor={id}>{label}<div className="flex h-12 items-center gap-3 rounded-xl border border-[hsl(var(--input))] bg-[hsl(var(--card))] px-3"><input id={id} type="color" value={pickerValue} onChange={(event) => onChange(event.target.value.toUpperCase())} className="h-8 w-8 cursor-pointer rounded-lg border-0 bg-transparent p-0" data-testid={`input-${id}`} /><input value={value} onChange={(event) => onChange(event.target.value)} onBlur={() => { const normalized = normalizeHexColor(value); if (normalized) onChange(normalized); }} className="w-full bg-transparent text-sm font-semibold uppercase outline-none" pattern="^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$" aria-invalid={normalizeHexColor(value) === null} data-testid={`text-${id}`} /></div></label>;
+}
+function VisibilityOption({ id, checked, onChange, label, description }: { id: string; checked: boolean; onChange: (checked: boolean) => void; label: string; description: string }) {
+  return (
+    <label htmlFor={id} className="flex min-h-[88px] cursor-pointer items-start gap-3 rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--background))] p-4 transition hover:border-[hsl(var(--accent))]">
+      <input
+        id={id}
+        type="checkbox"
+        checked={checked}
+        onChange={(event) => onChange(event.target.checked)}
+        className="mt-1 h-4 w-4 shrink-0 accent-[hsl(var(--admin-primary))]"
+        data-testid={`input-${id}`}
+      />
+      <span>
+        <span className="block text-sm font-bold text-[hsl(var(--admin-text))]">{label}</span>
+        <span className="mt-1 block text-xs leading-5 text-[hsl(var(--admin-text-muted))]">{description}</span>
+      </span>
+    </label>
+  );
 }
 function EditorLoading() { return <div className="animate-pulse space-y-6"><div className="h-36 max-w-xl rounded-2xl bg-[hsl(var(--muted))]" /><div className="h-96 rounded-2xl bg-[hsl(var(--muted))]" /><div className="h-64 rounded-2xl bg-[hsl(var(--muted))]" /></div>; }
 function EditorError({ onRetry }: { onRetry: () => void }) { return <div className="rounded-2xl border border-[hsl(var(--destructive)/.2)] bg-[hsl(var(--destructive)/.06)] p-8"><h2 className="font-display text-3xl font-semibold">The editor could not load.</h2><p className="mt-2 text-sm text-[hsl(var(--muted-foreground))]">Check your connection and try once more.</p><button onClick={onRetry} className="mt-6 rounded-xl bg-[hsl(var(--primary))] px-4 py-2.5 text-sm font-bold text-[hsl(var(--primary-foreground))]" data-testid="button-retry-settings">Try again</button></div>; }

@@ -17,6 +17,7 @@ import AdminDashboard from '@/pages/admin-dashboard';
 import AdminSiteSettings from '@/pages/admin-site-settings';
 import AdminMegaMenus from '@/pages/admin-mega-menus';
 import { PublicVisitIntroGate } from '@/components/public-visit-intro';
+import { PublicQuickActions } from '@/components/public-quick-actions';
 import { CallbackPopupGate } from '@/components/callback-popup';
 import AdminHomepageHero from '@/pages/admin-homepage-hero';
 import AdminHomepageAboutPreview from '@/pages/admin-homepage-about-preview';
@@ -253,6 +254,7 @@ function App() {
           <Router />
           <PublicVisitIntroGate />
           <CallbackPopupGate />
+          <PublicQuickActions />
         </WouterRouter>
         <Toaster />
       </TooltipProvider>

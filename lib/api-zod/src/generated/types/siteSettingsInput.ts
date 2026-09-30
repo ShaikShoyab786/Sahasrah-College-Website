@@ -41,6 +41,9 @@ export interface SiteSettingsInput {
      * @pattern ^(?=.*\S)[^\r\n]+$
      */
   introQuote: string;
+  showCallQuickAction: boolean;
+  showWhatsappQuickAction: boolean;
+  showApplyQuickAction: boolean;
   /** @minLength 1 */
   loginLeftEyebrow: string;
   /** @minLength 1 */

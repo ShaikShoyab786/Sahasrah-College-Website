@@ -26,6 +26,9 @@ export interface SiteSettings {
   footerText: string;
   introEnabled: boolean;
   introQuote: string;
+  showCallQuickAction: boolean;
+  showWhatsappQuickAction: boolean;
+  showApplyQuickAction: boolean;
   loginLeftEyebrow: string;
   loginLeftHeading: string;
   loginLeftHighlightedHeading: string;

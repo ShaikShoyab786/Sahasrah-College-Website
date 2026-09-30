@@ -4545,6 +4545,12 @@ components:
           type: boolean
         introQuote:
           type: string
+        showCallQuickAction:
+          type: boolean
+        showWhatsappQuickAction:
+          type: boolean
+        showApplyQuickAction:
+          type: boolean
         loginLeftEyebrow:
           type: string
         loginLeftHeading:
@@ -4594,6 +4600,9 @@ components:
         - footerText
         - introEnabled
         - introQuote
+        - showCallQuickAction
+        - showWhatsappQuickAction
+        - showApplyQuickAction
         - loginLeftEyebrow
         - loginLeftHeading
         - loginLeftHighlightedHeading
@@ -4661,6 +4670,12 @@ components:
           minLength: 1
           maxLength: 80
           pattern: '^(?=.*\S)[^\r\n]+$'
+        showCallQuickAction:
+          type: boolean
+        showWhatsappQuickAction:
+          type: boolean
+        showApplyQuickAction:
+          type: boolean
         loginLeftEyebrow:
           type: string
           minLength: 1
@@ -4723,6 +4738,9 @@ components:
         - footerText
         - introEnabled
         - introQuote
+        - showCallQuickAction
+        - showWhatsappQuickAction
+        - showApplyQuickAction
         - loginLeftEyebrow
         - loginLeftHeading
         - loginLeftHighlightedHeading

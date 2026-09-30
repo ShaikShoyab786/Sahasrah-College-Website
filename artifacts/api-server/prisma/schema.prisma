@@ -47,6 +47,9 @@ model SiteSettings {
   footerText               String
   introEnabled             Boolean @default(true)
   introQuote               String  @default("Best place to learn")
+  showCallQuickAction      Boolean @default(true)
+  showWhatsappQuickAction  Boolean @default(true)
+  showApplyQuickAction     Boolean @default(true)
   loginLeftEyebrow         String  @default("ACADEMIC ADMINISTRATION")
   loginLeftHeading         String  @default("Manage with")
   loginLeftHighlightedHeading String @default("clarity and purpose.")
