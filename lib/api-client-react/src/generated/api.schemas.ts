@@ -3131,6 +3131,151 @@ export interface AboutAdmissionCtaInput {
   sortOrder: number;
 }
 
+export interface KnowledgeHubExamUpdatesPageSettings {
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  heroEyebrow: string;
+  /**
+     * @minLength 1
+     * @maxLength 180
+     */
+  heroHeadline: string;
+  /**
+     * @minLength 1
+     * @maxLength 700
+     */
+  heroDescription: string;
+  /**
+     * @maxLength 1000
+     * @nullable
+     */
+  heroBackgroundImageUrl: string | null;
+  /** @maxLength 240 */
+  heroBackgroundImageAltText: string;
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  searchPlaceholder: string;
+  /**
+     * @minLength 1
+     * @maxLength 60
+     */
+  searchButtonLabel: string;
+  /**
+     * @minLength 1
+     * @maxLength 120
+     */
+  latestEyebrow: string;
+  /**
+     * @minLength 1
+     * @maxLength 160
+     */
+  latestHeading: string;
+  /**
+     * @minLength 1
+     * @maxLength 500
+     */
+  latestDescription: string;
+  /**
+     * @minItems 1
+     * @maxItems 12
+     * @items.minLength 1
+     * @items.maxLength 60
+     */
+  examFilters: string[];
+}
+
+export type KnowledgeHubExamUpdatesPageInput = KnowledgeHubExamUpdatesPageSettings;
+
+export type KnowledgeHubExamUpdateInputStatus = typeof KnowledgeHubExamUpdateInputStatus[keyof typeof KnowledgeHubExamUpdateInputStatus];
+
+
+export const KnowledgeHubExamUpdateInputStatus = {
+  draft: 'draft',
+  published: 'published',
+  archived: 'archived',
+} as const;
+
+export interface KnowledgeHubExamUpdateInput {
+  /**
+     * @minLength 1
+     * @maxLength 240
+     */
+  title: string;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  exam: string;
+  /**
+     * @minLength 1
+     * @maxLength 100
+     */
+  updateType: string;
+  /**
+     * @minLength 1
+     * @maxLength 60
+     */
+  label: string;
+  /**
+     * @minLength 1
+     * @maxLength 600
+     */
+  summary: string;
+  /**
+     * @minLength 1
+     * @maxLength 50000
+     */
+  fullNotice: string;
+  /** @nullable */
+  publishedAt: string | null;
+  /** @maxLength 1000 */
+  officialUrl: string;
+  /**
+     * @maxItems 30
+     * @items.minLength 1
+     * @items.maxLength 80
+     */
+  keywords: string[];
+  status: KnowledgeHubExamUpdateInputStatus;
+  isPinned: boolean;
+  /**
+     * @minimum 1
+     * @maximum 10000
+     */
+  displayOrder: number;
+}
+
+export type KnowledgeHubExamUpdate = KnowledgeHubExamUpdateInput & {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type KnowledgeHubExamUpdateRecord = KnowledgeHubExamUpdate;
+
+export interface KnowledgeHubExamUpdatesList {
+  items: KnowledgeHubExamUpdate[];
+  /** @minimum 0 */
+  total: number;
+  /** @minimum 0 */
+  offset: number;
+  /**
+     * @minimum 1
+     * @maximum 500
+     */
+  limit: number;
+  hasMore: boolean;
+}
+
+export interface AdminKnowledgeHubExamUpdates {
+  settings: KnowledgeHubExamUpdatesPageSettings;
+  updates: KnowledgeHubExamUpdate[];
+}
+
 export interface KnowledgeHubArticlesPageSettings {
   /**
      * @minLength 1
@@ -4280,6 +4425,26 @@ export interface ImageUploadResult {
   url: string;
   purpose: ImageUploadResultPurpose;
 }
+
+export type GetKnowledgeHubExamUpdatesParams = {
+/**
+ * @maxLength 200
+ */
+search?: string;
+/**
+ * @maxLength 100
+ */
+exam?: string;
+/**
+ * @minimum 0
+ */
+offset?: number;
+/**
+ * @minimum 1
+ * @maximum 500
+ */
+limit?: number;
+};
 
 export type GetKnowledgeHubArticlesParams = {
 /**

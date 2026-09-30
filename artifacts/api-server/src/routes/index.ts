@@ -14,6 +14,7 @@ import knowledgeHubMegaMenuRouter from "./knowledge-hub-mega-menu";
 import knowledgeHubArticlesRouter from "./knowledge-hub-articles";
 import knowledgeHubVideoHubRouter from "./knowledge-hub-video-hub";
 import knowledgeHubResourcesRouter from "./knowledge-hub-resources";
+import knowledgeHubExamUpdatesRouter from "./knowledge-hub-exam-updates";
 
 const router: IRouter = Router();
 
@@ -28,6 +29,7 @@ router.use(knowledgeHubMegaMenuRouter);
 router.use(knowledgeHubArticlesRouter);
 router.use(knowledgeHubVideoHubRouter);
 router.use(knowledgeHubResourcesRouter);
+router.use(knowledgeHubExamUpdatesRouter);
 router.use(galleryRouter);
 router.use(resultsRouter);
 router.use(contactRouter);

@@ -86,7 +86,8 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
   const knowledgeHubArticlesActive = location.startsWith('/admin/pages/knowledge-hub/articles');
   const knowledgeHubVideosActive = location.startsWith('/admin/pages/knowledge-hub/videos');
   const knowledgeHubResourcesActive = location.startsWith('/admin/pages/knowledge-hub/resources');
-  const nestedKnowledgeHubRoute = knowledgeHubMainPageActive || knowledgeHubArticlesActive || knowledgeHubVideosActive || knowledgeHubResourcesActive;
+  const knowledgeHubExamUpdatesActive = location.startsWith('/admin/pages/knowledge-hub/exam-updates');
+  const nestedKnowledgeHubRoute = knowledgeHubMainPageActive || knowledgeHubArticlesActive || knowledgeHubVideosActive || knowledgeHubResourcesActive || knowledgeHubExamUpdatesActive;
   const resultsPageActive = location.startsWith('/admin/pages/results') || location.startsWith('/admin/results');
   const nestedHomeRoute = heroActive || aboutActive || liveUpdatesActive || statisticsActive || favoriteTopicsActive || resultsActive || ribbonActive || testimonialsActive || facultyActive || galleryActive || knowledgeHubActive || admissionsFaqActive || finalCtaActive;
   const nestedAboutRoute = aboutHeroActive || aboutStoryActive || chairmanActive || principlesActive || parentChoiceActive || leadershipActive || campusHighlightsActive || achievementsActive || faqActive || admissionCtaActive;
@@ -353,6 +354,7 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
                     <PageSectionLink href="/admin/pages/knowledge-hub/articles" id="knowledge-hub-articles" label="Articles" active={knowledgeHubArticlesActive} onSelect={() => { setActiveAdminSection(''); setOpen(false); }} />
                     <PageSectionLink href="/admin/pages/knowledge-hub/videos" id="knowledge-hub-videos" label="Video Hub" active={knowledgeHubVideosActive} onSelect={() => { setActiveAdminSection(''); setOpen(false); }} />
                     <PageSectionLink href="/admin/pages/knowledge-hub/resources" id="knowledge-hub-resources" label="Resource Hub" active={knowledgeHubResourcesActive} onSelect={() => { setActiveAdminSection(''); setOpen(false); }} />
+                    <PageSectionLink href="/admin/pages/knowledge-hub/exam-updates" id="knowledge-hub-exam-updates" label="Exam Updates" active={knowledgeHubExamUpdatesActive} onSelect={() => { setActiveAdminSection(''); setOpen(false); }} />
                   </div>
                 )}
               </div>

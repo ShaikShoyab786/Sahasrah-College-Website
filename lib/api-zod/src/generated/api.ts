@@ -5736,6 +5736,480 @@ export const UploadAdminImageResponse = zod.object({
 
 
 /**
+ * @summary Read public Exam Updates page settings
+ */
+export const getKnowledgeHubExamUpdatesPageResponseHeroEyebrowMax = 120;
+
+export const getKnowledgeHubExamUpdatesPageResponseHeroHeadlineMax = 180;
+
+export const getKnowledgeHubExamUpdatesPageResponseHeroDescriptionMax = 700;
+
+export const getKnowledgeHubExamUpdatesPageResponseHeroBackgroundImageUrlMax = 1000;
+
+export const getKnowledgeHubExamUpdatesPageResponseHeroBackgroundImageAltTextMax = 240;
+
+export const getKnowledgeHubExamUpdatesPageResponseSearchPlaceholderMax = 160;
+
+export const getKnowledgeHubExamUpdatesPageResponseSearchButtonLabelMax = 60;
+
+export const getKnowledgeHubExamUpdatesPageResponseLatestEyebrowMax = 120;
+
+export const getKnowledgeHubExamUpdatesPageResponseLatestHeadingMax = 160;
+
+export const getKnowledgeHubExamUpdatesPageResponseLatestDescriptionMax = 500;
+
+export const getKnowledgeHubExamUpdatesPageResponseExamFiltersItemMax = 60;
+
+export const getKnowledgeHubExamUpdatesPageResponseExamFiltersMax = 12;
+
+
+
+export const GetKnowledgeHubExamUpdatesPageResponse = zod.object({
+  "heroEyebrow": zod.string().min(1).max(getKnowledgeHubExamUpdatesPageResponseHeroEyebrowMax),
+  "heroHeadline": zod.string().min(1).max(getKnowledgeHubExamUpdatesPageResponseHeroHeadlineMax),
+  "heroDescription": zod.string().min(1).max(getKnowledgeHubExamUpdatesPageResponseHeroDescriptionMax),
+  "heroBackgroundImageUrl": zod.string().max(getKnowledgeHubExamUpdatesPageResponseHeroBackgroundImageUrlMax).nullable(),
+  "heroBackgroundImageAltText": zod.string().max(getKnowledgeHubExamUpdatesPageResponseHeroBackgroundImageAltTextMax),
+  "searchPlaceholder": zod.string().min(1).max(getKnowledgeHubExamUpdatesPageResponseSearchPlaceholderMax),
+  "searchButtonLabel": zod.string().min(1).max(getKnowledgeHubExamUpdatesPageResponseSearchButtonLabelMax),
+  "latestEyebrow": zod.string().min(1).max(getKnowledgeHubExamUpdatesPageResponseLatestEyebrowMax),
+  "latestHeading": zod.string().min(1).max(getKnowledgeHubExamUpdatesPageResponseLatestHeadingMax),
+  "latestDescription": zod.string().min(1).max(getKnowledgeHubExamUpdatesPageResponseLatestDescriptionMax),
+  "examFilters": zod.array(zod.string().min(1).max(getKnowledgeHubExamUpdatesPageResponseExamFiltersItemMax)).min(1).max(getKnowledgeHubExamUpdatesPageResponseExamFiltersMax)
+})
+
+
+/**
+ * @summary Search published exam updates
+ */
+export const getKnowledgeHubExamUpdatesQuerySearchMax = 200;
+
+export const getKnowledgeHubExamUpdatesQueryExamMax = 100;
+
+export const getKnowledgeHubExamUpdatesQueryOffsetDefault = 0;
+export const getKnowledgeHubExamUpdatesQueryOffsetMin = 0;
+
+export const getKnowledgeHubExamUpdatesQueryLimitDefault = 100;
+export const getKnowledgeHubExamUpdatesQueryLimitMax = 500;
+
+
+
+export const GetKnowledgeHubExamUpdatesQueryParams = zod.object({
+  "search": zod.coerce.string().max(getKnowledgeHubExamUpdatesQuerySearchMax).optional(),
+  "exam": zod.coerce.string().max(getKnowledgeHubExamUpdatesQueryExamMax).optional(),
+  "offset": zod.coerce.number().int().min(getKnowledgeHubExamUpdatesQueryOffsetMin).default(getKnowledgeHubExamUpdatesQueryOffsetDefault),
+  "limit": zod.coerce.number().int().min(1).max(getKnowledgeHubExamUpdatesQueryLimitMax).default(getKnowledgeHubExamUpdatesQueryLimitDefault)
+})
+
+export const getKnowledgeHubExamUpdatesResponseItemsItemOneTitleMax = 240;
+
+export const getKnowledgeHubExamUpdatesResponseItemsItemOneExamMax = 100;
+
+export const getKnowledgeHubExamUpdatesResponseItemsItemOneUpdateTypeMax = 100;
+
+export const getKnowledgeHubExamUpdatesResponseItemsItemOneLabelMax = 60;
+
+export const getKnowledgeHubExamUpdatesResponseItemsItemOneSummaryMax = 600;
+
+export const getKnowledgeHubExamUpdatesResponseItemsItemOneFullNoticeMax = 50000;
+
+export const getKnowledgeHubExamUpdatesResponseItemsItemOneOfficialUrlMax = 1000;
+
+export const getKnowledgeHubExamUpdatesResponseItemsItemOneKeywordsItemMax = 80;
+
+export const getKnowledgeHubExamUpdatesResponseItemsItemOneKeywordsMax = 30;
+
+export const getKnowledgeHubExamUpdatesResponseItemsItemOneDisplayOrderMax = 10000;
+
+export const getKnowledgeHubExamUpdatesResponseTotalMin = 0;
+
+export const getKnowledgeHubExamUpdatesResponseOffsetMin = 0;
+
+export const getKnowledgeHubExamUpdatesResponseLimitMax = 500;
+
+
+
+export const GetKnowledgeHubExamUpdatesResponse = zod.object({
+  "items": zod.array(zod.object({
+  "title": zod.string().min(1).max(getKnowledgeHubExamUpdatesResponseItemsItemOneTitleMax),
+  "exam": zod.string().min(1).max(getKnowledgeHubExamUpdatesResponseItemsItemOneExamMax),
+  "updateType": zod.string().min(1).max(getKnowledgeHubExamUpdatesResponseItemsItemOneUpdateTypeMax),
+  "label": zod.string().min(1).max(getKnowledgeHubExamUpdatesResponseItemsItemOneLabelMax),
+  "summary": zod.string().min(1).max(getKnowledgeHubExamUpdatesResponseItemsItemOneSummaryMax),
+  "fullNotice": zod.string().min(1).max(getKnowledgeHubExamUpdatesResponseItemsItemOneFullNoticeMax),
+  "publishedAt": zod.coerce.date().nullable(),
+  "officialUrl": zod.string().max(getKnowledgeHubExamUpdatesResponseItemsItemOneOfficialUrlMax),
+  "keywords": zod.array(zod.string().min(1).max(getKnowledgeHubExamUpdatesResponseItemsItemOneKeywordsItemMax)).max(getKnowledgeHubExamUpdatesResponseItemsItemOneKeywordsMax),
+  "status": zod.enum(['draft', 'published', 'archived']),
+  "isPinned": zod.boolean(),
+  "displayOrder": zod.number().int().min(1).max(getKnowledgeHubExamUpdatesResponseItemsItemOneDisplayOrderMax)
+}).and(zod.object({
+  "id": zod.string(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+}))),
+  "total": zod.number().int().min(getKnowledgeHubExamUpdatesResponseTotalMin),
+  "offset": zod.number().int().min(getKnowledgeHubExamUpdatesResponseOffsetMin),
+  "limit": zod.number().int().min(1).max(getKnowledgeHubExamUpdatesResponseLimitMax),
+  "hasMore": zod.boolean()
+})
+
+
+/**
+ * @summary Read Exam Updates settings and all update records
+ */
+export const getAdminKnowledgeHubExamUpdatesResponseSettingsHeroEyebrowMax = 120;
+
+export const getAdminKnowledgeHubExamUpdatesResponseSettingsHeroHeadlineMax = 180;
+
+export const getAdminKnowledgeHubExamUpdatesResponseSettingsHeroDescriptionMax = 700;
+
+export const getAdminKnowledgeHubExamUpdatesResponseSettingsHeroBackgroundImageUrlMax = 1000;
+
+export const getAdminKnowledgeHubExamUpdatesResponseSettingsHeroBackgroundImageAltTextMax = 240;
+
+export const getAdminKnowledgeHubExamUpdatesResponseSettingsSearchPlaceholderMax = 160;
+
+export const getAdminKnowledgeHubExamUpdatesResponseSettingsSearchButtonLabelMax = 60;
+
+export const getAdminKnowledgeHubExamUpdatesResponseSettingsLatestEyebrowMax = 120;
+
+export const getAdminKnowledgeHubExamUpdatesResponseSettingsLatestHeadingMax = 160;
+
+export const getAdminKnowledgeHubExamUpdatesResponseSettingsLatestDescriptionMax = 500;
+
+export const getAdminKnowledgeHubExamUpdatesResponseSettingsExamFiltersItemMax = 60;
+
+export const getAdminKnowledgeHubExamUpdatesResponseSettingsExamFiltersMax = 12;
+
+export const getAdminKnowledgeHubExamUpdatesResponseUpdatesItemOneTitleMax = 240;
+
+export const getAdminKnowledgeHubExamUpdatesResponseUpdatesItemOneExamMax = 100;
+
+export const getAdminKnowledgeHubExamUpdatesResponseUpdatesItemOneUpdateTypeMax = 100;
+
+export const getAdminKnowledgeHubExamUpdatesResponseUpdatesItemOneLabelMax = 60;
+
+export const getAdminKnowledgeHubExamUpdatesResponseUpdatesItemOneSummaryMax = 600;
+
+export const getAdminKnowledgeHubExamUpdatesResponseUpdatesItemOneFullNoticeMax = 50000;
+
+export const getAdminKnowledgeHubExamUpdatesResponseUpdatesItemOneOfficialUrlMax = 1000;
+
+export const getAdminKnowledgeHubExamUpdatesResponseUpdatesItemOneKeywordsItemMax = 80;
+
+export const getAdminKnowledgeHubExamUpdatesResponseUpdatesItemOneKeywordsMax = 30;
+
+export const getAdminKnowledgeHubExamUpdatesResponseUpdatesItemOneDisplayOrderMax = 10000;
+
+
+
+export const GetAdminKnowledgeHubExamUpdatesResponse = zod.object({
+  "settings": zod.object({
+  "heroEyebrow": zod.string().min(1).max(getAdminKnowledgeHubExamUpdatesResponseSettingsHeroEyebrowMax),
+  "heroHeadline": zod.string().min(1).max(getAdminKnowledgeHubExamUpdatesResponseSettingsHeroHeadlineMax),
+  "heroDescription": zod.string().min(1).max(getAdminKnowledgeHubExamUpdatesResponseSettingsHeroDescriptionMax),
+  "heroBackgroundImageUrl": zod.string().max(getAdminKnowledgeHubExamUpdatesResponseSettingsHeroBackgroundImageUrlMax).nullable(),
+  "heroBackgroundImageAltText": zod.string().max(getAdminKnowledgeHubExamUpdatesResponseSettingsHeroBackgroundImageAltTextMax),
+  "searchPlaceholder": zod.string().min(1).max(getAdminKnowledgeHubExamUpdatesResponseSettingsSearchPlaceholderMax),
+  "searchButtonLabel": zod.string().min(1).max(getAdminKnowledgeHubExamUpdatesResponseSettingsSearchButtonLabelMax),
+  "latestEyebrow": zod.string().min(1).max(getAdminKnowledgeHubExamUpdatesResponseSettingsLatestEyebrowMax),
+  "latestHeading": zod.string().min(1).max(getAdminKnowledgeHubExamUpdatesResponseSettingsLatestHeadingMax),
+  "latestDescription": zod.string().min(1).max(getAdminKnowledgeHubExamUpdatesResponseSettingsLatestDescriptionMax),
+  "examFilters": zod.array(zod.string().min(1).max(getAdminKnowledgeHubExamUpdatesResponseSettingsExamFiltersItemMax)).min(1).max(getAdminKnowledgeHubExamUpdatesResponseSettingsExamFiltersMax)
+}),
+  "updates": zod.array(zod.object({
+  "title": zod.string().min(1).max(getAdminKnowledgeHubExamUpdatesResponseUpdatesItemOneTitleMax),
+  "exam": zod.string().min(1).max(getAdminKnowledgeHubExamUpdatesResponseUpdatesItemOneExamMax),
+  "updateType": zod.string().min(1).max(getAdminKnowledgeHubExamUpdatesResponseUpdatesItemOneUpdateTypeMax),
+  "label": zod.string().min(1).max(getAdminKnowledgeHubExamUpdatesResponseUpdatesItemOneLabelMax),
+  "summary": zod.string().min(1).max(getAdminKnowledgeHubExamUpdatesResponseUpdatesItemOneSummaryMax),
+  "fullNotice": zod.string().min(1).max(getAdminKnowledgeHubExamUpdatesResponseUpdatesItemOneFullNoticeMax),
+  "publishedAt": zod.coerce.date().nullable(),
+  "officialUrl": zod.string().max(getAdminKnowledgeHubExamUpdatesResponseUpdatesItemOneOfficialUrlMax),
+  "keywords": zod.array(zod.string().min(1).max(getAdminKnowledgeHubExamUpdatesResponseUpdatesItemOneKeywordsItemMax)).max(getAdminKnowledgeHubExamUpdatesResponseUpdatesItemOneKeywordsMax),
+  "status": zod.enum(['draft', 'published', 'archived']),
+  "isPinned": zod.boolean(),
+  "displayOrder": zod.number().int().min(1).max(getAdminKnowledgeHubExamUpdatesResponseUpdatesItemOneDisplayOrderMax)
+}).and(zod.object({
+  "id": zod.string(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})))
+})
+
+
+/**
+ * @summary Create an exam update
+ */
+export const createAdminKnowledgeHubExamUpdateBodyTitleMax = 240;
+
+export const createAdminKnowledgeHubExamUpdateBodyExamMax = 100;
+
+export const createAdminKnowledgeHubExamUpdateBodyUpdateTypeMax = 100;
+
+export const createAdminKnowledgeHubExamUpdateBodyLabelMax = 60;
+
+export const createAdminKnowledgeHubExamUpdateBodySummaryMax = 600;
+
+export const createAdminKnowledgeHubExamUpdateBodyFullNoticeMax = 50000;
+
+export const createAdminKnowledgeHubExamUpdateBodyOfficialUrlMax = 1000;
+
+export const createAdminKnowledgeHubExamUpdateBodyKeywordsItemMax = 80;
+
+export const createAdminKnowledgeHubExamUpdateBodyKeywordsMax = 30;
+
+export const createAdminKnowledgeHubExamUpdateBodyDisplayOrderMax = 10000;
+
+
+
+export const CreateAdminKnowledgeHubExamUpdateBody = zod.object({
+  "title": zod.string().min(1).max(createAdminKnowledgeHubExamUpdateBodyTitleMax),
+  "exam": zod.string().min(1).max(createAdminKnowledgeHubExamUpdateBodyExamMax),
+  "updateType": zod.string().min(1).max(createAdminKnowledgeHubExamUpdateBodyUpdateTypeMax),
+  "label": zod.string().min(1).max(createAdminKnowledgeHubExamUpdateBodyLabelMax),
+  "summary": zod.string().min(1).max(createAdminKnowledgeHubExamUpdateBodySummaryMax),
+  "fullNotice": zod.string().min(1).max(createAdminKnowledgeHubExamUpdateBodyFullNoticeMax),
+  "publishedAt": zod.coerce.date().nullable(),
+  "officialUrl": zod.string().max(createAdminKnowledgeHubExamUpdateBodyOfficialUrlMax),
+  "keywords": zod.array(zod.string().min(1).max(createAdminKnowledgeHubExamUpdateBodyKeywordsItemMax)).max(createAdminKnowledgeHubExamUpdateBodyKeywordsMax),
+  "status": zod.enum(['draft', 'published', 'archived']),
+  "isPinned": zod.boolean(),
+  "displayOrder": zod.number().int().min(1).max(createAdminKnowledgeHubExamUpdateBodyDisplayOrderMax)
+})
+
+export const createAdminKnowledgeHubExamUpdateResponseOneTitleMax = 240;
+
+export const createAdminKnowledgeHubExamUpdateResponseOneExamMax = 100;
+
+export const createAdminKnowledgeHubExamUpdateResponseOneUpdateTypeMax = 100;
+
+export const createAdminKnowledgeHubExamUpdateResponseOneLabelMax = 60;
+
+export const createAdminKnowledgeHubExamUpdateResponseOneSummaryMax = 600;
+
+export const createAdminKnowledgeHubExamUpdateResponseOneFullNoticeMax = 50000;
+
+export const createAdminKnowledgeHubExamUpdateResponseOneOfficialUrlMax = 1000;
+
+export const createAdminKnowledgeHubExamUpdateResponseOneKeywordsItemMax = 80;
+
+export const createAdminKnowledgeHubExamUpdateResponseOneKeywordsMax = 30;
+
+export const createAdminKnowledgeHubExamUpdateResponseOneDisplayOrderMax = 10000;
+
+
+
+export const CreateAdminKnowledgeHubExamUpdateResponse = zod.object({
+  "title": zod.string().min(1).max(createAdminKnowledgeHubExamUpdateResponseOneTitleMax),
+  "exam": zod.string().min(1).max(createAdminKnowledgeHubExamUpdateResponseOneExamMax),
+  "updateType": zod.string().min(1).max(createAdminKnowledgeHubExamUpdateResponseOneUpdateTypeMax),
+  "label": zod.string().min(1).max(createAdminKnowledgeHubExamUpdateResponseOneLabelMax),
+  "summary": zod.string().min(1).max(createAdminKnowledgeHubExamUpdateResponseOneSummaryMax),
+  "fullNotice": zod.string().min(1).max(createAdminKnowledgeHubExamUpdateResponseOneFullNoticeMax),
+  "publishedAt": zod.coerce.date().nullable(),
+  "officialUrl": zod.string().max(createAdminKnowledgeHubExamUpdateResponseOneOfficialUrlMax),
+  "keywords": zod.array(zod.string().min(1).max(createAdminKnowledgeHubExamUpdateResponseOneKeywordsItemMax)).max(createAdminKnowledgeHubExamUpdateResponseOneKeywordsMax),
+  "status": zod.enum(['draft', 'published', 'archived']),
+  "isPinned": zod.boolean(),
+  "displayOrder": zod.number().int().min(1).max(createAdminKnowledgeHubExamUpdateResponseOneDisplayOrderMax)
+}).and(zod.object({
+  "id": zod.string(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+}))
+
+
+/**
+ * @summary Update Exam Updates hero, search, filters, and latest section copy
+ */
+export const updateAdminKnowledgeHubExamUpdatesPageBodyOneHeroEyebrowMax = 120;
+
+export const updateAdminKnowledgeHubExamUpdatesPageBodyOneHeroHeadlineMax = 180;
+
+export const updateAdminKnowledgeHubExamUpdatesPageBodyOneHeroDescriptionMax = 700;
+
+export const updateAdminKnowledgeHubExamUpdatesPageBodyOneHeroBackgroundImageUrlMax = 1000;
+
+export const updateAdminKnowledgeHubExamUpdatesPageBodyOneHeroBackgroundImageAltTextMax = 240;
+
+export const updateAdminKnowledgeHubExamUpdatesPageBodyOneSearchPlaceholderMax = 160;
+
+export const updateAdminKnowledgeHubExamUpdatesPageBodyOneSearchButtonLabelMax = 60;
+
+export const updateAdminKnowledgeHubExamUpdatesPageBodyOneLatestEyebrowMax = 120;
+
+export const updateAdminKnowledgeHubExamUpdatesPageBodyOneLatestHeadingMax = 160;
+
+export const updateAdminKnowledgeHubExamUpdatesPageBodyOneLatestDescriptionMax = 500;
+
+export const updateAdminKnowledgeHubExamUpdatesPageBodyOneExamFiltersItemMax = 60;
+
+export const updateAdminKnowledgeHubExamUpdatesPageBodyOneExamFiltersMax = 12;
+
+
+
+export const UpdateAdminKnowledgeHubExamUpdatesPageBody = zod.object({
+  "heroEyebrow": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesPageBodyOneHeroEyebrowMax),
+  "heroHeadline": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesPageBodyOneHeroHeadlineMax),
+  "heroDescription": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesPageBodyOneHeroDescriptionMax),
+  "heroBackgroundImageUrl": zod.string().max(updateAdminKnowledgeHubExamUpdatesPageBodyOneHeroBackgroundImageUrlMax).nullable(),
+  "heroBackgroundImageAltText": zod.string().max(updateAdminKnowledgeHubExamUpdatesPageBodyOneHeroBackgroundImageAltTextMax),
+  "searchPlaceholder": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesPageBodyOneSearchPlaceholderMax),
+  "searchButtonLabel": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesPageBodyOneSearchButtonLabelMax),
+  "latestEyebrow": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesPageBodyOneLatestEyebrowMax),
+  "latestHeading": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesPageBodyOneLatestHeadingMax),
+  "latestDescription": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesPageBodyOneLatestDescriptionMax),
+  "examFilters": zod.array(zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesPageBodyOneExamFiltersItemMax)).min(1).max(updateAdminKnowledgeHubExamUpdatesPageBodyOneExamFiltersMax)
+})
+
+export const updateAdminKnowledgeHubExamUpdatesPageResponseHeroEyebrowMax = 120;
+
+export const updateAdminKnowledgeHubExamUpdatesPageResponseHeroHeadlineMax = 180;
+
+export const updateAdminKnowledgeHubExamUpdatesPageResponseHeroDescriptionMax = 700;
+
+export const updateAdminKnowledgeHubExamUpdatesPageResponseHeroBackgroundImageUrlMax = 1000;
+
+export const updateAdminKnowledgeHubExamUpdatesPageResponseHeroBackgroundImageAltTextMax = 240;
+
+export const updateAdminKnowledgeHubExamUpdatesPageResponseSearchPlaceholderMax = 160;
+
+export const updateAdminKnowledgeHubExamUpdatesPageResponseSearchButtonLabelMax = 60;
+
+export const updateAdminKnowledgeHubExamUpdatesPageResponseLatestEyebrowMax = 120;
+
+export const updateAdminKnowledgeHubExamUpdatesPageResponseLatestHeadingMax = 160;
+
+export const updateAdminKnowledgeHubExamUpdatesPageResponseLatestDescriptionMax = 500;
+
+export const updateAdminKnowledgeHubExamUpdatesPageResponseExamFiltersItemMax = 60;
+
+export const updateAdminKnowledgeHubExamUpdatesPageResponseExamFiltersMax = 12;
+
+
+
+export const UpdateAdminKnowledgeHubExamUpdatesPageResponse = zod.object({
+  "heroEyebrow": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesPageResponseHeroEyebrowMax),
+  "heroHeadline": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesPageResponseHeroHeadlineMax),
+  "heroDescription": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesPageResponseHeroDescriptionMax),
+  "heroBackgroundImageUrl": zod.string().max(updateAdminKnowledgeHubExamUpdatesPageResponseHeroBackgroundImageUrlMax).nullable(),
+  "heroBackgroundImageAltText": zod.string().max(updateAdminKnowledgeHubExamUpdatesPageResponseHeroBackgroundImageAltTextMax),
+  "searchPlaceholder": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesPageResponseSearchPlaceholderMax),
+  "searchButtonLabel": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesPageResponseSearchButtonLabelMax),
+  "latestEyebrow": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesPageResponseLatestEyebrowMax),
+  "latestHeading": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesPageResponseLatestHeadingMax),
+  "latestDescription": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesPageResponseLatestDescriptionMax),
+  "examFilters": zod.array(zod.string().min(1).max(updateAdminKnowledgeHubExamUpdatesPageResponseExamFiltersItemMax)).min(1).max(updateAdminKnowledgeHubExamUpdatesPageResponseExamFiltersMax)
+})
+
+
+/**
+ * @summary Update or change the publication status of an exam update
+ */
+export const updateAdminKnowledgeHubExamUpdatePathIdMax = 100;
+
+
+
+export const UpdateAdminKnowledgeHubExamUpdateParams = zod.object({
+  "id": zod.coerce.string().min(1).max(updateAdminKnowledgeHubExamUpdatePathIdMax)
+})
+
+export const updateAdminKnowledgeHubExamUpdateBodyTitleMax = 240;
+
+export const updateAdminKnowledgeHubExamUpdateBodyExamMax = 100;
+
+export const updateAdminKnowledgeHubExamUpdateBodyUpdateTypeMax = 100;
+
+export const updateAdminKnowledgeHubExamUpdateBodyLabelMax = 60;
+
+export const updateAdminKnowledgeHubExamUpdateBodySummaryMax = 600;
+
+export const updateAdminKnowledgeHubExamUpdateBodyFullNoticeMax = 50000;
+
+export const updateAdminKnowledgeHubExamUpdateBodyOfficialUrlMax = 1000;
+
+export const updateAdminKnowledgeHubExamUpdateBodyKeywordsItemMax = 80;
+
+export const updateAdminKnowledgeHubExamUpdateBodyKeywordsMax = 30;
+
+export const updateAdminKnowledgeHubExamUpdateBodyDisplayOrderMax = 10000;
+
+
+
+export const UpdateAdminKnowledgeHubExamUpdateBody = zod.object({
+  "title": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdateBodyTitleMax),
+  "exam": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdateBodyExamMax),
+  "updateType": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdateBodyUpdateTypeMax),
+  "label": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdateBodyLabelMax),
+  "summary": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdateBodySummaryMax),
+  "fullNotice": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdateBodyFullNoticeMax),
+  "publishedAt": zod.coerce.date().nullable(),
+  "officialUrl": zod.string().max(updateAdminKnowledgeHubExamUpdateBodyOfficialUrlMax),
+  "keywords": zod.array(zod.string().min(1).max(updateAdminKnowledgeHubExamUpdateBodyKeywordsItemMax)).max(updateAdminKnowledgeHubExamUpdateBodyKeywordsMax),
+  "status": zod.enum(['draft', 'published', 'archived']),
+  "isPinned": zod.boolean(),
+  "displayOrder": zod.number().int().min(1).max(updateAdminKnowledgeHubExamUpdateBodyDisplayOrderMax)
+})
+
+export const updateAdminKnowledgeHubExamUpdateResponseOneTitleMax = 240;
+
+export const updateAdminKnowledgeHubExamUpdateResponseOneExamMax = 100;
+
+export const updateAdminKnowledgeHubExamUpdateResponseOneUpdateTypeMax = 100;
+
+export const updateAdminKnowledgeHubExamUpdateResponseOneLabelMax = 60;
+
+export const updateAdminKnowledgeHubExamUpdateResponseOneSummaryMax = 600;
+
+export const updateAdminKnowledgeHubExamUpdateResponseOneFullNoticeMax = 50000;
+
+export const updateAdminKnowledgeHubExamUpdateResponseOneOfficialUrlMax = 1000;
+
+export const updateAdminKnowledgeHubExamUpdateResponseOneKeywordsItemMax = 80;
+
+export const updateAdminKnowledgeHubExamUpdateResponseOneKeywordsMax = 30;
+
+export const updateAdminKnowledgeHubExamUpdateResponseOneDisplayOrderMax = 10000;
+
+
+
+export const UpdateAdminKnowledgeHubExamUpdateResponse = zod.object({
+  "title": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdateResponseOneTitleMax),
+  "exam": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdateResponseOneExamMax),
+  "updateType": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdateResponseOneUpdateTypeMax),
+  "label": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdateResponseOneLabelMax),
+  "summary": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdateResponseOneSummaryMax),
+  "fullNotice": zod.string().min(1).max(updateAdminKnowledgeHubExamUpdateResponseOneFullNoticeMax),
+  "publishedAt": zod.coerce.date().nullable(),
+  "officialUrl": zod.string().max(updateAdminKnowledgeHubExamUpdateResponseOneOfficialUrlMax),
+  "keywords": zod.array(zod.string().min(1).max(updateAdminKnowledgeHubExamUpdateResponseOneKeywordsItemMax)).max(updateAdminKnowledgeHubExamUpdateResponseOneKeywordsMax),
+  "status": zod.enum(['draft', 'published', 'archived']),
+  "isPinned": zod.boolean(),
+  "displayOrder": zod.number().int().min(1).max(updateAdminKnowledgeHubExamUpdateResponseOneDisplayOrderMax)
+}).and(zod.object({
+  "id": zod.string(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+}))
+
+
+/**
+ * @summary Delete an exam update
+ */
+export const deleteAdminKnowledgeHubExamUpdatePathIdMax = 100;
+
+
+
+export const DeleteAdminKnowledgeHubExamUpdateParams = zod.object({
+  "id": zod.coerce.string().min(1).max(deleteAdminKnowledgeHubExamUpdatePathIdMax)
+})
+
+export const DeleteAdminKnowledgeHubExamUpdateResponse = zod.void()
+
+
+/**
  * @summary Read public Articles page settings and published counts
  */
 export const getKnowledgeHubArticlesPageResponseSettingsHeroEyebrowMax = 120;

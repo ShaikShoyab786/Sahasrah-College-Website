@@ -1,0 +1,25 @@
+Understood. The first prompt will cover **only the hero and Latest Exam Updates**. We’ll leave Important Dates and the sections below it for our next discussion.
+
+Use this prompt with your agent:
+
+> **Implement Phase 1 of Exam Updates: the hero/search section and Latest Exam Updates only.** Do not build Important Dates, Quick Links, guidance panels, or other lower sections yet.
+>
+> First inspect the existing Knowledge Hub pages and admin patterns. Add **Exam Updates** under the existing **Pages → Knowledge Hub** admin menu, after Resource Hub. Keep the Knowledge Hub main page and the completed Article, Video, and Resource Hubs unchanged.
+>
+> ### Public page
+> Create a professional, responsive Exam Updates page using the existing site’s design language. The hero should have a high-contrast academic exam visual, an editable eyebrow, headline, description, and search bar. Use deep navy for contrast with restrained red accents; don’t make the page entirely blue. Create or add a suitable starter hero image yourself and make it replaceable through the admin dashboard.
+>
+> Beneath the hero, add an **All Updates** filter and exam filters for **JEE, NEET, Intermediate, EAMCET, and Other Exams**. The **Latest Exam Updates** section should show the three newest published notices as cards, with a **View All Updates** control that expands the matching list inline and a **View Less** control to collapse it.
+>
+> Make hero search functional against real published update records. Search titles, summaries, full notice text, exam names, update types, and keywords. Search all exams by default; combine the search with the selected exam filter. Support Enter and the Search button, and show a clear no-results state with a way to reset the search and filter.
+>
+> Each update card should show its exam, importance/status label, title, short summary, and publication date. **View Details** should open that update’s official-source URL in a new tab. Require and validate an official URL before an update can be published.
+>
+> ### Admin management
+> Admins must be able to manage the hero text, search placeholder and button label, background image, Latest section headings, exam filters, and update records without code changes.
+>
+> Provide add, edit, publish/unpublish, pin/reorder, archive, and delete-with-confirmation controls for updates. Each record should support its title, exam, update type or importance label, summary, full notice, publication date, official URL, keywords, and publish status. Only published records appear publicly, and the Latest list is sorted by publication date with no duplicate cards.
+>
+> Add sample records and the starter hero image yourself so the admin workflow can be reviewed without me uploading initial content. **Do not invent real exam deadlines or official announcements.** Use verified notices with their real official source URLs if available. Otherwise, label seed records clearly as demo/sample and keep them unpublished until verified.
+>
+> Check text contrast and readability, especially the hero eyebrow, filter labels, status badges, dates, and buttons. Verify search and filters together, the inline expand/collapse behavior, admin editing and publishing, direct official-source links, and mobile layout. Stop after these two sections; we’ll plan Important Dates separately.

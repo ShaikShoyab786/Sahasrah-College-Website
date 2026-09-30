@@ -44,9 +44,11 @@ import KnowledgeHubVideos from '@/pages/knowledge-hub-videos';
 import KnowledgeHubResources from '@/pages/knowledge-hub-resources';
 import KnowledgeHubArticles from '@/pages/knowledge-hub-articles';
 import KnowledgeHubArticle from '@/pages/knowledge-hub-article';
+import KnowledgeHubExamUpdates from '@/pages/knowledge-hub-exam-updates';
 import AdminKnowledgeHubVideos from '@/pages/admin-knowledge-hub-videos';
 import AdminKnowledgeHubResources from '@/pages/admin-knowledge-hub-resources';
 import AdminKnowledgeHubArticles from '@/pages/admin-knowledge-hub-articles';
+import AdminKnowledgeHubExamUpdates from '@/pages/admin-knowledge-hub-exam-updates';
 import AdminKnowledgeHubMegaMenu from '@/pages/admin-knowledge-hub-mega-menu';
 import CourseDetail from '@/pages/course-detail';
 import IntegratedCourses from '@/pages/integrated-courses';
@@ -73,6 +75,7 @@ function Router() {
         <Route path="/results" component={Results} />
         <Route path="/knowledge-hub/videos" component={KnowledgeHubVideos} />
         <Route path="/knowledge-hub/resources" component={KnowledgeHubResources} />
+        <Route path="/knowledge-hub/exam-updates" component={KnowledgeHubExamUpdates} />
         <Route path="/knowledge-hub/articles/:slug" component={KnowledgeHubArticle} />
         <Route path="/knowledge-hub/articles" component={KnowledgeHubArticles} />
         <Route path="/knowledge-hub" component={KnowledgeHub} />
@@ -181,6 +184,9 @@ function Router() {
         </Route>
         <Route path="/admin/pages/knowledge-hub/resources">
           <AdminGuard><AdminKnowledgeHubResources /></AdminGuard>
+        </Route>
+        <Route path="/admin/pages/knowledge-hub/exam-updates">
+          <AdminGuard><AdminKnowledgeHubExamUpdates /></AdminGuard>
         </Route>
         <Route path="/admin/pages/knowledge-hub/main">
           <AdminGuard><AdminKnowledgeHubMegaMenu /></AdminGuard>

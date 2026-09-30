@@ -2693,6 +2693,156 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ErrorResponse"
+  /knowledge-hub/exam-updates/page:
+    get:
+      operationId: getKnowledgeHubExamUpdatesPage
+      tags: [public]
+      summary: Read public Exam Updates page settings
+      responses:
+        "200":
+          description: Public Exam Updates page settings
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/KnowledgeHubExamUpdatesPageSettings" }
+  /knowledge-hub/exam-updates:
+    get:
+      operationId: getKnowledgeHubExamUpdates
+      tags: [public]
+      summary: Search published exam updates
+      parameters:
+        - { in: query, name: search, schema: { type: string, maxLength: 200 } }
+        - { in: query, name: exam, schema: { type: string, maxLength: 100 } }
+        - { in: query, name: offset, schema: { type: integer, minimum: 0, default: 0 } }
+        - { in: query, name: limit, schema: { type: integer, minimum: 1, maximum: 500, default: 100 } }
+      responses:
+        "200":
+          description: Matching published exam updates
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/KnowledgeHubExamUpdatesList" }
+  /admin/knowledge-hub/exam-updates:
+    get:
+      operationId: getAdminKnowledgeHubExamUpdates
+      tags: [admin]
+      summary: Read Exam Updates settings and all update records
+      security: [{ cookieAuth: [] }]
+      responses:
+        "200":
+          description: Exam Updates management content
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/AdminKnowledgeHubExamUpdates" }
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+    post:
+      operationId: createAdminKnowledgeHubExamUpdate
+      tags: [admin]
+      summary: Create an exam update
+      security: [{ cookieAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/KnowledgeHubExamUpdateInput" }
+      responses:
+        "201":
+          description: Created exam update
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/KnowledgeHubExamUpdateRecord" }
+        "400":
+          description: Invalid update or publication URL
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+  /admin/knowledge-hub/exam-updates/page:
+    put:
+      operationId: updateAdminKnowledgeHubExamUpdatesPage
+      tags: [admin]
+      summary: Update Exam Updates hero, search, filters, and latest section copy
+      security: [{ cookieAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/KnowledgeHubExamUpdatesPageInput" }
+      responses:
+        "200":
+          description: Saved Exam Updates settings
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/KnowledgeHubExamUpdatesPageSettings" }
+        "400":
+          description: Invalid page settings
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+  /admin/knowledge-hub/exam-updates/{id}:
+    put:
+      operationId: updateAdminKnowledgeHubExamUpdate
+      tags: [admin]
+      summary: Update or change the publication status of an exam update
+      security: [{ cookieAuth: [] }]
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string, minLength: 1, maxLength: 100 } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/KnowledgeHubExamUpdateInput" }
+      responses:
+        "200":
+          description: Updated exam update
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/KnowledgeHubExamUpdateRecord" }
+        "400":
+          description: Invalid update or publication URL
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+        "404":
+          description: Update not found
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+    delete:
+      operationId: deleteAdminKnowledgeHubExamUpdate
+      tags: [admin]
+      summary: Delete an exam update
+      security: [{ cookieAuth: [] }]
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string, minLength: 1, maxLength: 100 } }
+      responses:
+        "204": { description: Deleted exam update }
+        "401":
+          description: Not authenticated
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
+        "404":
+          description: Update not found
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorResponse" }
   /knowledge-hub/articles/page:
     get:
       operationId: getKnowledgeHubArticlesPage
@@ -8166,6 +8316,77 @@ components:
           minimum: 1
           maximum: 20
       required: [heading, supportingText, applyButtonLabel, applyButtonHref, campusVisitButtonLabel, campusVisitButtonHref, prospectusButtonLabel, prospectusButtonHref, backgroundImage, backgroundImageAltText, counselorButtonLabel, counselorButtonHref, admissionPhone, workingHours, isVisible, sortOrder]
+    KnowledgeHubExamUpdatesPageSettings:
+      type: object
+      properties:
+        heroEyebrow: { type: string, minLength: 1, maxLength: 120 }
+        heroHeadline: { type: string, minLength: 1, maxLength: 180 }
+        heroDescription: { type: string, minLength: 1, maxLength: 700 }
+        heroBackgroundImageUrl: { type: ["string", "null"], maxLength: 1000 }
+        heroBackgroundImageAltText: { type: string, maxLength: 240 }
+        searchPlaceholder: { type: string, minLength: 1, maxLength: 160 }
+        searchButtonLabel: { type: string, minLength: 1, maxLength: 60 }
+        latestEyebrow: { type: string, minLength: 1, maxLength: 120 }
+        latestHeading: { type: string, minLength: 1, maxLength: 160 }
+        latestDescription: { type: string, minLength: 1, maxLength: 500 }
+        examFilters:
+          type: array
+          minItems: 1
+          maxItems: 12
+          items: { type: string, minLength: 1, maxLength: 60 }
+      required: [heroEyebrow, heroHeadline, heroDescription, heroBackgroundImageUrl, heroBackgroundImageAltText, searchPlaceholder, searchButtonLabel, latestEyebrow, latestHeading, latestDescription, examFilters]
+    KnowledgeHubExamUpdatesPageInput:
+      allOf:
+        - $ref: "#/components/schemas/KnowledgeHubExamUpdatesPageSettings"
+    KnowledgeHubExamUpdateInput:
+      type: object
+      properties:
+        title: { type: string, minLength: 1, maxLength: 240 }
+        exam: { type: string, minLength: 1, maxLength: 100 }
+        updateType: { type: string, minLength: 1, maxLength: 100 }
+        label: { type: string, minLength: 1, maxLength: 60 }
+        summary: { type: string, minLength: 1, maxLength: 600 }
+        fullNotice: { type: string, minLength: 1, maxLength: 50000 }
+        publishedAt: { type: ["string", "null"], format: date-time }
+        officialUrl: { type: string, maxLength: 1000 }
+        keywords:
+          type: array
+          maxItems: 30
+          items: { type: string, minLength: 1, maxLength: 80 }
+        status: { type: string, enum: [draft, published, archived] }
+        isPinned: { type: boolean }
+        displayOrder: { type: integer, minimum: 1, maximum: 10000 }
+      required: [title, exam, updateType, label, summary, fullNotice, publishedAt, officialUrl, keywords, status, isPinned, displayOrder]
+    KnowledgeHubExamUpdate:
+      allOf:
+        - $ref: "#/components/schemas/KnowledgeHubExamUpdateInput"
+        - type: object
+          properties:
+            id: { type: string }
+            createdAt: { type: string, format: date-time }
+            updatedAt: { type: string, format: date-time }
+          required: [id, createdAt, updatedAt]
+    KnowledgeHubExamUpdateRecord:
+      $ref: "#/components/schemas/KnowledgeHubExamUpdate"
+    KnowledgeHubExamUpdatesList:
+      type: object
+      properties:
+        items:
+          type: array
+          items: { $ref: "#/components/schemas/KnowledgeHubExamUpdate" }
+        total: { type: integer, minimum: 0 }
+        offset: { type: integer, minimum: 0 }
+        limit: { type: integer, minimum: 1, maximum: 500 }
+        hasMore: { type: boolean }
+      required: [items, total, offset, limit, hasMore]
+    AdminKnowledgeHubExamUpdates:
+      type: object
+      properties:
+        settings: { $ref: "#/components/schemas/KnowledgeHubExamUpdatesPageSettings" }
+        updates:
+          type: array
+          items: { $ref: "#/components/schemas/KnowledgeHubExamUpdate" }
+      required: [settings, updates]
     KnowledgeHubArticlesPageSettings:
       type: object
       properties:

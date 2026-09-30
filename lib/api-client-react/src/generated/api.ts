@@ -44,6 +44,7 @@ import type {
   AdminFacultyCollection,
   AdminFacultyMember,
   AdminKnowledgeHubArticles,
+  AdminKnowledgeHubExamUpdates,
   AdminKnowledgeHubResources,
   AdminKnowledgeHubVideoHub,
   AdminResultsLibrary,
@@ -77,6 +78,7 @@ import type {
   GalleryPageSettings,
   GalleryPageSettingsInput,
   GetKnowledgeHubArticlesParams,
+  GetKnowledgeHubExamUpdatesParams,
   GetKnowledgeHubResourcesParams,
   GetKnowledgeHubVideoHubVideosParams,
   HealthStatus,
@@ -115,6 +117,11 @@ import type {
   KnowledgeHubArticlesList,
   KnowledgeHubArticlesPage,
   KnowledgeHubArticlesPageInput,
+  KnowledgeHubExamUpdate,
+  KnowledgeHubExamUpdateInput,
+  KnowledgeHubExamUpdatesList,
+  KnowledgeHubExamUpdatesPageInput,
+  KnowledgeHubExamUpdatesPageSettings,
   KnowledgeHubMegaMenu,
   KnowledgeHubResourceCategory,
   KnowledgeHubResourceCategoryInput,
@@ -9394,6 +9401,583 @@ export const useUploadAdminImage = <TError = ErrorType<ErrorResponse>,
         TContext
       > => {
       return useMutation(getUploadAdminImageMutationOptions(options));
+    }
+
+export const getGetKnowledgeHubExamUpdatesPageUrl = () => {
+
+
+
+
+  return `/api/knowledge-hub/exam-updates/page`
+}
+
+/**
+ * @summary Read public Exam Updates page settings
+ */
+export const getKnowledgeHubExamUpdatesPage = async ( options?: Parameters<typeof customFetch>[1]): Promise<KnowledgeHubExamUpdatesPageSettings> => {
+
+  return customFetch<KnowledgeHubExamUpdatesPageSettings>(getGetKnowledgeHubExamUpdatesPageUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetKnowledgeHubExamUpdatesPageQueryKey = () => {
+    return [
+    `/api/knowledge-hub/exam-updates/page`
+    ] as const;
+    }
+
+
+export const getGetKnowledgeHubExamUpdatesPageQueryOptions = <TData = Awaited<ReturnType<typeof getKnowledgeHubExamUpdatesPage>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getKnowledgeHubExamUpdatesPage>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetKnowledgeHubExamUpdatesPageQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getKnowledgeHubExamUpdatesPage>>> = ({ signal }) => getKnowledgeHubExamUpdatesPage({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getKnowledgeHubExamUpdatesPage>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetKnowledgeHubExamUpdatesPageQueryResult = NonNullable<Awaited<ReturnType<typeof getKnowledgeHubExamUpdatesPage>>>
+export type GetKnowledgeHubExamUpdatesPageQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Read public Exam Updates page settings
+ */
+
+export function useGetKnowledgeHubExamUpdatesPage<TData = Awaited<ReturnType<typeof getKnowledgeHubExamUpdatesPage>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getKnowledgeHubExamUpdatesPage>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetKnowledgeHubExamUpdatesPageQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetKnowledgeHubExamUpdatesUrl = (params?: GetKnowledgeHubExamUpdatesParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/knowledge-hub/exam-updates?${stringifiedParams}` : `/api/knowledge-hub/exam-updates`
+}
+
+/**
+ * @summary Search published exam updates
+ */
+export const getKnowledgeHubExamUpdates = async (params?: GetKnowledgeHubExamUpdatesParams, options?: Parameters<typeof customFetch>[1]): Promise<KnowledgeHubExamUpdatesList> => {
+
+  return customFetch<KnowledgeHubExamUpdatesList>(getGetKnowledgeHubExamUpdatesUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetKnowledgeHubExamUpdatesQueryKey = (params?: GetKnowledgeHubExamUpdatesParams,) => {
+    return [
+    `/api/knowledge-hub/exam-updates`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetKnowledgeHubExamUpdatesQueryOptions = <TData = Awaited<ReturnType<typeof getKnowledgeHubExamUpdates>>, TError = ErrorType<unknown>>(params?: GetKnowledgeHubExamUpdatesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getKnowledgeHubExamUpdates>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetKnowledgeHubExamUpdatesQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getKnowledgeHubExamUpdates>>> = ({ signal }) => getKnowledgeHubExamUpdates(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getKnowledgeHubExamUpdates>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetKnowledgeHubExamUpdatesQueryResult = NonNullable<Awaited<ReturnType<typeof getKnowledgeHubExamUpdates>>>
+export type GetKnowledgeHubExamUpdatesQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Search published exam updates
+ */
+
+export function useGetKnowledgeHubExamUpdates<TData = Awaited<ReturnType<typeof getKnowledgeHubExamUpdates>>, TError = ErrorType<unknown>>(
+ params?: GetKnowledgeHubExamUpdatesParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getKnowledgeHubExamUpdates>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetKnowledgeHubExamUpdatesQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getGetAdminKnowledgeHubExamUpdatesUrl = () => {
+
+
+
+
+  return `/api/admin/knowledge-hub/exam-updates`
+}
+
+/**
+ * @summary Read Exam Updates settings and all update records
+ */
+export const getAdminKnowledgeHubExamUpdates = async ( options?: Parameters<typeof customFetch>[1]): Promise<AdminKnowledgeHubExamUpdates> => {
+
+  return customFetch<AdminKnowledgeHubExamUpdates>(getGetAdminKnowledgeHubExamUpdatesUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetAdminKnowledgeHubExamUpdatesQueryKey = () => {
+    return [
+    `/api/admin/knowledge-hub/exam-updates`
+    ] as const;
+    }
+
+
+export const getGetAdminKnowledgeHubExamUpdatesQueryOptions = <TData = Awaited<ReturnType<typeof getAdminKnowledgeHubExamUpdates>>, TError = ErrorType<ErrorResponse>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminKnowledgeHubExamUpdates>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAdminKnowledgeHubExamUpdatesQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAdminKnowledgeHubExamUpdates>>> = ({ signal }) => getAdminKnowledgeHubExamUpdates({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAdminKnowledgeHubExamUpdates>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetAdminKnowledgeHubExamUpdatesQueryResult = NonNullable<Awaited<ReturnType<typeof getAdminKnowledgeHubExamUpdates>>>
+export type GetAdminKnowledgeHubExamUpdatesQueryError = ErrorType<ErrorResponse>
+
+
+/**
+ * @summary Read Exam Updates settings and all update records
+ */
+
+export function useGetAdminKnowledgeHubExamUpdates<TData = Awaited<ReturnType<typeof getAdminKnowledgeHubExamUpdates>>, TError = ErrorType<ErrorResponse>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAdminKnowledgeHubExamUpdates>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetAdminKnowledgeHubExamUpdatesQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getCreateAdminKnowledgeHubExamUpdateUrl = () => {
+
+
+
+
+  return `/api/admin/knowledge-hub/exam-updates`
+}
+
+/**
+ * @summary Create an exam update
+ */
+export const createAdminKnowledgeHubExamUpdate = async (knowledgeHubExamUpdateInput: KnowledgeHubExamUpdateInput, options?: Parameters<typeof customFetch>[1]): Promise<KnowledgeHubExamUpdate> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<KnowledgeHubExamUpdate>(getCreateAdminKnowledgeHubExamUpdateUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(knowledgeHubExamUpdateInput)
+  }
+);}
+
+
+
+
+
+export const getCreateAdminKnowledgeHubExamUpdateMutationKey = () => ['createAdminKnowledgeHubExamUpdate'] as const;
+
+export const getCreateAdminKnowledgeHubExamUpdateMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createAdminKnowledgeHubExamUpdate>>, TError,CreateAdminKnowledgeHubExamUpdateMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof createAdminKnowledgeHubExamUpdate>>, TError,CreateAdminKnowledgeHubExamUpdateMutationVariables, TContext> => {
+
+const mutationKey = getCreateAdminKnowledgeHubExamUpdateMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createAdminKnowledgeHubExamUpdate>>, CreateAdminKnowledgeHubExamUpdateMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  createAdminKnowledgeHubExamUpdate(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateAdminKnowledgeHubExamUpdateMutationResult = NonNullable<Awaited<ReturnType<typeof createAdminKnowledgeHubExamUpdate>>>
+    export type CreateAdminKnowledgeHubExamUpdateMutationBody = BodyType<KnowledgeHubExamUpdateInput>
+    export type CreateAdminKnowledgeHubExamUpdateMutationError = ErrorType<ErrorResponse>
+    export type CreateAdminKnowledgeHubExamUpdateMutationVariables = {data: BodyType<KnowledgeHubExamUpdateInput>}
+
+    /**
+ * @summary Create an exam update
+ */
+export const useCreateAdminKnowledgeHubExamUpdate = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createAdminKnowledgeHubExamUpdate>>, TError,CreateAdminKnowledgeHubExamUpdateMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof createAdminKnowledgeHubExamUpdate>>,
+        TError,
+        CreateAdminKnowledgeHubExamUpdateMutationVariables,
+        TContext
+      > => {
+      return useMutation(getCreateAdminKnowledgeHubExamUpdateMutationOptions(options));
+    }
+
+export const getUpdateAdminKnowledgeHubExamUpdatesPageUrl = () => {
+
+
+
+
+  return `/api/admin/knowledge-hub/exam-updates/page`
+}
+
+/**
+ * @summary Update Exam Updates hero, search, filters, and latest section copy
+ */
+export const updateAdminKnowledgeHubExamUpdatesPage = async (knowledgeHubExamUpdatesPageInput: KnowledgeHubExamUpdatesPageInput, options?: Parameters<typeof customFetch>[1]): Promise<KnowledgeHubExamUpdatesPageSettings> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<KnowledgeHubExamUpdatesPageSettings>(getUpdateAdminKnowledgeHubExamUpdatesPageUrl(),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(knowledgeHubExamUpdatesPageInput)
+  }
+);}
+
+
+
+
+
+export const getUpdateAdminKnowledgeHubExamUpdatesPageMutationKey = () => ['updateAdminKnowledgeHubExamUpdatesPage'] as const;
+
+export const getUpdateAdminKnowledgeHubExamUpdatesPageMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAdminKnowledgeHubExamUpdatesPage>>, TError,UpdateAdminKnowledgeHubExamUpdatesPageMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateAdminKnowledgeHubExamUpdatesPage>>, TError,UpdateAdminKnowledgeHubExamUpdatesPageMutationVariables, TContext> => {
+
+const mutationKey = getUpdateAdminKnowledgeHubExamUpdatesPageMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateAdminKnowledgeHubExamUpdatesPage>>, UpdateAdminKnowledgeHubExamUpdatesPageMutationVariables> = (props) => {
+          const {data} = props ?? {};
+
+          return  updateAdminKnowledgeHubExamUpdatesPage(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateAdminKnowledgeHubExamUpdatesPageMutationResult = NonNullable<Awaited<ReturnType<typeof updateAdminKnowledgeHubExamUpdatesPage>>>
+    export type UpdateAdminKnowledgeHubExamUpdatesPageMutationBody = BodyType<KnowledgeHubExamUpdatesPageInput>
+    export type UpdateAdminKnowledgeHubExamUpdatesPageMutationError = ErrorType<ErrorResponse>
+    export type UpdateAdminKnowledgeHubExamUpdatesPageMutationVariables = {data: BodyType<KnowledgeHubExamUpdatesPageInput>}
+
+    /**
+ * @summary Update Exam Updates hero, search, filters, and latest section copy
+ */
+export const useUpdateAdminKnowledgeHubExamUpdatesPage = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAdminKnowledgeHubExamUpdatesPage>>, TError,UpdateAdminKnowledgeHubExamUpdatesPageMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateAdminKnowledgeHubExamUpdatesPage>>,
+        TError,
+        UpdateAdminKnowledgeHubExamUpdatesPageMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateAdminKnowledgeHubExamUpdatesPageMutationOptions(options));
+    }
+
+export const getUpdateAdminKnowledgeHubExamUpdateUrl = (id: string,) => {
+
+
+
+
+  return `/api/admin/knowledge-hub/exam-updates/${id}`
+}
+
+/**
+ * @summary Update or change the publication status of an exam update
+ */
+export const updateAdminKnowledgeHubExamUpdate = async (id: string,
+    knowledgeHubExamUpdateInput: KnowledgeHubExamUpdateInput, options?: Parameters<typeof customFetch>[1]): Promise<KnowledgeHubExamUpdate> => {
+
+    const getHeaders = (h?: NonNullable<RequestInit['headers']>): Record<string, string | readonly string[]> => {
+    if (!h) return {};
+    if (h instanceof Headers) return Object.fromEntries(h.entries());
+    if (Symbol.iterator in h) {
+      return Object.fromEntries(
+        Array.from(h as Iterable<Iterable<string>>, (entry) => Array.from(entry) as [string, string]),
+      );
+    }
+    const headers: Record<string, string | readonly string[]> = {};
+    for (const [name, value] of Object.entries<string | readonly string[] | undefined>(h)) {
+      if (value !== undefined) headers[name] = value;
+    }
+    return headers;
+  };
+return customFetch<KnowledgeHubExamUpdate>(getUpdateAdminKnowledgeHubExamUpdateUrl(id),
+  {
+    ...options,
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', ...getHeaders(options?.headers) },
+    body: JSON.stringify(knowledgeHubExamUpdateInput)
+  }
+);}
+
+
+
+
+
+export const getUpdateAdminKnowledgeHubExamUpdateMutationKey = () => ['updateAdminKnowledgeHubExamUpdate'] as const;
+
+export const getUpdateAdminKnowledgeHubExamUpdateMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAdminKnowledgeHubExamUpdate>>, TError,UpdateAdminKnowledgeHubExamUpdateMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateAdminKnowledgeHubExamUpdate>>, TError,UpdateAdminKnowledgeHubExamUpdateMutationVariables, TContext> => {
+
+const mutationKey = getUpdateAdminKnowledgeHubExamUpdateMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateAdminKnowledgeHubExamUpdate>>, UpdateAdminKnowledgeHubExamUpdateMutationVariables> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  updateAdminKnowledgeHubExamUpdate(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateAdminKnowledgeHubExamUpdateMutationResult = NonNullable<Awaited<ReturnType<typeof updateAdminKnowledgeHubExamUpdate>>>
+    export type UpdateAdminKnowledgeHubExamUpdateMutationBody = BodyType<KnowledgeHubExamUpdateInput>
+    export type UpdateAdminKnowledgeHubExamUpdateMutationError = ErrorType<ErrorResponse>
+    export type UpdateAdminKnowledgeHubExamUpdateMutationVariables = {id: string;data: BodyType<KnowledgeHubExamUpdateInput>}
+
+    /**
+ * @summary Update or change the publication status of an exam update
+ */
+export const useUpdateAdminKnowledgeHubExamUpdate = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateAdminKnowledgeHubExamUpdate>>, TError,UpdateAdminKnowledgeHubExamUpdateMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateAdminKnowledgeHubExamUpdate>>,
+        TError,
+        UpdateAdminKnowledgeHubExamUpdateMutationVariables,
+        TContext
+      > => {
+      return useMutation(getUpdateAdminKnowledgeHubExamUpdateMutationOptions(options));
+    }
+
+export const getDeleteAdminKnowledgeHubExamUpdateUrl = (id: string,) => {
+
+
+
+
+  return `/api/admin/knowledge-hub/exam-updates/${id}`
+}
+
+/**
+ * @summary Delete an exam update
+ */
+export const deleteAdminKnowledgeHubExamUpdate = async (id: string, options?: Parameters<typeof customFetch>[1]): Promise<void> => {
+
+  return customFetch<void>(getDeleteAdminKnowledgeHubExamUpdateUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+
+export const getDeleteAdminKnowledgeHubExamUpdateMutationKey = () => ['deleteAdminKnowledgeHubExamUpdate'] as const;
+
+export const getDeleteAdminKnowledgeHubExamUpdateMutationOptions = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAdminKnowledgeHubExamUpdate>>, TError,DeleteAdminKnowledgeHubExamUpdateMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteAdminKnowledgeHubExamUpdate>>, TError,DeleteAdminKnowledgeHubExamUpdateMutationVariables, TContext> => {
+
+const mutationKey = getDeleteAdminKnowledgeHubExamUpdateMutationKey();
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteAdminKnowledgeHubExamUpdate>>, DeleteAdminKnowledgeHubExamUpdateMutationVariables> = (props) => {
+          const {id} = props ?? {};
+
+          return  deleteAdminKnowledgeHubExamUpdate(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteAdminKnowledgeHubExamUpdateMutationResult = NonNullable<Awaited<ReturnType<typeof deleteAdminKnowledgeHubExamUpdate>>>
+
+    export type DeleteAdminKnowledgeHubExamUpdateMutationError = ErrorType<ErrorResponse>
+    export type DeleteAdminKnowledgeHubExamUpdateMutationVariables = {id: string}
+
+    /**
+ * @summary Delete an exam update
+ */
+export const useDeleteAdminKnowledgeHubExamUpdate = <TError = ErrorType<ErrorResponse>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteAdminKnowledgeHubExamUpdate>>, TError,DeleteAdminKnowledgeHubExamUpdateMutationVariables, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof deleteAdminKnowledgeHubExamUpdate>>,
+        TError,
+        DeleteAdminKnowledgeHubExamUpdateMutationVariables,
+        TContext
+      > => {
+      return useMutation(getDeleteAdminKnowledgeHubExamUpdateMutationOptions(options));
     }
 
 export const getGetKnowledgeHubArticlesPageUrl = () => {

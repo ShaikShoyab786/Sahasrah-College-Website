@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { Prisma, PrismaClient } from "@prisma/client";
 import {
   DEFAULT_CONTACT_COURSE_OPTIONS,
@@ -15,6 +16,7 @@ import {
 } from "./knowledge-hub-articles-content";
 import { DEFAULT_KNOWLEDGE_HUB_VIDEO_PAGE } from "./knowledge-hub-video-content";
 import { DEFAULT_KNOWLEDGE_HUB_RESOURCE_HUB_PAGE } from "./knowledge-hub-resource-content";
+import { DEFAULT_KNOWLEDGE_HUB_EXAM_UPDATES_PAGE } from "./knowledge-hub-exam-updates-content";
 
 const LEGACY_COURSE_ACTIONS = [
   { slug: "mpc", primaryActionLabel: "Explore admissions", secondaryActionLabel: "Talk to a counsellor" },
@@ -188,6 +190,120 @@ async function ensureKnowledgeHubResourceSchema() {
     CREATE UNIQUE INDEX IF NOT EXISTS "KnowledgeHubResourceHubSettings_featuredResourceId_key"
     ON "KnowledgeHubResourceHubSettings" ("featuredResourceId")
   `);
+}
+
+async function ensureKnowledgeHubExamUpdatesSchema() {
+  await prisma.$executeRawUnsafe(`
+    CREATE TABLE IF NOT EXISTS "KnowledgeHubExamUpdatesPageSettings" (
+      "id" TEXT NOT NULL DEFAULT 'singleton',
+      "content" JSONB NOT NULL,
+      "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      CONSTRAINT "KnowledgeHubExamUpdatesPageSettings_pkey" PRIMARY KEY ("id")
+    )
+  `);
+  await prisma.$executeRawUnsafe(`
+    CREATE TABLE IF NOT EXISTS "KnowledgeHubExamUpdate" (
+      "id" TEXT NOT NULL,
+      "title" TEXT NOT NULL,
+      "exam" TEXT NOT NULL,
+      "updateType" TEXT NOT NULL,
+      "label" TEXT NOT NULL,
+      "summary" TEXT NOT NULL,
+      "fullNotice" TEXT NOT NULL,
+      "publishedAt" TIMESTAMP(3),
+      "officialUrl" TEXT NOT NULL DEFAULT '',
+      "keywords" JSONB NOT NULL DEFAULT '[]'::jsonb,
+      "status" TEXT NOT NULL DEFAULT 'draft',
+      "isPinned" BOOLEAN NOT NULL DEFAULT false,
+      "displayOrder" INTEGER NOT NULL DEFAULT 1,
+      "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      CONSTRAINT "KnowledgeHubExamUpdate_pkey" PRIMARY KEY ("id"),
+      CONSTRAINT "KnowledgeHubExamUpdate_status_check"
+        CHECK ("status" IN ('draft', 'published', 'archived'))
+    )
+  `);
+  await prisma.$executeRawUnsafe(`
+    CREATE INDEX IF NOT EXISTS "KnowledgeHubExamUpdate_status_publishedAt_idx"
+    ON "KnowledgeHubExamUpdate" ("status", "publishedAt" DESC)
+  `);
+  await prisma.$executeRawUnsafe(`
+    CREATE INDEX IF NOT EXISTS "KnowledgeHubExamUpdate_status_exam_publishedAt_idx"
+    ON "KnowledgeHubExamUpdate" ("status", "exam", "publishedAt" DESC)
+  `);
+  await prisma.$executeRawUnsafe(`
+    CREATE TABLE IF NOT EXISTS "KnowledgeHubExamUpdatesSetup" (
+      "id" TEXT NOT NULL DEFAULT 'singleton',
+      "demoRecordsSeededAt" TIMESTAMP(3),
+      CONSTRAINT "KnowledgeHubExamUpdatesSetup_pkey" PRIMARY KEY ("id")
+    )
+  `);
+  await prisma.$executeRawUnsafe(
+    `INSERT INTO "KnowledgeHubExamUpdatesSetup" ("id", "demoRecordsSeededAt")
+     VALUES ('singleton', NULL) ON CONFLICT ("id") DO NOTHING`,
+  );
+  await prisma.$executeRawUnsafe(
+    `INSERT INTO "KnowledgeHubExamUpdatesPageSettings" ("id", "content", "updatedAt")
+     VALUES ('singleton', $1::jsonb, CURRENT_TIMESTAMP)
+     ON CONFLICT ("id") DO NOTHING`,
+    JSON.stringify(DEFAULT_KNOWLEDGE_HUB_EXAM_UPDATES_PAGE),
+  );
+  const seededState = await prisma.$queryRawUnsafe<Array<{ "demoRecordsSeededAt": Date | null }>>(
+    `SELECT "demoRecordsSeededAt" FROM "KnowledgeHubExamUpdatesSetup" WHERE "id" = 'singleton'`,
+  );
+  if (!seededState[0]?.demoRecordsSeededAt) {
+    const demoRecords = [
+      {
+        title: "DEMO SAMPLE — JEE registration notice example",
+        exam: "JEE",
+        updateType: "Sample",
+        label: "Demo",
+        summary: "Example record for reviewing the admin workflow. This is not an official announcement.",
+        fullNotice: "DEMO CONTENT ONLY — Replace this sample with a verified notice and its official source URL before publishing. No exam date, deadline, or announcement is represented here.",
+        keywords: ["demo", "sample", "registration"],
+      },
+      {
+        title: "DEMO SAMPLE — NEET notification example",
+        exam: "NEET",
+        updateType: "Sample",
+        label: "Demo",
+        summary: "Example record for reviewing search and publishing controls. This is not an official announcement.",
+        fullNotice: "DEMO CONTENT ONLY — Replace this sample with a verified notice and its official source URL before publishing. No exam date, deadline, or announcement is represented here.",
+        keywords: ["demo", "sample", "notification"],
+      },
+      {
+        title: "DEMO SAMPLE — Intermediate timetable notice example",
+        exam: "Intermediate",
+        updateType: "Sample",
+        label: "Demo",
+        summary: "Example record for reviewing the update cards. This is not an official announcement.",
+        fullNotice: "DEMO CONTENT ONLY — Replace this sample with a verified notice and its official source URL before publishing. No exam date, deadline, or announcement is represented here.",
+        keywords: ["demo", "sample", "timetable"],
+      },
+    ];
+    for (const [index, item] of demoRecords.entries()) {
+      await prisma.$executeRawUnsafe(
+        `INSERT INTO "KnowledgeHubExamUpdate"
+         ("id", "title", "exam", "updateType", "label", "summary", "fullNotice", "keywords", "status", "displayOrder", "updatedAt")
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8::jsonb, 'draft', $9, CURRENT_TIMESTAMP)`,
+        randomUUID(),
+        item.title,
+        item.exam,
+        item.updateType,
+        item.label,
+        item.summary,
+        item.fullNotice,
+        JSON.stringify(item.keywords),
+        index + 1,
+      );
+    }
+    await prisma.$executeRawUnsafe(
+      `UPDATE "KnowledgeHubExamUpdatesSetup"
+       SET "demoRecordsSeededAt" = CURRENT_TIMESTAMP
+       WHERE "id" = 'singleton'`,
+    );
+  }
 }
 
 class LegacyResultStoryChangedError extends Error {}
@@ -398,6 +514,7 @@ export async function initializeDatabase() {
   await prisma.$connect();
   await ensureAlumniStorySchema();
   await ensureKnowledgeHubResourceSchema();
+  await ensureKnowledgeHubExamUpdatesSchema();
   await backfillLegacyResultStories();
   await backfillCollegeNameTypo();
 
