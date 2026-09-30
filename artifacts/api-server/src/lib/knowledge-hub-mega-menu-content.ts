@@ -1,3 +1,13 @@
+export const EXAM_UPDATES_MENU_DESCRIPTION =
+  "Official exam notices, important dates, and preparation guidance for students and families.";
+
+export const EXAM_UPDATES_OVERVIEW_COPY = {
+  description: "Find published exam notifications and important dates for JEE, NEET, Intermediate, EAMCET, and more.",
+  statusText: "Browse verified notices and upcoming exam milestones.",
+  badgeLabel: null,
+  ctaLabel: "View Exam Updates",
+} as const;
+
 export const DEFAULT_KNOWLEDGE_HUB_MEGA_MENU = {
   cards: [
     {
@@ -27,7 +37,7 @@ export const DEFAULT_KNOWLEDGE_HUB_MEGA_MENU = {
     {
       id: "exam-updates",
       category: "exam-updates",
-      description: "Latest notifications, exam dates, results and important announcements.",
+      description: EXAM_UPDATES_MENU_DESCRIPTION,
       ctaLabel: "View Updates",
       displayOrder: 4,
       isVisible: true,
@@ -47,7 +57,7 @@ export const DEFAULT_KNOWLEDGE_HUB_MEGA_MENU = {
     heroPanelDescription: "Built around the questions that shape confident study.",
     introEyebrow: "A clear path through the noise",
     introTitle: "Four ways to make study feel more manageable.",
-    introDescription: "Explore the Articles section for practical guidance. More Knowledge Hub sections will be added in later phases.",
+    introDescription: "Explore articles, video sessions, study resources, and verified exam notices and dates in one place.",
     sections: [
       {
         category: "articles",
@@ -80,10 +90,7 @@ export const DEFAULT_KNOWLEDGE_HUB_MEGA_MENU = {
         category: "exam-updates",
         eyebrow: "Knowledge Hub",
         title: "Exam Updates",
-        description: "A dependable place for dates, notifications, and official exam guidance.",
-        statusText: "This section is being prepared for students and families.",
-        badgeLabel: "Coming Soon",
-        ctaLabel: null,
+        ...EXAM_UPDATES_OVERVIEW_COPY,
       },
     ],
   },

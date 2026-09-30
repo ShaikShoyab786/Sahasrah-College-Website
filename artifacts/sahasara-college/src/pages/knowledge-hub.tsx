@@ -30,12 +30,12 @@ const fallbackMainPage: KnowledgeHubMainPageContent = {
   heroPanelDescription: 'Built around the questions that shape confident study.',
   introEyebrow: 'A clear path through the noise',
   introTitle: 'Four ways to make study feel more manageable.',
-  introDescription: 'Browse published articles, video sessions, and study resources, organized around the questions students and families ask most often.',
+  introDescription: 'Browse articles, video sessions, study resources, and verified exam notices and dates in one place.',
   sections: [
     { category: 'articles', eyebrow: 'Knowledge Hub', title: 'Articles', description: 'Clear guidance for the questions students and families ask most often.', statusText: 'Browse published articles for students and families.', badgeLabel: null, ctaLabel: 'Explore Articles' },
     { category: 'video-hub', eyebrow: 'Knowledge Hub', title: 'Video Hub', description: 'A future home for focused explanations and practical learning sessions.', statusText: 'This section is being prepared for students and families.', badgeLabel: 'Coming Soon', ctaLabel: null },
     { category: 'study-resources', eyebrow: 'Knowledge Hub', title: 'Resource Hub', description: 'Find study notes, question papers, and revision materials in a searchable library.', statusText: 'Browse published resources for your next step.', badgeLabel: null, ctaLabel: 'Browse Resource Hub' },
-    { category: 'exam-updates', eyebrow: 'Knowledge Hub', title: 'Exam Updates', description: 'A dependable place for dates, notifications, and official exam guidance.', statusText: 'This section is being prepared for students and families.', badgeLabel: 'Coming Soon', ctaLabel: null },
+    { category: 'exam-updates', eyebrow: 'Knowledge Hub', title: 'Exam Updates', description: 'Find published exam notifications and important dates for JEE, NEET, Intermediate, EAMCET, and more.', statusText: 'Browse verified notices and upcoming exam milestones.', badgeLabel: null, ctaLabel: 'View Exam Updates' },
   ],
 };
 
@@ -170,6 +170,7 @@ function CategorySection({
             <>
               <p className="mt-4 max-w-xl text-base leading-7 text-[hsl(var(--muted-foreground))]">{section.description}</p>
               <p className="mt-5 flex items-center gap-2 text-sm font-semibold text-[hsl(var(--primary)/.7)]"><CheckCircle2 size={17} className="text-[hsl(var(--accent-foreground))]" /> {section.statusText}</p>
+              <Link href="/knowledge-hub/exam-updates" className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-full bg-[hsl(var(--primary))] px-5 text-sm font-bold text-[hsl(var(--primary-foreground))] transition hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]" data-testid="link-knowledge-hub-exam-updates-cta">{section.ctaLabel || 'View Exam Updates'} <ArrowRight size={16} aria-hidden="true" /></Link>
             </>
           )}
         </div>
@@ -221,7 +222,7 @@ export default function KnowledgeHub() {
               <h1 className="mt-5 max-w-3xl font-display text-5xl font-semibold leading-[.96] tracking-[-.055em] sm:text-7xl" data-testid="text-knowledge-hub-title">{panel.title}</h1>
               <p className="mt-6 max-w-2xl text-base leading-7 text-white/72 sm:text-lg">{panel.description}</p>
               <div className="mt-8 flex flex-wrap gap-3">
-                {orderedSections.map(({ category, section }) => <Link key={category.id} href={category.id === 'articles' ? '/knowledge-hub/articles' : category.id === 'video-hub' ? '/knowledge-hub/videos' : category.id === 'study-resources' ? '/knowledge-hub/resources' : `#knowledge-hub-${category.id}`} className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 text-sm font-bold transition hover:-translate-y-0.5 hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]" data-testid={`link-knowledge-hub-hero-${category.id}`}>{category.id === 'study-resources' ? 'Resource Hub' : section.title}<ArrowRight size={15} aria-hidden="true" /></Link>)}
+                {orderedSections.map(({ category, section }) => <Link key={category.id} href={category.id === 'articles' ? '/knowledge-hub/articles' : category.id === 'video-hub' ? '/knowledge-hub/videos' : category.id === 'study-resources' ? '/knowledge-hub/resources' : '/knowledge-hub/exam-updates'} className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 text-sm font-bold transition hover:-translate-y-0.5 hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--accent))]" data-testid={`link-knowledge-hub-hero-${category.id}`}>{category.id === 'study-resources' ? 'Resource Hub' : section.title}<ArrowRight size={15} aria-hidden="true" /></Link>)}
               </div>
             </div>
             <div className="relative min-h-64 overflow-hidden rounded-[1.75rem] border border-white/15 bg-white/10 p-6 shadow-2xl">

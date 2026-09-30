@@ -5,7 +5,11 @@ import {
   GetKnowledgeHubMegaMenuResponse,
   UpdateKnowledgeHubMegaMenuBody,
 } from "@workspace/api-zod";
-import { DEFAULT_KNOWLEDGE_HUB_MEGA_MENU } from "../lib/knowledge-hub-mega-menu-content";
+import {
+  DEFAULT_KNOWLEDGE_HUB_MEGA_MENU,
+  EXAM_UPDATES_MENU_DESCRIPTION,
+  EXAM_UPDATES_OVERVIEW_COPY,
+} from "../lib/knowledge-hub-mega-menu-content";
 import { prisma } from "../lib/prisma";
 import { requireAdmin } from "../middlewares/auth";
 
@@ -42,9 +46,34 @@ function hasUniqueIdsAndOrders(items: Array<{ id: string; displayOrder: number }
 function withMainPageDefaults(content: Prisma.JsonValue) {
   if (content === null || typeof content !== "object" || Array.isArray(content)) return content;
   const saved = content as Prisma.JsonObject;
-  return {
+  const current = GetKnowledgeHubMegaMenuResponse.parse({
     ...saved,
     mainPage: saved.mainPage ?? DEFAULT_KNOWLEDGE_HUB_MEGA_MENU.mainPage,
+  });
+  return {
+    ...current,
+    cards: current.cards.map((card) =>
+      card.category === "exam-updates"
+        && card.description === "Latest notifications, exam dates, results and important announcements."
+        ? { ...card, description: EXAM_UPDATES_MENU_DESCRIPTION }
+        : card,
+    ),
+    mainPage: {
+      ...current.mainPage,
+      introDescription: current.mainPage.introDescription
+        === "Explore the Articles section for practical guidance. More Knowledge Hub sections will be added in later phases."
+        ? DEFAULT_KNOWLEDGE_HUB_MEGA_MENU.mainPage.introDescription
+        : current.mainPage.introDescription,
+      sections: current.mainPage.sections.map((section) =>
+        section.category === "exam-updates"
+          && section.description === "A dependable place for dates, notifications, and official exam guidance."
+          && section.statusText === "This section is being prepared for students and families."
+          && section.badgeLabel === "Coming Soon"
+          && section.ctaLabel === null
+          ? { ...section, ...EXAM_UPDATES_OVERVIEW_COPY }
+          : section,
+      ),
+    },
   };
 }
 
