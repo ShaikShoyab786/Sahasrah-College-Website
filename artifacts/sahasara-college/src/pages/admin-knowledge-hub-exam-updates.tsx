@@ -191,11 +191,6 @@ export default function AdminKnowledgeHubExamUpdates() {
   const saveRecordValues = (values: KnowledgeHubExamUpdateInput) => {
     setError('');
     setNotice('');
-    const demo = isDemoRecord(values);
-    if (demo && values.status !== 'draft') {
-      setError('Demo samples are draft-only. Duplicate the notice with new copy before publishing it.');
-      return;
-    }
     const officialUrl = values.officialUrl.trim();
     if (values.status === 'published' && !/^https:\/\//i.test(officialUrl)) {
       recordForm.setError('officialUrl', { message: 'Published notices require an HTTPS official URL.' });
@@ -318,7 +313,7 @@ export default function AdminKnowledgeHubExamUpdates() {
             ) : records.map((record) => (
               <button type="button" key={record.id} onClick={() => selectRecord(record)} className={`w-full rounded-xl border p-4 text-left transition ${selectedId === record.id ? 'border-[hsl(var(--admin-focus))] bg-[hsl(var(--admin-focus)/.08)]' : 'border-[hsl(var(--admin-border))] hover:border-[hsl(var(--admin-focus)/.55)]'}`} data-testid={`row-exam-update-${record.id}`}>
                 <div className="flex items-start justify-between gap-3"><div className="min-w-0"><p className="truncate text-sm font-bold text-[hsl(var(--admin-text))]">{record.title || 'Untitled notice'}</p><p className="mt-1 truncate text-xs text-[hsl(var(--admin-text-muted))]">{record.exam || 'No exam'} · order {record.displayOrder}</p></div><StatusBadge status={record.status} /></div>
-                {isDemoRecord(record) && <span className="mt-3 inline-flex rounded-full bg-amber-100 px-2 py-1 text-[10px] font-bold uppercase tracking-[.1em] text-amber-800">Demo · draft only</span>}
+                {isDemoRecord(record) && <span className="mt-3 inline-flex rounded-full bg-amber-100 px-2 py-1 text-[10px] font-bold uppercase tracking-[.1em] text-amber-800">Demo sample</span>}
               </button>
             ))}
           </div>
@@ -357,7 +352,7 @@ export default function AdminKnowledgeHubExamUpdates() {
                 </div>
               )}
 
-              {isDemoRecord(recordValues) && <p className="rounded-xl border border-amber-700/20 bg-amber-50 px-4 py-3 text-sm text-amber-900" data-testid="status-exam-update-demo">Demo sample: this record is draft-only and cannot be published.</p>}
+              {isDemoRecord(recordValues) && <p className="rounded-xl border border-amber-700/20 bg-amber-50 px-4 py-3 text-sm text-amber-900" data-testid="status-exam-update-demo">Demo sample: you can publish it after adding a publication date and a valid HTTPS official-source link.</p>}
               <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[hsl(var(--admin-border))] pt-5">
                 <div className="flex flex-wrap gap-2">
                   {selectedId && <button type="button" onClick={() => requestSave(recordForm.getValues('status') === 'published' ? 'draft' : 'published')} className={`${buttonClass} border border-[hsl(var(--admin-border))]`} disabled={updateUpdate.isPending} data-testid="button-toggle-exam-update-publish">{recordForm.getValues('status') === 'published' ? 'Unpublish' : 'Publish'} <ShieldCheck size={15} /></button>}
