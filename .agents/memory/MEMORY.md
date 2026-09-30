@@ -1,5 +1,6 @@
 - [Prisma CLI stability](prisma-cli-stability.md) — keep this project on stable Prisma 6 until the newer CLI restores the standard generate workflow.
 - [Artifact build environment](artifact-build-environment.md) — standalone artifact builds need PORT and BASE_PATH; managed workflows provide them automatically.
+- [Artifact service root probe](artifact-service-root-probe.md) — autoscale port checks may probe the mounted service path, so an API mount root must return healthy.
 - [About visual refinement boundary](about-visual-refinement.md) — keep About styling work presentation-only; preserve backend content and admin editing behavior.
 - [Native carousel compatibility](native-carousel-compatibility.md) — prefer native scroll-snap carousels over Embla hooks in this React workspace.
 - [Shared About preview records](shared-about-preview-records.md) — Home Faculty and Gallery reuse About records; hide removals and store Home headings independently.
