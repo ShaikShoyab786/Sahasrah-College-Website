@@ -1,6 +1,6 @@
 import app from "./app";
 import { logger } from "./lib/logger";
-import { initializeDatabase } from "./lib/prisma";
+import { databaseInitializationStage, initializeDatabase } from "./lib/prisma";
 
 const rawPort = process.env["PORT"];
 
@@ -35,6 +35,22 @@ initializeDatabase()
     });
   })
   .catch((err) => {
-    logger.error({ err }, "Database initialization failed");
+    // Prisma messages can contain connection strings, query values, or user content.
+    // Report only a safe error code and the phase needed to diagnose the failure.
+    const code =
+      typeof err === "object" && err !== null && "code" in err &&
+      typeof err.code === "string" && /^P\d{4}$/.test(err.code)
+        ? err.code
+        : undefined;
+    const action = databaseInitializationStage === "connecting to PostgreSQL" ||
+      code === "P1000" || code === "P1001" || code === "P1002"
+      ? "Check production DATABASE_URL, database connectivity, and access."
+      : code === "P2021" || code === "P2022"
+        ? "Check the production schema against the Prisma model before publishing."
+        : "Check the production database and startup configuration.";
+    logger.error(
+      { stage: databaseInitializationStage, code, action },
+      "Database initialization failed; API did not begin serving",
+    );
     process.exit(1);
   });

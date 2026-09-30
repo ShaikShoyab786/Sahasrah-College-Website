@@ -34,6 +34,8 @@ export const prisma = new PrismaClient();
 
 const galleryCategories = ["Campus", "Classrooms", "Sports", "Labs", "Library", "Achievements", "Events"];
 
+export let databaseInitializationStage = "connecting to PostgreSQL";
+
 async function ensureSiteSettingsSocialUrlColumns() {
   await prisma.$executeRawUnsafe(`
     ALTER TABLE "SiteSettings"
@@ -619,12 +621,15 @@ async function backfillCourseHighlights() {
 }
 
 export async function initializeDatabase() {
+  databaseInitializationStage = "connecting to PostgreSQL";
   await prisma.$connect();
+  databaseInitializationStage = "applying additive schema changes";
   await ensureSiteSettingsSocialUrlColumns();
   await ensureAlumniStorySchema();
   await ensureKnowledgeHubResourceSchema();
   await ensureKnowledgeHubExamUpdatesSchema();
   await ensureKnowledgeHubImportantDatesSchema();
+  databaseInitializationStage = "initializing site content";
   await backfillLegacyResultStories();
   await backfillCollegeNameTypo();
 
@@ -1589,6 +1594,7 @@ export async function initializeDatabase() {
   const email = process.env.INITIAL_ADMIN_EMAIL?.trim().toLowerCase();
   const password = process.env.INITIAL_ADMIN_PASSWORD;
   if (email && password) {
+    databaseInitializationStage = "checking initial administrator";
     const existing = await prisma.admin.findUnique({ where: { email } });
     if (!existing) {
       const { hashPassword } = await import("./security");
