@@ -15,6 +15,10 @@ export interface SiteSettings {
   email: string;
   phone: string;
   address: string;
+  socialFacebookUrl: string;
+  socialInstagramUrl: string;
+  socialYoutubeUrl: string;
+  socialLinkedinUrl: string;
   primaryColor: string;
   accentColor: string;
   surfaceColor: string;

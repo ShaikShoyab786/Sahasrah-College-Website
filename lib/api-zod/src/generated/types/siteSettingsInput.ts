@@ -17,6 +17,14 @@ export interface SiteSettingsInput {
   phone: string;
   /** @minLength 1 */
   address: string;
+  /** @pattern ^$|^https://.+ */
+  socialFacebookUrl: string;
+  /** @pattern ^$|^https://.+ */
+  socialInstagramUrl: string;
+  /** @pattern ^$|^https://.+ */
+  socialYoutubeUrl: string;
+  /** @pattern ^$|^https://.+ */
+  socialLinkedinUrl: string;
   /** @pattern ^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$ */
   primaryColor: string;
   /** @pattern ^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$ */

@@ -64,6 +64,10 @@ export const GetSiteSettingsResponse = zod.object({
   "email": zod.string(),
   "phone": zod.string(),
   "address": zod.string(),
+  "socialFacebookUrl": zod.string(),
+  "socialInstagramUrl": zod.string(),
+  "socialYoutubeUrl": zod.string(),
+  "socialLinkedinUrl": zod.string(),
   "primaryColor": zod.string(),
   "accentColor": zod.string(),
   "surfaceColor": zod.string(),
@@ -975,6 +979,10 @@ export const SubmitContactEnquiryResponse = zod.object({
 
 
 
+export const updateSiteSettingsBodySocialFacebookUrlRegExp = new RegExp('^$|^https://.+');
+export const updateSiteSettingsBodySocialInstagramUrlRegExp = new RegExp('^$|^https://.+');
+export const updateSiteSettingsBodySocialYoutubeUrlRegExp = new RegExp('^$|^https://.+');
+export const updateSiteSettingsBodySocialLinkedinUrlRegExp = new RegExp('^$|^https://.+');
 export const updateSiteSettingsBodyPrimaryColorRegExp = new RegExp('^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$');
 export const updateSiteSettingsBodyAccentColorRegExp = new RegExp('^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$');
 export const updateSiteSettingsBodySurfaceColorRegExp = new RegExp('^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$');
@@ -1006,6 +1014,10 @@ export const UpdateSiteSettingsBody = zod.object({
   "email": zod.string().email(),
   "phone": zod.string().min(1),
   "address": zod.string().min(1),
+  "socialFacebookUrl": zod.string().regex(updateSiteSettingsBodySocialFacebookUrlRegExp),
+  "socialInstagramUrl": zod.string().regex(updateSiteSettingsBodySocialInstagramUrlRegExp),
+  "socialYoutubeUrl": zod.string().regex(updateSiteSettingsBodySocialYoutubeUrlRegExp),
+  "socialLinkedinUrl": zod.string().regex(updateSiteSettingsBodySocialLinkedinUrlRegExp),
   "primaryColor": zod.string().regex(updateSiteSettingsBodyPrimaryColorRegExp),
   "accentColor": zod.string().regex(updateSiteSettingsBodyAccentColorRegExp),
   "surfaceColor": zod.string().regex(updateSiteSettingsBodySurfaceColorRegExp),
@@ -1038,6 +1050,10 @@ export const UpdateSiteSettingsResponse = zod.object({
   "email": zod.string(),
   "phone": zod.string(),
   "address": zod.string(),
+  "socialFacebookUrl": zod.string(),
+  "socialInstagramUrl": zod.string(),
+  "socialYoutubeUrl": zod.string(),
+  "socialLinkedinUrl": zod.string(),
   "primaryColor": zod.string(),
   "accentColor": zod.string(),
   "surfaceColor": zod.string(),

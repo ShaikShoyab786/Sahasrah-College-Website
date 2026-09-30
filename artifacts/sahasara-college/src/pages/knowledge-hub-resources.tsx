@@ -29,6 +29,11 @@ const fallbackSite = {
   logoUrl: null,
   email: '',
   phone: '',
+  address: '',
+  socialFacebookUrl: '',
+  socialInstagramUrl: '',
+  socialYoutubeUrl: '',
+  socialLinkedinUrl: '',
   footerText: 'A public college for curious minds and purposeful lives.',
 };
 
@@ -223,7 +228,7 @@ export default function KnowledgeHubResources() {
           </div>
         </section>
       </main>
-      <PublicFooter settings={{ collegeName: site.collegeName, tagline: site.tagline, logoUrl: site.logoUrl, email: site.email, phone: site.phone, footerText: site.footerText || fallbackSite.footerText }} />
+      <PublicFooter settings={{ collegeName: site.collegeName, tagline: site.tagline, logoUrl: site.logoUrl, email: site.email, phone: site.phone, address: site.address, socialFacebookUrl: site.socialFacebookUrl, socialInstagramUrl: site.socialInstagramUrl, socialYoutubeUrl: site.socialYoutubeUrl, socialLinkedinUrl: site.socialLinkedinUrl, footerText: site.footerText || fallbackSite.footerText }} />
     </div>
   );
 }

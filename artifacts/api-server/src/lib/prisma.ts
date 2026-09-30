@@ -34,6 +34,16 @@ export const prisma = new PrismaClient();
 
 const galleryCategories = ["Campus", "Classrooms", "Sports", "Labs", "Library", "Achievements", "Events"];
 
+async function ensureSiteSettingsSocialUrlColumns() {
+  await prisma.$executeRawUnsafe(`
+    ALTER TABLE "SiteSettings"
+      ADD COLUMN IF NOT EXISTS "socialFacebookUrl" TEXT NOT NULL DEFAULT '',
+      ADD COLUMN IF NOT EXISTS "socialInstagramUrl" TEXT NOT NULL DEFAULT '',
+      ADD COLUMN IF NOT EXISTS "socialYoutubeUrl" TEXT NOT NULL DEFAULT '',
+      ADD COLUMN IF NOT EXISTS "socialLinkedinUrl" TEXT NOT NULL DEFAULT ''
+  `);
+}
+
 async function ensureAlumniStorySchema() {
   await prisma.$executeRawUnsafe(`
     CREATE TABLE IF NOT EXISTS "AlumniSuccessStory" (
@@ -610,6 +620,7 @@ async function backfillCourseHighlights() {
 
 export async function initializeDatabase() {
   await prisma.$connect();
+  await ensureSiteSettingsSocialUrlColumns();
   await ensureAlumniStorySchema();
   await ensureKnowledgeHubResourceSchema();
   await ensureKnowledgeHubExamUpdatesSchema();

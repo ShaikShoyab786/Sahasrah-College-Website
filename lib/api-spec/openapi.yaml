@@ -4401,6 +4401,14 @@ components:
           type: string
         address:
           type: string
+        socialFacebookUrl:
+          type: string
+        socialInstagramUrl:
+          type: string
+        socialYoutubeUrl:
+          type: string
+        socialLinkedinUrl:
+          type: string
         primaryColor:
           type: string
         accentColor:
@@ -4453,6 +4461,10 @@ components:
         - email
         - phone
         - address
+        - socialFacebookUrl
+        - socialInstagramUrl
+        - socialYoutubeUrl
+        - socialLinkedinUrl
         - primaryColor
         - accentColor
         - surfaceColor
@@ -4494,6 +4506,18 @@ components:
         address:
           type: string
           minLength: 1
+        socialFacebookUrl:
+          type: string
+          pattern: '^$|^https://.+'
+        socialInstagramUrl:
+          type: string
+          pattern: '^$|^https://.+'
+        socialYoutubeUrl:
+          type: string
+          pattern: '^$|^https://.+'
+        socialLinkedinUrl:
+          type: string
+          pattern: '^$|^https://.+'
         primaryColor:
           type: string
           pattern: "^#[0-9A-Fa-f]{3}([0-9A-Fa-f]{3})?$"
@@ -4566,6 +4590,10 @@ components:
         - email
         - phone
         - address
+        - socialFacebookUrl
+        - socialInstagramUrl
+        - socialYoutubeUrl
+        - socialLinkedinUrl
         - primaryColor
         - accentColor
         - surfaceColor

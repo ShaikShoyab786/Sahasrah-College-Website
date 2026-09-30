@@ -35,6 +35,10 @@ model SiteSettings {
   email                    String
   phone                    String
   address                  String
+  socialFacebookUrl        String  @default("")
+  socialInstagramUrl       String  @default("")
+  socialYoutubeUrl         String  @default("")
+  socialLinkedinUrl        String  @default("")
   primaryColor             String
   accentColor              String
   surfaceColor             String @default("#F5F7FB")
