@@ -1,10 +1,9 @@
 import { ArrowRight, BookOpen, ChevronDown, Download, FileText, GraduationCap, Layers3, RefreshCw, Target } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
-import type { CallbackPopupSettings, CourseMentor, CourseReason, CourseSyllabusSubject, PublicCourse } from '@workspace/api-client-react';
+import { useEffect, useState } from 'react';
+import type { CallbackPopupSettings, CourseMentor, CourseSyllabusSubject, PublicCourse } from '@workspace/api-client-react';
 import { Link } from 'wouter';
 import { CallbackPopupForm } from '@/components/callback-popup';
 import { CourseMentorCarousel } from '@/components/course-mentor-carousel';
-import './course-why.css';
 
 export function CourseLoadingState({ label = 'Loading course information' }: { label?: string }) {
   return (
@@ -184,69 +183,6 @@ export function HighlightsSection({
                 <span aria-hidden="true" className="mt-3 h-0.5 w-8 rounded-full bg-[hsl(var(--accent))]" />
                 <h3 className="mt-4 break-words font-display text-xl font-semibold leading-tight text-[hsl(var(--primary))] sm:text-[1.35rem]">{item.title}</h3>
                 <p className="mt-3 text-sm leading-6 text-[hsl(var(--muted-foreground))]">{item.description}</p>
-              </article>
-            </li>
-          ))}
-        </ol>
-      </div>
-    </section>
-  );
-}
-
-function WhyChooseHeading({ heading }: { heading: string }) {
-  const emphasized = heading.match(/student\.?/i);
-  if (!emphasized) return <>{heading}</>;
-  const start = heading.toLowerCase().indexOf(emphasized[0].toLowerCase());
-  return <>{heading.slice(0, start)}<span className="text-[hsl(var(--destructive))]">{emphasized[0]}</span>{heading.slice(start + emphasized[0].length)}</>;
-}
-
-export function WhyChooseSection({ heading, introduction, reasons }: { heading: string; introduction: string; reasons: CourseReason[] }) {
-  const sectionRef = useRef<HTMLElement | null>(null);
-  const [hasEntered, setHasEntered] = useState(false);
-
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) {
-      setHasEntered(true);
-      return;
-    }
-    const observer = new IntersectionObserver(([entry]) => {
-      if (!entry.isIntersecting) return;
-      setHasEntered(true);
-      observer.disconnect();
-    }, { threshold: 0.15 });
-    observer.observe(section);
-    return () => observer.disconnect();
-  }, []);
-
-  const cardColors = ['course-why-card--blue', 'course-why-card--rose', 'course-why-card--mint'];
-  const numberColors = ['text-sky-700/15 dark:text-sky-300/20', 'text-rose-700/15 dark:text-rose-300/20', 'text-emerald-700/15 dark:text-emerald-300/20'];
-
-  return (
-    <section ref={sectionRef} data-revealed={hasEntered} className="border-b border-[hsl(var(--border))] bg-[hsl(var(--background))] px-6 py-12 lg:px-10 lg:py-16" aria-labelledby="why-course-heading" data-testid="section-course-why-choose">
-      <div className="mx-auto max-w-7xl">
-        <header className="max-w-4xl">
-          <CourseEyebrow label="Why choose this pathway" testId="text-course-why-eyebrow" />
-          <h2 id="why-course-heading" className="mt-4 max-w-4xl font-display text-4xl font-semibold leading-[1.03] tracking-[-.045em] text-[hsl(var(--primary))] sm:text-5xl md:text-6xl">
-            <WhyChooseHeading heading={heading} />
-          </h2>
-          <p className="mx-auto mt-5 max-w-3xl text-center text-sm leading-7 text-[hsl(var(--muted-foreground))] sm:text-base">{introduction}</p>
-        </header>
-        <ol className="mt-9 grid grid-cols-1 gap-4 md:grid-cols-2" aria-label="Why choose this pathway">
-          {reasons.slice(0, 3).map((reason, index) => (
-            <li key={`${reason.title}-${index}`} className="min-w-0">
-              <article
-                className={`course-why-card ${cardColors[index]} min-h-[15rem] rounded-2xl p-6 shadow-sm sm:p-7`}
-                style={{ animationDelay: `${index * 180}ms` }}
-                data-testid={`card-course-reason-${index}`}
-              >
-                <div className="relative z-10">
-                  <span aria-hidden="true" className={`block font-display text-6xl font-semibold leading-none sm:text-7xl ${numberColors[index]}`}>{String(index + 1).padStart(2, '0')}</span>
-                  <span aria-hidden="true" className="mt-3 block h-[3px] w-8 rounded-full bg-[hsl(var(--destructive))]" />
-                  <h3 className="mt-2 font-display text-xl font-semibold leading-tight text-[hsl(var(--primary))] sm:text-2xl">{reason.title}</h3>
-                  <p className="mt-2 max-w-[34rem] text-sm leading-6 text-[hsl(var(--muted-foreground))]">{reason.description}</p>
-                </div>
               </article>
             </li>
           ))}

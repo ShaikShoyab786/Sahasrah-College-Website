@@ -14,7 +14,7 @@ import {
   UpdateAdminCourseParams,
   UpdateAdminCourseResponse,
 } from "@workspace/api-zod";
-import { COURSE_SEEDS, COURSE_SUBJECTS, normalizeCourseHighlights, normalizeCourseReasons, normalizeTeachingSubject, type CourseSlug, type CourseSyllabus } from "../lib/course-content";
+import { COURSE_SEEDS, COURSE_SUBJECTS, normalizeCourseHighlights, normalizeTeachingSubject, type CourseSlug, type CourseSyllabus } from "../lib/course-content";
 import { prisma } from "../lib/prisma";
 import { ObjectNotFoundError, ObjectStorageService } from "../lib/objectStorage";
 import { requireAdmin } from "../middlewares/auth";
@@ -48,9 +48,6 @@ function toAdminCourse(course: Course) {
     highlightsHeading: course.highlightsHeading || "Quick Course Highlights",
     highlightsIntroduction: course.highlightsIntroduction || seed?.highlightsIntroduction || "",
     highlights: normalizeCourseHighlights(course.highlights, seed?.highlights ?? []),
-    whyChooseHeading: course.whyChooseHeading || seed?.whyChooseHeading || "A focused start, built around the student.",
-    whyChooseIntroduction: course.whyChooseIntroduction || seed?.whyChooseIntroduction || "",
-    whyChoose: normalizeCourseReasons(course.whyChoose, seed?.whyChoose ?? []),
     overviewText: course.overviewText,
     programGoals: course.programGoals,
     idealProfileTitle: course.idealProfileTitle,
@@ -424,9 +421,6 @@ router.put("/admin/courses/:slug", requireAdmin, async (req, res): Promise<void>
         highlightsHeading: parsed.data.highlightsHeading,
         highlightsIntroduction: parsed.data.highlightsIntroduction,
         highlights: [...parsed.data.highlights].sort((left, right) => left.displayOrder - right.displayOrder) as unknown as Prisma.InputJsonValue,
-        whyChooseHeading: parsed.data.whyChooseHeading,
-        whyChooseIntroduction: parsed.data.whyChooseIntroduction,
-        whyChoose: parsed.data.whyChoose as unknown as Prisma.InputJsonValue,
         overviewText: parsed.data.overviewText,
         programGoals: parsed.data.programGoals as unknown as Prisma.InputJsonValue,
         idealProfileTitle: parsed.data.idealProfileTitle,

@@ -1695,19 +1695,6 @@ export interface CourseHighlight {
   displayOrder: number;
 }
 
-export interface CourseReason {
-  /**
-     * @minLength 1
-     * @maxLength 140
-     */
-  title: string;
-  /**
-     * @minLength 1
-     * @maxLength 1000
-     */
-  description: string;
-}
-
 export interface CourseSyllabusSubject {
   /**
      * @minLength 1
@@ -2170,13 +2157,6 @@ export interface PublicCourse {
      * @maxItems 4
      */
   highlights: CourseHighlight[];
-  /**
-     * @minItems 3
-     * @maxItems 3
-     */
-  whyChoose: CourseReason[];
-  whyChooseHeading: string;
-  whyChooseIntroduction: string;
   overviewText: string;
   programGoals: string[];
   idealProfileTitle: string;
@@ -2215,13 +2195,6 @@ export interface AdminCourse {
      * @maxItems 4
      */
   highlights: CourseHighlight[];
-  /**
-     * @minItems 3
-     * @maxItems 3
-     */
-  whyChoose: CourseReason[];
-  whyChooseHeading: string;
-  whyChooseIntroduction: string;
   overviewText: string;
   programGoals: string[];
   idealProfileTitle: string;
@@ -2310,21 +2283,6 @@ export interface CourseUpdate {
      * @maxItems 4
      */
   highlights: CourseHighlight[];
-  /**
-     * @minItems 3
-     * @maxItems 3
-     */
-  whyChoose: CourseReason[];
-  /**
-     * @minLength 1
-     * @maxLength 180
-     */
-  whyChooseHeading: string;
-  /**
-     * @minLength 1
-     * @maxLength 1000
-     */
-  whyChooseIntroduction: string;
   /**
      * @minLength 1
      * @maxLength 4000

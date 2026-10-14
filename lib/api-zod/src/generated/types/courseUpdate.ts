@@ -6,7 +6,6 @@
  * OpenAPI spec version: 0.1.0
  */
 import type { CourseHighlight } from './courseHighlight';
-import type { CourseReason } from './courseReason';
 import type { CourseSyllabusSubject } from './courseSyllabusSubject';
 
 export interface CourseUpdate {
@@ -82,21 +81,6 @@ export interface CourseUpdate {
      * @maxItems 4
      */
   highlights: CourseHighlight[];
-  /**
-     * @minItems 3
-     * @maxItems 3
-     */
-  whyChoose: CourseReason[];
-  /**
-     * @minLength 1
-     * @maxLength 180
-     */
-  whyChooseHeading: string;
-  /**
-     * @minLength 1
-     * @maxLength 1000
-     */
-  whyChooseIntroduction: string;
   /**
      * @minLength 1
      * @maxLength 4000

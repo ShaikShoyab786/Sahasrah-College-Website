@@ -11,7 +11,6 @@ import {
   useUpdateAdminCourse,
   type AdminCourse,
   type CourseHighlight,
-  type CourseReason,
   type CourseSyllabusSubject,
   type CourseUpdate,
 } from '@workspace/api-client-react';
@@ -38,9 +37,6 @@ function toUpdate(course: AdminCourse): CourseUpdate {
     highlightsHeading: course.highlightsHeading,
     highlightsIntroduction: course.highlightsIntroduction,
     highlights: course.highlights,
-    whyChooseHeading: course.whyChooseHeading,
-    whyChooseIntroduction: course.whyChooseIntroduction,
-    whyChoose: course.whyChoose,
     overviewText: course.overviewText,
     programGoals: course.programGoals,
     idealProfileTitle: course.idealProfileTitle,
@@ -129,24 +125,6 @@ function HighlightEditor({
           </div>
         ))}
       </div>
-    </div>
-  );
-}
-
-function ReasonEditor({ heading, onHeadingChange, introduction, onIntroductionChange, values, onChange }: {
-  heading: string;
-  onHeadingChange: (value: string) => void;
-  introduction: string;
-  onIntroductionChange: (value: string) => void;
-  values: CourseReason[];
-  onChange: (values: CourseReason[]) => void;
-}) {
-  return (
-    <div className="space-y-5">
-      <Field id="course-why-choose-heading" label="Section heading" value={heading} onChange={(event) => onHeadingChange(event.target.value)} required />
-      <Area id="course-why-choose-introduction" label="Section introduction" value={introduction} onChange={(event) => onIntroductionChange(event.target.value)} required />
-      <p className="text-sm font-bold text-[hsl(var(--admin-text))]">Three pathway cards</p>
-      {values.slice(0, 3).map((item, index) => <div key={`reason-${index}`} className="rounded-xl bg-[hsl(var(--admin-surface-soft))] p-4"><p className="mb-3 text-xs font-bold uppercase tracking-[.14em] text-[hsl(var(--admin-text-muted))]">Card 0{index + 1}</p><div className="space-y-4"><Field id={`course-reason-${index}-title`} label="Title" value={item.title} onChange={(event) => onChange(values.map((entry, itemIndex) => itemIndex === index ? { ...entry, title: event.target.value } : entry))} required /><Area id={`course-reason-${index}-description`} label="Description" value={item.description} onChange={(event) => onChange(values.map((entry, itemIndex) => itemIndex === index ? { ...entry, description: event.target.value } : entry))} required /></div></div>)}
     </div>
   );
 }
@@ -319,11 +297,6 @@ export default function AdminCourses() {
               values={form.highlights}
               onChange={(highlights) => setForm({ highlights })}
             />
-          </EditorCard>
-          </div>
-          <div id="admin-courses-why-choose" className="scroll-mt-24">
-          <EditorCard title="Why Choose This Pathway" description="Edit the heading, introduction, and three pathway cards shown below Quick Course Highlights.">
-            <ReasonEditor heading={form.whyChooseHeading} onHeadingChange={(whyChooseHeading) => setForm({ whyChooseHeading })} introduction={form.whyChooseIntroduction} onIntroductionChange={(whyChooseIntroduction) => setForm({ whyChooseIntroduction })} values={form.whyChoose} onChange={(whyChoose) => setForm({ whyChoose })} />
           </EditorCard>
           </div>
           <div id="admin-courses-syllabus" className="scroll-mt-24">

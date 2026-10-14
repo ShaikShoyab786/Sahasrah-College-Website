@@ -7,11 +7,6 @@ export type CourseHighlight = {
   displayOrder: number;
 };
 
-export type CourseReason = {
-  title: string;
-  description: string;
-};
-
 export type CourseSyllabus = {
   subject: string;
   topics: string[];
@@ -33,9 +28,6 @@ export type CourseSeed = {
   highlightsEyebrow: string;
   highlightsIntroduction: string;
   highlights: CourseHighlight[];
-  whyChooseHeading: string;
-  whyChooseIntroduction: string;
-  whyChoose: CourseReason[];
   overviewText: string;
   programGoals: string[];
   idealProfileTitle: string;
@@ -67,13 +59,6 @@ export const COURSE_SEEDS: CourseSeed[] = [
       { category: "Learning lens", title: "Concepts before methods", description: "Build understanding before applying formulas or multi-step procedures.", displayOrder: 2 },
       { category: "Practice focus", title: "Reasoning with accuracy", description: "Use equations, diagrams, and clear working to explain each answer.", displayOrder: 3 },
       { category: "Good fit for", title: "Curious problem-solvers", description: "For students drawn to patterns, models, and scientific questions.", displayOrder: 4 },
-    ],
-    whyChooseHeading: "A focused start, built around the student.",
-    whyChooseIntroduction: "A well-structured combination of Mathematics, Physics, and Chemistry builds strong fundamentals, develops problem-solving skills, and keeps future opportunities open.",
-    whyChoose: [
-      { title: "See how the subjects connect", description: "Mathematics gives students tools for describing patterns, while Physics and Chemistry put those tools to work in scientific settings." },
-      { title: "Strengthen step-by-step reasoning", description: "Regular work with equations, diagrams, and evidence helps students explain how they reached an answer." },
-      { title: "Keep future study choices open", description: "A broad science foundation can support several further-study directions; students can explore options with a counsellor." },
     ],
     overviewText:
       "The MPC pathway centres on Mathematics, Physics, and Chemistry. Students build subject knowledge while learning to move between abstract ideas, numerical work, and scientific explanations.",
@@ -119,13 +104,6 @@ export const COURSE_SEEDS: CourseSeed[] = [
       { category: "Practice focus", title: "Careful recall and explanation", description: "Organise detailed topics and explain them with accurate scientific language.", displayOrder: 3 },
       { category: "Good fit for", title: "Students curious about life science", description: "For learners interested in organisms, health, and the environment.", displayOrder: 4 },
     ],
-    whyChooseHeading: "A focused start, built around the student.",
-    whyChooseIntroduction: "Biology at the centre, supported by Physics and Chemistry, builds understanding of living systems and the science that helps explain them.",
-    whyChoose: [
-      { title: "Put living systems at the centre", description: "Biology explores how organisms are built, how they function, and how they relate to their environment." },
-      { title: "Use Physics and Chemistry as supporting lenses", description: "The companion subjects help explain processes such as movement, energy transfer, and molecular interaction." },
-      { title: "Build careful observation habits", description: "Diagrams, classification, and cause-and-effect explanations help students organise detailed material." },
-    ],
     overviewText:
       "BiPC gives Biology the central role while keeping Physics and Chemistry in the picture. The combination helps students relate the scale of cells and organisms to the principles that shape them.",
     programGoals: [
@@ -169,13 +147,6 @@ export const COURSE_SEEDS: CourseSeed[] = [
       { category: "Preparation lens", title: "Layered concept application", description: "Connect ideas across subjects when a question calls for more than one step.", displayOrder: 2 },
       { category: "Practice focus", title: "Multi-step problem solving", description: "Work through unfamiliar problems and review the reasoning behind each method.", displayOrder: 3 },
       { category: "Good fit for", title: "Learners ready for challenge", description: "For students prepared to analyse, practise, and revisit difficult concepts.", displayOrder: 4 },
-    ],
-    whyChooseHeading: "A focused start, built around the student.",
-    whyChooseIntroduction: "Connect PCM foundations with IIT-JEE practice, building conceptual depth and a disciplined approach to challenging entrance questions.",
-    whyChoose: [
-      { title: "Connect classroom ideas to entrance questions", description: "JEE-focused work asks students to recognise which concepts apply and how they fit together." },
-      { title: "Practise depth, not only speed", description: "Working through a difficult problem carefully can reveal gaps in the underlying Mathematics, Physics, or Chemistry." },
-      { title: "Review errors as part of preparation", description: "A deliberate review habit helps students understand the reason behind an incorrect step and choose a better method next time." },
     ],
     overviewText:
       "MPC + IIT-JEE is a combined PCM and entrance-preparation pathway. Subject learning is paired with JEE-focused problem practice so students can work on conceptual depth and application together.",
@@ -221,13 +192,6 @@ export const COURSE_SEEDS: CourseSeed[] = [
       { category: "Practice focus", title: "Accuracy across question types", description: "Balance close reading, recall, and numerical work in Physics and Chemistry.", displayOrder: 3 },
       { category: "Revision focus", title: "A steady review routine", description: "Return to diagrams, terminology, formulas, and question patterns as topics develop.", displayOrder: 4 },
     ],
-    whyChooseHeading: "A focused start, built around the student.",
-    whyChooseIntroduction: "A Biology-led science pathway with Physics and Chemistry practice, designed to strengthen subject understanding and steady NEET preparation.",
-    whyChoose: [
-      { title: "Give Biology room for depth", description: "NEET-focused BiPC preparation asks students to understand detailed biological ideas and recall them accurately." },
-      { title: "Keep Physics and Chemistry in balance", description: "Regular attention to all three subjects helps learners practise both conceptual and numerical questions." },
-      { title: "Build a consistent revision cycle", description: "Short, planned reviews make it easier to revisit diagrams, terminology, formulas, and common question patterns." },
-    ],
     overviewText:
       "BiPC + NEET brings the Biology, Physics, and Chemistry combination together with focused medical-entrance preparation. The pathway is designed around subject understanding, regular revision, and application to NEET-style questions.",
     programGoals: [
@@ -271,13 +235,6 @@ export const COURSE_SEEDS: CourseSeed[] = [
       { category: "Preparation lens", title: "EAMCET-style application", description: "Pair subject review with practice based on entrance-style questions.", displayOrder: 2 },
       { category: "Practice focus", title: "Method and pacing", description: "Choose a sound approach and manage time without skipping key steps.", displayOrder: 3 },
       { category: "Good fit for", title: "Students who value structure", description: "For learners who benefit from clear practice and repeatable review goals.", displayOrder: 4 },
-    ],
-    whyChooseHeading: "A focused start, built around the student.",
-    whyChooseIntroduction: "Connect PCM fundamentals with EAMCET-style practice, building subject confidence, accuracy, and pace through regular review.",
-    whyChoose: [
-      { title: "Keep the PCM syllabus connected", description: "Revisiting related ideas across Mathematics, Physics, and Chemistry makes practice more purposeful than treating each chapter in isolation." },
-      { title: "Practise for a timed setting", description: "Entrance-style sets let students work on reading carefully, selecting a method, and keeping track of time." },
-      { title: "Use a steady revision rhythm", description: "Returning to earlier topics helps reinforce formulas, definitions, and problem-solving methods as new material is introduced." },
     ],
     overviewText:
       "MPC + EAMCET is a PCM pathway with EAMCET-focused preparation. Learners work on subject fundamentals and practise applying them to entrance-style questions with attention to accuracy and pacing.",
@@ -334,17 +291,6 @@ export function normalizeCourseHighlights(
       title: nonEmptyText(item?.title) ?? nonEmptyText(item?.value) ?? seed.title,
       description: nonEmptyText(item?.description) ?? seed.description,
       displayOrder: index + 1,
-    };
-  });
-}
-
-export function normalizeCourseReasons(value: unknown, fallback: CourseReason[]): CourseReason[] {
-  const existing = Array.isArray(value) ? value.filter(isObjectRecord) : [];
-  return fallback.slice(0, 3).map((seed, index) => {
-    const item = existing[index];
-    return {
-      title: nonEmptyText(item?.title) ?? seed.title,
-      description: nonEmptyText(item?.description) ?? seed.description,
     };
   });
 }

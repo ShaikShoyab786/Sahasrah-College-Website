@@ -6,7 +6,6 @@
  * OpenAPI spec version: 0.1.0
  */
 import type { CourseHighlight } from './courseHighlight';
-import type { CourseReason } from './courseReason';
 import type { CourseSlug } from './courseSlug';
 import type { CourseSyllabusSubject } from './courseSyllabusSubject';
 
@@ -34,13 +33,6 @@ export interface AdminCourse {
      * @maxItems 4
      */
   highlights: CourseHighlight[];
-  /**
-     * @minItems 3
-     * @maxItems 3
-     */
-  whyChoose: CourseReason[];
-  whyChooseHeading: string;
-  whyChooseIntroduction: string;
   overviewText: string;
   programGoals: string[];
   idealProfileTitle: string;

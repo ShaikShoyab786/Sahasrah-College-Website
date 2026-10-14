@@ -1,7 +1,7 @@
 import { getGetCallbackPopupSettingsQueryKey, getGetCourseBySlugQueryKey, useGetCallbackPopupSettings, useGetContactSettings, useGetCourseBySlug, useGetGalleryPage, useGetSiteSettings, type CourseSlug } from '@workspace/api-client-react';
 import { PublicFooter } from '@/components/public-footer';
 import { PublicHeader } from '@/components/public-header';
-import { CourseEmptyState, CourseErrorState, CourseHero, CourseLoadingState, CurriculumSection, HighlightsSection, MentorsSection, WhyChooseSection } from '@/components/course-experience';
+import { CourseEmptyState, CourseErrorState, CourseHero, CourseLoadingState, CurriculumSection, HighlightsSection, MentorsSection } from '@/components/course-experience';
 import { CourseAdmissionProcess, CourseFinalAdmissionsCta } from '@/components/course-admissions';
 import { CourseCampusGallery } from '@/components/course-campus-gallery';
 import { createPublicThemeStyle, DEFAULT_ACCENT_COLOR, DEFAULT_PRIMARY_COLOR, DEFAULT_SURFACE_COLOR } from '@/lib/public-theme';
@@ -47,7 +47,6 @@ export default function CourseDetail() {
           onRetryEnquirySettings={() => { void enquirySettingsQuery.refetch(); }}
         />
         <HighlightsSection eyebrow={course.highlightsEyebrow} heading={course.highlightsHeading} introduction={course.highlightsIntroduction} highlights={course.highlights} />
-        <WhyChooseSection heading={course.whyChooseHeading} introduction={course.whyChooseIntroduction} reasons={course.whyChoose} />
         <MentorsSection mentors={course.mentors} />
         <CurriculumSection syllabus={course.syllabus} fileName={course.curriculumPdfFileName} isSample={course.curriculumPdfIsSample} downloadUrl={course.curriculumDownloadUrl} />
         <CourseCampusGallery items={galleryQuery.data?.items ?? []} />

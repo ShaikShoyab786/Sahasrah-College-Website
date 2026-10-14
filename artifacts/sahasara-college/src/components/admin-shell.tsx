@@ -336,7 +336,6 @@ export function AdminShell({ children, displayName = 'Administrator', email = ''
                     <PageSectionLink href="/admin/pages/all-courses" id="admin-all-courses" label="All Courses" active={allCoursesPageActive} onSelect={() => { setActiveAdminSection(''); setOpen(false); }} />
                     <PageSectionLink href="/admin/pages/courses#admin-courses-hero" id="admin-courses-hero" label="Hero" active={coursesPageActive && activeAdminSection === 'admin-courses-hero'} onSelect={() => { setActiveAdminSection('admin-courses-hero'); setOpen(false); }} />
                     <PageSectionLink href="/admin/pages/courses#admin-courses-highlights" id="admin-courses-highlights" label="Quick Course Highlights" active={coursesPageActive && activeAdminSection === 'admin-courses-highlights'} onSelect={() => { setActiveAdminSection('admin-courses-highlights'); setOpen(false); }} />
-                    <PageSectionLink href="/admin/pages/courses#admin-courses-why-choose" id="admin-courses-why-choose" label="Why Choose This Pathway" active={coursesPageActive && activeAdminSection === 'admin-courses-why-choose'} onSelect={() => { setActiveAdminSection('admin-courses-why-choose'); setOpen(false); }} />
                     <PageSectionLink href="/admin/pages/courses#admin-courses-syllabus" id="admin-courses-syllabus" label="Syllabus" active={coursesPageActive && activeAdminSection === 'admin-courses-syllabus'} onSelect={() => { setActiveAdminSection('admin-courses-syllabus'); setOpen(false); }} />
                   </div>
                 )}

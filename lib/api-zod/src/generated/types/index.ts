@@ -86,7 +86,6 @@ export * from './contactSocialLink';
 export * from './contactSocialLinkInput';
 export * from './courseHighlight';
 export * from './courseMentor';
-export * from './courseReason';
 export * from './courseSlug';
 export * from './coursesMegaMenu';
 export * from './coursesMegaMenuBenefit';
