@@ -1201,3 +1201,18 @@ footer a:hover {
   outline: 2px solid hsl(var(--primary-foreground));
   outline-offset: 2px;
 }
+
+.courses-page footer[data-testid="public-footer"] li > span:has(> svg) {
+  width: 1.875rem;
+  height: 1.875rem;
+  flex: 0 0 1.875rem;
+  border: 1px solid hsl(var(--primary-foreground) / .14);
+  background: hsl(var(--primary-foreground) / .1);
+  color: hsl(var(--primary-foreground) / .92);
+}
+
+.courses-page footer[data-testid="public-footer"] li > span:has(> svg) svg {
+  width: 14px;
+  height: 14px;
+  stroke-width: 1.8;
+}
