@@ -3,6 +3,8 @@ type ModuleMap = Record<string, () => Promise<Record<string, unknown>>>;
 export const modules: ModuleMap = {
   "./components/mockups/admin-overview/Current.tsx": () => import("../components/mockups/admin-overview/Current.tsx"),
   "./components/mockups/admin-overview/Redesign.tsx": () => import("../components/mockups/admin-overview/Redesign.tsx"),
+  "./components/mockups/course-highlights/Current.tsx": () => import("../components/mockups/course-highlights/Current.tsx"),
+  "./components/mockups/course-highlights/Refined.tsx": () => import("../components/mockups/course-highlights/Refined.tsx"),
   "./components/mockups/callback-popup/CompactDesktop.tsx": () => import("../components/mockups/callback-popup/CompactDesktop.tsx"),
   "./components/mockups/callback-popup/CompactEmerald.tsx": () => import("../components/mockups/callback-popup/CompactEmerald.tsx"),
   "./components/mockups/callback-popup/CompactMobile.tsx": () => import("../components/mockups/callback-popup/CompactMobile.tsx"),
@@ -10,8 +12,6 @@ export const modules: ModuleMap = {
   "./components/mockups/callback-popup/Current.tsx": () => import("../components/mockups/callback-popup/Current.tsx"),
   "./components/mockups/courses-icons/Current.tsx": () => import("../components/mockups/courses-icons/Current.tsx"),
   "./components/mockups/courses-icons/Refined.tsx": () => import("../components/mockups/courses-icons/Refined.tsx"),
-  "./components/mockups/course-highlights/Current.tsx": () => import("../components/mockups/course-highlights/Current.tsx"),
-  "./components/mockups/course-highlights/Refined.tsx": () => import("../components/mockups/course-highlights/Refined.tsx"),
   "./components/mockups/public-footer/Current.tsx": () => import("../components/mockups/public-footer/Current.tsx"),
   "./components/mockups/public-footer/Refined.tsx": () => import("../components/mockups/public-footer/Refined.tsx"),
   "./components/mockups/results-refinement/Current.tsx": () => import("../components/mockups/results-refinement/Current.tsx"),
